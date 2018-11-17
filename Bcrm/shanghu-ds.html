@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">业务运营</a>
+        <a>
+          <cite>待审核商户</cite></a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<table class="layui-table">
+				<thead>
+					<tr>
+						<th>商户名称</th>
+						<th>所属经销商</th>
+						<th>业务员</th>
+						<th>手续费率（微信）</th>
+						<th>手续费率（支付宝）</th>
+						<th>提交时间</th>
+						<th>拒绝记录</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>石家庄市桥西区润香缘饭店</td>
+						<td>华莱士</td>
+						<td>李少雷</td>
+						<td>0.38%</td>
+						<td>0.38%</td>
+						<td>2017-01-01 11:11:42</td>
+						<td><span>1.照片不清晰</span><span>2.照片不清晰</span><span>3.照片不清晰</span></td>
+						<td class="td-manage">
+							<a class="layui-btn layui-btn-xs" title="查看" onclick="x_admin_show('查看','shanghu-ds-details.html')" href="javascript:;">查看</a>
+							<a class="layui-btn layui-btn-xs" title="通过" onclick="layer_shtg()" href="javascript:;">通过</a>
+							<a class="layui-btn layui-btn-xs" title="拒绝" onclick="layer_prompt()" href="javascript:;">拒绝</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="page">
+				<div>
+					<a class="prev" href="">&lt;&lt;</a>
+					<a class="num" href="">1</a>
+					<span class="current">2</span>
+					<a class="num" href="">3</a>
+					<a class="num" href="">489</a>
+					<a class="next" href="">&gt;&gt;</a>
+				</div>
+			</div>
+
+		</div>
+		<script>
+			/*审核确认框*/
+			function layer_shtg(obj, id) {
+				layer.confirm('确认要通过审核吗？', function(index) {
+					//发异步删除数据
+					$(obj).parents("tr").remove();
+					layer.msg('审核通过!', {
+						icon: 1,
+						time: 1000
+					});
+				});
+			}
+			//拒绝弹窗
+			function layer_prompt(argument) {
+				layer.prompt({
+					title: '请输入拒绝原因'
+				}, function(val, index) {
+					layer.msg('拒绝原因：' + val, {
+						time: 1000
+					});
+					layer.close(index);
+				});
+			}
+		</script>
+	</body>
+
+</html>

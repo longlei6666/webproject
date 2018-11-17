@@ -1,0 +1,23 @@
+.layui-tab{overflow: hidden;margin: 0;border: none;box-shadow: none;}
+.layui-tab-content{height: 350px;float: left;box-sizing: border-box;width:50%;border: 1px solid #e6e6e6;margin-left: -1px;}
+.layui-tab-content .layui-tab-item{height: 100%;}
+.layui-tab-title{width: 110px;height:auto;float: left;/*border-bottom: none;*/border: 1px solid #e6e6e6;}
+.layui-tab-title::-webkit-scrollbar {display:none}
+.layui-tab-title li{display: block;border:none;padding: 0;margin-left: 0 !important;}
+.layui-tab-title li.layui-this{border: none ;}
+.layui-tab-title li.layui-this:after{height: 40px;border: none;}
+.layui-tab-brief>.layui-tab-more li.layui-this:after, .layui-tab-brief>.layui-tab-title .layui-this:after{border-bottom:0;border: 1px;border-style: solid;border-color:#e6e6e6;border-right-color: #fff;border-radius: 4px 0 0 4px;}
+.layui-tab-title span{display: none;}
+
+/*.bqk{margin-left: 111px;margin-top: -1px;width: 50% !important;}
+.bqinput{width: calc(100% - 100px);float: left;}
+.bqbtn{width: 100px;float: left;}*/
+
+.tagsadd{position: absolute;bottom: 0;width: 100%;}
+.tagsadd input{width: calc(100% - 100px);float: left;}
+.tagsadd button{width:100px;float: left;}
+.taglist a{display: inline-block;margin-bottom: 20px;margin-right: 10px;padding: 10px 20px;border-radius: 40px;border: 1px solid #ccc;position: relative;transition: all 0.3s;}
+.taglist a:hover{border-top-right-radius: 0; border-color: #5FB878;}
+.taglist a:hover i{opacity: 1;}
+.taglist a i{position: absolute;top: 0;right:0;opacity: 0;transition: all 0.3s;}
+.taglist a i:hover{background-color: #FF5722;color: #fff;}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>优惠券领取</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" type="text/css" href="./css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="./css/style.css" />
+		<script type="text/javascript" src="./js/jquery.min.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      		<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      		<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    	<![endif]-->
+	</head>
+
+	<body>
+		<div class="coupons">
+			<div class="couponsBox">
+				<div class="shopNameBox"><span id="shopName"></span></div>
+				<div class="receiveBox">
+					<div class="phoneBox">
+						<input type="number" id="phone" name="phone" placeholder="请输入手机号领取" class="inputPhone" />
+					</div>
+					<div class="submitBtn" id="submitBtn">
+						<img src="img/btn.png" />
+					</div>
+				</div>
+				<div class="payoutBox" style="display: none;">
+					<div class="quanBox">
+						<div class="quanJine">
+							<p>
+								<span class="quanJine_Num">
+									<span class="quanJine_F">￥</span>
+									<span class="quanJine_Z">折</span>
+								<span id="quanJine_Num"></span>
+								</span>
+							</p>
+						</div>
+						<div class="quanState">
+							<p class="quanName" id="quanName"></p>
+							<p class="quanJine_jian">满<span id="quanJine_jianNum"></span>元使用</p>
+							<p class="quanDate"><span class="quanDateBox">有效日期：<span id="startTime"></span>至<span id="endTime"></span></span>
+							</p>
+						</div>
+					</div>
+					<p class="issued">已发放至<span id="issuedUser"></span>用户</p>
+					<div class="line"></div>
+					<div class="rulesBox">
+						<p class="rulesTit">活动规则</p>
+						<p class="rulesItem quan_je">~ 使用本券时可以抵<span id="quanJine_Num_rJe"></span>元</p>
+						<p class="rulesItem quan_zk">~ 使用本券时可以打<span id="quanJine_Num_rZk"></span>折</p>
+						<p class="rulesItem">~ 单笔消费满<span id="quanJine_jianNum_r"></span>元可以使用本券</p>
+						<p class="rulesItem">~ 有效日期：<span id="startTime_r"></span>至<span id="endTime_r"></span></p>
+					</div>
+				</div>
+			</div>
+			<img src="img/hongbao_l.png" class="hongbao_l" />
+			<img src="img/hongbao_r.png" class="hongbao_r" />
+		</div>
+	</body>
+	<script>
+		var quanLx
+		function changeRes(res) {
+			var res = res
+			if(res.startTime && res.endTime != "") {
+				res.startTime = res.startTime.split(' ')[0]
+				res.endTime = res.endTime.split(' ')[0]
+			}
+			if(!!res.couponMoney && res.useMoney && res.discount) {
+				res.couponMoney = res.couponMoney.split('.')[0]
+				res.useMoney = res.useMoney.split('.')[0]
+				res.discount = res.discount.split('.')[0]
+			}
+			if(res.cardVoucherName == "满减券"){
+				$('.quanJine_F').show()
+				$('.quan_je').show()
+				$('.quanJine_Z').hide()
+				$('.quan_zk').hide()
+				quanLx = res.couponMoney
+			}else if(res.cardVoucherName == "折扣券"){
+				$('.quanJine_F').hide()
+				$('.quan_je').hide()
+				$('.quanJine_Z').show()
+				$('.quan_zk').show()
+				quanLx = res.discount
+			}
+			return res
+		}
+		var Data = []
+		var shopname
+		var serverUrl = 'http://192.168.1.190:5002/'
+		var couponDistributionNumber = window.location.href.split('?couponDistributionNumber=')[1].split('&userNumber')[0]
+		var userNumber = window.location.href.split('userNumber=')[1]
+		
+		$.ajax({
+			type:"post",
+			url: serverUrl + "shop/getShopName?userNumber=0011000180427300323966",
+			//url: serverUrl + "shop/getShopName?userNumber=" + userNumber,
+			async:false,
+			success:function(res){
+				if(res.code == 0){
+					shopname = res.shopName
+				}
+			}
+		});
+
+		$.ajax({
+			type: "post",
+			url: serverUrl + 'coupon/selectPayoutCoupon',
+			data: {
+				couponDistributionNumber: couponDistributionNumber,
+				userNumber: userNumber,
+			},
+			async: false,
+			success: function(data) {
+				Data.push(data.result[0])
+			}
+		});
+		var quanData = changeRes(Data[0])
+
+		var shopName = shopname //店铺名
+		var quanJine_Num = quanLx //优惠券金额
+		var quanName = quanData.cardVoucherName //券类型
+		var quanJine_jianNum = quanData.useMoney //券限制金额
+		var startTime = quanData.startTime //起始时间
+		var endTime = quanData.endTime //结束时间
+		$('#shopName').html(shopName)
+
+		$('#submitBtn').on('click', function() {
+			var phone = $('#phone').val()
+			if(phone == '') {
+				alert("请输入手机号领取")
+			} else if(phone.length != 11) {
+				alert("请输入正确的手机号")
+			} else if(phone.length == 11) {
+				var mydata = {
+					couponDistributionNumber: couponDistributionNumber,
+					userNumber: userNumber,
+					cell: phone
+				}
+				$.ajax({
+					type: "post",
+					url: serverUrl + 'coupon/openMembers',
+					data: JSON.stringify(mydata),
+					async: true,
+					dataType: "json",
+					contentType: "application/json",
+					success: function(data) {
+						if(data.code == 0) {
+							$('.receiveBox').hide()
+							$('.payoutBox').show()
+							$('#issuedUser').html(phone)
+							$('#quanName').html(quanName)
+							$('#quanJine_Num').html(quanJine_Num)
+							$('#quanJine_jianNum').html(quanJine_jianNum)
+							$('#startTime').html(startTime)
+							$('#endTime').html(endTime)
+							$('#quanJine_Num_rJe').html(quanJine_Num)
+							$('#quanJine_Num_rZk').html(quanJine_Num)
+							$('#quanJine_jianNum_r').html(quanJine_jianNum)
+							$('#startTime_r').html(startTime)
+							$('#endTime_r').html(endTime)
+						} else if(data.code == 1) {
+							alert("优惠券领取失败")
+						}
+					}
+				});
+
+			}
+		})
+	</script>
+
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<script type="text/javascript" src="./js/tableSelect.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style>
+			.widthauto {
+				width: auto !important;
+			}
+			
+			.tips_red {
+				color: red;
+			}
+			
+			.layui-form-label {
+				padding-left: 0;
+				width: 100px;
+			}
+			
+			.layui-input-block {
+				margin-left: 115px;
+			}
+			
+			.layui-elem-quote {
+				font-size: 18px;
+			}
+			
+			.layui-elem-field legend {
+				font-size: 16px;
+			}
+			
+			.layui-upload-img {
+				width: 92px;
+				height: 92px;
+				margin: 0 10px 10px 0;
+			}
+			
+			.Since_inline {
+				display: inline-block;
+				width: auto !important;
+				line-height: 38px;
+			}
+			
+			.layui-elem-quote .layui-form-switch {
+				margin: 0 15px;
+				margin-top: 0;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form" action="" lay-filter="couponeditor">
+					<!--隐藏-->
+					<input type="hidden" name="userNumber" class="layui-input">
+					<!--基本设置-->
+					<blockquote class="layui-elem-quote">
+						基本设置
+					</blockquote>
+					<div class="layui-form-item">
+						<label class="layui-form-label">活动名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="activityName" lay-verify="title" autocomplete="off" placeholder="请输入活动名称" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">赠送优惠券</label>
+						<div class="layui-input-inline">
+							<input type="text" name="couponDistributionName" id="couponsSelect" autocomplete="off" placeholder="请选择优惠券" class="layui-input">
+							<input type="hidden" name="couponDistributionNumber" id="couponsSelect_bh" class="layui-input">
+							<input type="hidden" name="cardVoucherName" id="couponsSelect_lx" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">有效期</label>
+						<div class="layui-input-inline" id="usefullifeDate" style="width:auto;">
+							<div class="layui-input-inline" style="width: 120px;">
+								<input type="text" id="startTime" name="newStartTime" lay-verify="title" placeholder="开始时间" autocomplete="off" class="layui-input usefulDate">
+							</div>
+							<div class="layui-form-mid">-</div>
+							<div class="layui-input-inline" style="width: 120px;">
+								<input type="text" id="endTime" name="newEndTime" lay-verify="title" placeholder="结束时间" autocomplete="off" class="layui-input usefulDate">
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">最大领取数量</label>
+						<div class="layui-input-block">
+							<input type="text" name="receiveNumber" lay-verify="title1" autocomplete="off" placeholder="请输入最多领取次数" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">备注信息</label>
+						<div class="layui-input-block">
+							<textarea name="remarks" placeholder="请输入备注信息" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					<blockquote class="layui-elem-quote">
+						发放用户
+						<input type="checkbox" name="open" lay-skin="switch" lay-filter="Open" lay-text="开|关">
+						<span class="tips_red">选择指定类型的会员发放优惠券</span>
+					</blockquote>
+					<div class="layui-form-item" pane="" id="open_zd" style="display: none;">
+						<div class="layui-form-item">
+							<label class="layui-form-label">发放用户</label>
+							<div class="layui-input-inline widthauto">
+								<!--<input type="radio" name="associator" value="0" title="会员属性" lay-filter="associator">-->
+								<input type="radio" name="associator" value="1" title="自定义" lay-filter="associator">
+							</div>
+						</div>
+						<!--<div id="choose_sx" style="display: none;">
+							<div class="layui-form-item" pane="">
+								<label class="layui-form-label">会员属性</label>
+								<div class="layui-input-block">
+									<input type="radio" name="memberProperties" lay-skin="primary" value="1" title="新用户" lay-filter="userdefined">
+									<input type="radio" name="memberProperties" lay-skin="primary" value="2" title="老用户" lay-filter="userdefined">
+									<input type="radio" name="memberProperties" lay-skin="primary" value="3" title="活跃用户" lay-filter="userdefined">
+									<input type="radio" name="memberProperties" lay-skin="primary" value="4" title="沉寂用户" lay-filter="userdefined">
+								</div>
+							</div>
+						</div>-->
+						<div id="choose_ff" style="display: none;">
+							<label class="layui-form-label">自定义</label>
+							<div class="layui-input-block widthauto" style="margin-bottom: 15px;">
+								<input type="radio" name="userDefined" lay-skin="primary" value="1" title="根据会员组" lay-filter="userdefined">
+								<input type="radio" name="userDefined" lay-skin="primary" value="2" title="根据消费时间" lay-filter="userdefined">
+								<input type="radio" name="userDefined" lay-skin="primary" value="3" title="指定粉丝" lay-filter="userdefined">
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"></label>
+								<div class="layui-input-inline" id="invip" style="display: none;">
+									<input type="text" id="inVip" autocomplete="off" placeholder="请选择指定会员组" class="layui-input">
+									<input type="hidden" name="card" id="inVipType">
+								</div>
+								<div class="layui-input-inline widthauto" id="intime" style="display: none;">
+									<div class="layui-input-inline" style="width: 120px;">
+										<input type="text" id="startTime" name="spendStartTime" placeholder="请选择开始时间" autocomplete="off" class="layui-input usefulDate">
+									</div>
+									<div class="layui-form-mid">-</div>
+									<div class="layui-input-inline" style="width: 120px;">
+										<input type="text" id="endTime" name="spendEndTime" placeholder="请选择结束时间" autocomplete="off" class="layui-input usefulDate">
+									</div>
+								</div>
+								<div class="layui-input-inline" id="inmember" style="display: none;">
+									<input type="text" name="cell" autocomplete="off" placeholder="请输入指定粉丝手机号" class="layui-input">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-layout-admin">
+						<div class="layui-input-block">
+							<div class="layui-footer" style="left: 0;text-align: center;">
+								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			var serverUrl = window.parent.serverUrl
+			var userNumber = window.parent.userNumber
+			var quanData;
+
+			layui.use(['laydate', 'table', 'upload', 'form'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload,
+					laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer;
+				var tableSelect = layui.tableSelect;
+
+				/*---------- 下拉表格选择器 --优惠券 ----------*/
+				tableSelect.render({
+					elem: '#couponsSelect',
+					searchKey: 'couponName',
+					checkedKey: 'couponNumber',
+					searchPlaceholder: '搜索优惠券',
+					table: {
+						url: serverUrl + 'coupon/selectCoupon?type=0',
+						parseData: function(res) { //res 即为原始返回的数据
+							return {
+								"code": res.code, //解析接口状态
+								"msg": res.msg, //解析提示文本
+								"count": res.count, //解析数据长度
+								"data": changeRes1(res.result, res.count), //解析数据列表
+							};
+						},
+						cols: [
+							[{
+								align: 'center',
+								//fixed: 'left',
+								type: 'radio'
+							}, {
+								align: 'center',
+								field: 'couponName',
+								title: '卷名称',
+								sort: true,
+								width: 150
+							}, {
+								align: 'center',
+								field: 'couponMoneya',
+								title: '卷金额(元)/券折扣(折)',
+								sort: true,
+								width: 150
+							}, {
+								align: 'center',
+								field: 'typea',
+								title: '是否可用',
+								width: 80
+							}, , {
+								align: 'center',
+								field: 'cardVoucherName',
+								title: '卷类型',
+								sort: true,
+								width: 80
+							}, {
+								align: 'center',
+								field: 'useTimePeriod',
+								title: '有效期',
+								sort: true,
+								width: 200
+							}]
+						],
+						page: {
+							layout: ['prev', 'page', 'next', 'count', 'skip'],
+						}
+					},
+					done: function(elem, data) {
+						console.log(data.data[0])
+						quanData = data.data[0]
+						console.log(quanData)
+						$('#couponsSelect').val(data.data[0].couponName)
+						$('#couponsSelect_bh').val(data.data[0].couponNumber)
+						$('#couponsSelect_lx').val(data.data[0].cardVoucherName)
+					}
+				});
+
+				/*---------- 下拉表格选择器 --选择会员卡 ----------*/
+				tableSelect.render({
+					elem: '#inVip',
+					searchKey: 'cardName',
+					checkedKey: 'cardName',
+					searchPlaceholder: '搜索优惠券',
+					table: {
+						url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+						parseData: function(res) { //res 即为原始返回的数据
+							return {
+								"code": res.code, //解析接口状态
+								"msg": res.msg, //解析提示文本
+								"count": res.count, //解析数据长度
+								"data": changeRes2(res.result, res.count), //解析数据列表
+							};
+						},
+						cols: [
+							[{
+								align: 'center',
+								type: 'radio'
+							}, {
+								align: 'center',
+								field: 'cardName',
+								title: '会员卡名称',
+								sort: true,
+								width: 150
+							}, {
+								align: 'center',
+								field: 'offsetProportions',
+								title: '抵现比率',
+								width: 100
+							}]
+						],
+						page: {
+							layout: ['prev', 'page', 'next', 'count', 'skip'],
+						}
+					},
+					done: function(elem, data) {
+						$('#inVip').val(data.data[0].cardName)
+						$('#inVipType').val(data.data[0].card)
+						console.log(data.data[0].cardName)
+						console.log(data.data[0].card)
+					}
+				});
+
+				/*---------- 日期范围 ----------*/
+				lay('.usefulDate').each(function() {
+					laydate.render({
+						elem: this,
+						trigger: 'click'
+					});
+				});
+
+				/*---------- 表单初始赋值 ----------*/
+				form.val('couponeditor', {
+					"userNumber": userNumber
+				})
+
+				/*---------- 自定义验证规则 ----------*/
+				form.verify({
+					title: function(value) {
+						if(value.length == "") {
+							return '不能为空！';
+						}
+					},
+					title1: function(value) {
+						if(value == "") {
+							return '领取次数不能为空！'
+						}
+						if(value.length > 3) {
+							return '最多领取次数不能大于999';
+						}
+					},
+					pass: [/(.+){6,12}$/, '密码必须6到12位'],
+					content: function(value) {
+						layedit.sync(editIndex);
+					}
+				});
+
+				/*---------- 监听开关 ----------*/
+				form.on('switch(level)', function(data) { //等级开关
+					layer.tips('等级开关：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+				});
+				form.on('switch(Consumer)', function(data) { //消费优惠开关
+					layer.tips('消费优惠：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#Consumer').show()
+					} else {
+						$('#Consumer').hide()
+					}
+				});
+				form.on('switch(Top_up)', function(data) { //充值优惠开关
+					layer.tips('充值优惠：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#Top_up').show()
+					} else {
+						$('#Top_up').hide()
+					}
+				});
+				form.on('switch(would)', function(data) { //计次开关
+					layer.tips('计次：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#would').show()
+					} else {
+						$('#would').hide()
+					}
+				});
+				form.on('switch(timing)', function(data) { //积分清零开关
+					layer.tips('积分清零：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#timing').show()
+					} else {
+						$('#timing').hide()
+					}
+				});
+				form.on('switch(Open)', function(data) { //发放用户开关
+					layer.tips('自定义发放用户：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#open_zd').show()
+						data.elem.value = "0"
+					} else if(data.elem.checked == false) {
+						data.elem.value = "1"
+						$('#open_zd').hide()
+					}
+				});
+
+				/*---------- 监听单选开关 ----------*/
+				form.on('radio(timing)', function(data) { //性别
+					if(data.value == 1) {
+						$('#timingData').show()
+					} else {
+						$('#timingData').hide()
+					}
+				});
+				form.on('radio(Resetdate)', function(data) { //消费优惠开关
+					if(data.value == 1) {
+						$('#ResetdateData').show()
+					} else {
+						$('#ResetdateData').hide()
+					}
+				});
+				form.on('radio(associator)', function(data) { //根据选择属性
+					if(data.value == 0) {
+						$('#choose_sx').show()
+						$('#choose_ff').hide()
+					} else if(data.value == 1){
+						$('#choose_sx').hide()
+						$('#choose_ff').show()
+					}
+				});
+				form.on('radio(userdefined)', function(data) { //根据自定义发放选择
+					if(data.value == 1) {
+						$('#invip input').get(0).setAttribute("lay-verify", "title")
+						$('#intime input').get(0).removeAttribute("lay-verify", "title")
+						$('#intime input').get(1).removeAttribute("lay-verify", "title")
+						$('#inmember input').get(0).removeAttribute("lay-verify", "phone")
+						$('#invip').show()
+						$('#intime').hide()
+						$('#inmember').hide()
+					} else if(data.value == 2) {
+						$('#invip input').get(0).removeAttribute("lay-verify", "title")
+						$('#intime input').get(0).setAttribute("lay-verify", "title")
+						$('#intime input').get(1).setAttribute("lay-verify", "title")
+						$('#inmember input').get(0).removeAttribute("lay-verify", "phone")
+						$('#invip').hide()
+						$('#intime').show()
+						$('#inmember').hide()
+					} else if(data.value == 3) {
+						$('#invip input').get(0).removeAttribute("lay-verify", "title")
+						$('#intime input').get(0).removeAttribute("lay-verify", "title")
+						$('#intime input').get(1).removeAttribute("lay-verify", "title")
+						$('#inmember input').get(0).setAttribute("lay-verify", "phone")
+						$('#invip').hide()
+						$('#intime').hide()
+						$('#inmember').show()
+					}
+				});
+
+				/*---------- 监听提交 ----------*/
+				form.on('submit(add)', function(data) {
+					if(!data.field.open) {
+						data.field.open = '1'
+					}
+					var addData = JSON.stringify(Object.assign(data.field,quanData))
+					// 发送请求
+					$.ajax({
+						type: "post",
+						url: serverUrl + "coupon/payoutCoupon",
+						async: true,
+						dataType: "json",
+						contentType: "application/json",
+						data: addData,
+						success: function(data) {
+							if(data.code == "0") {
+								var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+								parent.layer.close(index); //再执行关闭
+								parent.layer.msg(data.msg);
+								parent.layui.table.reload('vip_cardList');
+							} else if(data.code == "1") {
+								layer.msg(data.msg);
+							}
+						}
+					});
+					return false;
+				});
+
+			});
+
+			function changeRes1(res, count) {
+				var res = res
+				for(var i = 0; i < count; i++) {
+
+				}
+				return res
+			}
+
+			function changeRes2(res, count) {
+				var res = res
+				for(var i = 0; i < count; i++) {
+
+				}
+				return res
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商户添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/xiaoshouzhushou.css">
+		<link rel="stylesheet" type="text/css" href="css/feedback.css" />
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">注册个体商户</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<!--个人-->
+					<div class="mui-input-row">
+						<label>商户全称</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入商户全称">
+					</div>
+					<div class="mui-input-row">
+						<label>商户简称</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入商户简称">
+					</div>
+					<div class="mui-input-row">
+						<label>营业执照号</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入营业执照号">
+					</div>
+					<div class="mui-input-row">
+						<label>法人姓名</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入法人姓名">
+					</div>
+					<div class="mui-input-row">
+						<label>法人身份证号</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入法人身份证号">
+					</div>
+					<div class="mui-input-row">
+						<label>法人手机号</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入法人手机">
+					</div>
+					<div class="mui-input-row">
+						<label>法人邮箱</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入法人邮箱">
+					</div>
+					<div class="mui-input-row" id='showhangyePicker'>
+						<label>商家经营类目</label>
+						<input type="text" id='hangyeResult' class="mui-input-clear" placeholder="请选择商家经营类目">
+					</div>
+					<div class="mui-input-row" id='showCityPicker'>
+						<label>商户所在地</label>
+						<input type="text" id='cityResult' class="mui-input-clear" placeholder="请选择商户所在地">
+					</div>
+					<div class="mui-input-row">
+						<label>商户所在详细地址</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入详细地址">
+					</div>
+					<div class="mui-input-row">
+						<label>商户经营范围</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入经营范围">
+					</div>
+					<div class="mui-input-row">
+						<label>结算银行卡号</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入结算银行卡号">
+					</div>
+					<div class="mui-input-row" id='showheadbankPicker'>
+						<label>开户总行</label>
+						<input type="text" id='headbankResult' class="mui-input-clear" placeholder="请选择开户总行">
+					</div>
+					<div class="mui-input-row" id='showopenbankPicker'>
+						<label>开户总行地区</label>
+						<input type="text" id='openbankResult' class="mui-input-clear" placeholder="请选择开户总行地区">
+					</div>
+					<div class="mui-input-row" id='showbranchPicker'>
+						<label>开户支行</label>
+						<input type="text" id='branchResult' class="mui-input-clear" placeholder="请选择开户支行">
+					</div>
+					<div class="mui-input-row">
+						<label>结算类型</label>
+						<div class="customradio">
+							<div class="mui-input-row mui-radio mui-right">
+								<label class="jiesuanlx">T1结算</label>
+								<input id="Radio1" name="jiesuanzh" type="radio" value="1" checked>
+							</div>
+							<div class="mui-input-row mui-radio mui-right">
+								<label class="jiesuanlx">D1结算</label>
+								<input id="Radio2" name="jiesuanzh" type="radio" value="2">
+							</div>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">法人身份证正面</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png" />
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">法人身份证反面</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png" />
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">结算银行卡</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png" />
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">手持身份证</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png" />
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">手持银行卡</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png" />
+						</div>
+					</div>
+					<!--个人-->
+
+				</form>
+				<a href="sh-add-2.html" class="mui-btn mui-btn-primary nextstep" id="">提交信息</a>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.poppicker.js"></script>
+	<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangye.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/headbank.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/openbank-city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				/**
+				 * 获取对象属性的值
+				 * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+				 * @param {Object} obj 对象
+				 * @param {String} param 属性名
+				 */
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//-----------------------------------------
+				//地区级联示例
+				var cityPicker = new $.PopPicker({
+					layer: 3
+				});
+				cityPicker.setData(cityData3);
+				var showCityPickerButton = doc.getElementById('showCityPicker');
+				var cityResult = doc.getElementById('cityResult');
+				showCityPickerButton.addEventListener('tap', function(event) {
+					cityPicker.show(function(items) {
+						cityResult.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+				//行业联示例
+				var hangyePicker = new $.PopPicker({
+					layer: 3
+				});
+				hangyePicker.setData(hangyeData3);
+				var showhangyePickerButton = doc.getElementById('showhangyePicker');
+				var hangyeResult = doc.getElementById('hangyeResult');
+				showhangyePickerButton.addEventListener('tap', function(event) {
+					hangyePicker.show(function(items) {
+						hangyeResult.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+				//总行联示例
+				var headbankPicker = new $.PopPicker({
+					layer: 1
+				});
+				headbankPicker.setData(headbankData);
+				var showheadbankPickerButton = doc.getElementById('showheadbankPicker');
+				var headbankResult = doc.getElementById('headbankResult');
+				showheadbankPickerButton.addEventListener('tap', function(event) {
+					headbankPicker.show(function(items) {
+						headbankResult.value = items[0].text;
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+				//支行联示例
+				var branchPicker = new $.PopPicker({
+					layer: 1
+				});
+				branchPicker.setData(headbankData);
+				var showbranchPickerButton = doc.getElementById('showbranchPicker');
+				var branchResult = doc.getElementById('branchResult');
+				showbranchPickerButton.addEventListener('tap', function(event) {
+					branchPicker.show(function(items) {
+						branchResult.value = items[0].text;
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+				//总行地区级联示例
+				var openbankPicker = new $.PopPicker({
+					layer: 2
+				});
+				openbankPicker.setData(openbankcityData);
+				var showopenbankPickerButton = doc.getElementById('showopenbankPicker');
+				var openbankResult = doc.getElementById('openbankResult');
+				showopenbankPickerButton.addEventListener('tap', function(event) {
+					openbankPicker.show(function(items) {
+						openbankResult.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text');
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+			});
+		})(mui, document);
+	</script>
+
+</html>

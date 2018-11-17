@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <title>向商户付款</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+    <link rel="icon" href="data:image/ico;base64,aWNv" />
+    <link rel="stylesheet" type="text/css" href="https://r.wowoshijie.com/newwap/css/keyboard180607.css" />
+  </head>
+  <body style="margin: 0px;">
+  	<input id="shopId" hidden="hidden" value="8313342"></input>
+  	<input id="operId" hidden="hidden" value="398921"></input>
+  	<input id="cookieName" hidden="hidden" value="authCookiePro"></input>
+  	<input id="cookieDomain" hidden="hidden" value="55tuan.com"></input>
+  	<input id="isCouponAc" hidden="hidden" value="N"></input>
+  	<input id="shopnameh" hidden="hidden" value="爱来购便利超市"></input>
+  	<input id="payurl" hidden="hidden" value="h5payagent.wowoshijie.com"></input>
+  	<input id="locurl" hidden="hidden" value="https://i.55tuan.com"></input>
+  	<input id="h5url" hidden="hidden" value="https://i.55tuan.com"></input>
+    <div class="m_frame">
+      <div class="m_logo_frame">
+        <div class="m_logo" style="font-size: 28px; color: #ffffff; -webkit-box-pack: center;-webkit-box-align: center; background: #ff5601;">店</div></div>
+      <div class="m_title_frame">
+        <div class="m_title_column">
+          <div class="m_title_row_l"><span id="shopname">爱来购便利超市</span></div>
+          <div class="m_title_row_s">
+            <span id="sname"></span>
+            <span id="remark" style="color: #ff5601;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="number_screen" class="row">
+      <div class="sh_input">
+        <div class="sh_input_title">金额</div>
+        <div class="flex_1" style=""></div>
+        <div class="flex_1" style=""></div>
+        <div class="flex_1" style="">
+          <div id="f_yuan" style=""></div>
+          <div id="fee" value="" name="fee"></div>
+        </div>
+        <div id="f_cur" class="flash" style="display: -webkit-box;"></div>
+      </div>
+    </div>
+    <div id="zfbHbDiv" style="margin-top:5px;display:block;text-align:center;height:40px;font-size:17px;color:#ff5601;" onclick="jumpToZfbDetail()"><u>点击这里领取每日红包</u></div>
+    <div id="nofan" class="row" style="display:none;">
+		<div class="sh_input">	
+			<div class="sh_input_title">不参与返现金额</div>
+			<div class="flex_1" style=""></div>
+			<div class="flex_1" style=""></div>
+			<div class="flex_1" style=""></div>
+			<div class="flex_1" style=""></div>
+			<div class="flex_1" style="">
+				<div id="rn_yuan" style=""></div>
+				<div id="rfdNot" value="" name="rfdNot"></div>
+			</div>
+			<div id="rn_cur" class="flash" style="display:none;"></div>
+		</div>
+	</div>
+    <div class="row" style="display: none;">
+      <div class="flex_1">
+			<div><input type="checkbox" name="voucher"></input></div>
+			<div>代金券</div>
+	  </div>
+      <div class="right_cell">
+      		<yuan id="voucher" style="display:none;"></yuan>
+      		<span id="voucherN">未选择</span><span id="voucherAll">查看全部</span>
+      </div>
+    </div>
+    <div class="row" style="display: none;">
+      <div class="flex_1">
+        <div>
+          <input type="checkbox" name="refund"></div>
+        <div>返现活动</div></div>
+      <div class="right_cell">当前返现
+        <per id="rfdPer">0</per></div>
+    </div>
+    <div class="row" style="display: none;">
+      <div class="flex_1"></div>
+      <div class="right_cell">本次可获得返现
+        <yuan id="rfdVal">0.00</yuan></div>
+    </div>
+    <div class="row" style="display: none;">
+      <div class="flex_1">
+        <div>
+          <input type="checkbox" name="rfdTot"></div>
+        <div>可用返现</div></div>
+      <div class="right_cell">
+        <yuan id="rfdTot">0.00</yuan></div>
+    </div>
+    <div class="p_total_frame" style="display: none;">
+      <div class="p_total" style="">实付金额
+        <yuan id="paid">0.00</yuan></div>
+    </div>
+    <div id="keyboard">
+      <div class="support">由
+        <label class="trademark">窝窝营销™</label>提供服务支持</div>
+      <div>
+        <div class="ic_keyboard_grid left">
+          <div class="ic_keyboard_row t1">
+            <div id="NUM1" class="ic_keyboard_cell t1" value="1">1</div>
+            <div id="NUM2" class="ic_keyboard_cell t1" value="2">2</div>
+            <div id="NUM3" class="ic_keyboard_cell t2" value="3">3</div></div>
+          <div class="ic_keyboard_row t1">
+            <div id="NUM4" class="ic_keyboard_cell t1" value="4">4</div>
+            <div id="NUM5" class="ic_keyboard_cell t1" value="5">5</div>
+            <div id="NUM6" class="ic_keyboard_cell t2" value="6">6</div></div>
+          <div class="ic_keyboard_row t1">
+            <div id="NUM7" class="ic_keyboard_cell t1" value="7">7</div>
+            <div id="NUM8" class="ic_keyboard_cell t1" value="8">8</div>
+            <div id="NUM9" class="ic_keyboard_cell t2" value="9">9</div></div>
+          <div class="ic_keyboard_row">
+            <div id="NUM0" class="ic_keyboard_cell t3" value="0">0</div>
+            <div id="DOT" class="ic_keyboard_cell t2" value=".">.</div></div>
+        </div>
+        <div class="ic_keyboard_grid right">
+          <div class="ic_keyboard_row t1">
+            <div id="DEL" class="ic_keyboard_cell" value="del">
+              <div class="ic_delete_icon a"></div>
+              <div class="ic_delete_icon s"></div>
+              <div class="ic_delete_icon x">X</div></div>
+          </div>
+          <div class="ic_keyboard_row">
+            <div id="OK" class="ic_keyboard_cell t4" value="ok" style="background-color: rgb(255, 86, 1);">支付</div></div>
+        </div>
+      </div>
+    </div>
+    <script src="https://r.wowoshijie.com/newwap/js/payScript180706.js?v=20180607"></script>
+    <script type="text/javascript">
+	  var rfdPer = 0;
+      var rfdTot = 0;
+      var paid = 0;
+      var rfdVal = 0;
+      var voucher = 0;
+      var voucherChecked = false;
+      var refundChecked = false;
+      var useRefund = false;
+      var fee = 0;
+      var rfdNot = 0;
+      var ticketShow = false;
+      var tickets = new Array();
+      var ASYNC=false;
+      var buttonImgs;
+      var appid = '';
+      var oid = '';
+      var uid = '';
+      var tradeid = '';
+      var payurl = document.getElementById('payurl').value;
+      var locurl = document.getElementById('locurl').value;
+      var h5url = document.getElementById('h5url').value;
+	  var shopName = document.getElementById('shopnameh').value;
+      var shopId= document.getElementById('shopId').value;
+      var operatorId= document.getElementById('operId').value;
+	  var cookieName = document.getElementById('cookieName').value;
+	  var cookieDomain = document.getElementById('cookieDomain').value;
+	  var isCouponAc = document.getElementById('isCouponAc').value;
+	  var authCode = '';
+	  var isUseTk = 'N';
+	  var oDate = new Date();
+	  function ready(callback) {
+	    if (window.AlipayJSBridge) {
+	      callback && callback();
+	    } else {
+	      document.addEventListener('AlipayJSBridgeReady', callback, false);
+	    }
+	  };
+	  var zfbDH = oDate.getFullYear()+''+oDate.getMonth()+''+oDate.getDate();
+      var objstr = getCookie(cookieName);
+      if (objstr == '' || objstr == null){
+//  	  alert("请重新扫码");
+      }else{
+    	  var Request = new Object();
+    	  try{
+    		  Request = GetRequest();
+	          tradeid = Request['tradeid'];
+	          authCode = Request['auth_code'];
+	          var obj = {};
+	          try{
+	        	  obj = eval('(' + objstr + ')');
+	          }catch(err){
+	        	  var arr2,reg2=new RegExp('(^| )'+cookieName+'=([^;]*)(;|$)');
+	        	  if(arr2=document.cookie.match(reg2)){
+	        		  objstr = decodeURIComponent(arr2[2]);
+	        		  obj = JSON.parse(objstr);
+	        	  }
+	         }
+	          oid = obj.oid;
+	          uid = obj.uid;
+	          appid = obj.appid;
+	          if (oid == null || typeof(oid) == 'undefined' || oid == '' || oid == 'null') {
+	      		var url = '/scanshopzfbajax/getZfbAliUserId';
+	      		var postData = {'zfbAuthCode':authCode,'tradeid':tradeid};
+	      		payajax({
+	    			url: url,
+	    			type: 'post',
+	    			data: postData,
+	    			dataType:'text',
+	    			success: function (aliopid) {
+	    				oid = aliopid.split('#')[0];
+	    				uid = aliopid.split('#')[1];
+	    				obj.oid = aliopid.split('#')[0];
+	    				obj.uid = aliopid.split('#')[1];
+	    				setCookie(cookieName,JSON.stringify(obj),cookieDomain,30);
+	    				getUserCoupon();
+	    			},
+	    			error:function(status){
+			    		alert("请重新扫码");
+			    	}
+	    		  });
+	          }else{
+	        	  getUserCoupon();
+	          }
+	          ready(function() {
+	        	  AlipayJSBridge.call('hideOptionMenu');
+	          });
+	          var hbV = getCookie(zfbDH);
+	          if(hbV){
+	        	  document.getElementById('zfbHbDiv').style.display="none";
+	          }
+		   }catch(err){
+			   var error = {};
+			   error.errName=err.name;
+			   error.errMessage=err.message;
+			   error.errStack=err.stack;
+			   error.req=JSON.stringify(Request);
+			   error.cookiestr=objstr;
+			   var url = '/error/sendjs';
+	      	   var postData = {'errorMsg':JSON.stringify(error),'v':(new Date()).valueOf()};
+	      	   payajax({
+	    			url: url,
+	    			type: 'post',
+	    			data: postData,
+	    			dataType:'text',
+	    			success: function (aliopid) {
+	    			},
+	    			error:function(status){
+			    	}
+	    	   });
+		   }
+      }
+      function crossDomainCallback(e) {
+        del();
+        if (e.Succeed) {
+          if (e.Code == 2) {
+        	var ticketsSum=0;
+  			for(var i=0;i<tickets.length;i++){
+  				if(tickets[i].checked){
+  					isUseTk = 'Y';
+  					ticketsSum +=(tickets[i].value);
+  				}
+  			}
+  			if(ticketsSum == 0){
+  				isUseTk = 'N';
+  			}
+            var surl = '/PhonePay/PaySuccess/' + e.Data.OrderId + '?shopCode=' + shopId + '&v=' + e.Data.cmoney + '&param=escape('+shopName+')&code=' + tradeid + '&isCouponAc=' + isCouponAc + '&ticketsSum=' + ticketsSum + '&isUseTk=' + isUseTk +'&oid='+ oid + '&version=2.1';
+            location.href = surl;
+          } else {
+        	var jsonArr = e.Data.PostData.split('=');
+  			showALiPay(jsonArr[1], e.Data.OrderId, e.Data.sid, e.Data.cmoney);
+          }
+        } else {
+          submitted = false;
+          alert(e.Message);
+          ispaid = true;
+          submitToWarm();
+        }
+      };
+      function createOrder(consumeMoney, outRebate, voucherId, useRebate, oBtn) {
+    	   del();
+    	   var vs=[];
+		   for(var i=0;i<tickets.length;i++){
+				if(tickets[i].checked){
+					isUseTk = 'Y';
+					vs.push(tickets[i].id);
+				}
+			}
+		   	if(vs.length==0){
+				isUseTk = 'N';
+			}
+			var time = '' + new Date().getTime();
+			time = time.replace('.', '');
+			var url = 'https://'+payurl+'/SHPay/ZFBAliPayGet?tradeid=' + tradeid + '&shopId=' + shopId + '&consumeMoney=' + consumeMoney + '&operatorId=' + operatorId + '&operatorName=&uid=' + uid + '&uname=&aid=' + oid + '&time=' + time + '&code=' + authCode + '&voucherIds=' + vs +'&callback=crossDomainCallback';
+			send(url);
+		};
+		function showALiPay(tradeNo, orderId, shopId, consumeMoney) {
+		    AlipayJSBridge.call('tradePay', { tradeNO: tradeNo }, function (result) {
+		        if (result.resultCode == 9000) {
+		        	var ticketsSum=0;
+		  			for(var i=0;i<tickets.length;i++){
+		  				if(tickets[i].checked){
+		  					isUseTk = 'Y';
+		  					ticketsSum +=(tickets[i].value);
+		  				}
+		  			}
+		  			if(ticketsSum == 0){
+						isUseTk = 'N';
+					}
+		            var alisuccessurl = '/PhonePay/PaySuccess/' + orderId + '?shopCode=' + shopId + '&v=' + consumeMoney + '&param='+shopName+'&code=' + tradeid + '&isCouponAc=' + isCouponAc + '&ticketsSum=' + ticketsSum + '&isUseTk=' + isUseTk +'&oid='+ oid + '&version=2.1';
+		 			location.href=alisuccessurl;       
+		 		}else if (result.resultCode == 6001) {
+		            submitted = true;
+		            ispaid = true; 
+		            document.getElementById('OK').style.backgroundColor = '#ff5601';
+		            if('Y' == isUseTk){
+		        		alert("\t提示\t\n您已取消支付,已勾选代金券暂不可用(24小时后恢复).详情请咨询商家.");
+		            	getUserCoupon();
+		        	}
+		        }
+		        else {
+		            alert('系统繁忙，请您重新扫码支付：@ViewBag.tradeid');
+		            submitted = false;
+		            ispaid = true;
+		            submitToWarm();
+		        }
+		    });
+		};
+		function getUserCoupon(){
+	    	  if(isCouponAc == 'Y'){
+	      		var couponUrl ='/coupon/getAllcpForPay';
+	      		var couponData = {'tradeid':tradeid , 'shopId': shopId,'userId':uid};
+	    	        payajax({
+	    		    	url: couponUrl,
+	    		    	data: couponData,
+	    		    	type: 'get',
+	    		    	dataType:'text',
+	    		    	success: function (data) {
+	   		    			tickets=JSON.parse(data);
+	   		    			ASYNC=true;
+	   		    			initASYNC();
+	    		    	},
+	    		    	error:function(status){
+	    		    	}
+	    		      });
+	      	  }
+		};
+		function jumpToZfbDetail(){
+			setCookie(zfbDH,zfbDH,cookieDomain,30);
+			window.location.href=('https://qr.alipay.com/c1x05759j75scilvkrwpt42');
+		}
+    </script>
+    <div id="sendrequest"></div>
+    <script src="https://r.wowoshijie.com/newwap/js/keyboard180706.js?v=1.3"></script>
+    <script src="https://res.wowoshijie.com/newwap/shaliActivity3.js"></script>
+  </body>
+</html>

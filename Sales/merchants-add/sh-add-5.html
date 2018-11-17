@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商户添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/xiaoshouzhushou.css">
+		<link rel="stylesheet" type="text/css" href="css/feedback.css" />
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">支付通道与费率</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row" id='showUserPicker'>
+						<label>支付宝</label>
+						<input type="text" id='userResult' class="mui-input-clear" placeholder="请选择费率">
+					</div>
+					<div class="mui-input-row" id='showUserPicker1'>
+						<label>微信</label>
+						<input type="text" id='userResult1' class="mui-input-clear" placeholder="请选择费率">
+					</div>
+					<div class="mui-input-row" id='showUserPicker2'>
+						<label>银联卡</label>
+						<input type="text" id='userResult2' class="mui-input-clear" placeholder="请选择费率">
+					</div>
+				</form>
+				<a class="mui-btn mui-btn-primary nextstep" id="">保存</a>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.poppicker.js"></script>
+	<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				/**
+				 * 获取对象属性的值
+				 * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+				 * @param {Object} obj 对象
+				 * @param {String} param 属性名
+				 */
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//支付宝对应费率
+				var userPicker = new $.PopPicker();
+				userPicker.setData([{
+					value: '0.00%',
+					text: '0.00%'
+				}, {
+					value: '0.35%',
+					text: '0.35%'
+				}, {
+					value: '0.38%',
+					text: '0.38%'
+				}, {
+					value: '0.45%',
+					text: '0.45%'
+				}, {
+					value: '0.48%',
+					text: '0.48%'
+				}, {
+					value: '0.50%',
+					text: '0.50%'
+				}, {
+					value: '0.52%',
+					text: '0.52%'
+				}, {
+					value: '0.55%',
+					text: '0.55%'
+				}, {
+					value: '0.60%',
+					text: '0.60%'
+				}]);
+				var showUserPickerButton = doc.getElementById('showUserPicker');
+				var userResult = doc.getElementById('userResult');
+				showUserPickerButton.addEventListener('tap', function(event) {
+					userPicker.show(function(items) {
+//						userResult.value = JSON.stringify(items[0]);
+						userResult.value = "" + _getParam(items[0], 'text');
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+				//微信对应费率
+				var userPicker1 = new $.PopPicker();
+				userPicker1.setData([{
+					value: '0.00%',
+					text: '0.00%'
+				}, {
+					value: '0.35%',
+					text: '0.35%'
+				}, {
+					value: '0.38%',
+					text: '0.38%'
+				}, {
+					value: '0.45%',
+					text: '0.45%'
+				}, {
+					value: '0.48%',
+					text: '0.48%'
+				}, {
+					value: '0.50%',
+					text: '0.50%'
+				}, {
+					value: '0.52%',
+					text: '0.52%'
+				}, {
+					value: '0.55%',
+					text: '0.55%'
+				}, {
+					value: '0.60%',
+					text: '0.60%'
+				}]);
+				var showUserPickerButton1 = doc.getElementById('showUserPicker1');
+				var userResult1 = doc.getElementById('userResult1');
+				showUserPickerButton1.addEventListener('tap', function(event) {
+					userPicker1.show(function(items) {
+						userResult1.value = "" + _getParam(items[0], 'text');
+					});
+				}, false);
+				//-----------------------------------------
+				//银联卡对应费率
+				var userPicker2 = new $.PopPicker();
+				userPicker2.setData([{
+					value: '0.00%',
+					text: '0.00%'
+				}, {
+					value: '0.35%',
+					text: '0.35%'
+				}, {
+					value: '0.38%',
+					text: '0.38%'
+				}, {
+					value: '0.45%',
+					text: '0.45%'
+				}, {
+					value: '0.48%',
+					text: '0.48%'
+				}, {
+					value: '0.50%',
+					text: '0.50%'
+				}, {
+					value: '0.52%',
+					text: '0.52%'
+				}, {
+					value: '0.55%',
+					text: '0.55%'
+				}, {
+					value: '0.60%',
+					text: '0.60%'
+				}]);
+				var showUserPickerButton2 = doc.getElementById('showUserPicker2');
+				var userResult2 = doc.getElementById('userResult2');
+				showUserPickerButton2.addEventListener('tap', function(event) {
+					userPicker2.show(function(items) {
+						userResult2.value = "" + _getParam(items[0], 'text');
+					});
+				}, false);
+				//-----------------------------------------
+			});
+		})(mui, document);
+	</script>
+
+</html>

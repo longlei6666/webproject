@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>鸿小搜管理中心</title>
+
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<link rel="stylesheet" href="./css/style.css">
+	</head>
+	<style type="text/css">
+		.layui-body {
+			overflow-y: scroll;
+		}
+	</style>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb"> <a href="">收银</a> <a> <cite>设备管理</cite></a>
+		</span>
+			<a class="layui-btn layui-btn-small" style="line-height: 1.6em; margin-top: 3px; float: right" href="javascript:location.replace(location.href);" title="刷新"> <i class="layui-icon" style="line-height: 30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<xblock>
+				<button class="layui-btn" onclick="x_admin_show('添加设备','./sy-shebeiadd.html',950,500)">
+					<i class="layui-icon"></i>添加设备
+				</button>
+			</xblock>
+			<table class="layui-table">
+		        <thead>
+		          <tr>
+		            <th>终端号</th>
+		            <th>所属门店</th>
+		            <th>终端类型</th>
+		            <th>时间</th>
+		            <th>是否开通</th>
+		            <th>操作</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		          <tr>
+		            <td>2017009171822298053</td>
+		            <td>唐山煤医道店</td>
+		            <td>PC收银机</td>
+		            <td>2017-08-17 18:22</td>
+		            <td>
+		            	<form class="layui-form" action="">
+		            		<input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="开|关">
+		            	</form>
+		            </td>
+		            <td class="td-manage">
+		              <a title="查看" class="layui-btn layui-btn-xs"  onclick="x_admin_show('绑定门店','order-view.html')" href="javascript:;">
+		                <i class="layui-icon">绑定门店</i>
+		              </a>
+		            </td>
+		          </tr>
+		          <tr>
+		            <td>2017009171822298053</td>
+		            <td>唐山煤医道店</td>
+		            <td>台卡</td>
+		            <td>2017-08-17 18:22</td>
+		            <td>
+		            	<form class="layui-form" action="">
+		            		<input type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="开|关">
+		            	</form>
+		            </td>
+		            <td class="td-manage">
+		              <a title="查看" class="layui-btn layui-btn-xs" onclick="x_admin_show('绑定门店','order-view.html')" href="javascript:;">
+		                <i class="layui-icon">绑定门店</i>
+		              </a>
+		            </td>
+		          </tr>
+		          <tr>
+		            <td>2017009171822298053</td>
+		            <td>唐山煤医道店</td>
+		            <td>智能POS机</td>
+		            <td>2017-08-17 18:22</td>
+		            <td>
+		            	<form class="layui-form" action="">
+		            		<input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="开|关">
+		            	</form>
+		            </td>
+		            <td class="td-manage">
+		              <a title="查看" class="layui-btn layui-btn-xs" onclick="x_admin_show('绑定门店','order-view.html')" href="javascript:;">
+		                <i class="layui-icon">绑定门店</i>
+		              </a>
+		            </td>
+		          </tr>
+		        </tbody>
+		      </table>
+		      	<script type="text/html" id="switchTpl">
+				  <input type="checkbox" name="sex" value="{{d.id}}" lay-skin="switch" lay-text="女|男" lay-filter="sexDemo">
+				</script>
+
+			<table class="layui-hide" id="LAY_table_bill" lay-filter="bill"></table>
+		</div>
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>
+		</script>
+		<script type="text/javascript">
+			$("input").focus(function() {
+				$(this).parent().children(".layui-input-clear").show();
+			});
+			$("input").blur(function() {
+				if($(this).val() == '') {
+					$(this).parent().children(".layui-input-clear").hide();
+				}
+			});
+			$(".layui-input-clear").click(function() {
+				$(this).parent().find('input').val('');
+				$(this).hide();
+			});
+		</script>
+		
+		<script>
+			layui.use(['form', 'layedit'], function(){
+			  var form = layui.form
+			  ,layer = layui.layer;
+			  
+			  //监听指定开关
+			  form.on('switch(switchTest)', function(data){
+			    layer.msg((this.checked ? '设备已开启' : '设备已关闭'),{time:1000});
+//			    layer.msg((this.checked ? '设备已开启' : '设备已关闭'),{icon: 2,time:1000});
+//			    layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+			  });
+			  
+			});
+			</script>		
+
+		<script>
+			var beginDate = new Date();
+			
+			if(beginDate.getMonth() == 1) {
+				beginDate.setYear(beginDate.getYear() - 1);
+				beginDate.setMonth(12);
+			} else {
+				beginDate.setMonth(beginDate.getMonth() - 1);
+			}
+
+			var endDate = new Date();
+
+			// 选择日期插件  
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				laydate.render({
+					elem: '#startTime' //指定元素
+						,
+					type: 'datetime',
+					value: beginDate
+				});
+				laydate.render({
+					elem: '#endTime',
+					type: 'datetime',
+					value: endDate
+				});
+			});
+
+			layui.use('table', function() {
+
+				var table = layui.table
+  				,form = layui.form;
+  
+				  //监听指定开关
+				  form.on('switch(switchTest)', function(data){
+				    layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
+				      offset: '6px'
+				    });
+				    layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+				  });
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_bill',
+					url: '${pageContext.request.contextPath }/Bill/getBillList',
+					method: "post",
+					height: 'full-195',
+					page: true,
+					id: 'billlist',
+					cols: [
+						[{
+							field: 'dingdanhao',
+							title: '订单号',
+							align: 'center'
+						}, {
+							field: 'shopname',
+							title: '门店',
+							sort: true,
+							align: 'center'
+						}, {
+							field: 'Name',
+							title: '营业员',
+							align: 'center'
+						}, {
+							field: 'jiaoyijine',
+							title: '应收款',
+							align: 'center'
+						}, {
+							field:'sex',
+							title: '是否开通',
+							templet: '#switchTpl',
+							align: 'center'
+						} {
+							field: 'operation',
+							title: '操作',
+							toolbar: "#tool",
+							align: 'center'
+						}]
+					]
+				});
+  
+				  //监听性别操作
+				  form.on('switch(sexDemo)', function(obj){
+				    layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+				  });
+
+				//	{
+				//	field: 'shopfeilv',
+				//	title: '手续费费率'
+				//	},
+
+				// 根據條件重载表格
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							// 获取上面查询框的值
+							var Assistant = $('#Assistant');
+							var shopName = $('#shopName');
+							var payment = $('#payment');
+							var product = $('#product');
+							var startTime = $('#startTime');
+							var endTime = $('#endTime');
+							var orderStatus = $('#orderStatus');
+							var orderCode = $('#orderCode');
+
+							//执行重载
+							table.reload('billlist', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									Assistant: Assistant.val(),
+									payment: payment.val(),
+									product: product.val(),
+									startTime: startTime.val(),
+									endTime: endTime.val(),
+									orderStatus: orderStatus.val(),
+									shopName: shopName.val(),
+									orderCode: orderCode.val()
+								}
+							});
+						}
+					};
+
+				//监听工具条
+				table.on('tool(bill)', function(obj) {
+					var data = obj.data;
+
+					if(obj.event === 'detail') {
+						// 跳转流水详情页面
+						layer.open({
+							type: 2,
+							title: '流水详情',
+							area: ['400px', '400px'], //宽高
+							content: '${pageContext.request.contextPath }/Bill/getBillDetailsPage?orderCode=' + data.dingdanhao
+						});
+					}
+				});
+
+				$('.demoTable .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+			});
+		</script>
+	</body>
+
+</html>

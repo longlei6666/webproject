@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<link rel="stylesheet" href="./css/cp_list.css">
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style type="text/css">
+			.x-body {
+				padding-bottom: 0;
+				padding-top: 0;
+			}
+			
+			.layui-table-header {
+				display: none;
+			}
+			
+			.layui-table-click {
+				background: #5FB878;
+				color: #fff;
+			}
+			
+			.layui-table-click:hover {
+				background: #5FB878!important;
+				color: #fff;
+			}
+			
+			.table_k {
+				margin-top: 10px;
+				height: 400px;
+				overflow: auto;
+			}
+			
+			.table_k table {
+				margin: 0;
+				border-bottom: none;
+				table-layout: fixed;
+			}
+			
+			.table_k table tr {
+				height: 38px;
+				cursor: pointer;
+			}
+			
+			.layui-table tbody tr.trclick {
+				background: #5FB878;
+				color: #fff;
+				border-color: #5FB878;
+			}
+			
+			.layui-table tbody tr.trclick td {
+				border-color: #5FB878;
+				color: #fff;
+			}
+			
+			.layui-table tbody tr:hover {
+				background: #5FB878;
+				color: #fff;
+			}
+			
+			.layui-table tbody tr:hover td {
+				border-color: #5FB878;
+				color: #fff;
+			}
+			
+			.table_k table tr td {
+				/*box-sizing: border-box;*/
+				transition: all 0.3s;
+				color: #666;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+			
+			.table_k table tr td:nth-child(1) {
+				width: 43%;
+				border-right: none;
+				padding-right: 0;
+			}
+			
+			.table_k table tr td:nth-child(2) {
+				width: 10%;
+				text-align: center;
+				padding: 0;
+				border-left: none;
+				border-right: none;
+			}
+			
+			.table_k table tr td:nth-child(3) {
+				border-left: none;
+				padding-left: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+		        <a href="">首页</a>
+		        <a href="">第三方管理</a>
+		        <a><cite>外卖餐品关联</cite></a>
+		      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+					<li class="layui-this">美团</li>
+					<li>饿了么</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item wmcpk layui-show">
+						<div class="layui-row cp_list">
+							<div class="layui-col-md5 layui-col-sm5 layui-col-xs5">
+								<div class="cp_list_tit">
+									<p class="pull_l">华莱士餐品绑定</p>
+									<p class="pull_r"><span>8</span> 份 / <span>61</span> 份</p>
+								</div>
+								<div class="cp_list_list">
+									<table border="1" id="table1" class="layui-table" style="">
+										<tbody>
+											<tr>
+												<td class="td1width">jquery 无刷新翻页</td>
+												<td class="td2width"><i class="layui-icon"></i></td>
+												<td class="td3width">jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="layui-col-md2 layui-col-sm2 layui-col-xs2">
+								<button class="layui-btn">切换本地餐品</button>
+								<button class="layui-btn">绑定</button>
+								<button class="layui-btn layui-btn-danger">解除绑定</button>
+							</div>
+							<div class="layui-col-md5 layui-col-sm5 layui-col-xs5">
+								<div class="cp_list_tit">
+									<p class="pull_l">未匹配美团餐品绑定</p>
+									<p class="pull_r"><span>96</span> 份</p>
+								</div>
+								<div class="cp_list_list">
+									<table border="1" id="table2" class="layui-table" style="">
+										<tbody>
+											<tr>
+												<td class="td1width">jquery 无刷新翻页</td>
+												<td class="td2width"><i class="layui-icon"></i></td>
+												<td class="td3width">jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="layui-tab-item wmcpk">
+						<div class="layui-row cp_list">
+							<div class="layui-col-md5 layui-col-sm5 layui-col-xs5">
+								<div class="cp_list_tit">
+									<p class="pull_l">华莱士餐品绑定</p>
+									<p class="pull_r"><span>8</span> 份 / <span>61</span> 份</p>
+								</div>
+								<div class="cp_list_list">
+									<table border="1" id="table3" class="layui-table" style="">
+										<tbody>
+											<tr>
+												<td class="td1width">jquery 无刷新翻页</td>
+												<td class="td2width"><i class="layui-icon"></i></td>
+												<td class="td3width">jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="layui-col-md2 layui-col-sm2 layui-col-xs2">
+								<button class="layui-btn">切换本地餐品</button>
+								<button class="layui-btn">绑定</button>
+								<button class="layui-btn layui-btn-danger">解除绑定</button>
+							</div>
+							<div class="layui-col-md5 layui-col-sm5 layui-col-xs5">
+								<div class="cp_list_tit">
+									<p class="pull_l">未匹配饿了么餐品绑定</p>
+									<p class="pull_r"><span>96</span> 份</p>
+								</div>
+								<div class="cp_list_list">
+									<table border="1" id="table4" class="layui-table" style="">
+										<tbody>
+											<tr>
+												<td class="td1width">jquery 无刷新翻页</td>
+												<td class="td2width"><i class="layui-icon"></i></td>
+												<td class="td3width">jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jquery 无刷新翻页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页
+											</tr>
+											<tr>
+												<td>jquery表格可编辑修改表格里面的值,点击td变...</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻页</td>
+											</tr>
+											<tr>
+												<td>jQuery+Ajax+PHP+Mysql实现分页</td>
+												<td><i class="layui-icon"></i></td>
+												<td>jquery 无刷新翻</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--<script>
+			layui.use('table', function() {
+				var table = layui.table;
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_user',
+					url: './js/user30.js',
+					height: 'full-260',
+					cols: [
+						[{
+							field: 'id',
+							title: 'ID',
+							width: '43%',
+							sort: true,
+							event: 'setSign'
+						}, {
+							field: 'username',
+							title: '用户名',
+							width: '10%',
+							align: 'center',
+							event: 'setSign'
+						}, {
+							field: 'sex',
+							title: '性别',
+							sort: true,
+							event: 'setSign'
+						}]
+					]
+				});
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_user1',
+					url: './js/user30.js',
+					height: 'full-260',
+					cols: [
+						[{
+							field: 'id',
+							title: 'ID',
+							width: '43%',
+							sort: true,
+							event: 'setSign'
+						}, {
+							field: 'username',
+							title: '用户名',
+							width: '10%',
+							align: 'center',
+							event: 'setSign'
+						}, {
+							field: 'sex',
+							title: '性别',
+							sort: true,
+							event: 'setSign'
+						}]
+					]
+				});
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_user3',
+					url: './js/user30.js',
+					height: 'full-260',
+					cols: [
+						[{
+							field: 'id',
+							title: 'ID',
+							width: '43%',
+							sort: true,
+							event: 'setSign'
+						}, {
+							field: 'username',
+							title: '用户名',
+							width: '10%',
+							align: 'center',
+							event: 'setSign'
+						}, {
+							field: 'sex',
+							title: '性别',
+							sort: true,
+							event: 'setSign'
+						}]
+					]
+				});
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_user4',
+					url: './js/user30.js',
+					height: 'full-260',
+					cols: [
+						[{
+							field: 'id',
+							title: 'ID',
+							width: '43%',
+							sort: true,
+							event: 'setSign'
+						}, {
+							field: 'username',
+							title: '用户名',
+							width: '10%',
+							align: 'center',
+							event: 'setSign'
+						}, {
+							field: 'sex',
+							title: '性别',
+							sort: true,
+							event: 'setSign'
+						}]
+					]
+				});
+
+				//监听单元格事件
+				table.on('tool(user)', function(obj) {
+					var data = obj.data;
+					if(obj.event === 'setSign') {
+						console.log(obj.data); //选中行的相关数据
+					}
+				});
+			});
+		</script>-->
+		<script type="text/javascript" src="./js/jquery-1.8.3.min.js"></script>
+		<script src="./js/jquery.table-filter.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#table1").addTableFilter();
+				$("#table2").addTableFilter();
+				$("#table3").addTableFilter();
+				$("#table4").addTableFilter();
+			});
+			$("table").on("click", "tr", function(e) {
+				$(this).addClass('trclick');
+				$(this).siblings().removeClass("trclick");
+				var arr = []
+				$(this).children().map(function(el) {
+					arr.push($(this)[0].innerText)
+				})
+				console.log(arr)
+			})
+		</script>
+	</body>
+
+</html>

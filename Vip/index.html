@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>会员管理系统</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<script type="text/javascript">
+			var dw = $(window).width(),
+				dh = $(window).height(),
+				ifmbox = $(".layui-iframe"),
+				iframe = $("#iframepage");
+
+			var cssText = "width:" + dw + "px !important;";
+			iframe.css("cssText", cssText);
+
+			if(navigator.userAgent.match(/(iPod|iPhone|iPad)/)) { //判断是苹果设备还是其他设备 
+				ifmbox.addClass('ifm-ios');
+				iframe.attr("scrolling", "no") //评估设置设置为no
+			} else {
+				iframe.attr("scrolling", "yes") //安卓设备设置为yes
+				iframe.height(dh)
+			}
+			var userNumber = '00115603209193'
+			var serverUrl = 'http://192.168.1.190:5002/'
+		</script>
+	</head>
+
+	<body>
+		<!-- 顶部开始 -->
+		<div class="container">
+			<div class="logo">
+				<a href="./index.html">会员管理系统</a>
+			</div>
+			<div class="left_open">
+				<i title="展开左侧栏" class="iconfont">&#xe699;</i>
+			</div>
+			<ul class="layui-nav right" lay-filter="">
+				<li class="layui-nav-item">
+					<a href="javascript:;">13081058624</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="${pageContext.request.contextPath }/logout">退出</a>
+						</dd>
+					</dl>
+				</li>
+			</ul>
+
+		</div>
+		<!-- 顶部结束 -->
+		<!-- 中部开始 -->
+		<!-- 左侧菜单开始 -->
+		<div class="left-nav">
+			<div id="side-nav">
+				<ul id="nav">
+					<li>
+						<a href="javascript:;">
+							<i class="iconfont">&#xe6b8;</i>
+							<cite>会员管理</cite>
+							<i class="iconfont nav_right">&#xe697;</i>
+						</a>
+						<ul class="sub-menu">
+							<li>
+								<a _href="vip-card.html">
+									<i class="iconfont">&#xe6a7;</i>
+									<cite>会员卡管理</cite>
+								</a>
+							</li>
+							<li>
+								<a _href="vip-members.html">
+									<i class="iconfont">&#xe6a7;</i>
+									<cite>会员管理</cite>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="javascript:;">
+							<i class="iconfont">&#xe6b8;</i>
+							<cite>优惠券管理</cite>
+							<i class="iconfont nav_right">&#xe697;</i>
+						</a>
+						<ul class="sub-menu">
+							<li>
+								<a _href="vip-coupons.html">
+									<i class="iconfont">&#xe6a7;</i>
+									<cite>优惠券管理</cite>
+								</a>
+							</li>
+							<li>
+								<a _href="vip-cancel.html">
+									<i class="iconfont">&#xe6a7;</i>
+									<cite>优惠券核销</cite>
+								</a>
+							</li>
+							<li>
+								<a _href="vip-activity.html">
+									<i class="iconfont">&#xe6a7;</i>
+									<cite>优惠券派发</cite>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- <div class="x-slide_left"></div> -->
+		<!-- 左侧菜单结束 -->
+		<!-- 右侧主体开始 -->
+		<div class="page-content">
+			<div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+				<ul class="layui-tab-title">
+					<li>我的桌面</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show layui-iframe">
+						<iframe src='./vip-activity.html' id="iframepage" frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="page-content-bg"></div>
+		<!-- 右侧主体结束 -->
+		<!-- 中部结束 -->
+		<!-- 底部开始 -->
+
+	</body>
+
+</html>

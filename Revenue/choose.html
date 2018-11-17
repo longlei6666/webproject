@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商户登陆</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="./css/admin.css" media="all">
+		<link rel="stylesheet" href="./css/login.css" media="all">
+		<link rel="stylesheet" href="./css/xadmin.css" media="all">
+	</head>
+
+	<body>
+		<style>
+			.login{height: 500px;}
+			.layui-form input{margin-bottom: 15px;}
+			.login #darkbannerwrap{background: transparent;}
+			.choose_md{
+				width: 100%;
+				height: 300px;
+				background: #fff;
+				overflow: auto;
+			}
+			.choose_md li{
+				width: 100%;
+				line-height: 38px;
+				border-bottom: 1px solid #eee;
+				padding: 0 10px;
+				box-sizing: border-box;
+			}
+			.choose_md li a{display: block;
+			}
+			.choose_md li:hover{background:#5FB878;color: #fff;}
+			.choose_md li:hover a{color: #fff;}
+		</style>
+		<div class="login">
+			<div class="message">请选择门店</div>
+			<div id="darkbannerwrap"></div>
+			<ul class="choose_md" id="choose_md">
+				<li v-for="item in items" v-on:click=getnum(item.shopNumber)>
+					{{item.shopName}}
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="./js/vue.min.js"></script>
+	<script>
+		var storage = window.localStorage;
+		$(document).ready(function(){
+			var items = []
+			
+			$(function(){
+				var mData = storage.getItem("mData");
+				if(!storage.getItem("mData")){
+					window.location.href = "login.html";
+				}else{
+					var data = JSON.parse(mData);
+					var shopnum = data.result;
+					for (var i = 0; i<shopnum.length;i++) {
+						items.push(shopnum[i])
+					}
+				}
+			})
+
+			var choose_md = new Vue({
+			  el: '#choose_md',
+			  data: {
+			    items: items
+			  },
+			  methods: {
+			  	getnum:function(num){
+			  		window.location.href = "index.html?shopNumber=" + num
+			  	}
+			  }
+			})
+			
+		})
+	</script>
+
+</html>

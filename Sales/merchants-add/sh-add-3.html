@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商户添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/xiaoshouzhushou.css">
+		<link rel="stylesheet" type="text/css" href="css/feedback.css" />
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">执照信息</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row" id='showCityPicker3'>
+						<label>注册地址</label>
+						<input type="text" id='cityResult3' class="mui-input-clear" placeholder="请选择注册地址">
+					</div>
+					<div class="mui-input-row" id='showhangyePicker3'>
+						<label>商家经营类目</label>
+						<input type="text" id='hangyeResult3' class="mui-input-clear" placeholder="请选择商家经营类目">
+					</div>
+					<div class="mui-input-row">
+						<label>执照号码</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入执照号码">
+					</div>
+					<div class="mui-input-row">
+						<label>执照有效期</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入执照有效期">
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">营业执照照片</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png" />
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label>企业经营范围</label>
+						<textarea rows="3" placeholder="请输入企业经营范围"></textarea>
+					</div>
+					<!--<div class="mui-input-row">
+						<label>执照地址</label>
+						<input type="text" class="mui-input-clear" placeholder="请选择执照地址">
+					</div>-->
+					<div class="mui-input-row">
+						<label>组织机构代码证号</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入组织机构代码证号">
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">组织机构代码证照片</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png" />
+						</div>
+					</div>
+				</form>
+				<a href="sh-add-4.html" class="mui-btn mui-btn-primary nextstep" id="">下一步</a>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.poppicker.js"></script>
+	<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangye.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				/**
+				 * 获取对象属性的值
+				 * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+				 * @param {Object} obj 对象
+				 * @param {String} param 属性名
+				 */
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//-----------------------------------------
+				//地区级联示例
+				var cityPicker3 = new $.PopPicker({
+					layer: 3
+				});
+				cityPicker3.setData(cityData3);
+				var showCityPickerButton3 = doc.getElementById('showCityPicker3');
+				var cityResult3 = doc.getElementById('cityResult3');
+				showCityPickerButton3.addEventListener('tap', function(event) {
+					cityPicker3.show(function(items) {
+						cityResult3.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+				//行业联示例
+				var hangyePicker3 = new $.PopPicker({
+					layer: 3
+				});
+				hangyePicker3.setData(hangyeData3);
+				var showhangyePickerButton = doc.getElementById('showhangyePicker3');
+				var hangyeResult3 = doc.getElementById('hangyeResult3');
+				showhangyePickerButton.addEventListener('tap', function(event) {
+					hangyePicker3.show(function(items) {
+						hangyeResult3.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+			});
+		})(mui, document);
+	</script>
+
+</html>

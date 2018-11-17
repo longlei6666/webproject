@@ -1,0 +1,32 @@
+*{margin:0;padding:0}
+body,html{background-color:#f7f7f7;width: 100%;height: 100%;}
+.pay-shop-info{margin-bottom:2rem;width:100%}
+.pay-shop-info .content{display:flex;margin:0 auto;padding-top:3rem;width:80%;font-size:.32rem;justify-content:center}
+.pay-shop-info .shop-logo{width:3rem;height:3rem}
+.pay-shop-info .shop-name{overflow:hidden;margin-left:.2rem;color:#2f323a;font-size:.32rem;flex:auto}
+.shop-myEqument_name{margin-left:10px;text-align:center;font-weight:700;font-size:1rem;line-height:3rem}
+.pay-shop-info .shop-myEqument{display:block;width:100%;color:tomato;text-align:center;font-size:1rem}
+.pay-input-money{overflow:hidden;margin:0 auto;width:85%;background:#fff;line-height:3.5rem}
+.input-left{padding-left:10px;width:45%;color:#999;font-size:1rem;line-height:3rem}
+.input-right{box-sizing:border-box;padding:0 10px;width:100%;text-align:right;text-align:left;font-size:2.4rem}
+.input-right label{font-size:2.4rem}
+.upper-case{float:right;margin-right:.48rem;color:#949494;font-size:.25rem}
+.payinfo{display:none}
+.payinfo .paynum{color:#333}
+.payinfo .paynum1{color:#424857;font-size:1rem}
+.payinfo .payzero{color:#424857}
+table{position:absolute;bottom:0;width:100%;height:50%;background-color:#fff;background-top:none}
+table tr td{width:1.88rem;height:1.26rem;border-right:1px solid #D9D9D9;border-bottom:1px solid #D9D9D9;text-align:center;font-weight:400;font-size:1.8rem;font-family:"Microsoft YaHei"}
+table tr td:active{background-color:#ECECEC}
+.keybord-return{width:1.88rem;height:1.26rem}
+.keybord-stop{background-image:url(../images/keybord-stop.png);background-size:90% 90%}
+.pay{background-color:#fe9b20;color:#fff;font-size:1.2rem}
+.pay:active{background-color:#D9D9D9}
+.pay a{position:relative;display:block;width:100%;height:100%;color:#fff;text-decoration:none}
+.a-pay{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
+.pay-disabled{background-color:#D9D9D9}
+#pay-return i{font-size:1.5rem}
+@font-face{font-family:iconfont;src:url(//at.alicdn.com/t/font_862437_1dhaps4bo3c.eot?t=1538901212511);src:url(//at.alicdn.com/t/font_862437_1dhaps4bo3c.eot?t=1538901212511#iefix) format('embedded-opentype'),url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAATEAAsAAAAAB0gAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFY8nEgbY21hcAAAAYAAAABUAAABhmU50RpnbHlmAAAB1AAAAPkAAAEo2IJCR2hlYWQAAALQAAAALwAAADYS3w+1aGhlYQAAAwAAAAAcAAAAJAfeA4RobXR4AAADHAAAAAwAAAAMDAAAAGxvY2EAAAMoAAAACAAAAAgAZACUbWF4cAAAAzAAAAAfAAAAIAERAExuYW1lAAADUAAAAUUAAAJtPlT+fXBvc3QAAASYAAAALAAAAD2qWiS9eJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2BkYWCcwMDKwMHUyXSGgYGhH0IzvmYwYuRgYGBiYGVmwAoC0lxTGByeqT3TZG7438AQw9zA0AAUZgTJAQDjTgwyeJztkMENgDAMAy9p6QMxB6ISA/Fi/K5R3BS2wNLFipOXgQVI4hQZ7MYYupRa5Ik18hw/RW5421vtHT6XTLcS7hqFX1vM4918tDUZzbY6wR9KLQ6CeJxdj7FKxEAQhuefDQYRlJC7LCdE2ERMF9C729VGQS7eBrSwEgzY+AbJC/guvoC1HFZX+Qj21/kCFlndFDY3DN//8001FBD9vgckbuiIFJ3SFRFKFPsIt2iU9OWCY5kXqsRMT9VZMtrxBpGKppE/el1E4sVYsNW6BmqtLcMabfEg7h5h9XEgzvuTeDKJ+WtgP+OPGtm4V+McuMdyPl9ii5vNkM+4RpJJmSVwB+4HofuOFaBijMgPDwiI17RH0v+g8l2oS5iohAiLsDCFkUaG4sm9fboVFnxYNczNa9q1adelbZd2vHYrt+KmwqJq3G3atv9L9Af3ojm8AAAAeJxjYGRgYADip5fn7I7nt/nKwM3CAALX7z+9g6D/72JhYHYDcjkYmECiAJQgDb4AeJxjYGRgYG7438AQw8IAAkCSkQEVMAMARwkCbAQAAAAEAAAABAAAAAAAAAAAZACUeJxjYGRgYGBmcGBgYQABJiDmAkIGhv9gPgMADzcBXgB4nGWPTU7DMBCFX/oHpBKqqGCH5AViASj9EatuWFRq911036ZOmyqJI8et1ANwHo7ACTgC3IA78EgnmzaWx9+8eWNPANzgBx6O3y33kT1cMjtyDRe4F65TfxBukF+Em2jjVbhF/U3YxzOmwm10YXmD17hi9oR3YQ8dfAjXcI1P4Tr1L+EG+Vu4iTv8CrfQ8erCPuZeV7iNRy/2x1YvnF6p5UHFockikzm/gple75KFrdLqnGtbxCZTg6BfSVOdaVvdU+zXQ+ciFVmTqgmrOkmMyq3Z6tAFG+fyUa8XiR6EJuVYY/62xgKOcQWFJQ6MMUIYZIjK6Og7VWb0r7FDwl57Vj3N53RbFNT/c4UBAvTPXFO6stJ5Ok+BPV8bUnV0K27LnpQ0kV7NSRKyQl7WtlRC6gE2ZVeOEXpc0Yk/KGdI/wAJWm7IAAAAeJxjYGKAAC4G7ICZkYmRmZGFgb04IzEvvaCUs6Q0Mz01KzMxj4EBAE79BuI=') format('woff'),url(//at.alicdn.com/t/font_862437_1dhaps4bo3c.ttf?t=1538901212511) format('truetype'),url(//at.alicdn.com/t/font_862437_1dhaps4bo3c.svg?t=1538901212511#iconfont) format('svg')}
+.iconfont{font-family:iconfont!important;font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.icon-shangpu:before{content:"\e626"}
+.icon-tuigejian:before{content:"\e629"}

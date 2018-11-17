@@ -1,0 +1,5 @@
+.tagsadd{height:auto;min-height: 38px;}
+.tagsadd button{display: none;}
+.taglist{display: inline-block;height: auto;}
+.taglist a{background-color: #2e7bfd!important;color: #fff!important;padding: 5px;margin-bottom: 5px;margin-right: 5px;display: inline-block;}
+.tagsaddinput{border: none;width: 100px;display: inline-block;}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_457932_cqbv0v0vg5yx2yb9.css" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+
+		<!--<script src="js/jquery.provincesCity.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/provincesData.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<link rel="stylesheet" href="css/style.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+		<style>
+			/*.layui-form-select dl {
+				max-height: 155px;
+			}*/
+			.layui-colla-content{padding: 0;}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md12">
+					<div class="grid-demo">
+						<!--基本资料-->
+						<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>盘点详情</blockquote>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>单据号：
+				            </label>
+							<div class="layui-input-inline">
+								123135
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>单据类型：
+				            </label>
+							<div class="layui-input-inline">
+								周盘点
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>仓库名称：
+				            </label>
+							<div class="layui-input-inline">
+								3号库
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>盘点时间：
+				            </label>
+							<div class="layui-input-inline">
+								2018-03-19 17:25:54
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>状态：
+				            </label>
+							<div class="layui-input-inline">
+								已结清
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>创建时间：
+				            </label>
+							<div class="layui-input-inline">
+								2018-03-19 17:25:54
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>完成时间：
+				            </label>
+							<div class="layui-input-inline">
+								2018-03-19 17:25:54
+							</div>
+						</div>
+						
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>入库详情：
+				            </label>
+							<div class="layui-input-inline" style="width:calc(100% - 150px);">
+								<table class="layui-table">
+									<thead>
+										<tr>
+											<th>原料代码</th>
+											<th>原料名称</th>
+											<th>库存单位</th>
+											<th>数量</th>
+											<th>单价</th>
+											<th>金额</th>
+											<th>备注</th>
+											<!--<th>操作</th>-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>12313</td>
+											<td>雪碧</td>
+											<td>基本单位</td>
+											<td>10</td>
+											<td>￥16.00</td>
+											<td>￥160.00</td>
+											<td>结清结清结清结清<br />结清结清结清</td>
+											<!--<td class="td-manage">
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="member_del()" href="javascript:;">删除</a>
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="x_admin_show('汉堡-添加替换餐品','ct-taocan-add-gd-tihuan3.html')" href="javascript:;">添加替换餐品</a>
+											</td>-->
+											<!--<td><input type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="是|否"></td>-->
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!--<div class="layui-form-mid layui-word-aux">
+								<a href="">添加规格</a>
+							</div>-->
+						</div>
+						<!--基本资料-->
+					</div>
+				</form>
+
+			</div>
+		</div>
+		
+		<!--<script>
+			/*用户-删除*/
+			function member_del(obj, id) {
+				layer.confirm('确认要删除吗？', function(index) {
+					//发异步删除数据
+					$(obj).parents("tr").remove();
+					layer.msg('已删除!', {
+						icon: 1,
+						time: 1000
+					});
+				});
+			}
+			
+			
+			layui.use(['form', 'layedit', 'laydate','element', 'layer','upload'], function(){
+			  var $ = layui.jquery
+			  ,upload = layui.upload;
+			  var element = layui.element;
+			  var layer = layui.layer;
+			  var form = layui.form
+			  ,layedit = layui.layedit
+			  ,laydate = layui.laydate;
+			  
+				//在父层弹出一个层
+				$('#new').on('click', function(){
+				    layer.open({
+					  type: 2,
+					  area: ['300px', '450px'],
+					  fixed: false, //不固定
+					  maxmin: true,
+					  content: 'http://baidu.com'
+					});
+				});
+
+				  //时间范围
+				  laydate.render({
+				    elem: '#test9'
+				    ,type: 'time'
+				    ,range: true
+				  });
+				  //时间选择器
+				  laydate.render({
+				    elem: '#test5'
+				    ,type: 'datetime'
+				  });
+
+				//监听提交
+				form.on('submit(add)', function(data) {
+					console.log(data);
+					//发异步，把数据提交给php
+					layer.alert("增加成功", {
+						icon: 6
+					}, function() {
+						// 获得frame索引
+						var index = parent.layer.getFrameIndex(window.name);
+						//关闭当前frame
+						parent.layer.close(index);
+					});
+					return false;
+				});
+
+			});
+		</script>-->
+
+	</body>
+
+</html>

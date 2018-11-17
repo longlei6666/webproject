@@ -1,0 +1,387 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+		<meta charset="UTF-8">
+		<title>鸿小搜管理中心</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<script type="text/javascript" src="./bus/index.js?v=21"></script>
+		<script type="text/javascript">
+			 $(function() {
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: "${basePath}/staff/getBrandList",
+					success: function(data) {
+						var staffbrand = '${staffInfo[0].BrandNumber}';
+						for(var i = 0; i < data.length; i++) {
+							if(staffbrand==data[i].BrandNumber){
+								$("#contrller").append("<option value='" + data[i].BrandNumber + "' selected='selected'>" + data[i].BrandName + "</option>");
+							}
+							else{
+								$("#contrller").append("<option value='" + data[i].BrandNumber + "'>" + data[i].BrandName + "</option>");
+							}
+						}
+					}
+				});
+				
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: "${basePath}/staff/getRoleList",
+					success: function(data) {
+						var staffrole = '${staffInfo[0].LogGid}';
+						for(var i = 0; i < data.length; i++) {
+							if(staffrole==data[i].LogGid){
+								$("#payment").append("<option value='" + data[i].LogGid + "' selected='selected'>" + data[i].RoleName + "</option>");
+							}
+							else{
+								$("#payment").append("<option value='" + data[i].LogGid + "'>" + data[i].RoleName + "</option>");
+							}
+						}
+					}
+				});
+			}) 
+			
+		</script>
+	</head>
+<body>
+	<div class="x-body" id="getstaffRoleAdd">
+		<form class="layui-form">
+			<div class="layui-form-item">
+				<label for="username" class="layui-form-label"> <span
+					class="x-red">* </span>员工角色
+				</label>
+				<div class="layui-input-inline">
+					<select name="payment" id="payment" lay-ignore style="height: 39px;">
+					</select>
+				</div>
+				<div class="layui-form-mid layui-word-aux">
+					<a onclick="x_admin_show('新增角色','${basePath}/staffRole/getstaffRoleAdd',600,650)">新增角色</a>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label"><span class="x-red">*</span>品牌权限</label>
+				<div class="layui-input-inline">
+					<select name="contrller" id="contrller" lay-ignore
+						style="height: 39px;">
+					</select>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+					<label for="username" class="layui-form-label"> <span
+						class="x-red">* </span>门店权限
+					</label>
+					<div class="layui-input-inline shoplist" style="display: block">
+						<div class="layui-input-inline">
+							<input type="text" name="shopName" id="shopName" disabled="disabled" value="${staffInfo[0].ShopName}"  placeholder="门店名称" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-input-inline">
+							<a class="layui-btn" data-type="reload"> <i class="layui-icon">&#xe615;</i></a>
+							<a class="layui-btn" onclick="x_admin_show('管理权限','ls-yuangonggl-mdgl.html',750,300)">管理权限</a>
+						</div>
+						<table class="layui-table" id="LAY_table_shop" lay-filter="shop"></table>
+						<button class="layui-btn" data-type="getCheckData">保存</button>
+					</div>
+				<input type="text" class="layui-input" disabled="disabled"
+					id="showshopnamelist" name="showshopnamelist"
+					style="width: 190px; display: none;" /> <input type="hidden"
+					class="layui-input" disabled="disabled" id="shopnamelist"
+					name="shopnamelist" />
+			</div>
+
+
+			<div class="layui-form-item">
+				<label for="username" class="layui-form-label"> <span
+					class="x-red">*</span>员工姓名
+				</label>
+				<div class="layui-input-inline">
+				<input type="hidden" id="staffNumber" name="staffNumber"  value="${staffInfo[0].StaffNumber}">
+					<input type="text" id="staffName" name="staffName" required=""
+						lay-verify="required" autocomplete="off" class="layui-input" value="${staffInfo[0].StaffName}">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label for="username" class="layui-form-label"> <span
+					class="x-red">*</span>用户名
+				</label>
+				<div class="layui-input-inline">
+					<c:if test="${not empty staffInfo[0].UserName}">
+					<input type="text" id="username" name="username" required=""
+							lay-verify="required" autocomplete="off" class="layui-input layui-disabled" disabled='disabled' value="${staffInfo[0].UserName}">
+					</c:if>
+					<c:if test="${ empty staffInfo[0].UserName}">
+					<input type="text" id="username" name="username" required=""
+							lay-verify="required" autocomplete="off" class="layui-input "  value="">
+					</c:if>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label for="L_pass" class="layui-form-label"> <span
+					class="x-red">*</span>密码
+				</label>
+				<div class="layui-input-inline">
+					<input type="password" id="L_pass" name="pass" required=""
+						lay-verify="pass" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-form-mid layui-word-aux">6到16个字符</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label for="L_repass" class="layui-form-label"> <span
+					class="x-red">*</span>确认密码
+				</label>
+				<div class="layui-input-inline">
+					<input type="password" id="L_repass" name="repass" required=""
+						lay-verify="repass" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label for="username" class="layui-form-label"> <span
+					class="x-red">* </span>性别
+				</label>
+				<div class="layui-input-inline">
+					<c:choose>
+						<c:when test="${'男' eq staffInfo[0].Sex}">
+							<input type="radio" name="sex" value="男" title="男" checked="">
+							<input type="radio" name="sex" value="女" title="女">
+						</c:when>
+						<c:when test="${'女' eq staffInfo[0].Sex}">
+							<input type="radio" name="sex" value="男" title="男">
+							<input type="radio" name="sex" value="女" title="女" checked="">
+						</c:when>
+						<c:otherwise>
+							<input type="radio" name="sex" value="男" title="男" checked="">
+							<input type="radio" name="sex" value="女" title="女">
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label for="phone" class="layui-form-label"> <span
+					class="x-red">*</span>身份证号
+				</label>
+				<div class="layui-input-inline">
+					<input type="text" id="idnumber" name="idnumber" required=""
+						lay-verify="phone" autocomplete="off" class="layui-input" value="${staffInfo[0].IDNumber }">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label for="phone" class="layui-form-label"> <span
+					class="x-red">*</span>手机号
+				</label>
+				<div class="layui-input-inline">
+					<input type="text" id="phone" name="phone" required=""
+						lay-verify="phone" autocomplete="off" class="layui-input" value="${staffInfo[0].Cell }">
+				</div>
+			</div>
+		</form>
+			<div class="layui-row formbtnb">
+			<div class="grid-demo">
+				<div class="layui-form-item">
+					<label for="L_repass" class="layui-form-label"> </label>
+					<button class="layui-btn formbtn" lay-filter="add" lay-submit="">保存</button>
+					<button class="layui-btn layui-btn-warm formbtn"
+						onclick="x_admin_close()">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<script>
+		layui.use([ 'form', 'layer','table' ], function() {
+			$ = layui.jquery;
+			var form = layui.form, layer = layui.layer, table=layui.table;
+			table.render({
+				elem : '#LAY_table_shop',
+				height : 450,
+				url: '${basePath}/staff/getshoplist',
+				page : true,
+				id: 'shoplist',
+				cols : [ [ {
+					type : 'checkbox',
+					width : 50,
+					fixed: 'left'
+				}, {
+					field : 'ShopName',
+					title : '门店名称'
+				} ] ]
+			});
+			// 根據條件重载表格
+			var $ = layui.$, 
+			active = {
+				    reload: function(){
+				    	
+									// 获取上面查询框的值
+									var shopName = $('#shopName');//店铺名称
+									//执行重载
+									table.reload('shoplist', {
+										page : {
+											curr : 1
+										//重新从第 1 页开始
+										},
+										where : {
+											ShopName : shopName.val(),
+										}
+									});
+								},
+					getCheckData : function() { //获取选中数据
+						var checkStatus = table.checkStatus('shoplist'), 
+						data = checkStatus.data;
+						var  shopName = $("#shopName").val();
+						var str='';
+						var showstr='';
+						
+						for (i = 0; i < data.length; i++) {
+								if (str == '') {
+									str += data[i].ShopNumber;
+									showstr += data[i].ShopName;
+								} else {
+									str += '|' + data[i].ShopNumber;
+									showstr += ',' + data[i].ShopName;
+								}
+							}
+							$(".shoplist").hide();
+							$("#showshopnamelist").show();
+							$("#showshopnamelist").val(showstr);
+							$("#shopnamelist").val(str);
+							}
+						};
+							//监听表格复选框选择
+							table.on('checkbox(shoplist)', function(obj) {
+								obj.checked();
+							});
+
+							//自定义验证规则
+							form.verify({
+								nikename : function(value) {
+									if (value.length < 5) {
+										return '昵称至少得5个字符啊';
+									}
+								},
+								pass : [ /(.+){6,12}$/, '密码必须6到12位' ],
+								repass : function(value) {
+									if ($('#L_pass').val() != $('#L_repass')
+											.val()) {
+										return '两次密码不一致';
+									}
+								}
+							});
+
+							$('.shoplist .layui-btn').on('click', function() {
+								var type = $(this).data('type');
+								active[type] ? active[type].call(this) : '';
+								return;
+							});
+							//监听提交
+							form.on('submit(add)', function(data) {
+								var staffNumber = $("#staffNumber").val();
+								var payment = $("#payment").val();
+								var contrller = $("#contrller").val();
+								var shopnamelist = $("#shopnamelist").val();
+								var staffName = $("#staffName").val();
+								var username = $("#username").val();
+								var L_pass = $("#L_pass").val();
+								var L_repass = $("#L_repass").val();
+								var sex = $("input[name='sex']:checked").val();
+								var idnumber = $("#idnumber").val();
+								var phone = $("#phone").val();
+								if(payment==''||payment==undefined){
+									layer.alert("请选择员工角色");
+									return;
+								}if(contrller==''||contrller==undefined){
+									layer.alert("请选择品牌权限");
+									return;
+								}if(shopnamelist==''||shopnamelist==undefined){
+									layer.alert("请选择门店权限");
+									return;
+								}if(staffName==''||staffName==undefined){
+									layer.alert("请输入员工姓名");
+									return;
+								}if(username==''||username==undefined){
+									layer.alert("请输入用户名");
+									return;
+								}if(L_pass==''||L_pass==undefined){
+									layer.alert("请输入密码");
+									return;
+								}if(L_repass==''||L_pass!=L_repass){
+									layer.alert("请输入密码");
+									return;
+								}if(sex==''||sex==undefined){
+									layer.alert("请选择员工性别");
+									return;
+								}if(idnumber==''||idnumber==undefined){
+									layer.alert("请输入身份证号");
+									return;
+								}if(phone==''||phone==undefined){
+									layer.alert("请输入手机号");
+									return;
+								}
+								
+								//发异步，把数据提交给后台
+								$.ajax({
+									type : "post",
+									url : "${basePath}/staff/staffAdd",
+									async : true,
+									data : {
+										staffNumber : staffNumber,
+										payment : payment,
+										contrller : contrller,
+										shopnamelist : shopnamelist,
+										staffName :staffName,
+										username : username,
+										L_pass : L_pass,
+										L_repass : L_repass,
+										sex : sex,
+										idnumber : idnumber,
+										phone : phone
+									},
+									success : function(data) {
+										if ("false" == data.result) {
+											layer.alert(data.msg, {
+												icon : 6
+											})
+											return;
+										}
+										
+										layer.alert("操作成功 ", {
+											icon : 6
+										},
+												function() {
+													// 刷新父页面
+													window.parent.location.reload();
+													// 获得frame索引
+													var index = parent.layer
+															.getFrameIndex(window.name);
+													//关闭当前frame
+													parent.layer.close(index);
+												});
+									}
+								});
+								return false;
+							});
+						});
+	</script>
+</body>
+</html>

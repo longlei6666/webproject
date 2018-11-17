@@ -1,0 +1,6 @@
+.login input[type=text], .login input[type=file], .login input[type=password], .login input[type=email], select{height: 40px;}
+
+.register .layui-form-item .layui-input-inline{width: 100%;}
+
+.submit .layui-input-inline{margin: 0 auto;float: none;display: block;}
+

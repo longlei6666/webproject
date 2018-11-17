@@ -1,0 +1,484 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>商户详情</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+	</head>
+	<body>
+		
+		<style type="text/css">
+			.x-black{color: #333333;}
+		</style>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="${pageContext.request.contextPath }/page/getMerchantsPage">商户管理</a>
+        <a>详情</a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form">
+					<div class=" layui-col-md6">
+						<div class="grid-demo">
+							<!--基本资料-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>基本资料</blockquote>
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>支付通道</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	支付宝
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.aliPay }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	微信
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.weChat }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+				                 	 银联卡
+				              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.unionPay }</span>
+								</div>
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>商户类型</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	商户类型
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.merchantType }</span>
+								</div>
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>商户详细信息</legend>
+							</fieldset>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 支付宝账号
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.aliPayNumber }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 商户微信号
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.weChatNumber }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  		企业Logo
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.enterpriseLogo }">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 联系人
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.merchantUserName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	联系手机号
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.merchantUserPhone }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 联系邮箱
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.email }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 企业名称
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.companyName }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 企业简称
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.companyAbbreviation }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	默认门店
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.shopName }</span>
+								</div>
+							</div>
+
+							<!--<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	门店数量
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">1</span>
+								</div>
+							</div>-->
+
+							<!--基本资料-->
+
+							<!--支付扣费标准-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-group3"></i>支付扣费标准</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	支付宝
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.aliPayRate }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	微信
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.weChatPayRate }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+				                  	银联卡
+				              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.unionpayCardRate }</span>
+								</div>
+							</div>
+							<!--支付扣费标准-->
+
+							<!--银行卡信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-yinxingqia"></i>银行卡信息</blockquote>
+							<div class="layui-form-item">
+								<label class="layui-form-label">账户类型</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.accountType }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	入账银行卡正面照
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.bankCardPhoto }">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	开户许可证照
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.openingBankPhoto }">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">开户银行</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.openingBankName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">开户支行</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.openingBranchName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">银行卡号</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.bankCard }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">持卡人姓名</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.cardHoldingName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">身份证号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.idNumber }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">银行预留号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.bankMphone }</span>
+								</div>
+							</div>
+							<!--银行卡信息-->
+						</div>
+
+					</div>
+					<div class=" layui-col-md6">
+
+						<div class="grid-demo">
+							<!--执照信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-zhizhao"></i>执照信息</blockquote>
+							<div class="layui-form-item">
+								<label class="layui-form-label">注册地址</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.registeredAddress }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">商家经营类目</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.industryType }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">执照号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.businessLicense }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">执照有效期</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.businessLicenseTime }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                  	营业执照
+					              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.businessLicensePhoto }">
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	特殊资质图片
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.specialPhoto }">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">经营范围</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.scope }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">所在省</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.businessLicenseProvince }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">所在市</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.businessLicenseCity }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">是否三证合一</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.threeChinese }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">组织机构代码证</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.organizationStructure }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  		组织机构代码证图
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.organizationStructurePhoto }">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	营业执照授权函图
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.businessLicenseAuthorizePhoto }">
+									</div>
+								</div>
+							</div>
+
+							<!--执照信息-->
+
+							<!--法人信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-faren"></i>法人信息</blockquote>
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人姓名</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.legalPersonName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人证件类型</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.documentsTypeChinese }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人证件号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.legalPersonIdNumber }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人证件有效期</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.idValidityPeriod }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                  	法人证件正面照
+					              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.idCardPic_FrontFace }">
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					              		法人证件背面照
+					              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.idCardPic_ReverseSide }">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!--
+                    	作者：offline
+                    	时间：2018-01-01
+                    	描述：审核模块,暂不开放
+                  
+					<div class=" layui-col-md12">
+						<blockquote class="layui-elem-quote"><i class="iconfont icon-faren"></i>审核结果</blockquote>
+						<form>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">审核结果</label>
+								<div class="layui-input-inline">
+									<input type="radio" name="sex" value="通过" title="通过" checked="">
+									<input type="radio" name="sex" value="不通过" title="不通过">
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">审核说明</label>
+								<div class="layui-input-inline">
+									<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+								</div>
+							</div>
+						</form>
+					</div>
+					  -->
+				</div>
+			</div>
+			<!--
+            	作者：offline
+            	时间：2018-01-01
+            	描述： 审核提交按钮,暂不开放
+			<div class="layui-row formbtnb">
+				<div class="grid-demo">
+					<div class="layui-form-item">
+						<label for="L_repass" class="layui-form-label">
+				      </label>
+						<button class="layui-btn formbtn" lay-filter="add" lay-submit="">提交</button>
+						<input type="button" value="返回" onclick="javascript:history.back();" class="layui-btn layui-btn-warm formbtn">
+						<!--<button class="layui-btn layui-btn-warm formbtn" lay-filter="add" lay-submit="">返回</button>
+					</div>
+				</div>
+			</div>
+			-->
+		</div>
+	</body>
+
+</html>

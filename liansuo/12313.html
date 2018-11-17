@@ -1,0 +1,532 @@
+<!doctype html>
+
+<html lang="en">
+
+	<head>
+
+		<meta charset="utf-8">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>哎呀</title>
+
+		<link rel="stylesheet" href="css/jquery-ui.css">
+
+		<!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+
+		<scriptsrc="js/jquery-1.9.1.min.js">
+			</script>
+
+			<scriptsrc="js/jquery-ui.js">
+				</script>
+
+				<style>
+					#feedback {
+						font-size: 1.4em;
+					}
+					
+					.myul .ui-selecting {
+						background: #FECA40;
+					}
+					
+					.myul .ui-selected {
+						background: #F39814;
+						color: white;
+					}
+					
+					.myul {
+						list-style-type: none;
+						margin: 0;
+						padding: 0;
+						width: 60%;
+					}
+					
+					.myul li {
+						margin: 3px;
+						padding: 0.4em;
+						font-size: 1.4em;
+						height: 18px;
+						margin-left: 20px;
+					}
+					
+					p {
+						margin: 3px;
+						padding: 0.4em;
+						font-size: 1.4em;
+						height: 18px;
+					}
+					
+					.a {
+						float: left;
+						width: 400px;
+						height: auto;
+						border: 1pxsolid #ccc;
+					}
+					
+					.b {
+						float: left;
+						width: 300px;
+						height: 600px;
+						margin-left: 80px;
+						border: 1pxsolid #ccc;
+					}
+					
+					.btn {
+						width: 50px;
+						height: 30px;
+						margin-top: 10px;
+						cursor: pointer;
+					}
+					
+					ul,
+					ol,
+					li {
+						list-style-type: none;
+					}
+				</style>
+
+	</head>
+
+	<body>
+
+		<div class="box">
+
+			<div class="a">
+
+				<div class="first">
+
+					<!--<p class="ui-widget-content">菜单1</p>-->
+
+					<!--<ul id="selectable">
+
+<li class="ui-widget-content">Item 1</li>
+
+<li class="ui-widget-content">Item 2</li>
+
+<li class="ui-widget-content">Item 3</li>
+
+<li class="ui-widget-content">Item 4</li>
+
+<li class="ui-widget-content">Item 5</li>
+
+<li class="ui-widget-content">Item 6</li>
+
+</ul>-->
+
+				</div>
+
+			</div>
+
+			<!--点击按钮-->
+
+			<div class="btn-bar" style="width:100px;height:80px;">
+
+				<span id="add"><inputtype="button"class="btn"value=">"/></span><br />
+
+				<span id="remove"><inputtype="button"class="btn"value="<"/></span><br />
+
+			</div>
+
+			<div class="b">
+
+				<div class="first2">
+
+					<!--<ul id="selectable">
+
+
+</ul>-->
+
+				</div>
+
+			</div>
+
+			<buttononclick="getData()">获取当前选中数据</button>
+
+		</div>
+
+		<script>
+			//获取被选中的元素 进行打印
+
+			function getData() {
+
+				alert("到控制台查看打印信息")
+
+				console.log(boards);
+
+			}
+
+			var districts = [{
+					name: '东城区',
+					sID: '1111',
+					sort: 1
+				}, {
+					name: '西城区',
+					sID: '1112',
+					sort: 2
+				}, {
+					name: '房山区',
+					sID: '1113',
+					sort: 3
+				}],
+
+				leftArray = [{
+					name: '东城区',
+					sID: '1111',
+					sort: 1
+				}, {
+					name: '西城区',
+					sID: '1112',
+					sort: 2
+				}, {
+					name: '房山区',
+					sID: '1113',
+					sort: 3
+				}],
+
+				rightArray = [{
+					name: '东城区',
+					sID: '1111',
+					sort: 1
+				}, {
+					name: '西城区',
+					sID: '1112',
+					sort: 2
+				}, {
+					name: '房山区',
+					sID: '1113',
+					sort: 3
+				}],
+
+				selectArray = [{
+					name: '东城区',
+					sID: '1111',
+					sort: 1
+				}, {
+					name: '西城区',
+					sID: '1112',
+					sort: 2
+				}, {
+					name: '房山区',
+					sID: '1113',
+					sort: 3
+				}];
+
+			boards = [];
+
+			$.each(leftArray, function(i, j) {
+
+				j.boards = [];
+
+				rightArray[i].boards = [];
+
+				selectArray[i].boards = [];
+
+				for(var k = 0; k < 5 + parseInt(Math.random() * 10); k++)
+
+				{
+
+					j.boards.push({
+						name: j.name + '板块' + k,
+						sID: k + 1,
+						sort: k + 1,
+						districtId: j.sID
+					});
+
+				}
+
+				//console.log(selectArray[i].boards)
+
+			});
+
+			$(function() {
+
+						leftArray.forEach(function(item) {
+
+								$(".first").append('<p data-sid="' + item.sID + '"
+									class = \"ui-widget-content\" >'+item.name+'</p>');
+
+									var $ul = $('<ul class="myul" ></ul>').appendTo($(".first"));
+
+									//console.log($ul)
+
+									//循环模拟数据
+
+									//TODO：筛选出区县下对应板块
+
+									$.each(item.boards, function(i, boardItem) {
+
+										if(boardItem.districtId == item.sID) {
+
+											var demo = '<li class="ui-widget-content" data-name="' + item.name + '"
+											data - districtid = "'+item.sID+'"
+											data - boardid = "'+boardItem.sID+'" > '+boardItem.name+' < /li>';
+
+											$ul.append(demo);
+
+										}
+
+									});
+
+								});
+
+							//ul 的绑定事件(jQ UI的多选功能) 这里直接在外边调用这里面的方法。
+
+							function bindUlClick() {
+
+								//jQuery UI的可选择功能
+
+								$("ul").selectable({
+
+									stop: function() {
+
+										$(".ui-selected", this).each(function(i, item) {
+
+											var id = $(item).data('boardid'),
+
+												name = $(item).data('name'),
+
+												item = {
+													name: item.innerHTML,
+													sID: id
+												};
+
+											selectArray.pushItem(name, item);
+
+											//这里将选中的selectArray元素，转换成json对象，然后由getData的方法来获取被选中数据
+
+											//因为jQ UI的此方法可以获取到被选中元素，因此将被选中元素selectArray在这里进行转换
+
+											boards = JSON.parse(JSON.stringify(selectArray))
+
+										});
+
+									}
+
+								});
+
+								//点击菜单显示隐藏
+
+								//获取所有的.first里的p和ul
+
+								var myP = $('.first p');
+
+								var myUl = $('.first ul');
+
+								for(var i = 0; i < myP.length; i++) {
+
+									myP[i].index = i;
+
+									//console.log(myP[i].index);
+
+									$(myP[i]).click(function() {
+
+										//console.log(myUl[this.index]);
+
+										$(myUl[this.index]).toggle();
+
+									})
+
+								}
+
+								//这里还有问题 右边的显示隐藏没有效果（初步估计可能是因为第二个位置不对）
+
+								var myP2 = $('.first2 p');
+
+								var myUl2 = $('.first2 ul');
+
+								for(var i = 0; i < myP2.length; i++) {
+
+									myP2[i].index = i;
+
+									//console.log(myP2[i].index);
+
+									$(myP2[i]).click(function() {
+
+										$(myUl2[this.index]).toggle();
+
+										//console.log(myUl2[this.index]);
+
+									})
+
+								}
+
+							}
+
+							//调用ul的绑定事件
+
+							bindUlClick();
+
+							//右侧添加节点 /每次点击add清空右侧html模块，防止重复渲染，并不是很理想的解决方式。
+
+							$("#add").click(function() {
+
+								modifyNode(rightArray, selectArray, 'add');
+
+								modifyNode(leftArray, selectArray, 'remove');
+
+								//清空选中的数据
+
+								$.each(selectArray, function(i, item) {
+
+									item.boards = [];
+
+								});
+
+								//封装的渲染方法
+
+								renderNode($('.first2'), rightArray)
+
+								//重新渲染left
+
+								renderNode($('.first'), leftArray)
+
+							})
+
+							$("#remove").click(function() {
+
+								modifyNode(leftArray, selectArray, 'add');
+
+								modifyNode(rightArray, selectArray, 'remove');
+
+								renderNode($('.first2'), rightArray)
+
+								renderNode($('.first'), leftArray);
+
+							})
+
+							//渲染节点
+
+							function renderNode(elem, arr) {
+
+								elem.html('');
+
+								arr.forEach(function(item) {
+
+										//如果子节点的 length>0 则渲染 tree （父子节点一并渲染）
+
+										if(item.boards.length > 0) {
+
+											//重新排序
+
+											item.boards.sort(function(item, item1) {
+
+												return item.sID > item1.sID
+
+											});
+
+											elem.append('<p data-sid="' + item.sID + '"
+												class = \"ui-widget-content\" >'+item.name+'</p>');
+
+												var $ul = $('<ul class="myul" ></ul>').appendTo(elem);
+
+												$.each(item.boards, function(i, boardItem) {
+
+													var demo = '<li class="ui-widget-content" data-name="' + item.name + '"
+													data - districtid = "'+item.sID+'"
+													data - boardid = "'+boardItem.sID+'" >
+														'+boardItem.name+' < /li>';
+
+													$ul.append(demo);
+
+												});
+
+											}
+
+										});
+
+									//重新绑定事件
+
+									bindUlClick();
+
+								}
+
+								//修改节点
+
+								function modifyNode(addArray, selectArray, type) {
+
+									//通过id比较
+
+									for(var i = 0; i <
+										selectArray.length; i++) {
+
+										var objSelect = selectArray[i];
+
+										objAdd = addArray.filter(function(item) {
+
+											return item.sID == objSelect.sID;
+
+										})[0];
+
+										var flag;
+
+										for(var j = 0; j <
+											objSelect.boards.length; j++) {
+
+											flag = false;
+
+											//查找 是否已经有节点
+
+											for(var k = 0; k <
+												objAdd.boards.length; k++) {
+
+												if(objAdd.boards.length > 0 && objSelect.boards[j].sID == objAdd.boards[k].sID) {
+
+													flag = true; //查找到相同节点
+
+													if(type == 'remove')
+
+														objAdd.boards.remove(k);
+
+												}
+
+											}
+
+											if(!flag && type == "add") objAdd.boards.push(objSelect.boards[j]);
+
+										}
+
+									}
+
+								}
+
+								//用原型的方法来增加一个pushItem和remove的属性方法 （感觉不是特别好理解，不方便理解的话可以不在原型上扩展）
+
+								Array.prototype.pushItem = function(name, item) {
+
+									var _obj = this.filter(function(item, i) {
+
+										return item.name == name;
+
+									})[0];
+
+									var flag = false;
+
+									for(var i = 0; i <
+										_obj.boards.length; i++) {
+
+										if(_obj.boards[i].sID == item.sID) flag = true;
+
+									}
+
+									if(!flag) _obj.boards.push(item);
+
+								}
+
+								Array.prototype.remove = function(from, to) {
+
+									var rest = this.slice((to || from) + 1 ||
+										this.length);
+
+									this.length = from < 0 ?
+										this.length + from : from;
+
+									return this.push.apply(this, rest);
+
+								};
+
+							});
+		</script>
+
+	</body>
+
+</html>

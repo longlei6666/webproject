@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <style>
+    	
+.layui-col-md4 .layui-input-inline{width: 49%;}
+.layui-form-select .layui-select-title input{width: 100%;}
+    </style>
+    
+  </head>
+  
+  <body>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md4 x-so">
+					<div class="layui-input-inline">
+						<!-- 需要数据对接(完成) -->
+						<select name="shopName" id="shopName" lay-search>
+							<option value="">--鸿搜商戶门店--</option>
+							<c:forEach items="${shops }" var="shop">
+								<option value="${shop.ShopName }" >${shop.ShopName }</option>
+							</c:forEach>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<!-- 需要数据对接(完成) -->
+						<select name="shopName" id="shopName" lay-search>
+							<option value="">--饿了么商戶门店--</option>
+							<c:forEach items="${shops }" var="shop">
+								<option value="${shop.ShopName }" >${shop.ShopName }</option>
+							</c:forEach>
+						</select>
+					</div>
+        </form>
+        <div class="layui-col-md1">
+          <button class="layui-btn"  lay-submit="" lay-filter="sreach">绑定</button>
+        </div>
+      </div>
+    	<table class="layui-table">
+        <thead>
+            <tr>
+                <th>鸿搜商戶门店</th>
+                <th>鸿搜商戶号</th>
+                <th>饿了么商戶门店 </th>
+                <th>饿了么商戶号 </th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>石家庄市新华区生帝炸鸡汉堡店</td>
+                <td>68541651835186341</td>
+                <td>石家庄市新华区生帝炸鸡汉堡店</td>
+                <td>18536843251861351</td>
+                <td class="td-manage">
+	              	<a title="查看"  onclick="x_admin_show('查看','order-view.html')" href="javascript:;">
+	                	<i class="layui-icon">&#xe63c;</i>
+	              	</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+  </body>
+
+</html>

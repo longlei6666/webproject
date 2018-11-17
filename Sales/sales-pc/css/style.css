@@ -1,0 +1,47 @@
+
+.x-so{margin-bottom: 20px;}
+.grid-demo{padding: 10px;}
+.layui-elem-quote{font-size:2rem;font-weight: 300;}
+.layui-elem-quote .iconfont{font-size:2rem;font-weight: 300;margin-right: 10px;}
+.layui-elem-field legend{font-size: 16px;}
+.layui-form-item .layui-input-inline{width: 50%;}
+.layui-form-label{width: 90px;}
+.uploadtitle{height: 100px;padding:0 15px;line-height: 100px;width: 105px;padding-left: 0;}
+.layui-upload-img {width: 100px;height: 100px;margin: 0 10px 0 0; float: left;}
+.layui-upload-list p{float: left;}
+.uploadbtn,#demoText{margin-top:30px;margin-right: 20px;}
+.shengshiqu select{width: 32.5%;height: 38px;}
+.sheng select{width: 50%;height: 38px;}
+.shi select{width: 50%;height: 38px;}
+.shengshiqu .layui-form-select{width: 33.3%;float: left;}
+.typetitlel{width: 105px;padding-left: 0;}
+
+.formbtnb{padding: 20px 0;border-top: 1px solid #e5e5e5;}
+.formbtn{width: 150px;}
+
+.checkboxdj{width: 20px; height: 20px;border-color:#5FB878 ;}
+input.checkboxdj[type=checkbox]:after  {  
+    content: "";  
+    display:block;  
+    width: 20px;  
+    height: 20px;  
+    text-align: center;  
+    line-height: 14px;  
+    font-size: 16px;  
+    color: #fff;  
+    border: 2px solid #ddd;  
+    background-color: #fff;  
+    box-sizing:border-box;  
+}  
+input.checkboxdj[type=checkbox]:checked:after  {  
+    border: 4px solid #ddd;  
+    background-color: #37AF6E;  
+}  
+
+.layui-left{float: left;}
+
+		.x-black{color: #333;}
+		.layui-form-mid{padding-top: 9px !important;padding-bottom: 9px !important;}
+
+.layui-col-md4 .layui-input-inline{width: 49%;}
+.layui-form-select .layui-select-title input{width: 100%;}

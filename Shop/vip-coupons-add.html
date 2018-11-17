@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style>
+			.widthauto {
+				width: auto !important;
+			}
+			
+			.tips_red {
+				color: red;
+			}
+			
+			.layui-form-label {
+				padding-left: 0;
+				width: 100px;
+			}
+			
+			.layui-input-block {
+				margin-left: 115px;
+			}
+			
+			.layui-elem-quote {
+				font-size: 20px;
+			}
+			
+			.layui-elem-field legend {
+				font-size: 16px;
+			}
+			
+			.layui-upload-img {
+				width: 92px;
+				height: 92px;
+				margin: 0 10px 10px 0;
+			}
+			
+			.Since_inline {
+				display: inline-block;
+				width: auto !important;
+				line-height: 38px;
+			}
+			
+			.layui-elem-quote .layui-form-switch {
+				margin: 0 15px;
+				margin-top: 0;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form" lay-filter="component-form-group">
+					<!--隐藏-->
+					<input type="hidden" name="userNumber" class="layui-input" value="00115603209193">
+					<!--基本设置-->
+					<blockquote class="layui-elem-quote">基本设置</blockquote>
+					<div class="layui-form-item">
+						<label class="layui-form-label">优惠卷名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="couponName" lay-verify="couponName" autocomplete="off" placeholder="请输入优惠卷名称" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item" pane="">
+						<label class="layui-form-label">卷类型</label>
+						<div class="layui-input-block">
+							<input type="radio" name="cardVoucherName" lay-filter="coiltype" value="0" title="满减券">
+							<!--<input type="radio" name="coiltype" lay-filter="coiltype" value="1" title="立减券">-->
+							<input type="radio" name="cardVoucherName" lay-filter="coiltype" value="2" title="折扣券">
+							<!--<input type="radio" name="coiltype" lay-filter="coiltype" value="3" title="随机券">-->
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label alone-tips" lay-tips="需要达到此金额才能使用,填0为无门槛使用">金额限制</label>
+						<div class="layui-input-block">
+							<input type="number" name="useMoney" id="useMoney" lay-verify="useMoney" autocomplete="off" placeholder="请输入限制金额" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item" id="youhui_je" style="display: none;">
+						<label class="layui-form-label">优惠卷金额</label>
+						<div class="layui-input-inline">
+							<input type="text" name="couponMoney" id="coiltype_je" lay-verify="couponMoney" placeholder="请输入优惠卷金额" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item" id="youhui_zk" style="display: none;">
+						<label class="layui-form-label alone-tips" lay-tips="折扣卷填80代表8折">优惠卷折扣</label>
+						<div class="layui-input-inline">
+							<input type="text" name="discount" id="coiltype_zk" lay-verify="zhekou" placeholder="请输入优惠卷折扣" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-form-mid x-red" id="right_tips">
+							% 折扣卷填80代表8折
+						</div>
+					</div>
+					<!--<div class="layui-form-item">
+						<label class="layui-form-label">优惠卷库存</label>
+						<div class="layui-input-inline">
+							<input type="number" name="kucun" autocomplete="off" placeholder="请输入优惠卷库存" class="layui-input">
+						</div>
+					</div>-->
+
+					<blockquote class="layui-elem-quote">
+						使用条件
+						<input type="checkbox" name="condition" lay-skin="switch" lay-filter="condition" lay-text="开|关">
+					</blockquote>
+					<div id="conditionData" style="display: none;">
+						<div class="layui-form-item">
+							<label class="layui-form-label">节假日是否可用</label>
+							<div class="layui-input-block">
+								<input type="radio" name="festivalHoliday" value="0" title="是" checked="">
+								<input type="radio" name="festivalHoliday" value="1" title="否">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">有效期</label>
+							<div class="layui-input-inline">
+								<input type="radio" name="useTimePeriod" lay-filter="usefullife" value="0" title="不限制" checked="">
+								<input type="radio" name="useTimePeriod" lay-filter="usefullife" value="1" title="短期">
+							</div>
+							<div class="layui-input-inline" id="usefullifeDate" style="width:auto;display: none;">
+								<div class="layui-input-inline" style="width: 120px;">
+									<input type="text" id="startTime" name="startTime" placeholder="开始时间" autocomplete="off" class="layui-input usefulDate">
+								</div>
+								<div class="layui-form-mid">-</div>
+								<div class="layui-input-inline" style="width: 120px;">
+									<input type="text" id="endTime" name="endTime" placeholder="结束时间" autocomplete="off" class="layui-input usefulDate">
+								</div>
+							</div>
+						</div>
+						<!--<div class="layui-form-item">
+							<label class="layui-form-label">是否到店使用</label>
+							<div class="layui-input-block">
+								此功能暂未实现
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">能否共享</label>
+							<div class="layui-input-block">
+								此功能暂未实现
+							</div>
+						</div>-->
+						<div class="layui-form-item" pane="">
+							<label class="layui-form-label">业务支持</label>
+							<div class="layui-input-block">
+								<input type="checkbox" name="support" lay-skin="primary" value="收银台" title="收银台" checked="">
+								<input type="checkbox" name="support" lay-skin="primary" value="扫码点餐" title="扫码点餐" checked="">
+							</div>
+						</div>
+						<!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+							<legend>使用商品</legend>
+						</fieldset>
+						<div class="layui-form-item">
+							<label class="layui-form-label"></label>
+							<div class="layui-input-inline">
+								<input type="text" name="" lay-verify="" autocomplete="off" placeholder="请搜索使用商品" class="layui-input">
+							</div>
+							<div class="layui-input-inline">
+								<button class="layui-btn" lay-submit="" lay-filter="sreach" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+							</div>
+						</div>
+						<table class="layui-hide" id="availableGoods" lay-filter="availableGoods"></table>-->
+					</div>
+
+					<div class="layui-form-item layui-layout-admin" style="text-align: center;">
+						<div class="layui-input-block">
+							<div class="layui-footer" style="left: 0;">
+								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			var serverUrl = window.parent.serverUrl
+			layui.use(['laydate', 'table', 'upload', 'form'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload,
+					laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer;
+
+				//方法级渲染  
+//				table.render({
+//					url: serverUrl + 'coupon/selectCoupon',
+//					elem: '#availableGoods',
+//					height: '400',
+//					parseData: function(res) { //res 即为原始返回的数据
+//						return {
+//							"code": res.code, //解析接口状态
+//							"msg": res.msg, //解析提示文本
+//							"count": res.count, //解析数据长度
+//							"data": changeRes(res.result,res.count), //解析数据列表
+//						};
+//					},
+//					cols: [
+//						[{
+//							align: 'center',
+//							//fixed: 'left',
+//							type: 'checkbox'
+//						}, {
+//							align: 'center',
+//							field: 'id',
+//							title: '餐品/套餐分类',
+//							sort: true,
+//							width: 150
+//						}, {
+//							align: 'center',
+//							field: 'username',
+//							title: '餐品/套餐名称',
+//							width: 150
+//						}, {
+//							align: 'center',
+//							field: 'sex',
+//							title: '规格',
+//							sort: true,
+//							width: 150
+//						}, {
+//							align: 'center',
+//							field: 'city',
+//							title: '零售价',
+//							width: 150
+//						}, {
+//							align: 'center',
+//							title: '操作',
+//							toolbar: '#toolbar'
+//						}]
+//					],
+//					page: true,
+//					done: function(res, curr, count) {
+//						//console.log(res.data)
+//					}
+//				});
+
+				/*---------- 开始结束时间 ----------*/
+				lay('.usefulDate').each(function() {
+					laydate.render({
+						elem: this,
+						trigger: 'click'
+					});
+				});
+
+				/*---------- 自定义验证规则 ----------*/
+				form.verify({
+					title: function(value) {
+						if(value.length == "") {
+							return '不能为空';
+						}
+					},
+					couponName: function(value) {
+						if(value.length == "") {
+							return '优惠卷名称不能为空';
+						}
+					},
+					couponMoney: function(value) {
+						if(value.length == "") {
+							return '优惠卷金额不能为空';
+						}
+					},
+					useMoney: function(value) {
+						if(value.length == "") {
+							return '限制金额不能为空';
+						}
+					},
+					zhekou: function(value) {
+						if(value.length < 2) {
+							return '最低不能低于1折';
+						}
+					},
+					pass: [/(.+){6,12}$/, '密码必须6到12位'],
+					content: function(value) {
+						layedit.sync(editIndex);
+					}
+				});
+
+				/*---------- 使用条件开关 ----------*/
+				form.on('switch(condition)', function(data) {
+					layer.tips('使用条件： ' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#conditionData').show()
+						data.elem.value = "0"
+						console.log(data.elem.value)
+					} else if(data.elem.checked == false) {
+						data.elem.value = "1"
+						console.log(data.elem.value)
+						$('#conditionData').hide()
+					}
+				});
+
+				/*---------- 监听开关 ----------*/
+				form.on('radio(coiltype)', function(data) { //金额限制开关
+					if(data.value == 0) {
+						$('#youhui_je').show()
+						$('#youhui_zk').hide()
+						$('#coiltype_je').get(0).setAttribute("lay-verify", "couponMoney")
+						$('#coiltype_zk').get(0).removeAttribute("lay-verify", "zhekou")
+					}
+					//if(data.value == 1)(
+					//	$('#coiltype_lj').get(0).style.display = 'none'
+					//)
+					if(data.value == 2) {
+						$('#youhui_je').hide()
+						$('#youhui_zk').show()
+						$('#coiltype_je').get(0).removeAttribute("lay-verify", "couponMoney")
+						$('#coiltype_zk').get(0).setAttribute("lay-verify", "zhekou")
+					}
+					//if(data.value == 3){
+					//	$('#coiltype_lj').get(0).style.display = 'block'
+					//	$('#coiltype_lx').get(0).setAttribute("placeholder","请输入最大金额")
+					//}
+				});
+				form.on('radio(usefullife)', function(data) { //有效期开关
+					if(data.value == 0) {
+						$('#usefullifeDate').hide()
+						$('#usefullifeDate input').get(0).removeAttribute("lay-verify", "title")
+					}
+					if(data.value == 1) {
+						$('#usefullifeDate').show()
+						$('#usefullifeDate input').get(0).setAttribute("lay-verify", "title")
+					}
+				});
+
+				/* 监听提交 */
+				form.on('submit(add)', function(data, index) {
+					if(!data.field.condition) {
+						data.field.condition = '1'
+					}
+					var checkboxValue = "";
+					$("input:checkbox[name='support']:checked").each(function() { // 遍历name=standard的多选框
+						if(checkboxValue == 0) {
+							checkboxValue = $(this).val();
+							return true;
+						}
+						checkboxValue += '|' + $(this).val();
+					});
+					data.field.support = checkboxValue;
+
+					var addData = JSON.stringify(data.field)
+
+					// 发送请求
+					$.ajax({
+						type: "post",
+						url: serverUrl + "coupon/insertCoupon",
+						async: true,
+						dataType: "json",
+						contentType: "application/json",
+						data: addData,
+						success: function(data) {
+							if(data.code == "0") {
+								var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+								parent.layer.close(index); //再执行关闭
+								parent.layer.msg(data.msg);
+								parent.layui.table.reload('vip_couponsList');
+							} else if(data.code == "1") {
+								layer.msg("添加优惠券失败");
+							}
+						}
+					});
+					return false;
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

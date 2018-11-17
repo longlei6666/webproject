@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>营收记录</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" type="text/css" href="./css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="./css/style.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      		<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      		<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    	<![endif]-->
+	</head>
+
+	<body>
+		<div class="revenue">
+			<!-- 时间选择 -->
+			<div class="Date_div">
+				<div class="Date_btn_line">
+					<ul class="Date_btn">
+						<li id="btn_0" class="active">今天</li>
+						<li id="btn_1">昨天</li>
+						<li id="btn_2">近7天</li>
+					</ul>
+					<div class="Date_choose" id="Date_choose">
+						<span id="Date_choose_start"></span> -- <span id="Date_choose_end"></span>
+					</div>
+				</div>
+				<div class="Date_btn_line nomargin">
+					<div class="Date_showtime">
+						<span id="Date_showtime_start"></span> -- <span id="Date_showtime_end"></span>
+					</div>
+				</div>
+			</div>
+			<!-- 营收汇总 -->
+			<div class="summary">
+				<h3 class="summary_tit">营收汇总</h3>
+				<ul class="summary_ul">
+					<li>
+						<p>¥ <span id="TransactionAmount"></span></p>
+						<p>交易金额(元)</p>
+					</li>
+					<li>
+						<p><span id="TransactionNumber"></span></p>
+						<p>交易数(笔)</p>
+					</li>
+					<li>
+						<p>¥ <span id="SinglePrice"></span></p>
+						<p>单均价(元)</p>
+					</li>
+					<li>
+						<p>¥ <span id="Poundage"></span></p>
+						<p>手续费(元)</p>
+					</li>
+				</ul>
+				<hr style="margin: 5px 0;">
+				<ul class="summary_ul">
+					<li>
+						<p>¥ <span id="zhifubaopayAmount"></span></p>
+						<p>支付宝(元)</p>
+					</li>
+					<li>
+						<p>¥ <span id="weixinpayAmount"></span></p>
+						<p>微信(元)</p>
+					</li>
+					<li>
+						<p><span id="zhifubaopayNumber"></span></p>
+						<p>支付宝(笔)</p>
+					</li>
+					<li>
+						<p><span id="weixinpayNumber"></span></p>
+						<p>微信(笔)</p>
+					</li>
+				</ul>
+			</div>
+			<!-- 营收趋势 -->
+			<div class="trend">
+				<h3>营收趋势</h3>
+				<div class="trend_tit">
+					<p>时间</p>
+					<p>总金额</p>
+					<p>总笔数</p>
+				</div>
+				<div class="trend_ul">
+					<ul id="trend_ul_t">
+						<li v-for="item in items">
+							<p>{{item.TransactionDate}}点</p>
+							<p>{{item.TransactionAmount}}</p>
+							<p>{{item.TransactionNumber}}</p>
+						</li>
+					</ul>
+					<ul id="trend_ul">
+						<li v-for="item in items">
+							<p>{{item.TransactionDate}}</p>
+							<p>{{item.TransactionAmount}}</p>
+							<p>{{item.TransactionNumber}}</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div id="Date_choose_two_mask" class="Date_choose_two_mask"></div>
+			<div id="Date_choose_two_maskc" class="Date_choose_two_maskc">
+				<p class="tongjitime">统计时间</p>
+				<div class="Date_input">
+					<div id="dateSelectorStart">开始日期</div>
+					<span>----</span>
+					<div id="dateSelectorEnd">结束日期</div>
+				</div>
+				<div class="deter" id="deter">确定</div>
+			</div>
+			<div id="Choose_md_mask" class="Choose_md_mask"></div>
+			<div id="Choose_md_maskc" class="Choose_md_maskc">
+				<p class="tongjitime">切换门店</p>
+				<ul class="choose_md" id="choose_md">
+					<li onclick="getall()">
+						所有门店
+					</li>
+					<li v-for="item in items" v-on:click=getnum(item.shopNumber)>
+						{{item.shopName}}
+					</li>
+				</ul>
+			</div>
+			<div id="choose_md_btn">切换门店</div>
+		</div>
+	</body>
+	
+
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="./js/vue.min.js"></script>
+	<script src="./js/iScroll.js"></script>
+	<script src="./js/Mdate.js"></script>
+	<script>
+		var storage = window.localStorage;
+		var mData = storage.getItem("mData");
+		var isAll = true
+		function getall(){
+			isAll = true
+					userNumber = JSON.parse(mData).userNumber;
+					console.log(userNumber)
+					$('#btn_0').click()
+					$('#Choose_md_maskc').animate({
+						'opacity': '0'
+					}, "300", function() {
+						$('#Choose_md_mask').hide();
+						$('#Choose_md_maskc').hide();
+					});
+			  }
+		
+		$(document).ready(function(){
+			
+			
+			var items = []
+			var trendT = []
+			var trend = []
+			var shoplist = []
+			var mData = storage.getItem("mData");
+			if(!storage.getItem("mData")){
+				//window.location.href = "login.html";
+			}else{
+				var data = JSON.parse(mData);
+				var shopnum = data.result;
+				userNumber = data.userNumber;
+				for (var i = 0; i<shopnum.length;i++) {
+					shoplist.push(shopnum[i])
+				}
+			}
+			
+			
+
+			var openid = getQueryString('openid')
+			var openid1 = getQueryString('openid1')
+			var Today = new Date();
+			var yesterday = Today.getTime()-1000*60*60*24;
+			var sevendays = Today.getTime()-1000*60*60*24*6;
+			var Newyear = new Date().getFullYear();
+			var Newmonth = new Date().getMonth() + 1;
+			var Newday = new Date().getDate();
+			setdate(Newyear,Newmonth,Newday,Newyear,Newmonth,Newday)
+			//var serverUrl = 'http://api.51shanhe.com/'
+			var serverUrl = 'http://192.168.1.3:807/'
+			var data = ''
+			$('#trend_ul').hide();
+			if(isAll){
+				$.ajax({
+					type:"GET",
+					url:serverUrl + "see/todayGZH",
+					data:{userNumber:userNumber},
+					dataType:"json",
+					withCredentials:true,
+					async:false,
+					success:function(data){
+						var data = data.result
+						getD(data)
+						trendT.splice(0,trendT.length)
+						for (var i = 0; i<data.list.length;i++) {
+							trendT.push(data.list[i])
+						}
+					}
+				})
+			}else{
+				$.ajax({
+					type:"GET",
+					url:serverUrl + "see/todayGZH",
+					data:{shopNumber:userNumber},
+					dataType:"json",
+					withCredentials:true,
+					async:false,
+					success:function(data){
+						var data = data.result
+						getD(data)
+						trendT.splice(0,trendT.length)
+						for (var i = 0; i<data.list.length;i++) {
+							trendT.push(data.list[i])
+						}
+					}
+				})
+			}
+			
+
+
+			new Mdate("dateSelectorStart");
+			new Mdate("dateSelectorEnd");
+
+			$(function() {
+				// 设置弹窗显示
+				$('#Date_choose').click(function() {
+					$('#Date_choose_two_mask').show();
+					$('#Date_choose_two_maskc').show();
+					$('#Date_choose_two_maskc').animate({
+						'opacity': '1'
+					}, "300");
+				})
+				$('#choose_md_btn').click(function() {
+					$('#Choose_md_mask').show();
+					$('#Choose_md_maskc').show();
+					$('#Choose_md_maskc').animate({
+						'opacity': '1'
+					}, "300");
+				})
+
+				// 设置弹窗隐藏
+				$('#Date_choose_two_mask').click(function() {
+					$('#Date_choose_two_maskc').animate({
+						'opacity': '0'
+					}, "300", function() {
+						$('#Date_choose_two_mask').hide();
+						$('#Date_choose_two_maskc').hide();
+					});
+				})
+				$('#Choose_md_mask').click(function() {
+					$('#Choose_md_maskc').animate({
+						'opacity': '0'
+					}, "300", function() {
+						$('#Choose_md_mask').hide();
+						$('#Choose_md_maskc').hide();
+					});
+				})
+
+				// 今天
+				$('#btn_0').click(function(){
+					$(this).siblings('li').removeClass('active');
+			        $(this).addClass('active');
+			        $('#trend_ul').hide();
+			        $('#trend_ul_t').show();
+					setdate(Newyear,Newmonth,Newday,Newyear,Newmonth,Newday)
+					console.log(userNumber)
+					if(isAll){
+						$.ajax({
+							type:"GET",
+							url:serverUrl + "see/todayGZH",
+							data:{userNumber:userNumber},
+							dataType:"json",
+							withCredentials:true,
+							async:false,
+							success:function(data){
+								var data = data.result
+								getD(data)
+								trend.splice(0,trend.length)
+								for (var i = 0; i<data.list.length;i++) {
+									trend.push(data.list[i])
+								}
+							}
+						})	
+					}else{
+						$.ajax({
+							type:"GET",
+							url:serverUrl + "see/todayGZH",
+							data:{shopNumber:userNumber},
+							dataType:"json",
+							withCredentials:true,
+							async:false,
+							success:function(data){
+								var data = data.result
+								getD(data)
+								trend.splice(0,trend.length)
+								for (var i = 0; i<data.list.length;i++) {
+									trend.push(data.list[i])
+								}
+							}
+						})	
+					}
+					
+				})
+
+				// 昨天
+				$('#btn_1').click(function(){
+					$(this).siblings('li').removeClass('active');
+			        $(this).addClass('active');
+			        $('#trend_ul_t').hide();
+			        $('#trend_ul').show();
+					var Newyear = new Date(yesterday).getFullYear();
+					var Newmonth = new Date(yesterday).getMonth() + 1;
+					var Newday = new Date(yesterday).getDate();
+					setdate(Newyear,Newmonth,Newday,Newyear,Newmonth,Newday);
+					var startTime =  $('#Date_showtime_start').html();
+					var data = '';
+					if(isAll){
+						$.ajax({
+							type:"GET",
+							url:serverUrl + "see/daysGZH",
+							data:{userNumber:userNumber,startTime:startTime,endTime:startTime},
+							dataType:"json",
+							withCredentials:true,
+							async:false,
+							success:function(data){
+								var data = data.result
+								getD(data)
+								trend.splice(0,trend.length)
+								for (var i = 0; i<data.list.length;i++) {
+									trend.push(data.list[i])
+								}
+							}
+						})
+					}else{
+						$.ajax({
+							type:"GET",
+							url:serverUrl + "see/daysGZH",
+							data:{shopNumber:userNumber,startTime:startTime,endTime:startTime},
+							dataType:"json",
+							withCredentials:true,
+							async:false,
+							success:function(data){
+								var data = data.result
+								getD(data)
+								trend.splice(0,trend.length)
+								for (var i = 0; i<data.list.length;i++) {
+									trend.push(data.list[i])
+								}
+							}
+						})
+					}
+					
+				})
+
+				// 近七天
+				$('#btn_2').click(function(){
+					$(this).siblings('li').removeClass('active');
+			        $(this).addClass('active');
+			        $('#trend_ul_t').hide();
+			        $('#trend_ul').show();
+					var Newyear = new Date(sevendays).getFullYear();
+					var Newmonth = new Date(sevendays).getMonth() + 1;
+					var Newday = new Date(sevendays).getDate();
+					var Newyear1 = new Date().getFullYear();
+					var Newmonth1 = new Date().getMonth() + 1;
+					var Newday1 = new Date().getDate();
+					setdate(Newyear,Newmonth,Newday,Newyear1,Newmonth1,Newday1)
+					var startTime =  $('#Date_showtime_start').html();
+					var endTime =  $('#Date_showtime_end').html();
+					var data = ''
+					console.log(userNumber)
+					if(isAll){
+						$.ajax({
+							type:"GET",
+							url:serverUrl + "see/daysGZH",
+							data:{userNumber:userNumber,startTime:startTime,endTime:endTime},
+							dataType:"json",
+							withCredentials:true,
+							async:false,
+							success:function(data){
+								var data = data.result
+								getD(data)
+								trend.splice(0,trend.length)
+								for (var i = 0; i<data.list.length;i++) {
+									trend.push(data.list[i])
+								}
+							}
+						})
+					}else{
+						$.ajax({
+							type:"GET",
+							url:serverUrl + "see/daysGZH",
+							data:{shopNumber:userNumber,startTime:startTime,endTime:endTime},
+							dataType:"json",
+							withCredentials:true,
+							async:false,
+							success:function(data){
+								var data = data.result
+								getD(data)
+								trend.splice(0,trend.length)
+								for (var i = 0; i<data.list.length;i++) {
+									trend.push(data.list[i])
+								}
+							}
+						})
+					}
+				})
+				// 自定义时间查询
+				$('#deter').click(function(){
+			        $('#trend_ul_t').hide();
+			        $('#trend_ul').show();
+					// 获取开始结束时间
+					var startTime,endTime;
+					var start = $('#dateSelectorStart').html()
+					var end = $('#dateSelectorEnd').html()
+					startTime = start.split('-')[0] + '-' + nums(start.split('-')[1]) + '-' +nums(start.split('-')[2]);
+					endTime = end.split('-')[0] + '-' +nums(end.split('-')[1]) + '-' +nums(end.split('-')[2]);
+					startTime_t = Date.parse(new Date(startTime));
+					endTime_t = Date.parse(new Date(endTime));
+					$('#Date_choose_start').get(0).innerHTML = startTime.split('-')[1] +"-"+ startTime.split('-')[2];
+					$('#Date_choose_end').get(0).innerHTML = endTime.split('-')[1] +"-"+ endTime.split('-')[2];
+					$('#Date_showtime_start').get(0).innerHTML = startTime;
+					$('#Date_showtime_end').get(0).innerHTML = endTime;
+					console.log(userNumber)
+					if (startTime_t>endTime_t) {
+						alert("开始时间不能大于结束时间！！")
+						return
+					}else{
+						// 设置弹窗隐藏
+						$('#Date_choose_two_maskc').animate({
+							'opacity': '0'
+						}, "300", function() {
+							$('#Date_choose_two_mask').hide();
+							$('#Date_choose_two_maskc').hide();
+						});
+						var data = ''
+						if(isAll){
+							$.ajax({
+								type:"GET",
+								url:serverUrl + "see/daysGZH",
+								data:{userNumber:userNumber,startTime:startTime,endTime:endTime},
+								dataType:"json",
+								withCredentials:true,
+								async:false,
+								success:function(data){
+									var data = data.result
+									getD(data)
+									trend.splice(0,trend.length)
+									for (var i = 0; i<data.list.length;i++) {
+										trend.push(data.list[i])
+									}
+								}
+							})
+						}else{
+							$.ajax({
+								type:"GET",
+								url:serverUrl + "see/daysGZH",
+								data:{shopNumber:userNumber,startTime:startTime,endTime:endTime},
+								dataType:"json",
+								withCredentials:true,
+								async:false,
+								success:function(data){
+									var data = data.result
+									getD(data)
+									trend.splice(0,trend.length)
+									for (var i = 0; i<data.list.length;i++) {
+										trend.push(data.list[i])
+									}
+								}
+							})
+						}
+					}
+				})
+			})
+
+			var trend_ul_t = new Vue({
+			  el: '#trend_ul_t',
+			  data: {
+			    items: trendT
+			  }
+			})
+			var trend_ul = new Vue({
+			  el: '#trend_ul',
+			  data: {
+			    items: trend
+			  }
+			})
+			var choose_md = new Vue({
+			  el: '#choose_md',
+			  data: {
+			    items: shoplist
+			  },
+			  methods: {
+			  	getnum:function(num){
+					userNumber = num;  
+					isAll = false
+					$('#btn_0').click()
+					//$('#choose_md li').siblings('li').removeClass('active');
+					//$('#choose_md li').addClass('active');
+					$('#Choose_md_maskc').animate({
+						'opacity': '0'
+					}, "300", function() {
+						$('#Choose_md_mask').hide();
+						$('#Choose_md_maskc').hide();
+					});
+			  },
+			  	
+			  }
+			})
+			
+			function nums(num){
+				if(num<10){
+					return  "0"+num
+				}else{
+					return num
+				}
+			}
+
+			function getD(data){
+				$('#TransactionAmount').html(data.TransactionAmount);
+				$('#TransactionNumber').html(data.TransactionNumber);
+				$('#SinglePrice').html(data.SinglePrice);
+				$('#Poundage').html(data.Poundage);
+				$('#zhifubaopayAmount').html(data.zhifubaopayAmount);
+				$('#weixinpayAmount').html(data.weixinpayAmount);
+				$('#zhifubaopayNumber').html(data.zhifubaopayNumber);
+				$('#weixinpayNumber').html(data.weixinpayNumber);
+			}
+
+			function getQueryString(name) {
+		        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+		        var r = decodeURIComponent(window.location.search).substr(1).match(reg);
+		        if (r != null) {
+		            return unescape(r[2]);
+		        }
+		        return null;
+		    }
+
+			//日期封装赋值
+			function setdate(Newyear,Newmonth,Newday,Newyear1,Newmonth1,Newday1){
+				if(Newday<10){
+					Newday = "0"+ Newday
+				}
+				if(Newday1<10){
+					Newday1 = "0"+ Newday1
+				}
+				if(Newmonth<10){
+					Newmonth = "0" + Newmonth
+				}
+				if(Newmonth1<10){
+					Newmonth1 = "0" + Newmonth1
+				}
+				$('#Date_choose_start').get(0).innerHTML = Newmonth + "-" + Newday;
+				$('#Date_choose_end').get(0).innerHTML = Newmonth1 + "-" + Newday1;
+				$('#Date_showtime_start').get(0).innerHTML = Newyear + "-" + Newmonth + "-" + Newday;
+				$('#Date_showtime_end').get(0).innerHTML = Newyear1 + "-" + Newmonth1 + "-" + Newday1;
+				$('#dateSelectorStart').get(0).innerHTML = Newyear + "-" + Newmonth + "-" + Newday;
+				$('#dateSelectorStart').get(0).setAttribute("data-year",Newyear);
+				$('#dateSelectorStart').get(0).setAttribute("data-month",Newmonth);
+				$('#dateSelectorStart').get(0).setAttribute("data-day",Newday);
+				$('#dateSelectorEnd').get(0).innerHTML = Newyear1 + "-" + Newmonth1 + "-" + Newday1;
+				$('#dateSelectorEnd').get(0).setAttribute("data-year",Newyear1);
+				$('#dateSelectorEnd').get(0).setAttribute("data-month",Newmonth1);
+				$('#dateSelectorEnd').get(0).setAttribute("data-day",Newday1);
+			}
+		})	
+	</script>
+
+</html>

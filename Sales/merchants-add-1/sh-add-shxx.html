@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>注册商户</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">商户信息</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-content-padded" style="margin: 5px;">
+				<!--个人-->
+				<div class="mui-input-row">
+					<h5>商户名称<sub>*</sub><span class="tips">与营业执照上相同</span></h5>
+					<input type="text" id="Merchantname" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>证件类型<sub>*</sub><span class="tips"></span></h5>
+					<div class="mui-input-row mui-radio idtype">
+						<label class="jiesuanlx">企业</label>
+						<input id="idtype1" name="idtype" type="radio" value="1" onclick="test(this)" checked>
+					</div>
+					<div class="mui-input-row mui-radio idtype">
+						<label class="jiesuanlx">个体</label>
+						<input id="idtype2" name="idtype" type="radio" value="B" onclick="test(this)">
+					</div>
+					<div class="mui-input-row mui-radio idtype">
+						<label class="jiesuanlx">个人</label>
+						<input id="idtype3" name="idtype" type="radio" value="A" onclick="test(this)">
+					</div>
+					<script type="text/javascript">
+						function test(obj) {
+							if(obj.id == "idtype1") {
+								document.getElementById("showcate").innerText = "营业执照";
+							} else if(obj.id == "idtype2") {
+								document.getElementById("showcate").innerText = "(个体)营业执照";
+							} else if(obj.id == "idtype3") {
+								document.getElementById("showcate").innerText = "身份证";
+							}
+						}
+					</script>
+				</div>
+				<div class="mui-input-row">
+					<h5><em id="showcate">营业执照</em>证件号码<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="Idnumber" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>证件到期日<sub>*</sub><span class="tips">格式YYYYMMDD</span></h5>
+					<input type="text" id="Idexpirydate" class="mui-input-clear" placeholder="长期请填20991231 无有效期请填 19000101">
+				</div>
+				<div class="mui-input-row">
+					<h5>法人身份证号<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="Identitycard" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>法人身份证到期日<sub>*</sub><span class="tips">(格式YYYYMMDD)</span></h5>
+					<input type="text" id="Identitycarddate" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>联系人姓名<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="Contactname" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>客服电话<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="Servicetel" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>联系电话<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="contacttel" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>联系邮箱<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="Contactemail" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>经营范围<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id='hangyeResult' readonly= "true" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>商户所在地<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id='cityResult' readonly= "true" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>商户所在详细地址<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="detailedaddress" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>是否开通微信绿洲<sub>*</sub><span class="tips"></span></h5>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">微信一般类</label>
+						<input id="settlement1" name="settlement" type="radio" value="0" checked>
+					</div>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">绿洲</label>
+						<input id="settlement1" name="settlement" type="radio" value="1">
+					</div>
+				</div>
+				<!--个人-->
+
+				<a class="mui-btn mui-btn-primary nextstep" id="Submit">下一步</a>
+			</form>
+		</div>
+	</body>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.poppicker.js"></script>
+	<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangye.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/headbank.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangbie.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Rate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/openbank-city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//行业联示例
+				var hangyePicker = new $.PopPicker({
+					layer: 3
+				});
+				hangyePicker.setData(hangyeData3);
+				var showhangyePickerButton = doc.getElementById('hangyeResult');
+				var hangyeResult = doc.getElementById('hangyeResult');
+				showhangyePickerButton.addEventListener('tap', function(event) {
+					hangyePicker.show(function(items) {
+						hangyeResult.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+					});
+				}, false);
+				//-----------------------------------------
+				//地区级联示例
+				var cityPicker = new $.PopPicker({
+					layer: 3
+				});
+				cityPicker.setData(cityData3);
+				var showCityPickerButton = doc.getElementById('cityResult');
+				var cityResult = doc.getElementById('cityResult');
+				showCityPickerButton.addEventListener('tap', function(event) {
+					cityPicker.show(function(items) {
+						cityResult.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+					});
+				}, false);
+				//-----------------------------------------
+
+				//提交
+				document.getElementById("Submit").addEventListener('click', function() {
+					var check = true;
+					var Merchantname = $("#Merchantname")[0].value; //商户名称
+					if(Merchantname.trim() == "") {
+						mui.alert("商户名称不允许为空");
+						check = false;
+						return false;
+					}
+//					var idtype= $("input[name='idtype']:checked")[0].value; //证件类型
+//					if(idtype.trim() == "1") {
+//						mui.alert("营业执照证件号不允许为空");check = false;return false;
+//					}else if(idtype.trim() == "A"){
+//						mui.alert("身份证证件号不允许为空");check = false;return false;
+//					}else if(idtype.trim() == "B"){
+//						mui.alert("(个体)营业执照证件号不允许为空");check = false;return false;
+//					}
+					var Idnumber = $("#Idnumber")[0].value; //证件号码
+					if(Idnumber.trim() == "") {
+					}
+					var Idexpirydate = $("#Idexpirydate")[0].value; //证件到期日
+					if(Idexpirydate.trim() == "") {
+						mui.alert("证件到期日不允许为空");
+						check = false;
+						return false;
+					}
+					var Identitycard = $("#Identitycard")[0].value; //法人身份证号
+					if(Identitycard.trim() == "") {
+						mui.alert("法人身份证号不允许为空");
+						check = false;
+						return false;
+					}
+					var Identitycarddate = $("#Identitycarddate")[0].value; //法人身份证到期日
+					if(Identitycarddate.trim() == "") {
+						mui.alert("法人身份证到期日不允许为空");
+						check = false;
+						return false;
+					}
+					var Contactname = $("#Contactname")[0].value; //联系人姓名
+					if(Contactname.trim() == "") {
+						mui.alert("联系人姓名不允许为空");
+						check = false;
+						return false;
+					}
+					var Servicetel = $("#Servicetel")[0].value; //客服电话
+					if(Servicetel.trim() == "") {
+						mui.alert("客服电话不允许为空");
+						check = false;
+						return false;
+					}else{
+						var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+						if(!reg.test(Servicetel)){
+							mui.alert("客服电话无效，请重新输入");check = false;return false;
+						} 
+					}
+					var contacttel = $("#contacttel")[0].value; //联系电话
+					if(contacttel.trim() == "") {
+						mui.alert("联系电话不允许为空");
+						check = false;
+						return false;
+					}else{
+						var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+						if(!reg.test(contacttel)){
+							mui.alert("联系电话无效，请重新输入");check = false;return false;
+						} 
+					}
+					var Contactemail = $("#Contactemail")[0].value; //联系邮箱
+					if(Contactemail.trim() == "") {
+						mui.alert("联系邮箱不允许为空");check = false;return false;
+					}else{
+						var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+						if(!reg.test(Contactemail)){
+							mui.alert("联系邮箱无效，请重新输入");check = false;return false;
+						}
+					}
+					var hangyeResult = $("#hangyeResult")[0].value; //经营范围
+					if(hangyeResult.trim() == "") {
+						mui.alert("经营范围不允许为空");
+						check = false;
+						return false;
+					}
+					var cityResult = $("#cityResult")[0].value; //商户所在地
+					if(cityResult.trim() == "") {
+						mui.alert("商户所在地不允许为空");
+						check = false;
+						return false;
+					}
+					var detailedaddress = $("#detailedaddress")[0].value; //商户所在详细地址
+					if(detailedaddress.trim() == "") {
+						mui.alert("商户所在详细地址不允许为空");
+						check = false;
+						return false;
+					}
+					window.location.href = "sh-add-frxx.html";
+					check && mui.ajax('${pageContext.request.contextPath}/salesingup/login_login', {
+						data: {
+							Merchantname: $("#Merchantname")[0].value, //商户名称
+							Idnumber: $("#Idnumber")[0].value, //证件号码
+							Idexpirydate: $("#Idexpirydate")[0].value, //证件到期日
+							Identitycard: $("#Identitycard")[0].value, //法人身份证号
+							Identitycarddate: $("#Identitycarddate")[0].value, //法人身份证到期日
+							Contactname: $("#Contactname")[0].value, //联系人姓名
+							Servicetel: $("#Servicetel")[0].value, //客服电话
+							contacttel: $("#contacttel")[0].value, //联系电话
+							Contactemail: $("#Contactemail")[0].value, //联系邮箱
+							hangyeResult: $("#hangyeResult")[0].value, //经营范围
+							cityResult: $("#cityResult")[0].value, //商户所在地
+							detailedaddress: $("#detailedaddress")[0].value, //商户所在详细地址
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							if("success" == data.result) {
+
+							} else {
+
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(type);
+						}
+					});
+				})
+				
+
+			});
+		})(mui, document);
+	</script>
+
+</html>

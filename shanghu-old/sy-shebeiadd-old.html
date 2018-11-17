@@ -1,0 +1,351 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>添加设备</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./lib/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+
+	</head>
+	<style type="text/css">
+		#upload_img_list {
+			margin: 10px 0 0 0
+		}
+		
+		#upload_img_list dd {
+			position: relative;
+			margin: 0 10px 10px 0;
+			float: left
+		}
+		
+		#upload_img_list .operate {
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: 1
+		}
+		
+		#upload_img_list .operate i {
+			cursor: pointer;
+			background: #2F4056;
+			padding: 2px;
+			line-height: 15px;
+			text-align: center;
+			color: #fff;
+			margin-left: 1px;
+			float: left;
+			filter: alpha(opacity=80);
+			-moz-opacity: .8;
+			-khtml-opacity: .8;
+			opacity: .8
+		}
+		
+		#upload_img_list dd .img {
+			max-height: 150px;
+			max-width: 500px
+		}
+    	.uploadtitle {
+			    padding: 0 15px;
+			    line-height: 100px;
+			}
+    	.layui-upload-img {
+			    width: 100px;
+			    height: 100px;
+			    margin: 0 10px 0 0;
+			    float: left;
+			}
+			.uploadbtn {
+			    margin-top: 30px;
+			    margin-right: 20px;
+			}
+			#logoText{
+			    display: inline-block;
+			    margin-top: 30px;
+			    float: left;
+			    margin-right: 20px;
+	    }
+    </style>
+
+	<body>
+		<div class="x-body">
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<label for="username" class="layui-form-label">
+                  		<span class="x-red">*</span> 终端序列号
+              		</label>
+					<div class="layui-input-inline">
+						<input type="text" id="shopName" name="shopName" required="" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="username" class="layui-form-label">
+                  		<span class="x-red">*</span> 终端号
+              		</label>
+					<div class="layui-input-inline">
+						<input type="text" id="shopName" name="shopName" required="" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="username" class="layui-form-label">
+                  		<span class="x-red">*</span> 终端联系人
+              		</label>
+					<div class="layui-input-inline">
+						<input type="text" id="shopName" name="shopName" required="" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="phone" class="layui-form-label">
+                  	<span class="x-red">*</span> 联系人电话
+              	</label>
+					<div class="layui-input-inline">
+						<input type="text" id="phone" name="tphone" required="" lay-verify="tphone" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><span class="x-red">*</span> 终端布放所在省份</label>
+					<div class="layui-input-inline">
+						<select name="province" id="province" lay-ignore>
+							<option value="">请选择省</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="city" id="city" lay-ignore>
+							<option value="">请选择市</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="area" id="area" lay-ignore>
+							<option value="">请选择县/区</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="username" class="layui-form-label">
+                  		<span class="x-red">*</span> 终端布放地址
+              		</label>
+					<div class="layui-input-inline">
+						<input type="text" id="shopName" name="shopName" required="" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><span class="x-red">*</span> 终端型号</label>
+					<div class="layui-input-inline">
+						<input type="text" id="address" name="address" required="" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="username" class="layui-form-label uploadtitle"><span class="x-red">* </span>门头照片</label>
+					<div class="layui-upload">
+						<div class="layui-upload-list">
+							<img class="layui-upload-img" id="imgLogo">
+							<p id="logoText"></p>
+						</div>
+						<button type="button" class="layui-btn uploadbtn" name="file" id="file">选择图片</button>
+						<button type="button" class="layui-btn uploadbtn" id="uploadLogo">上传</button>
+					</div>
+				</div>
+				<!--<div class="layui-form-item">
+					<label for="username" class="layui-form-label uploadtitle"><span class="x-red">* </span>门脸照片</label>
+					<div class="layui-upload">
+						<div class="layui-upload-list">
+							<img class="layui-upload-img" id="imgLogo">
+							<p id="logoText"></p>
+						</div>
+						<button type="button" class="layui-btn uploadbtn" name="file" id="file">选择图片</button>
+						<button type="button" class="layui-btn uploadbtn" id="uploadLogo">上传</button>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="username" class="layui-form-label uploadtitle"><span class="x-red">* </span>内设照片</label>
+					<div class="layui-upload">
+						<div class="layui-upload-list">
+							<img class="layui-upload-img" id="imgLogo">
+							<p id="logoText"></p>
+						</div>
+						<button type="button" class="layui-btn uploadbtn" name="file" id="file">选择图片</button>
+						<button type="button" class="layui-btn uploadbtn" id="uploadLogo">上传</button>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="username" class="layui-form-label uploadtitle"><span class="x-red">* </span>商户收银台照片</label>
+					<div class="layui-upload">
+						<div class="layui-upload-list">
+							<img class="layui-upload-img" id="imgLogo">
+							<p id="logoText"></p>
+						</div>
+						<button type="button" class="layui-btn uploadbtn" name="file" id="file">选择图片</button>
+						<button type="button" class="layui-btn uploadbtn" id="uploadLogo">上传</button>
+					</div>
+				</div>-->
+				<div class="layui-form-item">
+					<label for="L_repass" class="layui-form-label">
+	              	</label>
+					<button class="layui-btn" lay-filter="add" lay-submit="">
+	                	增加
+	             	</button>
+				</div>
+			</form>
+		</div>
+		<script>
+			layui.use(['form', 'layer','upload'], function() {
+          		var  $ = layui.jquery;
+				var form = layui.form,
+  					,upload = layui.upload
+					layer = layui.layer;
+				
+				//头像上传
+				upload.render({
+					elem: '#file',
+					url: '${pageContext.request.contextPath }/merchant/addMerchantPic',
+					method: 'post',
+					auto: false,
+					bindAction: '#uploadLogo',
+					choose: function(obj) {
+						obj.preview(function(index, file, result) {
+							$('#imgLogo').attr('src', result);
+						});
+					},
+					done: function(res) {
+
+						if(res.code == 0) {
+							layer.msg('上传成功');
+							// 获取后台返回的地址,并存储到上方隐藏域
+							url = res.desc;
+							$("#shopLogo").val(url);
+						} else {
+							layer.alert('上传失败,请重新上传!');
+						}
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#logoText');
+						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+
+				//监听提交
+				form.on('submit(add)', function(data) {
+
+					//发异步，把数据提交给后台
+					$.ajax({
+						type: "post",
+						url: "${pageContext.request.contextPath }/shop/addShop",
+						async: true,
+						data: data.field,
+						success: function(data) {
+							layer.alert("增加成功", {
+								icon: 6
+							}, function() {
+								
+								// 刷新父页面
+								window.parent.location.reload();
+
+								// 获得frame索引
+								var index = parent.layer.getFrameIndex(window.name);
+								//关闭当前frame
+								parent.layer.close(index);
+							});
+						}
+					});
+					return false;
+				});
+			});
+
+			//上传函数
+			$("#myfile").fileinput({
+				uploadUrl: '${pageContext.request.contextPath }/shop/addShopPic',
+				allowedFileExtensions: ['jpg', 'png', 'gif'],
+				overwriteInitial: false,
+				maxFileSize: 1000,
+				maxFilesNum: 10,
+				language: 'zh',
+				slugCallback: function(filename) {
+
+					return filename.replace('(', '_').replace(']', '_');
+				}
+			});
+
+			// 回调函数
+			$('#myfile').on('fileuploaded', function(event, data, previewId, index) {
+
+				var response = data.response;
+
+				if(response.code == 1) {
+					alert("上传失败 ! 请重新上传");
+				} else if(response.code == 0) {
+					// 获取地址栏中的信息
+					var url = $("#picAddress").val();
+					// 拼接地址
+					url = url + response.desc + "--";
+					// 将值返回到上方框中
+					$("#picAddress").val(url);
+				}
+
+			});
+
+			// 省市联动
+			$("#province").change(function() {
+				$("#city").empty();
+				$("#area").empty();
+				var pid = $("#province").val()
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: "${pageContext.request.contextPath }/hongsou/getCity",
+					data: {
+						"provinceId": pid
+					},
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							$("#city").append("<option value='" + data[i].CityID + "'>" + data[i].CityName + "</option>");
+						}
+						$.ajax({
+							type: 'POST',
+							url: "${pageContext.request.contextPath }/hongsou/getArea",
+							data: {
+								"cityId": data[0].CityID
+							},
+							success: function(data) {
+								for(var i = 0; i < data.length; i++) {
+									$("#area").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+								}
+							}
+						});
+
+					}
+				});
+			});
+
+			$("#city").change(function() {
+				$("#area").empty();
+				var cid = $("#city").val()
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: "${pageContext.request.contextPath }/hongsou/getArea",
+					data: {
+						"cityId": cid
+					},
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							$("#area").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+						}
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

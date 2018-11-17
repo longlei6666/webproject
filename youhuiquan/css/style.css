@@ -1,0 +1,41 @@
+.coupons{width: 100%;height: 100%;position: relative;background:url(../img/youhuiquan_bg.png) top #fa7d29;background-size: 100% auto;background-repeat: no-repeat;}
+
+.hongbao_l{position: absolute;left: 0;bottom: 5%;height: 80px;}
+.hongbao_r{position: absolute;right: 0;bottom: 13%;height: 60px;}
+
+.couponsBox{width: 90%;height: auto;margin-left:5%;position: absolute;top: 35%;background: #fcded6;border-radius: 10px;padding: 30px;z-index: 100;}
+.shopNameBox{font-size: 18px;letter-spacing: 1px;margin-bottom: 20px;}
+.phoneBox{margin-bottom:20px ;}
+.inputPhone{width: 100%;background: #fff;border-radius: 6px;line-height: 50px;padding: 0 15px;letter-spacing: 2px;box-sizing: border-box;font-size: 1.6rem;}
+.submitBtn img{display: block;margin:0 auto;width: 100%;}
+
+.payoutBox{}
+.quanBox{background: url(../img/quan_bg.png) no-repeat;height:10rem;background-size: 100% 100%;overflow: hidden;color: #fff;padding:5%;display: flex;align-items: center;justify-content: center;margin-bottom: 15px;}
+.quanJine{width: 42%;}
+.quanJine p{display: flex;align-items: center;justify-content:center;line-height: 1;}
+.quanJine p .quanJine_Num{font-size: 5rem;font-weight: bolder;line-height: 1;text-align: center;position: relative;}
+.quanJine p .quanJine_Num #quanJine_Num{font-weight: bolder;}
+.quanJine_F{position: absolute;top: -8%;left: -8%;font-size: 1rem;font-weight: normal;}
+.quanJine_Z{position: absolute;top: -8%;right: -20%;font-size: 1rem;font-weight: normal;}
+
+.quanState{width: 58%;text-align: center;}
+.quanName{font-size: 2.5rem;letter-spacing: 3px;line-height: 1;margin-bottom: 5px;}
+.quanJine_jian{font-size: 1.5rem;letter-spacing: 1px;margin-bottom: 5px;}
+.quanDate{font-size: 0.5rem;}
+
+.issued{font-size: 1.1rem;letter-spacing: 1px;margin-bottom: 10px;}
+.issued span{font-size: 1.4rem;color: #eda902;padding: 0 5px;}
+
+.line{background: url(../img/xian.png) repeat-x;height: 2px;margin-bottom: 15px;}
+.rulesTit{margin-bottom: 10px;color: #999;}
+
+
+/*字体设置*/
+html{font-size:10px}
+@media screen and (min-width:321px) and (max-width:375px){html{font-size:11px}}
+@media screen and (min-width:376px) and (max-width:414px){html{font-size:12px}}
+@media screen and (min-width:415px) and (max-width:639px){html{font-size:15px}}
+@media screen and (min-width:640px) and (max-width:719px){html{font-size:20px}}
+@media screen and (min-width:720px) and (max-width:749px){html{font-size:22.5px}}
+@media screen and (min-width:750px) and (max-width:799px){html{font-size:23.5px}}
+@media screen and (min-width:800px){html{font-size:25px}}

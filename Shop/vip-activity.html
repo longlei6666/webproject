@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+		        <a href="">首页</a>
+		        <a href="">会员管理</a>
+		        <a><cite>优惠卷活动</cite></a>
+		      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+		</div>
+		<div class="x-body">
+			<xblock>
+				<button class="layui-btn" onclick="x_admin_show('优惠卷派发','./vip-activity-add.html')"><i class="layui-icon"></i>优惠卷派发</button>
+			</xblock>
+			<input type="hidden" id="curr" name="curr" value="1">
+			<table class="layui-hide" id="vip_card" lay-filter="vip_card"></table>
+		</div>
+		<script type="text/html" id="toolbar">
+			<a class="layui-btn layui-btn-xs" lay-event="record">派发记录</a>
+		</script>
+		<script>
+			function changeRes(res) {
+				var res = res
+				if(res.length == 0){
+					return
+				}
+				for(var i = 0; i < res.length; i++) {
+					if(res[i].type == 0) {
+						res[i].typea = '可用'
+					} else {
+						res[i].typea = '不可用'
+					}
+					if(res[i].startTime && res[i].endTime != "") {
+						res[i].startTime = res[i].startTime.split(' ')[0]
+						res[i].endTime = res[i].endTime.split(' ')[0]
+					}
+
+				}
+				return res
+			}
+			var serverUrl = 'http://192.168.1.190:5002/'
+			var userNumber = window.parent.userNumber
+			layui.use(['laydate', 'table', 'form', 'laytpl'], function() {
+				layui.$.support.cors = true; //允许ajax跨域
+				var laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					laytpl = layui.laytpl;
+
+				//方法级渲染  
+				table.render({
+					//url: './json/vip-huodong.json',
+					url: serverUrl + 'coupon/selectPayoutCoupon?userNumber=' + userNumber,
+					elem: '#vip_card',
+					height: 'full-210',
+					id: 'vip_cardList',
+					parseData: function(res) { //res 即为原始返回的数据
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.count, //解析数据长度
+							"data": changeRes(res.result), //解析数据列表
+						};
+					},
+					cols: [
+						[{
+							align: 'center',
+							//fixed: 'left',
+							type: 'checkbox'
+						}, {
+							field: 'activityName',
+							title: '活动名称',
+							sort: true,
+							width: 250
+						}, {
+							align: 'center',
+							field: 'startTime',
+							title: '开始时间',
+							sort: true,
+							width: 100
+						}, {
+							align: 'center',
+							field: 'endTime',
+							title: '结束时间',
+							sort: true,
+							width: 100
+						}, {
+							align: 'center',
+							field: 'countNumber',
+							title: '已发放数量',
+							sort: true,
+							width: 100
+						}, {
+							align: 'center',
+							field: 'yihexiao',
+							title: '已核销数量',
+							sort: true,
+							width: 100
+						}, {
+							align: 'center',
+							title: '操作',
+							fixed: 'right',
+							toolbar: '#toolbar',
+							minWidth: 200
+						}]
+					],
+					page: true,
+					done: function(res, curr, count) {
+						console.log(res)
+						$("#curr").val(curr);
+					}
+				});
+
+				//监听工具条
+				table.on('tool(vip_card)', function(obj) {
+					var data = obj.data;
+					if(obj.event === 'record') {
+						layer.open({
+							type: 2,
+							title: '领取记录',
+							shade: 0.5,
+							area: ['440px', '60%'],
+							maxmin: false,
+							resize: false,
+							content: ['vip-activity-recharge.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								iframe.subPagerecharge(data,userNumber)
+							}
+						});
+					}
+				});
+
+				//监听性别操作
+				form.on('switch(sexDemo)', function(obj) {
+					//layer.tips('提醒：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+				});
+
+				//日期时间范围1
+				laydate.render({
+					elem: '#test10',
+					type: 'datetime',
+					range: true
+				});
+				//日期时间范围2
+				laydate.render({
+					elem: '#test10-2',
+					type: 'datetime',
+					range: true
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

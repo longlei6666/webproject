@@ -1,0 +1,29 @@
+/*重置css*/
+/*.layui-table-header{display: none;}*/
+/*.layui-table-body{height: 500px;}*/
+.otherbg{
+  background-color: #999 !important;
+  color:#fff!important;
+}
+
+/*公用*/
+.pull_l{float: left;}
+.pull_r{float: right;}
+.pull_r span:first-child{color: rgb(250,120,120);}
+.pull_r span:last-child{color: rgb(26,180,150);}
+
+.wmcpk {max-width: 1000px;margin: 0 auto;}
+.wmcpk .layui-col-md5{box-sizing: border-box;border: 1px solid #e6e6e6;}
+.wmcpk .layui-col-md2 {height: 100%;}
+.wmcpk .layui-col-md2 button{display: block;margin: 0 auto;width: 100px;}
+.wmcpk .layui-col-md2 button:nth-child(1){margin-top: 100%;padding: 0;text-align: center;}
+.wmcpk .layui-col-md2 button:nth-child(2){margin-top: 30%;}
+.wmcpk .layui-col-md2 button:nth-child(3){margin-top: 30%;}
+.cp_list_tit{padding: 15px 20px;box-sizing: border-box;border-bottom: 1px solid #e6e6e6;height: 48px;}
+.cp_list_list{padding: 15px 20px;box-sizing: border-box;}
+.cp_list_list_search{width: 100%;position: relative;}
+.cp_list_list_search input{padding-left: 30px;}
+.layui-icon-search{position: absolute;left: 0;top:0;width:30px;text-align:center;line-height: 38px;z-index: 10;}
+/*.cp_list_list_search:before{content: '&#xe615;';position: absolute;left: 0;top: 0;line-height: 38px;}*/
+/*.cp_list_list_ul{display: block;width: 100%;height: 500px;overflow: auto;}
+.cp_list_list_ul li{width: 100%;border:1px solid #e6e6e6;line-height: 40px;padding:0 10px;background: #f8f8f8;margin-bottom: 5px;box-sizing: border-box;}*/

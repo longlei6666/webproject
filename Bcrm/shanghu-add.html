@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./fonts/iconfont/iconfont.css">
+		<!--<link rel="stylesheet" href="//at.alicdn.com/t/font_457932_cqbv0v0vg5yx2yb9.css" />-->
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+
+		<!--<script src="js/jquery.provincesCity.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/provincesData.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<link rel="stylesheet" href="css/style.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">商户管理</a>
+        <a>添加</a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form">
+					<div class=" layui-col-md12">
+						<div class="grid-demo">
+							<!--基本资料-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>基本资料</blockquote>
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>支付通道</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+	                  	支付宝
+	              </label>
+								<div class="layui-input-inline">
+									<select name="contrller">
+										<option>关闭</option>
+										<option>官方</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+	                  	微信
+	              </label>
+								<div class="layui-input-inline">
+									<select name="contrller">
+										<option>关闭</option>
+										<option>官方</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+	                 	 银联卡
+	              </label>
+								<div class="layui-input-inline">
+									<select name="contrller">
+										<option>关闭</option>
+										<option>官方</option>
+									</select>
+								</div>
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>商户类型</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label"></label>
+								<div class="layui-input-inline">
+									<input type="radio" name="sex" value="个体" title="个体" checked="">
+									<input type="radio" name="sex" value="企业" title="企业">
+								</div>
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>商户详细信息</legend>
+							</fieldset>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  	支付宝账号
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  	微信商户号
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+                  <span class="x-red">* </span>企业Logo
+              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" id="test1">上传图片</button>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>联系人
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>联系手机号
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-red">（默认作为主账号，请勿重复）</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>联系邮箱
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>企业名称
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>企业简称
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>商户名称
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  	售卖类商品描述
+              </label>
+								<div class="layui-input-inline">
+									<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  	客服电话
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>门店数量
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>联系地址
+              </label>
+								<div class="layui-input-inline shengshiqu">
+									<select id="province" name="province">
+										<option value="">请选择省</option>
+										<option>请选择省</option>
+										<select>
+											<select id="city" name="city">
+												<option value="">请选择市</option>
+												<option>请选择区/县请选择区/县请选择区/</option>
+												<select>
+													<select id="area" name="area">
+														<option value="">请选择区/县</option>
+														<option>请选择区/县请选择区/县请选择区/县请选择区/县请选择区/县请选择区/县</option>
+														<select>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>详细地址
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="phone" class="layui-form-label">
+				                  <span class="x-red">*</span>经纬度
+				              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="" name="" required="" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">
+									<a href="">百度地图查看位置</a>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                <span class="x-red">* </span>门店图片
+					            </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" id="test1">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">备注1</label>
+								<div class="layui-input-inline">
+									<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">备注2</label>
+								<div class="layui-input-inline">
+									<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+								</div>
+							</div>
+							<!--基本资料-->
+
+							<!--支付扣费标准-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-group3"></i>支付扣费标准</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  <span class="x-red">* </span>支付宝
+					              </label>
+								<div class="layui-input-inline">
+									<input type="number" id="username" name="username" required="" lay-verify="" autocomplete="off" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-red">（单位为%，%不需要填写）</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+		                  <span class="x-red">* </span>微信
+		              </label>
+								<div class="layui-input-inline">
+									<input type="number" id="username" name="username" required="" lay-verify="" autocomplete="off" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-red">（单位为%，%不需要填写）</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+		                  <span class="x-red">* </span>银联卡
+		              </label>
+								<div class="layui-input-inline">
+									<input type="number" id="username" name="username" required="" lay-verify="" autocomplete="off" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-red">（单位为%，%不需要填写）</span>
+								</div>
+							</div>
+							<!--支付扣费标准-->
+
+							<!--银行卡信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-yinxingqia"></i>银行卡信息</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+	                  	账户类型
+	              </label>
+								<div class="layui-input-inline">
+									<select name="contrller">
+										<option>对私账户</option>
+										<option>对公账户</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+                  	入账银行卡正面照
+              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn layui-left" id="test1">上传图片</button>
+								<div class="layui-form-mid layui-word-aux uploadbtn">
+									<span class="x-red">（单位为%，%不需要填写）</span>
+								</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+                  	开户许可证照
+              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" id="test1">上传图片</button>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>开户银行
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>开户支行
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>银行卡号
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>持卡人姓名
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>身份证号码
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  	银行预留号码
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<!--银行卡信息-->
+
+						</div>
+
+					</div>
+					<div class=" layui-col-md12">
+
+						<div class="grid-demo">
+							<!--执照信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-zhizhao"></i>执照信息</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>注册地址
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>商家经营类目
+              </label>
+								<div class="layui-input-inline shengshiqu">
+									<select id="province" name="province">
+										<option value="">请选择省</option>
+										<option>请选择省</option>
+										<select>
+											<select id="city" name="city">
+												<option value="">请选择市</option>
+												<option>请选择区/县请选择区/县请选择区/</option>
+												<select>
+													<select id="area" name="area">
+														<option value="">请选择区/县</option>
+														<option>请选择区/县请选择区/县请选择区/县请选择区/县请选择区/县请选择区/县</option>
+														<select>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>执照号码
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+	                  	执照有效期
+	              </label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="test10" placeholder="">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+                  <span class="x-red">* </span>营业执照
+              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" id="test1">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+                  	特殊资质图片
+              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" id="test1">上传图片</button>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>企业经营范围
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>所在省代码
+              </label>
+								<div class="layui-input-inline sheng">
+									<select id="province" name="province">
+										<option value="">请选择省</option>
+										<option>请选择省</option>
+										<select>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>所在市代码
+              </label>
+								<div class="layui-input-inline shi">
+									<select id="province" name="province">
+										<option value="">请选择省</option>
+										<option>请选择省</option>
+										<select>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">是否三证合一</label>
+								<div class="layui-input-inline">
+									<input type="radio" name="sex" value="是" title="是" checked="">
+									<input type="radio" name="sex" value="否" title="否">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label typetitlel">
+                  	组织机构代码证号
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+                  	<span class="x-red">* </span>组织机构代码证图
+              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" id="test1">上传图片</button>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+                  	营业执照授权函图
+              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" id="test1">上传图片</button>
+								</div>
+							</div>
+
+							<!--执照信息-->
+
+							<!--法人信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-faren"></i>法人信息</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>法人姓名
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>证件类型
+              </label>
+								<div class="layui-input-inline">
+									<select id="province" name="province">
+										<option value="">身份证</option>
+										<option>身份证</option>
+										<select>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+                  <span class="x-red">* </span>法人证件号码
+              </label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+	                  	法人证件有效期
+	              </label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="test10-2" placeholder="">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+                  <span class="x-red">* </span>法人证件正面照
+              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" id="test1">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+              	<span class="x-red">* </span>法人证件背面照
+              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+										<p id="demoText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" id="test1">上传图片</button>
+								</div>
+							</div>
+							<!--法人信息-->
+						</div>
+					</div>
+				</form>
+
+				<!--<button class="layui-btn x-so"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i>搜索</button>-->
+
+			</div>
+			<div class="layui-row formbtnb">
+				<div class="grid-demo">
+					<div class="layui-form-item">
+						<label for="L_repass" class="layui-form-label">
+				      </label>
+						<button class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+						<input type="button" value="返回" onclick="javascript:history.back();" class="layui-btn layui-btn-warm formbtn">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#start' //指定元素
+				});
+
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#end' //指定元素
+				});
+			});
+
+			/*用户-停用*/
+			function member_stop(obj, id) {
+				layer.confirm('确认要停用吗？', function(index) {
+
+					if($(obj).attr('title') == '启用') {
+
+						//发异步把用户状态进行更改
+						$(obj).attr('title', '停用')
+						$(obj).find('i').html('&#xe62f;');
+
+						$(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+						layer.msg('已停用!', {
+							icon: 5,
+							time: 1000
+						});
+
+					} else {
+						$(obj).attr('title', '启用')
+						$(obj).find('i').html('&#xe601;');
+
+						$(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+						layer.msg('已启用!', {
+							icon: 5,
+							time: 1000
+						});
+					}
+
+				});
+			}
+
+			/*用户-删除*/
+			function member_del(obj, id) {
+				layer.confirm('确认要删除吗？', function(index) {
+					//发异步删除数据
+					$(obj).parents("tr").remove();
+					layer.msg('已删除!', {
+						icon: 1,
+						time: 1000
+					});
+				});
+			}
+
+			function delAll(argument) {
+
+				var data = tableCheck.getData();
+
+				layer.confirm('确认要删除吗？' + data, function(index) {
+					//捉到所有被选中的，发异步进行删除
+					layer.msg('删除成功', {
+						icon: 1
+					});
+					$(".layui-form-checked").not('.header').parents('tr').remove();
+				});
+			}
+		</script>
+
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//日期时间范围1
+				laydate.render({
+					elem: '#test10',
+					type: 'datetime',
+					range: true
+				});
+				//日期时间范围2
+				laydate.render({
+					elem: '#test10-2',
+					type: 'datetime',
+					range: true
+				});
+
+			});
+		</script>
+
+		<script>
+			layui.use('upload', function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+
+				//普通图片上传
+				var uploadInst = upload.render({
+					elem: '#test1',
+					url: '/upload/',
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo1').attr('src', result); //图片链接（base64）
+						});
+					},
+					done: function(res) {
+						//如果上传失败
+						if(res.code > 0) {
+							return layer.msg('上传失败');
+						}
+						//上传成功
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#demoText');
+						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+
+				//多图片上传
+				upload.render({
+					elem: '#test2',
+					url: '/upload/',
+					multiple: true,
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo2').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+						});
+					},
+					done: function(res) {
+						//上传完毕
+					}
+				});
+
+				//绑定原始文件域
+				upload.render({
+					elem: '#test20',
+					url: '/upload/',
+					done: function(res) {
+						console.log(res)
+					}
+				});
+
+			});
+		</script>
+
+	</body>
+
+</html>

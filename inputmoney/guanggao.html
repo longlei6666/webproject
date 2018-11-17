@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="http://h5.51shanhe.com/sy_h5/css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="http://h5.51shanhe.com/sy_h5/dist/swipeslider.css">
+		<title>闪盒支付中心</title>
+		<script src="//cdn.jsdelivr.net/jquery/1.12.1/jquery.min.js"></script>
+		<script src="http://h5.51shanhe.com/sy_h5/js/mui.min.js"></script>
+		<script type="text/javascript" src="http://h5.51shanhe.com/sy_h5/dist/swipeslider.min.js"></script>
+	</head>
+	<body>
+		<div class="mui-content zfjg">
+			<style>
+				body,html{width:100%;height:100%}
+				.zfjg{width:100%;height:100%}
+				.swipslider{width:100%;height:100%;padding:0!important}
+				.ggimg{width:100%;height:auto}
+				.sw-bullet,.sw-next-prev{display:none}
+			</style>
+			<div id="full_feature" class="swipslider">
+				<ul id="slider" class="sw-slides">
+				</ul>
+			</div>
+			<script>
+              	var guanggao = window.location.href.split('url=')[1];
+              if(guanggao.indexOf('*')>-1){
+				var array = guanggao.split('*');
+                var ul = document.getElementById("slider");　　　 //添加 ul
+                console.log(array)
+				for(var i = 0; i < array.length; i++) {
+					var array_url = array[i].split('|||');
+					var array_href = (array_url[array_url.length - 1]);
+					var array_src = (array_url[array_url.length - 2]);
+					var li = document.createElement("li");　　　　 //设置 li 属性，如 id
+					li.setAttribute("class", "sw-slide");         //添加 a
+					var a = document.createElement("a");          //设置 a 属性，如 class
+					a.setAttribute("href", array_href);           //设置 a 链接地址
+					var img = document.createElement("img");      //添加 img
+					img.setAttribute("class", "ggimg");             //设置 img 属性，如 id
+					img.src = array_src;                          //设置 img 图片地址
+			
+					li.appendChild(a);
+					a.appendChild(img);
+					ul.appendChild(li);
+				}
+				if(array.length > 1) {
+					$(function() {
+						$('#full_feature').swipeslider({
+							transitionDuration: 500,
+							autoPlayTimeout: 2000
+						});
+					});
+				}
+              }else if(guanggao.indexOf('*') == -1){
+                	var array_url = guanggao.split('|||');
+					var array_href = (array_url[array_url.length - 1]);
+					var array_src = (array_url[array_url.length - 2]);
+					var ul = document.getElementById("slider");　　　 //添加 li
+					var li = document.createElement("li");　　　　 //设置 li 属性，如 id
+					li.setAttribute("class", "sw-slide");         //添加 a
+					var a = document.createElement("a");          //设置 a 属性，如 class
+					a.setAttribute("href", array_href);           //设置 a 链接地址
+					var img = document.createElement("img");      //添加 img
+					img.setAttribute("class", "ggimg");             //设置 img 属性，如 id
+					img.src = array_src;                          //设置 img 图片地址
+			
+					li.appendChild(a);
+					a.appendChild(img);
+					ul.appendChild(li);
+               }
+			</script>
+		</div>
+	</body>
+</html>

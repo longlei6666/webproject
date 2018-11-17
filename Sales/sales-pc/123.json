@@ -1,0 +1,52 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 1000,
+	"data": [
+		{
+			"Merchantname": "石家庄市桥西区润香缘饭",
+			"phone": "13831197400",
+			"address": "河北省石家庄市",
+			"dealnum_z": "1552",
+			"Totalrevenue": "3400",
+			"refund": "500",
+			"dealnum_t": "74",
+			"dealnum_y": "47",
+			"Compared": "38%",
+			"maintain": "需要维护"
+		}, {
+			"Merchantname": "石家庄市桥西区润香缘",
+			"phone": "13831197400",
+			"address": "河北省石家庄市",
+			"dealnum_z": "1552",
+			"Totalrevenue": "3400",
+			"refund": "500",
+			"dealnum_t": "45",
+			"dealnum_y": "33",
+			"Compared": "38%",
+			"maintain": "需要维护"
+		}, {
+			"Merchantname": "石家庄市桥西区润香",
+			"phone": "13831197400",
+			"address": "河北省石家庄市",
+			"dealnum_z": "1552",
+			"Totalrevenue": "3400",
+			"refund": "500",
+			"dealnum_t": "64",
+			"dealnum_y": "45",
+			"Compared": "38%",
+			"maintain": "需要维护"
+		}, {
+			"Merchantname": "石家庄市桥西区润",
+			"phone": "13831197400",
+			"address": "河北省石家庄市",
+			"dealnum_z": "1552",
+			"Totalrevenue": "3400",
+			"refund": "500",
+			"dealnum_t": "73",
+			"dealnum_y": "45",
+			"Compared": "38%",
+			"maintain": "需要维护"
+		}
+	]
+}

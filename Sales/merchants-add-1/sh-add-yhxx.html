@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>注册商户</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">银行卡信息</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-content-padded" style="margin: 5px;">
+				<!--个人-->
+				<div class="mui-input-row">
+					<h5>入账卡类型<sub>*</sub><span class="tips">企业对私打款选双账号</span></h5>
+					<div class="mui-input-row mui-radio Entrycard">
+						<label class="jiesuanlx">对公</label>
+						<input id="Entrycard1" name="Entrycard" type="radio" value="0" onclick="test(this)" checked>
+					</div>
+					<div class="mui-input-row mui-radio Entrycard">
+						<label class="jiesuanlx">对私</label>
+						<input id="Entrycard2" name="Entrycard" type="radio" value="1" onclick="test(this)">
+					</div>
+					<div class="mui-input-row mui-radio Entrycard">
+						<label class="jiesuanlx">双账号</label>
+						<input id="Entrycard3" name="Entrycard" type="radio" value="1" onclick="test(this)">
+					</div>
+					<script type="text/javascript">
+						function test(obj) {
+							if(obj.id == "Entrycard3") {
+								document.getElementById("onecard").style.display = "none";
+								document.getElementById("twocard").style.display = "block";
+							} else if(obj.id == "Entrycard2"){
+								document.getElementById("onecard").style.display = "block";
+								document.getElementById("twocard").style.display = "none";
+							} else if(obj.id == "Entrycard1"){
+								document.getElementById("onecard").style.display = "block";
+								document.getElementById("twocard").style.display = "none";
+							}
+						}
+					</script>
+				</div>
+				<div id="onecard">
+					<div class="mui-input-row">
+						<h5>入账卡开户行联行号<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="hanglian" class="mui-input-clear">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡开户行支行<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="project" class="mui-input-clear">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡开户行<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="openbank" class="mui-input-clear">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡户名<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Cardaccountname" class="mui-input-clear">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡号<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Accountnumbers" class="mui-input-clear">
+					</div>
+				</div>
+				<div id="twocard" style="display: none;">
+					<div class="mui-input-row">
+						<h5>行别<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="hangbie" class="mui-input-clear">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡开户行联行号<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="hanglian2" class="mui-input-clear">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡开户行<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="openbank2" class="mui-input-clear">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡户名<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Cardaccountname2" class="mui-input-clear">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡号<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Accountnumbers2" class="mui-input-clear">
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<h5>选择费率<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="Selectrate" readonly="true" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>小额清算金额<sub>*</sub><span class="tips">(单位分)</span></h5>
+					<input type="text" id="Clearamount" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>清算类型<sub>*</sub><span class="tips"></span></h5>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">自动结算1</label>
+						<input id="settlement" name="settlement" type="radio" value="0" checked>
+					</div>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">手动结算2</label>
+						<input id="settlement" name="settlement" type="radio" value="1">
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<h5>D1结算<sub>*</sub><span class="tips"></span></h5>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">不开通1</label>
+						<input id="settlementd1" name="jiesuand1" type="radio" value="0" checked>
+					</div>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">开通2</label>
+						<input id="settlementd1" name="jiesuand1" type="radio" value="1">
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<h5>是否开通D0提现<sub>*</sub><span class="tips"></span></h5>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">不开通1</label>
+						<input id="settlementd0" name="jiesuand0" type="radio" value="0" checked>
+					</div>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">开通2</label>
+						<input id="settlementd0" name="jiesuand0" type="radio" value="1">
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<h5>选择费率<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="Selectrated0" readonly="true" class="mui-input-clear">
+				</div>
+				<!--个人-->
+
+				<a class="mui-btn mui-btn-primary nextstep" id="Submit">下一步</a>
+			</form>
+		</div>
+	</body>
+	
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.poppicker.js"></script>
+	<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangye.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/headbank.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangbie.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Rate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/D0Rate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/openbank-city.data.js" type="text/javascript" charset="utf-8"></script>
+	
+	
+  <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    
+  <script>
+  $(function() {
+   
+	var projects = hangbieData;
+ 
+    $( "#project" ).autocomplete({
+      minLength: 0,
+      source: projects,
+      focus: function( event, ui ) {
+      	console.log( event, ui )
+        $( "#project" ).text( ui.item.text );
+        return false;
+      },
+      select: function( event, ui ) {
+      	console.log( event, ui )
+        $( "#project" ).val( ui.item.text );
+ 
+        return false;
+      }
+    })
+  });
+  </script>
+	
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				/**
+				 * 获取对象属性的值
+				 * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+				 * @param {Object} obj 对象
+				 * @param {String} param 属性名
+				 */
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//开户行
+				var openbankPicker = new $.PopPicker({
+					layer: 1
+				});
+				openbankPicker.setData(hangbieData);
+				var showopenbankPickerButton = doc.getElementById('openbank');
+				var openbankResult = doc.getElementById('openbank');
+				showopenbankPickerButton.addEventListener('tap', function(event) {
+					openbankPicker.show(function(items) {
+						openbankResult.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+				//选择费率
+				var SelectratePicker = new $.PopPicker();
+				SelectratePicker.setData(FYRate);
+				var showSelectrateButton = doc.getElementById('Selectrate');
+				var SelectrateResult1 = doc.getElementById('Selectrate');
+				showSelectrateButton.addEventListener('tap', function(event) {
+					SelectratePicker.show(function(items) {
+						SelectrateResult1.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+				//选择费率
+				var SelectratePicker = new $.PopPicker();
+				SelectratePicker.setData(FYRate);
+				var showSelectrateButton = doc.getElementById('Selectrate');
+				var SelectrateResult1 = doc.getElementById('Selectrate');
+				showSelectrateButton.addEventListener('tap', function(event) {
+					SelectratePicker.show(function(items) {
+						SelectrateResult1.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+				//选择费率
+				var Selectrated0Picker = new $.PopPicker();
+				Selectrated0Picker.setData(FYRateD0);
+				var showSelectrated0Button = doc.getElementById('Selectrated0');
+				var Selectrated0Result1 = doc.getElementById('Selectrated0');
+				showSelectrated0Button.addEventListener('tap', function(event) {
+					Selectrated0Picker.show(function(items) {
+						Selectrated0Result1.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+
+				//提交
+				document.getElementById("Submit").addEventListener('click', function() {
+					var check = true;
+					var hanglian = $("#hanglian")[0].value; //入账卡开户行联行号
+					if(hanglian.trim() == "") {
+						mui.alert("入账开户行联行号不允许为空");
+						check = false;
+						return false;
+					}
+					var openbank = $("#openbank")[0].value; //入账卡开户行
+					if(openbank.trim() == "") {
+						mui.alert("入账卡开户行不允许为空");
+						check = false;
+						return false;
+					}
+					var Cardaccountname = $("#Cardaccountname")[0].value; //入账卡户名
+					if(Cardaccountname.trim() == "") {
+						mui.alert("入账卡户名不允许为空");
+						check = false;
+						return false;
+					}
+					var Accountnumbers = $("#Accountnumbers")[0].value; //入账卡号
+					if(Accountnumbers.trim() == "") {
+						mui.alert("入账卡号不允许为空");
+						check = false;
+						return false;
+					}
+					var Selectrate = $("#Selectrate")[0].value; //选择费率
+					if(Selectrate.trim() == "") {
+						mui.alert("费率不允许为空");
+						check = false;
+						return false;
+					}
+					var Clearamount = $("#Clearamount")[0].value; //小额清算金额
+					if(Clearamount.trim() == "") {
+						mui.alert("小额清算金额不允许为空");
+						check = false;
+						return false;
+					}
+					//					var settlement= $("input[name='settlement']:checked")[0].value; //清算类型
+					//					if(settlement.trim() == "") {
+					//						mui.alert("营业执照证件号不允许为空");check = false;return false;
+					//					}
+					//					var settlementd1= $("input[name='settlementd1']:checked")[0].value; //D1结算
+					//					if(settlementd1.trim() == "") {
+					//						mui.alert("营业执照证件号不允许为空");check = false;return false;
+					//					}
+					//					var settlementd0= $("input[name='settlementd0']:checked")[0].value; //是否开通D0提现
+					//					if(settlementd0.trim() == "") {
+					//						mui.alert("营业执照证件号不允许为空");check = false;return false;
+					//					}
+					var Selectrated0 = $("#Selectrated0")[0].value; //选择费率
+					if(Selectrated0.trim() == "") {
+						mui.alert("费率不允许为空");
+						check = false;
+						return false;
+					}
+					window.location.href = "sh-add-pic.html";
+					check && mui.ajax('${pageContext.request.contextPath}/salesingup/login_login', {
+						data: {
+							hanglian: $("#hanglian")[0].value, //入账卡开户行联行号
+							openbank: $("#openbank")[0].value, //入账卡开户行
+							Cardaccountname: $("#Cardaccountname")[0].value, //入账卡户名
+							Accountnumbers: $("#Accountnumbers")[0].value, //入账卡号
+							Selectrate: $("#Selectrate")[0].value, //选择费率
+							Clearamount: $("#Clearamount")[0].value, //小额清算金额
+							settlement: $("#settlement")[0].value, //清算类型
+							settlementd1: $("#settlementd1")[0].value, //D1结算
+							settlementd0: $("#settlementd0")[0].value, //是否开通D0提现
+							Selectrated0: $("#Selectrated0")[0].value, //选择费率
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							if("success" == data.result) {
+
+							} else {
+
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(type);
+						}
+					});
+				})
+
+			});
+		})(mui, document);
+	</script>
+
+</html>

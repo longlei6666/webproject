@@ -1,0 +1,415 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>流水查询</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+		        <a href="">首页</a>
+		        <a href="">餐厅管理</a>
+		        <a>
+          		<cite>分类管理</cite></a>
+     		 </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			
+			<xblock>
+				<a class="layui-btn"  onclick="x_admin_show('新建餐品分类','ct-fenleiadd-cp.html',600,500)" href="javascript:;"><i class="layui-icon"></i>新建餐品分类</a>
+				<a class="layui-btn"  onclick="x_admin_show('新建套餐分类','ct-fenleiadd-tc.html',600,500)" href="javascript:;"><i class="layui-icon"></i>新建套餐分类</a>
+			</xblock>
+			
+			<table class="layui-table">
+		        <thead>
+		            <tr>
+		                <th>分类名称</th>
+		                <th>分类类型</th>
+		                <th>分类别名</th>
+		                <th>操作时间</th>
+		                <th>操作</th>
+		                <th>前台显示</th>
+		                <th>状态</th>
+		                <th style="width: 50px;">排序</th>
+		            </tr>
+		        </thead>
+		        <tbody id="table1">
+		            <tr>
+		                <td>单人套餐A</td>
+		                <td>餐品分类</td>
+		                <td>分类别名</td>
+		                <td>2018-02-25 13:55</td>
+		                <td class="td-manage">
+							<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="x_admin_show('修改','merchant-Detail.html')" href="javascript:;">修改</a>
+							<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="member_del()" href="javascript:;">删除</a>
+		                </td>
+			            <td class="td-status">
+			              <p class="layui-btn layui-btn-normal layui-btn-xs" onclick="member_xianshi(this,'10001')" href="javascript:;"  title="显示">已显示</p>
+			            </td>
+			            <td class="td-status">
+			              <span class="layui-btn layui-btn-normal layui-btn-xs" onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">已启用</span>
+			            </td>
+		                <td>
+		                	<input type="text" name="username" autocomplete="off" value="1" class="layui-input layui-table-edit">
+		                </td>
+		            </tr>
+		            <tr>
+		                <td>单人套餐B</td>
+		                <td>套餐分类</td>
+		                <td>分类别名</td>
+		                <td>2018-02-25 13:55</td>
+		                <td class="td-manage">
+							<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="x_admin_show('修改','merchant-Detail.html')" href="javascript:;">修改</a>
+							<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="member_del()" href="javascript:;">删除</a>
+		                </td>
+			            <td class="td-status">
+			              <p class="layui-btn layui-btn-normal layui-btn-xs" onclick="member_xianshi(this,'10001')" href="javascript:;"  title="显示">已显示</p>
+			            </td>
+			            <td class="td-status">
+			              <span class="layui-btn layui-btn-normal layui-btn-xs" onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">已启用</span>
+			            </td>
+		                <td>
+		                	<input type="text" name="username" autocomplete="off" value="2" class="layui-input layui-table-edit">
+		                </td>
+		            </tr>
+		        </tbody>
+			    </table>
+		      <div class="page">
+		        <div>
+		          <a class="prev" href="">&lt;&lt;</a>
+		          <a class="num" href="">1</a>
+		          <span class="current">2</span>
+		          <a class="num" href="">3</a>
+		          <a class="num" href="">489</a>
+		          <a class="next" href="">&gt;&gt;</a>
+		        </div>
+		      </div>
+			
+			<!--<table class="layui-hide" id="LAY_table_bill" lay-filter="bill"></table>-->
+		</div>
+		<input type="button" value="合并表格" onClick="uniteTable(table1)">  
+		  <script>  
+
+  ///////////////////////////////////////////////  
+
+  //功能：合并表格  
+
+  //参数：tb－需要合并的表格ID  
+
+  //参数：colLength－－需要对前几列进行合并，比如，  
+
+  //想合并前两列，后面的数据列忽略合并，colLength应为2  
+
+  //缺省表示对全部列合并  
+
+  //data:2011.11.06  
+
+  ///////////////////////////////////////////////  
+
+  function uniteTable(tb,colLength){  
+
+  //检查表格是否规整  
+
+  if(!checkTable(tb)) return;  
+
+    var i=0;  
+
+    var j=0;  
+
+    var rowCount=tb.rows.length; //行数  
+
+    var colCount=tb.rows[0].cells.length; //列数  
+
+    var obj1=null;  
+
+    var obj2=null;  
+
+    //为每个单元格命名  
+
+    for(i=0;i<rowCount;i++){  
+
+      for(j=0;j<colCount;j++){  
+
+        tb.rows[i].cells[j].id="tb__" + i.toString() + "_" + j.toString();  
+
+      }  
+
+    }  
+
+    //逐列检查合并  
+
+    for(i=0;i<colCount;i++){  
+
+      if(i==colLength) return;  
+
+      obj1=document.getElementById("tb__0_"+i.toString())  
+
+      for(j=1;j<rowCount;j++){  
+
+        obj2=document.getElementById("tb__"+j.toString()+"_"+i.toString());  
+
+        if(obj1.innerText==obj2.innerText){  
+
+          obj1.rowSpan++;  
+
+          obj2.parentNode.removeChild(obj2);  
+
+        }else{  
+
+          obj1=document.getElementById("tb__"+j.toString()+"_"+i.toString());  
+
+        }  
+
+      }  
+
+    }  
+
+  }  
+
+   
+
+  /////////////////////////////////////////  
+
+  //功能：检查表格是否规整  
+
+  //参数：tb－－需要检查的表格ID  
+
+  //data: 2011.11.06    
+
+  /////////////////////////////////////////  
+
+  function checkTable(tb){  
+
+    if(tb.rows.length==0) return false;  
+
+    if(tb.rows[0].cells.length==0) return false;  
+
+    for(var i=0;i<tb.rows.length;i++){  
+
+      if(tb.rows[0].cells.length!=tb.rows[i].cells.length) return false;  
+
+    }  
+
+    return true;  
+
+  }  
+
+  </script>  
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+		</script>
+		<script>
+			var beginDate = new Date();
+			if(beginDate.getMonth() == 1) {
+				beginDate.setYear(beginDate.getYear() - 1);
+				beginDate.setMonth(12);
+			} else {
+				beginDate.setMonth(beginDate.getMonth() - 1);
+			}
+
+			var endDate = new Date();
+			
+			
+		            /*用户-删除*/
+		      function member_del(obj,id){
+		          layer.confirm('确认要删除吗？',function(index){
+		              //发异步删除数据
+		              $(obj).parents("tr").remove();
+		              layer.msg('已删除!',{icon:1,time:1000});
+		          });
+		      }
+
+       /*前台显示*/
+      function member_xianshi(obj,id){
+          layer.confirm('确认要隐藏吗？',function(index){
+
+              if($(obj).attr('title')=='显示'){
+
+                //发异步把用户状态进行更改
+                $(obj).attr('title','隐藏')
+                $(obj).find('i').html('&#xe62f;');
+
+                $(obj).parents("tr").find(".td-status").find('p').addClass('layui-btn-danger').html('已隐藏');
+                layer.msg('已隐藏!',{icon: 5,time:1000});
+
+              }else{
+                $(obj).attr('title','显示')
+                $(obj).find('i').html('&#xe601;');
+
+                $(obj).parents("tr").find(".td-status").find('p').removeClass('layui-btn-danger').html('已显示');
+                layer.msg('已显示!',{icon: 5,time:1000});
+              }
+              
+          });
+      }
+
+       /*用户-停用*/
+      function member_stop(obj,id){
+          layer.confirm('确认要停用吗？',function(index){
+
+              if($(obj).attr('title')=='启用'){
+
+                //发异步把用户状态进行更改
+                $(obj).attr('title','停用')
+                $(obj).find('i').html('&#xe62f;');
+
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-danger').html('已停用');
+                layer.msg('已停用!',{icon: 5,time:1000});
+
+              }else{
+                $(obj).attr('title','启用')
+                $(obj).find('i').html('&#xe601;');
+
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-danger').html('已启用');
+                layer.msg('已启用!',{icon: 5,time:1000});
+              }
+              
+          });
+      }
+
+			// 选择日期插件  
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				laydate.render({
+					elem: '#startTime', //指定元素
+					type: 'datetime',
+					value: beginDate
+				});
+				laydate.render({
+					elem: '#endTime',
+					type: 'datetime',
+					value: endDate
+				});
+			});
+
+			layui.use('table', function() {
+
+				var table = layui.table;
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_bill',
+					url: '${pageContext.request.contextPath }/Bill/getBillList',
+					method: "post",
+					page: true,
+					id: 'billlist',
+					cols: [
+						[{
+							field: 'dingdanhao',
+							title: '订单号',
+							sort: true,
+							fixed: true
+						}, {
+							field: 'jiaoyishijian',
+							title: '交易时间'
+						}, {
+							field: 'shopname',
+							title: '门店',
+							sort: true
+						}, {
+							field: 'Name',
+							title: '营业员'
+						}, {
+							field: 'jiaoyijine',
+							title: '应收款'
+						}, {
+							field: 'jiesuanjine',
+							title: '实收款',
+							sort: true
+						}, {
+							field: 'shopshouxufei',
+							title: '手续费',
+							sort: true
+						}, {
+							field: 'shopfeilv',
+							title: '手续费费率'
+						}, {
+							field: 'jiaoyileixing',
+							title: '支付方式',
+							sort: true
+						}, {
+							field: 'jiaoyizhuangtai',
+							title: '订单状态',
+							sort: true
+						}, {
+							field: 'operation',
+							title: '操作',
+							toolbar: "#tool"
+						}]
+					]
+				});
+
+				// 根據條件重载表格
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							// 获取上面查询框的值
+							var Assistant = $('#Assistant');
+							var shopName = $('#shopName');
+							var payment = $('#payment');
+							var product = $('#product');
+							var startTime = $('#startTime');
+							var endTime = $('#endTime');
+							var orderStatus = $('#orderStatus');
+							var orderCode = $('#orderCode');
+
+							//执行重载
+							table.reload('billlist', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									Assistant: Assistant.val(),
+									payment: payment.val(),
+									product: product.val(),
+									startTime: startTime.val(),
+									endTime: endTime.val(),
+									orderStatus: orderStatus.val(),
+									shopName: shopName.val(),
+									orderCode: orderCode.val()
+								}
+							});
+						}
+					};
+
+				//监听工具条
+				table.on('tool(bill)', function(obj) {
+					var data = obj.data;
+
+					if(obj.event === 'detail') {
+						// 跳转流水详情页面
+						layer.open({
+							type: 2,
+							title: '流水详情',
+							area: ['40%', '60%'], //宽高
+							content: '${pageContext.request.contextPath }/Bill/getBillDetailsPage?orderCode=' + data.dingdanhao
+						});
+					}
+				});
+
+				$('.demoTable .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+			});
+		</script>
+
+	</body>
+
+</html>
