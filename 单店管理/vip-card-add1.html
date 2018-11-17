@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.all.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<script type="text/javascript" src="./js/tableSelect.js"></script>
+		<script type="text/javascript" src="./js/inputTags.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style>
+			.widthauto {
+				width: auto !important;
+			}
+			
+			.tips_red {
+				color: red;
+			}
+			
+			.layui-form-label {
+				padding-left: 0;
+				width: 100px;
+			}
+			
+			.layui-input-block {
+				margin-left: 115px;
+			}
+			
+			.layui-elem-quote {
+				font-size: 18px;
+			}
+			
+			.layui-elem-field legend {
+				font-size: 16px;
+			}
+			
+			.layui-upload-img {
+				width: 92px;
+				height: 92px;
+				margin: 0 10px 10px 0;
+			}
+			
+			.Since_inline {
+				display: inline-block;
+				width: auto !important;
+				line-height: 38px;
+			}
+			
+			.layui-elem-quote .layui-form-switch {
+				margin: 0 15px;
+				margin-top: 0;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form" action="" lay-filter="component-form-group">
+					<!--基本设置-->
+					<blockquote class="layui-elem-quote">基本设置</blockquote>
+					<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+						<legend>会员卡名称设置</legend>
+					</fieldset>
+					<div class="layui-form-item">
+						<label class="layui-form-label">会员卡名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+						</div>
+					</div>
+					<!--<div class="layui-form-item">
+						<label class="layui-form-label">LOGO设置</label>
+						<div class="layui-input-block">
+							<div class="layui-upload">
+								<button type="button" class="layui-btn" id="logoupload">上传图片</button>
+								<div class="layui-upload-list">
+									<img class="layui-upload-img" id="logoimg">
+									<p id="demoText"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">等级开关</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="open" lay-skin="switch" lay-filter="level" lay-text="开|关">
+						</div>
+					</div>-->
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">使用说明</label>
+						<div class="layui-input-block">
+							<textarea name="instructions" placeholder="请输入使用说明" class="layui-textarea"></textarea>
+						</div>
+					</div>
+
+					<!--会员卡资料-->
+					<!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+						<legend>会员卡资料</legend>
+					</fieldset>
+					<div class="layui-form-item">
+						<label class="layui-form-label">自定义添加</label>
+						<div class="layui-input-block tags" id="tags">
+							<input type="text" name="cardName" id="inputTags" lay-verify="title" autocomplete="off" placeholder="请输入自定义名称" class="layui-input">
+						</div>
+					</div>-->
+
+					<!--领卡赠送-->
+					<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+						<legend>领卡赠送</legend>
+					</fieldset>
+					<div class="layui-form-item">
+						<label class="layui-form-label">赠送余额</label>
+						<div class="layui-input-inline">
+							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入赠送余额" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">赠送优惠券</label>
+						<div class="layui-input-inline">
+							<input type="text" name="cardName" id="couponsSelect" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">赠送积分</label>
+						<div class="layui-input-inline">
+							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入赠送积分" class="layui-input">
+						</div>
+					</div>
+
+					<!--抵现比率-->
+					<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+						<legend lay-tips="积分抵现金比率:100积分抵1元,那用户在消费的时候,将可用账户积分抵消部分金额">抵现比率</legend>
+					</fieldset>
+					<div class="layui-form-item">
+						<label class="layui-form-label">积分抵1元</label>
+						<div class="layui-input-inline">
+							<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="XX积分抵1元" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">单次最多抵现</label>
+						<div class="layui-input-inline">
+							<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="单次最多抵现XX元 " class="layui-input">
+						</div>
+					</div>
+
+					<!--消费优惠设置-->
+					<blockquote class="layui-elem-quote">
+						消费优惠设置
+						<input type="checkbox" name="open" lay-skin="switch" lay-filter="Consumer" lay-text="开|关">
+						<span class="tips_red">兑换比率:1元返10积分,那用户每消费1元,将得到10积分.</span>
+					</blockquote>
+					<div id="Consumer" style="display: none;">
+						<div class="layui-form-item">
+							<label class="layui-form-label">付款返积分比率</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="XX积分抵1元" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item" pane="">
+							<label class="layui-form-label">优惠设置</label>
+							<div class="layui-input-block">
+								<input type="checkbox" name="like1[write]" lay-skin="primary" title="使用满减功能">
+								<input type="checkbox" name="like1[read]" lay-skin="primary" title="使用折扣功能">
+							</div>
+						</div>
+					</div>
+
+					<!--充值优惠设置-->
+					<blockquote class="layui-elem-quote">
+						充值优惠设置
+						<input type="checkbox" name="open" lay-skin="switch" lay-filter="Top_up" lay-text="开|关">
+						<span class="tips_red">开启充值优惠设置后,用户是否继续享受消费返积分的优惠</span>
+					</blockquote>
+					<div id="Top_up" style="display: none;">
+						<div class="layui-form-item">
+							<label class="layui-form-label">充值赠送(元)</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="充值XX元赠送XX元" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">充值赠送(积分)</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="充值XX元赠送XX积分" class="layui-input">
+							</div>
+						</div>
+					</div>
+
+					<!--计次设置-->
+					<blockquote class="layui-elem-quote">
+						计次设置
+						<input type="checkbox" name="open" lay-skin="switch" lay-filter="would" lay-text="开|关">
+						<span class="tips_red">设置为”洗发剩余次数“,前台将显示为：”洗发剩余次数：n次“,请根据自己的业务需求设置。</span>
+					</blockquote>
+					<div id="would" style="display: none;">
+						<div class="layui-form-item">
+							<label class="layui-form-label"></label>
+							<div class="layui-input-block">
+								<div class="layui-input-inline">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="业务名称" class="layui-input">
+								</div>
+								<div class="layui-input-inline">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="初始次数" class="layui-input">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--记时设置-->
+					<blockquote class="layui-elem-quote">
+						记时设置
+						<input type="checkbox" name="open" lay-skin="switch" lay-filter="timing" lay-text="开|关">
+						<span class="tips_red">设置目前卡的有效期</span>
+					</blockquote>
+					<div id="timing" style="display: none;">
+						<div class="layui-form-item">
+							<label class="layui-form-label"></label>
+							<div class="layui-input-block">
+								<div class="layui-input-inline">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="业务名称" class="layui-input">
+								</div>
+								<div class="layui-input-inline widthauto">
+									<input type="radio" name="validity" value="0" title="永久有效" lay-filter="timing" checked="">
+									<input type="radio" name="validity" value="1" title="限制有效" lay-filter="timing">
+								</div>
+								<div class="layui-input-inline" id="timingData" style="display: none;">
+									<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入有效天数" class="layui-input">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--积分的清零日期-->
+					<!--Resetdate-->
+					<blockquote class="layui-elem-quote">
+						积分的清零日期
+						<span class="tips_red">兑换比率:1元返10积分,那用户每消费1元,将得到10积分.</span>
+					</blockquote>
+					<div class="layui-form-item">
+						<label class="layui-form-label">清零设置</label>
+						<div class="layui-input-inline widthauto">
+							<input type="radio" name="Resetdate" value="0" title="不清零" lay-filter="Resetdate" checked="">
+							<input type="radio" name="Resetdate" value="1" title="次年清零" lay-filter="Resetdate">
+						</div>
+						<div class="layui-input-inline" id="ResetdateData" style="display: none;">
+							<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入有效天数" class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-layout-admin">
+						<div class="layui-input-block">
+							<div class="layui-footer" style="left: 0;text-align: center;">
+								<button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">立即提交</button>
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			function changeRes(res) {
+				var res = res
+				for(var i = 0; i < res.length; i++) {
+					if(res[i].type == 0) {
+						res[i].typea = '可用'
+					} else {
+						res[i].typea = '不可用'
+					}
+					if(res[i].startTime && res[i].endTime != "") {
+						res[i].startTime = res[i].startTime.split(' ')[0]
+						res[i].endTime = res[i].endTime.split(' ')[0]
+					}
+					if(res[i].couponMoney != "") {
+						res[i].couponMoneya = parseFloat(res[i].couponMoney).toFixed(2)
+					}
+					if(res[i].couponMoney == 0) {
+						res[i].couponMoneya = res[i].discount + ' 折'
+					}
+					if(res[i].useTimePeriod == 0) {
+						res[i].useTimePeriod = "长期"
+					} else if(res[i].useTimePeriod == 1) {
+						res[i].useTimePeriod = res[i].startTime + ' ~ ' + res[i].endTime
+					}
+
+				}
+				return res
+			}
+			var serverUrl = 'http://192.168.1.190:5002/'
+			var userNumber = '123';
+			! function() {
+				var $ = layui.jquery,
+					upload = layui.upload,
+					laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer;
+				var tableSelect = layui.tableSelect;
+				var inputTags = layui.inputTags;
+				
+				/*---------- 生成标签 ----------*/
+				//inputTags.render({
+				//	elem: '#inputTags',
+				//	aldaBtn: true,
+				//	done: function(value) {
+				//		console.log(value)
+				//	}
+				//})
+
+				/*---------- 下拉表格选择器 ----------*/
+				tableSelect.render({
+					elem: '#couponsSelect',
+					searchKey: 'couponName',
+					checkedKey: 'couponNumber',
+					searchPlaceholder: '搜索优惠券',
+					table: {
+						url: serverUrl + 'coupon/selectCoupon',
+						parseData: function(res) { //res 即为原始返回的数据
+							return {
+								"code": res.code, //解析接口状态
+								"msg": res.msg, //解析提示文本
+								"count": res.count, //解析数据长度
+								"data": changeRes(res.result), //解析数据列表
+							};
+						},
+						cols: [
+							[{
+								align: 'center',
+								//fixed: 'left',
+								type: 'checkbox'
+							}, {
+								align: 'center',
+								field: 'couponName',
+								title: '卷名称',
+								sort: true,
+								width: 150
+							}, {
+								align: 'center',
+								field: 'couponMoneya',
+								title: '卷金额(元)/券折扣(折)',
+								sort: true,
+								width: 150
+							}, {
+								align: 'center',
+								field: 'cardVoucherName',
+								title: '卷类型',
+								sort: true,
+								width: 80
+							}, {
+								align: 'center',
+								field: 'useTimePeriod',
+								title: '有效期',
+								sort: true,
+								width: 200
+							}]
+						],
+						page: {
+							layout: ['prev', 'page', 'next', 'count', 'skip'],
+						}
+					},
+					done: function(elem, data) {
+						var newjson = []
+						layui.each(data.data, function(index, item) {
+							newjson.push(item.couponNumber)
+						})
+						elem.val(newjson.join("|"))
+					}
+				})
+
+				/*---------- 生日 ----------*/
+				laydate.render({
+					elem: '#birthday'
+				});
+
+				/*---------- 普通图片上传 ----------*/
+				var uploadInst = upload.render({
+					elem: '#logoupload',
+					url: '/upload/',
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#logoimg').attr('src', result); //图片链接（base64）
+						});
+					},
+					done: function(res) {
+						//如果上传失败
+						if(res.code > 0) {
+							return layer.msg('上传失败');
+						}
+						//上传成功
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#demoText');
+						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+
+				/*---------- 自定义验证规则 ----------*/
+				form.verify({
+					title: function(value) {
+						if(value.length < 5) {
+							return '标题至少得5个字符啊';
+						}
+					},
+					pass: [/(.+){6,12}$/, '密码必须6到12位'],
+					content: function(value) {
+						layedit.sync(editIndex);
+					}
+				});
+
+				/*---------- 监听开关 ----------*/
+				form.on('switch(level)', function(data) { //等级开关
+					layer.tips('等级开关：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+				});
+				form.on('switch(Consumer)', function(data) { //消费优惠开关
+					layer.tips('消费优惠：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#Consumer').show()
+					} else(
+						$('#Consumer').hide()
+					)
+				});
+				form.on('switch(Top_up)', function(data) { //充值优惠开关
+					layer.tips('充值优惠：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#Top_up').show()
+					} else(
+						$('#Top_up').hide()
+					)
+				});
+				form.on('switch(would)', function(data) { //计次开关
+					layer.tips('计次：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#would').show()
+					} else(
+						$('#would').hide()
+					)
+				});
+				form.on('switch(timing)', function(data) { //积分清零开关
+					layer.tips('积分清零：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#timing').show()
+					} else(
+						$('#timing').hide()
+					)
+				});
+
+				/*---------- 监听开关 ----------*/
+				form.on('radio(timing)', function(data) { //性别
+					if(data.value == 1) {
+						$('#timingData').show()
+					} else(
+						$('#timingData').hide()
+					)
+				});
+				form.on('radio(Resetdate)', function(data) { //消费优惠开关
+					if(data.value == 1) {
+						$('#ResetdateData').show()
+					} else(
+						$('#ResetdateData').hide()
+					)
+				});
+
+				/*---------- 监听提交 ----------*/
+				form.on('submit(component-form-demo1)', function(data) {
+					parent.layer.alert(JSON.stringify(data.field), {
+						title: '最终的提交信息'
+					})
+					return false;
+				});
+
+			}();
+		</script>
+	</body>
+
+</html>

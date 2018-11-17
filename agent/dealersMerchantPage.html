@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<style>
+			.shaixuan-qd .layui-input-inline {
+				width: 19.5%;
+			}
+			
+			.text {
+				position: relative;
+			}
+			
+			.layui-input-clear {
+				position: absolute;
+				right: 10px;
+				top: 10px;
+				cursor: pointer;
+				display: none;
+				padding: 1px;
+			}
+			
+			.layui-input-clear:hover {
+				background-color: #FF5722;
+				color: #fff;
+				border-radius: 50%;
+			}
+		.laytable-cell-1-0 {width: auto !important;}
+		.layui-table-cell .layui-form-checkbox[lay-skin=primary] {margin-top: 6px;}
+	/*//添加样式：*/
+		.table-select-icon {
+			position: absolute;
+			right: 10px;
+			line-height: 34px;
+			color: #d3d3d3
+		}
+		.table-select-selected dl {
+			display: block
+		}
+		.table-select dl {
+			position: absolute;
+			left: 0;
+			padding: 5px 0;
+			z-index: 999;
+			min-width: 100%;
+			border: 1px solid #d2d2d2;
+			overflow-y: auto;
+			background-color: #fff;
+			border-radius: 2px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+			box-sizing: border-box
+		}
+		.table-select dl dd {
+			cursor: pointer
+		}
+		.table-select dl dd,
+		.table-select dl dt {
+			padding: 0 10px;
+			line-height: 36px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis
+		}
+		.table-select dl dd.layui-this {
+			background-color: #5FB878;
+			color: #fff
+		}
+		.table-select dl dd,
+		.table-select dl dt {
+			padding: 0 10px;
+			line-height: 36px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis
+		}
+		.table-select dl dd:hover {
+			background-color: #f2f2f2
+		}
+		.widthauto{width:auto !important;}
+	</style>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb"> <a href="">首页</a> <a> <cite>商户管理</cite></a></span>
+			<a class="layui-btn layui-btn-small" style="line-height: 1.6em; margin-top: 3px; float: right" href="javascript:location.replace(location.href);" title="刷新"> <i class="layui-icon" style="line-height: 30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+
+			<div class="layui-row">
+				<form class="layui-form layui-col-md7 widthauto">
+					<div class="layui-col-md12 x-so">
+						<div class="layui-col-md12 shaixuan-qd">
+							<div class="layui-input-inline text">
+								<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+								<input id="merchantName" type="text" name="userName" placeholder="商户名称" autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-input-inline">
+								<select id="channel" name="dealersId">
+									<option value="">经销商名称</option>
+									<c:forEach items="${dealerName }" var="dealers">
+										<option value="${dealers.OperatorNumber}">${dealers.OperatorName }</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="layui-input-inline">
+								<select id="clerk" name="clerk">
+									<option value="">业务员</option>
+									<c:forEach items="${assistant }" var="assistant">
+										<option value="${assistant.SalesNumber}">${assistant.Name }</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="layui-input-inline">
+								<select id="state" name="state">
+									<option value="">状态</option>
+									<option value="0">正常</option>
+									<option value="1">禁用</option>
+								</select>
+							</div>
+							<div class="layui-input-inline text">
+								<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+								<input id="ylbNumber" type="text" name="ylbNumber" placeholder="设备码" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="layui-col-md1">
+					<button class="layui-btn layui-btn_1" lay-submit="" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+				</div>
+			</div>
+				<xblock class="layui-row">
+				<button class="layui-btn" onclick="x_admin_show('添加商户','.saleAdd',1000,800)"><i class="layui-icon"></i>添加商户</button>
+				<button class="layui-btn layui-btn_1" data-type="getCheckData"><i class="layui-icon"></i>更换销售</button>
+				<button class="layui-btn" id="btnfuyou"><i class="layui-icon"></i>进件富友</button>
+			</xblock>
+			
+			<table class="layui-hide" id="LAY_table_merchant" lay-filter="merchant"></table>
+		</div>
+		<script type="text/javascript">
+			$("input").focus(function() {
+				$(this).parent().children(".layui-input-clear").show();
+			});
+			$("input").blur(function() {
+				if($(this).val() == '') {
+					$(this).parent().children(".layui-input-clear").hide();
+				}
+			});
+			$(".layui-input-clear").click(function() {
+				$(this).parent().find('input').val('');
+				$(this).hide();
+			});
+			$(function(){
+				$("#btnfuyou").click(function(){
+					$.ajax({
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						url:'.getxdlfu',
+						success:function(data){
+							var xdlUrl = "http://192.168.1.149:8080/hongsou-smplat/httpClient";
+							if(data.length>0){
+								for(var i=0;i<data.length;i++){
+									var ShopNumber = data[i].ShopNumber;
+									var UserNumber = data[i].UserNumber;
+									console.log(i);
+									$.ajax({
+										data:{ShopNumber : ShopNumber,UserNumber : UserNumber,xdlUrl:xdlUrl},
+										dataType:'json',//服务器返回json格式数据
+										type:'post',//HTTP请求类型
+										url:'.xdldata',
+										success:function(data){
+											console.log("进件完成"+i);
+										}
+									}) 
+								}
+							}
+						}
+					})
+				})
+			})
+		</script>
+
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-xs" lay-event="modification" title="编辑">编辑</a>
+			<a class="layui-btn layui-btn-xs" lay-event="ylbfunction" title="云喇叭管理">云喇叭管理</a>
+			<a class="layui-btn layui-btn-xs" lay-event="feilvSettings" title="费率设置">费率设置</a>
+			<a class="layui-btn layui-btn-xs" lay-event="bandqrcode">绑定二维码</a>
+			<a class="layui-btn layui-btn-xs" lay-event="Withdrawal">提现记录</a>
+			{{# if(d.zhifuqudao != "fuyou"){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="modefaction" title="富友进件资料补充">富友进件资料补充</a>
+			{{# } }}
+		</script>
+		<script type="text/html" id="tuikuangtool">
+			{{# if(d.RefundPermissionsInt == 0){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="disableRefundableAuthority">已启用退款</a>
+			{{# } }} {{# if(d.RefundPermissionsInt == 1){ }}
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="openRefundableAuthority">已禁用退款</a>
+			{{# } }}
+		</script>
+		<script type="text/html" id="zhuangtaitool">
+			{{# if(d.TypeE == 1){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="open" title="禁用">已禁用</a>
+			{{# } }} {{# if(d.TypeE == 0){ }}
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="disable" title="启用">已启用</a>
+			{{# } }}
+		</script>
+		<script type="text/html" id="chetool">
+		<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox">
+		<input type="checkbox" name="layTableCheckbox" lay-skin="primary" value="{{d.userNumber}}">
+		<div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div>
+		</script>
+		<script>
+			// 			// 选择日期插件  
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				laydate.render({
+					elem: '#startTime', //指定元素
+					type: 'datetime'
+				});
+				laydate.render({
+					elem: '#endTime',
+					type: 'datetime'
+				});
+			});
+
+			layui.use('table', function() {
+
+				var table = layui.table,
+					form = layui.form;
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_merchant',
+					url: '.Dealers/getDealersMerchantList',
+					cellMinWidth: 80,
+					height: 'full-200',
+					method: "post",
+					page: true,
+					id: 'merchantlist',
+					cols: [
+						[{
+							toolbar: "#chetool",
+							title:'<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" lay-skin="primary" lay-filter="layTableAllChoose"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div>',
+							width: 48
+						},{
+							field: 'CompanyName',
+							title: '商户名称'
+						}, {
+							field: 'NAME',
+							title: '所属销售'
+						},  {
+							field: 'Cell',
+							title: '管理员电话'
+						},  {
+							field: 'zhifuName',
+							title: '支付通道'
+						}, {
+							field: 'CreateTime',
+							title: '创建时间'
+						}, {
+							field: 'ylbNumber',
+							title: '云喇叭'
+						},{
+							field: 'operation',
+							title: '操作',
+							width: '30%',
+							toolbar: "#tool"
+						}]
+					]
+				});
+
+				// 根據條件重载表格
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							// 获取上面查询框的值
+							var channel = $('#channel').val(); // 经销商标号
+							var merchantName = $('#merchantName').val(); // 商户名称
+							var state = $('#state').val();
+							var clerk = $('#clerk').val(); // 业务员编号
+							var ylbNumber = $("#ylbNumber").val();
+
+							//执行重载
+							table.reload('merchantlist', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									channel: channel,
+									merchantName: merchantName,
+									state: state,
+									clerk: clerk,
+									ylbNumber:ylbNumber
+								}
+							});
+						},getCheckData:function(){
+							 $.ajax({
+								type: "post",
+								url: ".config/getSaleList",
+								async: true,
+								success: function(data) {
+									//拼接销售列表
+									var html='<div class="layui-inline"><label class="layui-form-label">搜索选择框</label><div class="layui-input-inline"><select id="SaleList" lay-verify="required" lay-ignore><option value="">请选择销售</option>';
+									if(data.length>0){
+										for(var j=0;j<data.length;j++){
+											html+='<option value="'+data[j].SaleNumber+'">'+data[j].SaleName+'/'+data[j].SaleCell+'</option>'
+										}
+									}
+									html+='</select></div></div>';
+									
+									layer.open({
+										type: 1,
+										title: '更换销售',
+										area: ['720px', '500px'], //宽高
+										content: html,
+										btn: ['确认', '取消'],
+										yes: function(layero){
+											var SaleNumber = $("#SaleList option:selected").val();
+											if(SaleNumber==''){
+												layer.msg('请选择销售');
+											}else{
+												var checkStatus = table.checkStatus('merchantlist');
+												var data = checkStatus.data;
+												if(data.length=='0'){
+													layer.msg('请选择你要替换的商户',{icon: 5});
+													return;
+												}
+												// 弹出是否要删除门店
+												layer.confirm('确定要更换吗?', function(index) {
+													var checkStatus = table.checkStatus('merchantlist');
+													var udata = checkStatus.data;
+													var Total = 0;
+													var checkedstr='';
+													if(udata.length>0){
+														for(var i=0;i<udata.length;i++){
+															if(checkedstr==''){
+																checkedstr = udata[i].UserNumber;
+															}else{
+																checkedstr +='|'+udata[i].UserNumber;
+															}
+														}
+													}
+													
+													 $.ajax({
+														type: "post",
+														url: ".DealersMerchant/putReplaceSale",
+														async: true,
+														data: {checkedstr:checkedstr,oldSaleNumber:udata[0].oldSaleNumber,newSaleNumber:SaleNumber,Total:Total},
+														success: function(data) {
+															if(data.result == "success") {
+																layer.close(index);
+																var channel = $('#channel').val(); // 经销商标号
+																var merchantName = $('#merchantName').val(); // 商户名称
+																var state = $('#state').val();
+																var clerk = $('#clerk').val(); // 业务员编号
+																parent.layui.table.reload('merchantlist',{page:{curr:1},where:{channel:channel,merchantName:merchantName,state:state,clerk:clerk}});
+															}else{
+																layer.close(index);
+																layer.msg(data.msg);
+															}
+														}
+													});
+												})
+											}
+								        },btn2: function(){
+								        	layer.closeAll();
+								        }
+									});
+								}
+							});
+						}
+					};
+				table.on('tool(merchant)', function(obj) {
+					var data = obj.data;
+					if(obj.event === 'type') {
+						//显示下拉框框
+						type_select.show({
+							//设置当前选择的id
+							value: obj.data.Buzhu,
+						}, this, function(e) {
+							//回调函数 返回结果
+							obj.data.Buzhu = e.value;
+							obj.update(obj.data);
+							table.render();
+							
+							$.ajax({
+								type: "post",
+								url: ".DealersMerchant/putbuzhu",
+								async: true,
+								data: {MerchantsNumber:data.UserNumber,buzhu:e.value},
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('设置成功 ', {
+											icon: 6
+										});
+										var channel = $('#channel').val(); // 经销商标号
+										var merchantName = $('#merchantName').val(); // 商户名称
+										var state = $('#state').val();
+										var clerk = $('#clerk').val(); // 业务员编号
+										layui.table.reload('merchantlist',{page:{curr:1},where:{channel:channel,merchantName:merchantName,state:state,clerk:clerk}});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+								}
+							});
+						});
+					}
+					if(obj.event === 'bandqrcode') {
+						// 跳转商户详情页面
+						layer.open({
+							type: 2,
+							title: '绑定二维码',
+							area: ['40%', '40%'], //宽高
+							content: '.deviceshop/goshopbandqrcode?ShopNumber=' + data.ShopNumber
+						});
+					}
+
+					if(obj.event === 'particulars') {
+						// 跳转商户详情页面
+						layer.open({
+							type: 2,
+							title: '商户详情',
+							area: ['90%', '90%'], //宽高
+							content: '.saleDetail?ShopNumber='+ data.ShopNumber+'&UserNumber='+data.UserNumber
+						});
+					} else if(obj.event == 'modification') {
+
+						// 跳转修改商户页面
+						layer.open({
+							type: 2,
+							title: '修改商户',
+							area: ['90%', '90%'], //宽高
+							content: '.saleUpdate?ShopNumber='+ data.ShopNumber+'&UserNumber='+data.UserNumber
+						});
+
+					} else if(obj.event == 'modefaction'){
+						// 跳转修改商户页面
+						layer.open({
+							type: 2,
+							title: '富友进件补充资料',
+							area: ['90%', '90%'], //宽高
+							content: '.saleUpdatefuyou?ShopNumber='+ data.ShopNumber+'&UserNumber='+data.UserNumber
+						});
+					}else if(obj.event == 'disable') {
+
+						var mydata = {
+							"merchantNumber": data.UserNumber,
+							"merchantStatus": 1
+						}
+
+						// 禁用商户
+						layer.confirm('真的要禁用么?', function(index) {
+
+							// 发送请求,将商户进行禁用
+							$.ajax({
+								type: "post",
+								url: ".DealersMerchant/disableMerchant",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('禁用成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+
+									var channel = $('#channel').val(); // 经销商标号
+									var merchantName = $('#merchantName').val(); // 商户名称
+									var state = $('#state').val();
+									var clerk = $('#clerk').val(); // 业务员编号
+									layui.table.reload('merchantlist',{page:{curr:1},where:{channel:channel,merchantName:merchantName,state:state,clerk:clerk}});}
+							});
+							layer.close(index);
+						});
+
+					} else if(obj.event == 'open') {
+
+						var mydata = {
+							"merchantNumber": data.UserNumber,
+							"merchantStatus": 0
+						}
+
+						// 禁用门店
+						layer.confirm('真的要启用么?', function(index) {
+
+							// 发送请求,将商户进行启用
+							$.ajax({
+								type: "post",
+								url: ".DealersMerchant/disableMerchant",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('启用成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+
+									// 刷新页面
+									var channel = $('#channel').val(); // 经销商标号
+									var merchantName = $('#merchantName').val(); // 商户名称
+									var state = $('#state').val();
+									var clerk = $('#clerk').val(); // 业务员编号
+									layui.table.reload('merchantlist',{page:{curr:1},where:{channel:channel,merchantName:merchantName,state:state,clerk:clerk}});}
+							});
+							layer.close(index);
+						});
+
+					} else if(obj.event == 'paymentSettings') {
+
+						// 跳转商户配置页面
+						layer.open({
+							type: 2,
+							title: '参数配置',
+							area: ['90%', '90%'], //宽高
+							content: '.DealersMerchant/getMerchantConfigurationPage?merchantNumber=' + data.UserNumber+'&ShopNumber='+data.ShopNumber
+						});
+
+					} else if(obj.event =='feilvSettings'){
+						// 跳转商户配置页面
+						layer.open({
+							type: 2,
+							title: '费率配置',
+							area: ['90%', '90%'], //宽高
+							content: '.Parameter/getfeilvage?UserNumber=' + data.UserNumber+'&ShopNumber='+data.ShopNumber+'&SaleNumber='+data.oldSaleNumber
+						});
+					}else if(obj.event == 'openRefundableAuthority') {
+						var merchantNumber = data.UserNumber;
+						var data = {
+							"merchantNumber": merchantNumber,
+							"state": 0
+						}
+						layer.confirm('真的要启用么?', function(index) {
+							// 发送请求,将本店员或店长的功能进行启用
+							$.ajax({
+								type: "post",
+								url: ".DealersMerchant/putMerchantRefundPermissions",
+								async: true,
+								data: data,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('启用成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+
+									var channel = $('#channel').val(); // 经销商标号
+									var merchantName = $('#merchantName').val(); // 商户名称
+									var state = $('#state').val();
+									var clerk = $('#clerk').val(); // 业务员编号
+									layui.table.reload('merchantlist',{page:{curr:1},where:{channel:channel,merchantName:merchantName,state:state,clerk:clerk}});}
+							});
+
+							layer.close(index);
+						});
+					} else if(obj.event == 'disableRefundableAuthority') {
+						var merchantNumber = data.UserNumber;
+						var data = {
+							"merchantNumber": merchantNumber,
+							"state": 1
+						}
+
+						layer.confirm('真的要禁用么?', function(index) {
+
+							// 发送请求,将本店员或店长的功能进行禁用
+							$.ajax({
+								type: "post",
+								url: ".DealersMerchant/putMerchantRefundPermissions",
+								async: true,
+								data: data,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('禁用成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+
+									var channel = $('#channel').val(); // 经销商标号
+									var merchantName = $('#merchantName').val(); // 商户名称
+									var state = $('#state').val();
+									var clerk = $('#clerk').val(); // 业务员编号
+									layui.table.reload('merchantlist',{page:{curr:1},where:{channel:channel,merchantName:merchantName,state:state,clerk:clerk}});}
+							});
+							layer.close(index);
+						});
+					}else if(obj.event == 'deldealer'){
+						var merchantNumber = data.UserNumber;
+						var data = {
+							"merchantNumber": merchantNumber,
+							"state": 1
+						}
+
+						layer.confirm('确定要删除该商户吗?', function(index) {
+							// 发送请求,将本店员或店长的功能进行禁用
+							$.ajax({
+								type: "post",
+								url: ".DealersMerchant/putMerchantRefundPermissions",
+								async: true,
+								data: data,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('删除成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+									var channel = $('#channel').val(); // 经销商标号
+									var merchantName = $('#merchantName').val(); // 商户名称
+									var state = $('#state').val();
+									var clerk = $('#clerk').val(); // 业务员编号
+									layui.table.reload('merchantlist',{page:{curr:1},where:{channel:channel,merchantName:merchantName,state:state,clerk:clerk}});}
+							});
+							layer.close(index);
+						});
+					}else if(obj.event == 'Withdrawal'){
+						// 跳转商户详情页面
+						layer.open({
+							type: 2,
+							title: '提现记录',
+							area: ['90%', '90%'], //宽高
+							content: '.Withdrawal/gettixianPage'
+						});
+					}else if(obj.event == 'ylbfunction'){
+						// 跳转商户详情页面
+						layer.open({
+							type: 2,
+							title: '云喇叭管理',
+							area: ['80%', '80%'], //宽高
+							content: '.yunlb/ylbList?UserNumber='+data.UserNumber+'&ShopNumber='+data.ShopNumber
+						});
+					}
+				});
+
+				$('.layui-row .layui-btn_1').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+				
+				//这里才是重点...
+				(function($, doc, o) {
+					var tk;
+					var obj;
+					var otd;
+					var callback;
+					o.show = function(h, e, c) {
+						
+						callback = c;
+						var d = doc.getElementById('table_type_select');
+						if(d) {
+							d.remove();
+						}
+						otd = e;
+						var s;
+						if(h.value =="0"){
+							s = '<div id="table_type_select" class="table-select"><dl class="layui-anim layui-anim-upbit" style="padding: 0px;top: 0px"><dd lay-value="0" class="layui-this">关闭 </dd><dd lay-value="1">0费率 </dd></dl></div>';
+						}else{
+							s = '<div id="table_type_select" class="table-select"><dl class="layui-anim layui-anim-upbit" style="padding: 0px;top: 0px"><dd lay-value="0">关闭 </dd><dd lay-value="1" class="layui-this">0费率 </dd></dl></div>';
+						}
+						
+						otd.innerHTML = s + otd.innerHTML;
+						obj = doc.getElementById('table_type_select');
+						console.log($(obj));
+						
+						obj.addEventListener('click', function(e) {
+							var value = $(e.srcElement).attr('lay-value');
+							var text = e.srcElement.innerHTML;
+							obj.remove();
+							callback({
+								value: value,
+								text: text
+							});
+						});
+					}
+				})($, document, window.type_select = {});
+			});
+		</script>
+	</body>
+</html>

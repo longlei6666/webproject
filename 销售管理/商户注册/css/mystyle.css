@@ -1,0 +1,35 @@
+
+/*mui.css重置样式*/
+.mui-content{background: #fff;}
+.mui-bar{background: rgb(47,164,234);}
+.mui-bar .mui-title{color: #fff;}
+.mui-bar .mui-icon,.mui-bar .mui-icon:active{opacity: 1;color: #fff;}
+.mui-bar .mui-btn-link{color: #fff;}
+.mui-h5, h5{margin: 10px;}
+.mui-input-group .mui-input-row{height: auto;}
+.mui-input-row label{font-size: 14px;padding-right: 0;}
+.mui-input-row label~input{font-size: 14px;text-align: right;padding-right: 30px;}
+.mui-input-group:after{background: transparent;}
+.mui-input-row .mui-input-clear~.mui-icon-clear{right: -5px;}
+.mui-input-row label~textarea{text-align: right;padding-right: 30px;}
+
+/*公用样式*/
+.marginleft15{margin-left: 10px;}
+
+/*销售助手首页*/
+.mui-grid-view.mui-grid-9{background: #fff;}
+
+.nextstep {display:block;width: 70%;margin: 10px auto;}
+.mui-input-group-body{margin-top: 15px;}
+.customradio{width: 65%;float: left;}
+.customradio .mui-input-row:after{left: 0;}
+.customradio .mui-radio.mui-left input[type=radio]{left: 0;top: calc(50% - 13px);}
+.customradio .mui-radio.mui-left label{padding-left: 40px;}
+
+.image-list-body img{height: 100%;}
+.zzzz .mui-input-row label{width: 100%;}
+
+/*商户信息*/
+.mui-input-row .beizhuk {border: 1px solid rgba(0,0,0,.2);border-radius: 5px;}
+.mentouz{padding-left: 15px;}
+.mentouz img{height: 70px;}

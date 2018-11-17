@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>经销商管理平台</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+	</head>
+
+	<body>
+		<table cellspacing="0" cellpadding="0" border="0" class="layui-table layui-table-xq" lay-even="">
+			<tbody>
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">订单编号:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.orderNumber }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">店员姓名:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.clerkName }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">结算金额:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.settlementAmount }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">店铺费率:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.ShopRate }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">店铺手续费:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.ShopFee }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">交易时间:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.tradingTime }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">所属门店:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.ShopName }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">交易金额:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.transactionAmount }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">支付方式:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.transactionType }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td data-field="id">
+						<div class="layui-table-cell laytable-cell-1-id">订单状态:</div>
+					</td>
+					<td data-field="username">
+						<div class="layui-table-cell laytable-cell-1-username">
+							<c:forEach items="${data }" var="bill">
+								${bill.dealType }
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+
+</html>

@@ -1,0 +1,23 @@
+.layui-tab{overflow: hidden;margin: 0;}
+.layui-tab-content{height: 500px;}
+.layui-tab-content .layui-table tbody{height: 500px !important;}
+/*.layui-tab-content .layui-table input{width: 150px;}*/
+.layui-tab-title{width: 110px;height:auto;float: left;border-bottom: none;}
+.layui-tab-title::-webkit-scrollbar {display:none}
+.layui-tab-title li{display: block;border:none;padding: 0;}
+.layui-tab-title li.layui-this{border: none ;}
+.layui-tab-title li.layui-this:after{height: 40px;border: none;}
+.layui-tab-brief>.layui-tab-more li.layui-this:after, .layui-tab-brief>.layui-tab-title .layui-this:after{border-bottom:0;border: 1px;border-style: solid;border-color:#e6e6e6;border-right-color: #fff;border-radius: 4px 0 0 4px;}
+.layui-tab-title span{display: none;}
+
+.layui-col-md4.layui-col-sm4 .layui-form-item{border-left: 1px solid #e6e6e6;border-bottom: 1px solid #e6e6e6;    box-shadow: 0 2px 5px 0 rgba(0,0,0,.1);}
+.layui-tab-content{width: calc(100% - 110px);float: right;padding: 0;}
+.layui-tab-item.layui-show{margin-top: -1px;margin-right: -1px;}
+.layui-table{margin: 0;}
+.layui-form-item .layui-elem-quote{margin-bottom: 0;margin-left: -1px;}
+.choselist{height: 449px;overflow: auto;}
+.choselist li{width: 100%;position: relative;border-bottom: 1px solid #e6e6e6;padding:5px 10px;padding-left:15px;box-sizing: border-box;}
+/*.choselist li:last-child{border-bottom:none;}*/
+.choselist li .chosen{font-size: 16px;margin-bottom: 5px;}
+.choselist li p span{width: 60px;display: inline-block;color: #999;}
+.choselist li i{position: absolute;top: calc(50% - 8px);right: 15px;}

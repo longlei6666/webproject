@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style-qd.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<style type="text/css">
+			.index-zs .layui-col-md5 {
+				width: 20%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<blockquote class="layui-elem-quote">管理首页</blockquote>
+			<div class="layui-row index-zs">
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">账户余额（元）</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.accountBalance }</span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">提现中余额（元）</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.withdrawalAmountIng }</span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">已提现金额（元）</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.withdrawalAmount }</span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">已结算余额（元）</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.settlementAmount }</span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">未结算余额（元）</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.outstandingAmount }</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			<div class="layui-row index-zs">
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">商户数</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${list[0].Number }</span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">交易笔数(总数)</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${list[0].ZTransactionNumber }(支付宝)</span>
+						</div>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${list[0].WTransactionNumber }(微信)</span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">商家收入(总数)</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${list[0].TransactionNumber }</span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">商家退款(总数)</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${list[0].ZRefundNumber }(支付宝)</span>
+						</div>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${list[0].WRefundNumber }(微信)</span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md5">
+					<div class="homelist">
+						<p class="homelistitle">佣金</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;">${list[0].TransactionMoney }</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			<div class="layui-row layui-col-space30">
+				<div class="layui-col-md6">
+					<fieldset class="layui-elem-field layui-field-title">
+						<legend>结算记录</legend>
+					</fieldset>
+					<table class="layui-hide" id="LAY_table_SettlementRecords" lay-filter="Records"></table>
+				</div>
+				<div class="layui-col-md6">
+					<fieldset class="layui-elem-field layui-field-title">
+						<legend>提现记录</legend>
+					</fieldset>
+					<table class="layui-hide" id="LAY_table_WithdrawalRecord" lay-filter="Record"></table>
+				</div>
+			</div>
+		</div>
+		<script>
+			
+			layui.use('table', function() {
+
+				var table = layui.table;
+
+				//方法级渲染(结算记录)
+				table.render({
+					elem: '#LAY_table_SettlementRecords',
+					url: '.homePage/getSalesmanList',
+					method: "post",
+					height: 'full-270',
+					cols: [
+						[{
+							field: 'SettlementDate',
+							title: '日期',
+							align: 'center'
+						}, {
+							field: 'jiaoyijine',
+							align: 'center',
+							title: '金额'
+						}, {
+							field: 'SettlementTypeC',
+							align: 'center',
+							title: '结算状态'
+						}]
+					]
+				});
+
+				//方法级渲染(提现记录)
+				table.render({
+					elem: '#LAY_table_WithdrawalRecord',
+					url: '.homePage/getWithdrawalList',
+					method: "post",
+					height: 'full-270',
+					cols: [
+						[{
+							field: 'SalesNumber',
+							title: '日期',
+							align: 'center'
+						}, {
+							field: 'Name',
+							align: 'center',
+							title: '金额'
+						}, {
+							field: 'Cell',
+							align: 'center',
+							title: '卡号'
+						}, {
+							field: 'SalesTypeC',
+							align: 'center',
+							title: '姓名'
+						}, {
+							field: 'SalesTypeC',
+							align: 'center',
+							title: '开户行'
+						}]
+					]
+				});
+
+			});
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+		        <a href="">首页</a>
+		        <a href="">会员管理</a>
+		        <a><cite>优惠卷核销</cite></a>
+		      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form layui-col-md4 layui-col-sm4 layui-col-xs4 x-so">
+					<div class="layui-input-inline">
+						<select id="cardVoucherName">
+							<option value="">卡券类型</option>
+							<option value="满减券">满减券</option>
+							<option value="立减券">立减券</option>
+							<option value="折扣券">折扣券</option>
+							<option value="随机券">随机券</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select id="type">
+							<option value="">状态</option>
+							<option value="0">启用</option>
+							<option value="1">禁用</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" id="code" placeholder="Code码" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" id="writeOffMember" placeholder="核销员" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" id="startTime" placeholder="开始时间" autocomplete="off" class="layui-input chooseTime">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" id="endTime" placeholder="结束时间" autocomplete="off" class="layui-input chooseTime">
+					</div>
+					<button class="layui-btn" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+				</div>
+			</div>
+			<table class="layui-hide" id="vip_card" lay-filter="vip_card"></table>
+		</div>
+		<script type="text/html" id="toolbar">
+			{{# if(d.useType == 1){ }}
+			<a class="layui-btn layui-btn-danger layui-btn-xs" id="backout" lay-event="backout">撤销</a>
+			{{# } }} {{# if(d.useType == 0){ }} - {{# } }}
+		</script>
+		<script>
+			function changeRes(res) {
+				var res = res
+				if(res.length == 0){
+					return
+				}
+				for(var i = 0; i < res.length; i++) {
+					if(res[i].insertTime && res[i].useTime != "") {
+						res[i].insertTime = res[i].insertTime.split(' ')[0]
+						res[i].useTime = res[i].useTime.split(' ')[0]
+					}
+					if(res[i].useType == 0) {
+						res[i].useTypea = '未核销'
+					} else if(res[i].useType == 1) {
+						res[i].useTypea = '已核销'
+					}
+				}
+				return res
+			}
+			var serverUrl = window.parent.serverUrl
+			var userNumber = window.parent.userNumber
+			layui.use(['laydate', 'table', 'form'], function() {
+				var laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form;
+
+				//方法级渲染  
+				table.render({
+					url: serverUrl + 'coupon/selectCouponWriteOff?userNumber=' + userNumber,
+					elem: '#vip_card',
+					height: 'full-210',
+					id: 'vip_cancelList',
+					parseData: function(res) { //res 即为原始返回的数据
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.count, //解析数据长度
+							"data": changeRes(res.result), //解析数据列表
+						};
+					},
+					cols: [
+						[{
+							align: 'center',
+							field: 'couponDistributionName',
+							title: '优惠卷名称',
+							sort: true,
+							width: 150
+						}, {
+							align: 'center',
+							field: 'receiveMode',
+							title: '领取方式',
+							sort: true,
+							width: 100
+						}, {
+							align: 'center',
+							field: 'name',
+							title: '领取人',
+							sort: true,
+							width: 100
+						}, {
+							align: 'center',
+							field: 'code',
+							title: 'code码',
+							width: 150
+						}, {
+							align: 'center',
+							field: 'cardVoucherName',
+							title: '卡券类型',
+							width: 80
+						}, {
+							align: 'center',
+							field: 'useTypea',
+							title: '状态',
+							width: 80
+						}, {
+							align: 'center',
+							field: 'insertTime',
+							title: '领取时间',
+							sort: true,
+							width: 150
+						}, {
+							align: 'center',
+							field: 'useTime',
+							title: '使用时间',
+							sort: true,
+							width: 150
+						}, {
+							align: 'center',
+							field: 'writeOffMember',
+							title: '核销员',
+							sort: true,
+							width: 80
+						}, {
+							align: 'center',
+							field: 'writeOffShop',
+							title: '核销门店',
+							sort: true,
+							width: 200
+						}, {
+							align: 'center',
+							title: '操作',
+							toolbar: '#toolbar',
+							minWidth: 80
+						}]
+					],
+					page: {
+						layout: ['prev', 'page', 'next', 'count', 'skip'],
+					},
+					done: function(res, curr, count) {
+						console.log(res)
+						if(res.code == 500) {
+							layer.msg("数据列表为空")
+						}
+					}
+				});
+
+				//根据条件查询列表
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							var cardVoucherName = $('#cardVoucherName').val();
+							var type = $('#type').val();
+							var code = $('#code').val();
+							var writeOffMember = $('#writeOffMember').val();
+							var startTime = $('#startTime').val();
+							var endTime = $('#endTime').val();
+							//执行重载
+							table.reload('vip_cancelList', {
+								url: serverUrl + 'coupon/selectCouponWriteOff?userNumber=' + userNumber,
+								where: {
+									cardVoucherName: cardVoucherName,
+									type: type,
+									code: code,
+									writeOffMember: writeOffMember,
+									startTime: startTime,
+									endTime: endTime
+								}
+							});
+						}
+					};
+				$('.x-so .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+
+				//监听工具条
+				table.on('tool(vip_card)', function(obj) {
+					var data = obj.data;
+					if(obj.event === 'backout') {
+						var mydata = {
+							couponDistributionNumber: data.couponDistributionNumber,
+							code: data.code
+						}
+						layer.confirm('真的撤销么', {
+							icon: 3,
+							title: '提示'
+						}, function(index) {
+							// 发送请求
+							$.ajax({
+								type: "post",
+								url: serverUrl + "coupon/couponUndo",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.code == 0) {
+										layer.close(index);
+										layer.msg("核销记录撤销成功！");
+										// 刷新页面
+										layui.table.reload('vip_cancelList');
+									} else if(data.code == 1) {
+										layer.msg("核销记录撤销失败！");
+									}
+								}
+							});
+						});
+					}
+				});
+
+				//筛选开始时间
+				laydate.render({
+					elem: '#startTime',
+					value: new Date(new Date() - 1000 * 60 * 60 * 24 * 30)
+				});
+				//筛选结束时间
+				laydate.render({
+					elem: '#endTime',
+					value: new Date()
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

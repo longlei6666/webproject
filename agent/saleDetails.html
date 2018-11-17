@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title></title>
+	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./fonts/iconfont/iconfont.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<link rel="stylesheet" href="./css/style.css" />
+		<style>
+			.layui-form-item .layui-input-inline {
+				width: 40%;
+			}
+			
+			.layui-input-inline {
+				line-height: 38px;
+			}
+		</style>
+</head>
+<body>
+	<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form">
+					<div class=" layui-col-md12">
+						<div class="grid-demo layui-row">
+							<!--基本资料-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>商户信息</blockquote>
+							<div class="layui-col-md12">
+								<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+									<legend>商户类型</legend>
+								</fieldset>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									商户类型
+					            </label>
+									<div class="layui-input-inline">
+										${userList[0].AccountType }
+									</div>
+								</div>
+							</div>
+							<div class="layui-col-md12">
+								<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+									<legend>进件类型</legend>
+								</fieldset>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									进件类型
+					            </label>
+									<div class="layui-input-inline">
+										${userList[0].BillType }
+									</div>
+								</div>
+							</div>
+							<div class="layui-col-md6">
+
+								<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+									<legend>个人信息</legend>
+									<!--<legend>企业信息 </legend>-->
+								</fieldset>
+
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									支付宝账号
+					            </label>
+									<div class="layui-input-inline">
+										${userList[0].Alipay }
+									</div>
+								</div>
+
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									微信商户号
+								</label>
+									<div class="layui-input-inline">
+										${userList[0].WeChatAccount }
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>管理员名称
+								</label>
+									<div class="layui-input-inline">
+										${userList[0].UserName }
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>管理员手机号
+								</label>
+									<div class="layui-input-inline">
+										${userList[0].UserCell }
+									</div>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-red">（作为商户登录帐号）</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>联系邮箱
+								</label>
+									<div class="layui-input-inline">
+										${userList[0].UserEmail }
+									</div>
+								</div>
+								
+								
+								<!--企业信息-->
+								<div class="qiyek"  <c:if test="${userList[0].AccountType eq '个体'}"> style="display:none"</c:if>>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>企业名称
+								</label>
+										<div class="layui-input-inline">
+											${userList[0].CompanyName }
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>企业Logo
+								</label>
+										<div class="layui-upload">
+											<div class="layui-upload-list" >
+												<img class="layui-upload-img" src="${userList[0].CompanyLogo}">
+											</div>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>企业简称
+								</label>
+										<div class="layui-input-inline">
+											${userList[0].CompanySynopsis }
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									售卖类商品描述
+								</label>
+										<div class="layui-input-inline">
+											${userList[0].CommodityDescription }
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>联系地址
+								</label>
+										<div class="layui-input-inline shengshiqu">
+											${userList[0].ShopProvince}${userList[0].ShopCity}${userList[0].UserArea}
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>详细地址
+								</label>
+										<div class="layui-input-inline">
+											${userList[0].UserAddress}
+										</div>
+									</div>
+								</div>
+								
+								<!--企业信息-->
+
+							</div>
+							<div class="layui-col-md6">
+
+								<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+									<legend>门店信息</legend>
+								</fieldset>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>门店名称
+								</label>
+									<div class="layui-input-inline">
+										${userList[0].ShopName}
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>门店地址
+								</label>
+									<div class="layui-input-inline shengshiqu">
+										${userList[0].ShopProvince}${userList[0].ShopCity}${userList[0].UserArea}
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>详细地址
+								</label>
+									<div class="layui-input-inline">
+										${userList[0].ShopAddress}
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									门店电话
+								</label>
+									<div class="layui-input-inline">
+										${userList[0].ShopCell}
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label uploadtitle">
+					                <span class="x-red">* </span>门头照
+					            </label>
+									<div class="layui-upload">
+										<div class="layui-upload-list">
+											<img class="layui-upload-img" src="${userList[0].ShopDoorheadPhoto}">
+										</div>
+							
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>联系手机号
+								</label>
+									<div class="layui-input-inline">
+										${userList[0].ClerkCell}
+									</div>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-red">（作为门店登录帐号）</span>
+									</div>
+								</div>
+								<div class="layui-form-item layui-form-text">
+									<label class="layui-form-label">备注1</label>
+									<div class="layui-input-inline">
+										${userList[0].Remarks1}
+									</div>
+								</div>
+								<div class="layui-form-item layui-form-text">
+									<label class="layui-form-label">备注2</label>
+									<div class="layui-input-inline">
+										${userList[0].Remarks2}
+									</div>
+								</div>
+								<!--基本资料-->
+							</div>
+
+						</div>
+						<div class=" layui-col-md12">
+							<div class="grid-demo layui-row">
+
+								<!--银行卡信息-->
+								<blockquote class="layui-elem-quote"><i class="iconfont icon-yinxingqia"></i>银行卡信息</blockquote>
+								<div class="layui-col-md6">
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									账户类型
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].AccountType }
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label uploadtitle">
+									银行卡正面照
+								</label>
+										<div class="layui-upload">
+											<div class="layui-upload-list">
+												<img class="layui-upload-img" src="${bankList[0].BankCardPositive}">
+											</div>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label uploadtitle">
+									银行卡反面照
+								</label>
+										<div class="layui-upload">
+											<div class="layui-upload-list">
+												<img class="layui-upload-img" src="${bankList[0].BankCardOpposite}">
+											</div>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label uploadtitle">
+									开户许可证照
+								</label>
+										<div class="layui-upload">
+											<div class="layui-upload-list">
+												<img class="layui-upload-img" src="${bankList[0].HoldID}">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="layui-col-md6">
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>开户银行
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].OpeningBank}
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>开户支行
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].OpeningBranch}
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>银行卡号
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].BankCard}
+										</div>
+									</div>
+									<!--银行-个人-->
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>持卡人姓名
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].CardHoldingName}
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>身份证号码
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].IdNumber}
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									银行预留号码
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].ReserveCell}
+										</div>
+									</div>
+									<!--银行-个人-->
+									<!--银行-企业-->
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>公司名称
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].CompanyName}
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>联系人姓名
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].ContactsName}
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label for="username" class="layui-form-label">
+									联系人身份证
+								</label>
+										<div class="layui-input-inline">
+											${bankList[0].ContactsID}
+										</div>
+									</div>
+									<!--银行-企业-->
+									<!--银行卡信息-->
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+					<div class=" layui-col-md12">
+						<div class="grid-demo">
+							<!--执照信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-zhizhao"></i>执照信息</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>注册地址
+								</label>
+								<div class="layui-input-inline shengshiqu">
+									${zhiList[0].RegisteredAddress }
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>商家经营类目
+								</label>
+								<div class="layui-input-inline shengshiqu">
+									${zhiList[0].IndustryType }
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>执照号码
+								</label>
+								<div class="layui-input-inline">
+									${zhiList[0].BusinessLicense }
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									执照有效期
+								</label>
+								<div class="layui-input-inline">
+									${zhiList[0].BusinessLicenseTime }
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>营业执照照片
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" src="${zhiList[0].BusinessLicensePhoto}" >
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>企业经营范围
+								</label>
+								<div class="layui-input-inline">
+									${zhiList[0].Scope }
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>执照地址
+								</label>
+								<div class="layui-input-inline shengshiqu">
+									${zhiList[0].Province }${zhiList[0].City}${zhiList[0].Areas}
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label typetitlel">
+									组织机构代码证号
+								</label>
+								<div class="layui-input-inline">
+									${zhiList[0].OrganizationStructure }
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>组织机构代码证图
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" src="${zhiList[0].OrganizationStructurePhoto}">
+									</div>
+								</div>
+							</div>
+							<!--执照信息-->
+
+							<!--法人信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-faren"></i>法人信息</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>法人姓名
+								</label>
+								<div class="layui-input-inline">
+									${faList[0].LegalPersonName }
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>证件类型
+								</label>
+								<div class="layui-input-inline">
+									${faList[0].CertificatesType }
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>法人身份证号
+								</label>
+								<div class="layui-input-inline">
+									${faList[0].LegalPersonID}
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>法人证件正面照
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" src="${faList[0].LegalPersonIDPositive}">
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>法人证件背面照
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" src="${faList[0].LegalPersonIDOpposite}">
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>法人手持身份证
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" src="${faList[0].LegalPersonHoldID}">
+									</div>
+								</div>
+							</div>
+							<!--法人信息-->
+
+							<!--支付扣费标准-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-group3"></i>支付通道与费率 </blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>支付通道
+								</label>
+								<div class="layui-input-inline">
+									${rateList[0].BankLogoC}
+								</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>支付宝费率
+								</label>
+								<div class="layui-input-inline">
+									${rateList[0].RateC }
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>微信费率
+								</label>
+								<div class="layui-input-inline">
+									${vxRateList[0].RateC}
+								</div>
+							</div>
+							<!--支付扣费标准-->
+						</div>
+					</div>
+				</form>
+
+
+			</div>
+			
+		</div>
+</body>
+</html>

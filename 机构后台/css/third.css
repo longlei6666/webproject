@@ -1,0 +1,19 @@
+body{padding: 20px;}
+.col-body{box-shadow: 0 10px 40px 0 rgba(33,33,33,.13);background: #f1f1f1;}
+.grid-demo{background: #fff;padding: 20px;}
+.col-con{background: #f5f5f5;padding: 20px 0;height: 550px;}
+.meituanimg{display: block;width: 65%;margin: 0 auto;margin-bottom: 20px;}
+.shenqing{width: 65%;border: none;background: #FBBD08;color: #fff;font-size: 16px;display: block;text-align: center;line-height: 50px;letter-spacing: 1px;border-radius: 5px;margin: 0 auto;margin-bottom: 20px;}
+.shenqing:hover{color: #fff;opacity: .8;}
+.steps{width: 65%;margin:0 auto;border: 1px solid #f1f1f1;border-radius:5px;background: rgb(251,251,251);padding: 20px;box-sizing: border-box;box-shadow: 0 10px 40px 0 rgba(33,33,33,.13);}
+.steps p{margin-bottom: 10px;cursor: pointer;}
+
+/*饿了么样式*/
+.eleme .shenqing{background: rgba(40,130,200,.8);}
+
+/*支付宝样式*/
+.zhifubao{max-width: 500px;margin: 0 auto !important;}
+.zhifubao .zhifubaoimg{display: block;margin: 0 auto;margin-bottom: 20px;}
+.zhifubao .zhifuimg{display: block;margin: 0 auto;margin-bottom: 20px;height: 100px;}
+.zhifubao .shenqing{line-height: 38px;background:rgb(0,170,240);}
+.zhifubao .layui-input{width: 65%;margin:0 auto;margin-bottom: 20px;}

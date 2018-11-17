@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>鸿小搜管理中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<style>
+			.text {
+				position: relative;
+			}
+			
+			.layui-input-clear {
+				position: absolute;
+				right: 10px;
+				top: 10px;
+				cursor: pointer;
+				display: none;
+				padding: 1px;
+			}
+			
+			.layui-input-clear:hover {
+				background-color: #FF5722;
+				color: #fff;
+				border-radius: 50%;
+			}
+			
+			.x-so .layui-input-inline {
+				width: 49%;
+			}
+			.layui-table-cell .layui-form-checkbox[lay-skin=primary] {
+			    top:5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        	<a href="">业务</a>
+        	<a>
+            <cite>业务员</cite></a>
+        </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md3 layui-col-sm3 x-so">
+					<div class="layui-input-inline xx-so text">
+						<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+						<input type="text" name="phone" id="phone" placeholder="手机号" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline xx-so text">
+						<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+						<input type="text" name="name" id="name" placeholder="姓名" autocomplete="off" class="layui-input">
+					</div>
+				</form>
+				<div class=" layui-col-md1">
+					<button class="layui-btn layui-btn_1" data-type="reload">
+					<i class="layui-icon">&#xe615;</i>
+				</button>
+				</div>
+			</div>
+			<xblock class="layui-row">
+				<button class="layui-btn" onclick="x_admin_show('添加业务员','.salesmanManagement/getAddSalesmanPage',600,400)">
+	        		<i class="layui-icon"></i>添加
+	       		</button>
+	       		<button class="layui-btn layui-btn_1" data-type="getCheckData"><i class="layui-icon"></i>更换代理商</button>
+			</xblock>
+
+			<table class="layui-hide" id="LAY_table_Salesman" lay-filter="Salesman"></table>
+		</div>
+		<script type="text/javascript">
+			$("input").focus(function() {
+				$(this).parent().children(".layui-input-clear").show();
+			});
+			$("input").blur(function() {
+				if($(this).val() == '') {
+					$(this).parent().children(".layui-input-clear").hide();
+				}
+			});
+			$(".layui-input-clear").click(function() {
+				$(this).parent().find('input').val('');
+				$(this).hide();
+			});
+		</script>
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+			<a class="layui-btn layui-btn-xs" lay-event="resetPwd">修改密码</a>
+			{{# if(d.SalesType == 0){ }}
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="disable">禁用</a>
+			{{# } }} {{# if(d.SalesType == 1){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="open">开启</a>
+			{{# } }}
+			<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detele">删除</a>
+		</script>
+		<script type="text/html" id="chetool">
+		<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox">
+		<input type="checkbox" name="layTableCheckbox" lay-skin="primary" value="{{d.SalesNumber}}">
+		<div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div>
+		</script>
+		<script>
+			layui.use('table', function() {
+
+				var table = layui.table;
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_Salesman',
+					url: '.salesmanManagement/getSalesmanList',
+					method: "post",
+					height: 'full-195',
+					page: true,
+					id: 'salesmanList',
+					cols: [
+						[{
+							type: 'checkbox',
+							Width: 48
+						},{
+							field: 'SalesNumber',
+							title: '编号',
+							align: 'center'
+						}, {
+							field: 'Name',
+							align: 'center',
+							title: '姓名'
+						},{
+							field: 'dealerName',
+							align: 'center',
+							title: '所属经销商'
+						}, {
+							field: 'Cell',
+							align: 'center',
+							title: '手机号'
+						},{
+							field: 'SalesTypeC',
+							align: 'center',
+							title: '状态'
+						}, {
+							field: 'operation',
+							align: 'center',
+							title: '操作',
+							toolbar: "#tool",
+							width: '25%'
+						}]
+					]
+				});
+
+				// 根據條件重载表格
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							// 获取上面查询框的值
+							var phone = $('#phone');
+							var name = $('#name');
+
+							//执行重载
+							table.reload('salesmanList', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									phone: phone.val(),
+									name: name.val()
+								}
+							});
+						},getCheckData:function(){
+							 $.ajax({
+								type: "post",
+								url: ".dealers/getdealerList",
+								async: true,
+								success: function(data) {
+									//拼接销售列表
+									var html='<div class="layui-inline"><label class="layui-form-label">搜索选择框</label><div class="layui-input-inline"><select id="SaleList" lay-verify="required" lay-ignore><option value="">请选择代理商</option>';
+									if(data.length>0){
+										for(var j=0;j<data.length;j++){
+											html+='<option value="'+data[j].OperatorNumber+'">'+data[j].OperatorName+'/'+data[j].Tell+'</option>'
+										}
+									}
+									html+='</select></div></div>';
+									
+									layer.open({
+										type: 1,
+										title: '更换代理商',
+										area: ['720px', '500px'], //宽高
+										content: html,
+										btn: ['确认', '取消'],
+										yes: function(layero){
+											var dealerNumber = $("#SaleList option:selected").val();
+											if(dealerNumber==''){
+												layer.msg('请选择代理商');
+											}else{
+												var checkStatus = table.checkStatus('salesmanList');
+												var data = checkStatus.data;
+												if(data.length=='0'){
+													layer.msg('请选择你要替换的代理商',{icon: 5});
+													return;
+												}
+												// 弹出是否要删除门店
+												layer.confirm('确定要更换吗?', function(index) {
+													var checkStatus = table.checkStatus('salesmanList');
+													var udata = checkStatus.data;
+													var Total = 0;
+													var checkedstr='';
+													if(udata.length>0){
+														for(var i=0;i<udata.length;i++){
+															if(checkedstr==''){
+																checkedstr = udata[i].SalesNumber;
+															}else{
+																checkedstr +='|'+udata[i].SalesNumber;
+															}
+														}
+													}
+													
+													 $.ajax({
+														type: "post",
+														url: ".DealersMerchant/putReplacedealer",
+														async: true,
+														data: {checkedstr:checkedstr,olddealerNumber:udata[0].olddealerNumber,newdealerNumber:dealerNumber},
+														success: function(data) {
+															if(data.result == "success") {
+																layer.close(index);
+																// 刷新页面
+																window.location.href=window.location.href
+															}else{
+																layer.close(index);
+																layer.msg(data.msg);
+															}
+														}
+													});
+												})
+											}
+								        },btn2: function(){
+								        	layer.closeAll();
+								        }
+									});
+								}
+							});
+						}
+					};
+
+				//监听工具条
+				table.on('tool(Salesman)', function(obj) {
+					var data = obj.data;
+					var salesmanNumber = data.SalesNumber;
+					if(obj.event == 'edit') {
+						// 修改业务员信息
+						layer.open({
+							type: 2,
+							title: '业务员修改',
+							area: ['50%', '50%'], //宽高
+							content: '.salesmanManagement/getEditSalesmanPage?salesmanNumber=' + salesmanNumber,
+							end: function() {
+							}
+						});
+					} else if(obj.event == 'resetPwd') {
+
+						// 修改业务员密码
+						layer.open({
+							type: 2,
+							title: '密码修改',
+							area: ['500px', '270px'], //宽高
+							content: '.salesmanManagement/getEditSalesmanPwdPage?salesmanNumber=' + salesmanNumber,
+							end: function() {
+							}
+						});
+					} else if(obj.event == 'open') {
+
+						var myData = {
+							"salesmanNumber": salesmanNumber,
+							"state": 0
+						}
+
+						layer.confirm('确定要启用么?', function(index) {
+
+							// 发送请求,将本店员或店长的功能进行禁用
+							$.ajax({
+								type: "post",
+								url: ".salesmanManagement/putSalesmanStatus",
+								async: true,
+								data: myData,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('启用成功 ', {
+											icon: 6
+										},function(){
+											// 刷新页面
+											window.location.href=window.location.href
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+								}
+							});
+							layer.close(index);
+						});
+
+					} else if(obj.event == 'disable') {
+
+						var myData = {
+							"salesmanNumber": salesmanNumber,
+							"state": 1
+						}
+
+						layer.confirm('确定要禁用么?', function(index) {
+
+							// 发送请求,将本业务员进行禁用
+							$.ajax({
+								type: "post",
+								url: ".salesmanManagement/putSalesmanStatus",
+								async: true,
+								data: myData,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('禁用成功 ', {
+											icon: 6
+										},function(){
+											// 刷新页面
+											window.location.href=window.location.href
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+								}
+							});
+							layer.close(index);
+						});
+
+					} else if(obj.event == 'detele') {
+
+						var myData = {
+							"salesmanNumber": salesmanNumber,
+							"state": "-1"
+						}
+
+						layer.confirm('确定要删除么?', function(index) {
+
+							// 发送请求,将本业务员进行删除
+							$.ajax({
+								type: "post",
+								url: ".salesmanManagement/putSalesmanStatus",
+								async: true,
+								data: myData,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('删除成功 ', {
+											icon: 6
+										},function(){
+											// 刷新页面
+											window.location.href=window.location.href
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+								}
+							});
+							layer.close(index);
+						});
+
+					}
+				});
+
+				$('.layui-row .layui-btn_1').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+			});
+		</script>
+	</body>
+
+</html>

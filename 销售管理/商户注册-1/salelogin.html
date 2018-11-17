@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>销售助手</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/xiaoshouzhushou-login.css">
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">销售助手登录</h1>
+		</header>
+		<div class="mui-content">
+			<form id='login-form' class="mui-input-group">
+				<div class="mui-input-row">
+					<label>账号</label>
+					<!--<input type="hidden" id="QRCodeNumber" name="QRCodeNumber" value="${pd.QRCodeNumber }">-->
+					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入账号">
+				</div>
+				<div class="mui-input-row">
+					<label>密码</label>
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
+				</div>
+			</form>
+			<div class="mui-content-padded">
+				<!--<button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>-->
+				<a class="mui-btn mui-btn-block mui-btn-primary" href="index-xs.html">登录</a>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+	</body>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				//-----------------------------------------
+				document.getElementById("login").addEventListener('click', function() {
+					var check = true;
+					var account = $("#account")[0].value;
+					if(account.trim() == "") {
+						mui.alert("账号不允许为空");
+						check = false;
+						return false;
+					}
+					var password = $("#password")[0].value; //微信账号
+					if(password.trim() == "") {
+						mui.alert("密码不允许为空");
+						check = false;
+						return false;
+					}
+					check && mui.ajax('${pageContext.request.contextPath}/salesingup/login_login', {
+						data: {
+							//QRCodeNumber : $("#QRCodeNumber")[0].value,
+							username: $("#account")[0].value, //账号
+							password: $("#password")[0].value, //密码
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							if("success" == data.result) {
+								var AccountType = data.AccountType;
+								var db_UserNumber = data.UserNumber;
+								var db_ShopNumber = data.ShopNumber;
+								var db_ClerkNumber = data.ClerkNumber;
+								var UserNumber = data.UserNumber;
+								var ShopNumber = data.ShopNumber;
+								var ClerkNumber = data.ClerkNumber;
+								//var QRCodeNumber = $("#QRCodeNumber")[0].value;
+								var SalesNumber = data.msg;
+								if(data.RegistrationSteps == 1) {
+									window.location.href = '${pageContext.request.contextPath}/salesingup/goregistersale?AccountType=' + encodeURI(encodeURI(AccountType)) + '&UserNumber=' + UserNumber + '&ShopNumber=' + ShopNumber + '&ClerkNumber=' + ClerkNumber + '&db_UserNumber=' + db_UserNumber + '&db_ShopNumber=' + db_ShopNumber + '&db_ClerkNumber=' + db_ClerkNumber + '&QRCodeNumber=' + QRCodeNumber + '&SalesNumber=' + SalesNumber;
+								} else if(data.RegistrationSteps == 2) {
+									window.location.href = '${pageContext.request.contextPath}/salesingup/gosaleregistersecond?AccountType=' + encodeURI(encodeURI(AccountType)) + '&UserNumber=' + UserNumber + '&ShopNumber=' + ShopNumber + '&ClerkNumber=' + ClerkNumber + '&db_UserNumber=' + db_UserNumber + '&db_ShopNumber=' + db_ShopNumber + '&db_ClerkNumber=' + db_ClerkNumber + '&QRCodeNumber=' + QRCodeNumber + '&SalesNumber=' + SalesNumber;
+								} else if(data.RegistrationSteps == 3) {
+									window.location.href = '${pageContext.request.contextPath}/salesingup/gosaleregisterthird?AccountType=' + encodeURI(encodeURI(AccountType)) + '&UserNumber=' + UserNumber + '&ShopNumber=' + ShopNumber + '&ClerkNumber=' + ClerkNumber + '&db_UserNumber=' + db_UserNumber + '&db_ShopNumber=' + db_ShopNumber + '&db_ClerkNumber=' + db_ClerkNumber + '&QRCodeNumber=' + QRCodeNumber + '&SalesNumber=' + SalesNumber;
+								} else if(data.RegistrationSteps == 4) {
+									window.location.href = '${pageContext.request.contextPath}/salesingup/gosaleregisterfourth?AccountType=' + encodeURI(encodeURI(AccountType)) + '&UserNumber=' + UserNumber + '&ShopNumber=' + ShopNumber + '&ClerkNumber=' + ClerkNumber + '&db_UserNumber=' + db_UserNumber + '&db_ShopNumber=' + db_ShopNumber + '&db_ClerkNumber=' + db_ClerkNumber + '&QRCodeNumber=' + QRCodeNumber + '&SalesNumber=' + SalesNumber;
+								} else if(data.RegistrationSteps == 5) {
+									window.location.href = '${pageContext.request.contextPath}/salesingup/gosaleregisterfive?AccountType=' + encodeURI(encodeURI(AccountType)) + '&UserNumber=' + UserNumber + '&ShopNumber=' + ShopNumber + '&ClerkNumber=' + ClerkNumber + '&db_UserNumber=' + db_UserNumber + '&db_ShopNumber=' + db_ShopNumber + '&db_ClerkNumber=' + db_ClerkNumber + '&QRCodeNumber=' + QRCodeNumber + '&SalesNumber=' + SalesNumber;
+								}
+
+								/* var QRCodeNumber = $("#QRCodeNumber")[0].value;
+								var SalesNumber = data.msg;
+								window.location.href = '${pageContext.request.contextPath}/salesingup/goindexsale?QRCodeNumber='+QRCodeNumber+'&SalesNumber='+SalesNumber;	 */
+							} else {
+								mui.alert(data.msg);
+								return;
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(data);
+						}
+					});
+				})
+			});
+		})(mui, document);
+	</script>
+
+</html>

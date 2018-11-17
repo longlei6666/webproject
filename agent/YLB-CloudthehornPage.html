@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>经销商管理中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<style>
+			.text {
+				position: relative;
+			}
+			
+			.layui-input-clear {
+				position: absolute;
+				right: 10px;
+				top: 10px;
+				cursor: pointer;
+				display: none;
+				padding: 1px;
+			}
+			
+			.layui-input-clear:hover {
+				background-color: #FF5722;
+				color: #fff;
+				border-radius: 50%;
+			}
+			
+			.x-so .layui-input-inline {
+				width: 49%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        	<a href="">业务</a>
+        	<a>
+            <cite>经销商管理</cite></a>
+        </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md3 layui-col-sm3 x-so">
+					<div class="layui-input-inline xx-so text">
+						<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+						<input type="text" name="MerchantName1" id="MerchantName1" placeholder="商户名称" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline xx-so text">
+						<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+						<input type="text" name="ShopName1" id="ShopName1" placeholder="门店名称" autocomplete="off" class="layui-input">
+					</div>
+				</form>
+
+				<div class=" layui-col-md1">
+					<button class="layui-btn" data-type="reload">
+					<i class="layui-icon">&#xe615;</i>
+				</button>
+				</div>
+			</div>
+			<%-- <xblock>
+				<button class="layui-btn" onclick="x_admin_show('添加经销商','.dealers/getDealersAdd',600,400)">
+	        		<i class="layui-icon"></i>添加
+	       		</button>
+			</xblock> --%>
+			<table class="layui-hide" id="LAY_table_Salesman" lay-filter="Salesman"></table>
+
+		</div>
+		<script type="text/javascript">
+			$("input").focus(function() {
+				$(this).parent().children(".layui-input-clear").show();
+			});
+			$("input").blur(function() {
+				if($(this).val() == '') {
+					$(this).parent().children(".layui-input-clear").hide();
+				}
+			});
+			$(".layui-input-clear").click(function() {
+				$(this).parent().find('input').val('');
+				$(this).hide();
+			});
+		</script>
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-xs" lay-event="YLB-bangding">绑定</a>
+			{{# if(d.OperatorState == 0){ }}
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="disable">禁用</a>
+			{{# } }} {{# if(d.OperatorState == 1){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="open">开启</a>
+			{{# } }}
+			<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="YLB-jiebang">解绑</a>
+		</script>
+		<script>
+			layui.use('table', function() {
+
+				var table = layui.table;
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_Salesman',
+					url: '.Dealers/getDealersCloudthehornList',
+					method: "post",
+					height: 'full-195',
+					page: true,
+					id: 'salesmanList',
+					cols: [
+						[/* {
+							toolbar: "#chetool",
+							title:'<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" lay-skin="primary" lay-filter="layTableAllChoose"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div>',
+							width: 48
+						}, */{
+							field: 'MerchantName',
+							title: '商户名称'
+						}, {
+							field: 'ShopName',
+							title: '门店名称'
+						},  {
+							field: 'DealersName',
+							title: '销售姓名'
+						},  {
+							field: 'SBCode',
+							title: '绑定编号'
+						}, {
+							field: 'operation',
+							title: '操作',
+							width: '30%',
+							toolbar: "#tool"
+						}]
+					]
+				});
+
+				// 根據條件重载表格
+				var $ = layui.$,
+					active = {
+						reload: function() {
+
+							// 获取上面查询框的值
+							var UserNumber= $('#MerchantName1');
+							var ShopNumber = $('#ShopName1');
+
+							//执行重载
+							table.reload('salesmanList', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									UserNumber: UserNumber.val(),
+									ShopNumber: ShopNumber.val()
+								}
+							});
+						}
+					};
+
+				//监听工具条
+				table.on('tool(Salesman)', function(obj) {
+					var data = obj.data;
+					var operatorNumber = data.OperatorNumber;
+
+					if(obj.event == 'YLB-bangding') {
+
+						
+					} else if(obj.event == 'YLB-jiebang') {
+
+						var myData = {
+							"ShopID": ShopID,
+							"SBCode": SBCode
+						}
+
+						layer.confirm('确定要解绑么?', function(index) {
+							//发异步，把数据提交给后台
+							$.ajax({
+								type: "post",
+								url: ".yunlb/unbindylb",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.result == "success") {
+										// 绑定云喇叭
+										$.ajax({
+											type: "post",
+											url: ".yunlb/unbindylbdata",
+											async: true,
+											data: mydata,
+											success: function(datas) {
+												if(datas.code == 0) {
+													layer.alert("解绑成功!", {
+														icon: 6
+													}, function() {
+														// 刷新父页面
+														window.parent.location.reload();
+														// 获得frame索引
+														var index = parent.layer.getFrameIndex(window.name);
+														//关闭当前frame
+														parent.layer.close(index);
+													});
+												}else if(datas.code == 1){
+													layer.alert("未知错误");
+												}else if(datas.code == 2){
+													layer.alert("解绑失败，设备码不存在");
+												}else if(datas.code == 3){
+													layer.alert("解绑失败，设备码已经被其它用户绑定");
+												}else if(datas.code == 4){
+													layer.alert("解绑失败，设备码已经被同一用户绑定");
+												}else if(datas.code == 5){
+													layer.alert("解绑失败，设备码被任何用户绑定");
+												}else if(datas.code == 6){
+													layer.alert("失败，未提供设备码");
+												}else if(datas.code == 8){
+													layer.alert("失败，此Token无此设备权限");
+												}else if(datas.code == 9){
+													layer.alert("失败，无效的Token");
+												}else if(datas.code == 17){
+													layer.alert("错误，重复的请求");
+												}
+											}
+										});
+									} else {
+										layer.alert(data.desc);
+									}
+								}
+							});
+						});
+
+					}
+				});
+
+				$('.layui-row .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+			});
+		</script>
+	</body>
+
+</html>

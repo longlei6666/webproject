@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>JSON数据模拟</title>
+	</head>
+
+	<body id="testJson">
+	</body>
+	<script src="http://g.alicdn.com/thx/brix-deps/nuysoft@Mock/1.0.1-beta3/dist/mock.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var Random = Mock.Random;
+		Random.date();
+		var dataMock = Mock.mock({
+			code:0,
+			msg:'',
+			count:50,
+			'result|50': [{
+				'id|130000000000000-199000000000000': 145625486953624,
+				'usertype|1': [
+					'demouser',
+					'ceishi2'
+				],
+				'type|1': [
+					'手动结算驳回退回手续费',
+					'提款驳回',
+					'扣除手动结算手续费',
+					'结算','付款','手动增加','解冻'
+				],
+				username: '-',
+				ticheng:'',
+				'oldmoney|0-100000.00':0,
+				'usernumber|13000000000-19900000000': 1440191734422,
+				addtime: '@datetime',
+				place: '@city',
+				ip: '@ip'
+			}]
+		});
+		console.log(JSON.stringify(dataMock))
+	</script>
+
+</html>

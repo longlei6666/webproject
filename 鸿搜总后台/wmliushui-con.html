@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_521163_wu1iak627aybke29.css" />
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_457932_tw96awzl8qfflxr.css" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+
+		<!--<script src="js/jquery.provincesCity.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/provincesData.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<link rel="stylesheet" href="css/style.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <style>
+    	.layui-form-item{margin-bottom: 0;}
+    	.layui-form-label{padding-left: 0;width: 75px;padding-top: 4px;padding-bottom: 4px;}
+    	.layui-form-mid {padding-top: 4px !important;padding-bottom: 4px !important;}
+    	.layui-form-item .layui-form-mid.layui-word-aux:nth-child(3){margin: 0;float: right;}
+    	.layui-elem-quote span{line-height: 1;}
+    </style>
+    
+	</head>
+
+	<body>
+		<!--<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">外卖流水</a>
+        <a>详情</a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>-->
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form">
+					<div class=" layui-col-md12 layui-col-sm12 layui-col-xs12">
+						<div class="grid-demo layui-row layui-col-space25">
+							<!--订单信息-->
+							<blockquote class="layui-elem-quote layui-col-md12 layui-col-sm12 layui-col-xs12">
+								<i class="iconfont icon-group3"></i>
+								订单信息
+								<span style="margin-left: 30px;">商户名称：<span style="color: red"> 石家庄市新华区生帝炸鸡汉堡店</span></span>
+								<span style="margin-left: 30px;">门店名称：<span style="color: red"> 石家庄市新华区生帝炸鸡汉堡店</span></span>
+							</blockquote>
+							<div class=" layui-col-md4 layui-col-sm4 layui-col-xs4">
+								<!--外卖信息-->
+								<fieldset class="layui-elem-field layui-field-title site-demo-button">
+									<legend>外卖信息</legend>
+								</fieldset>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	外卖渠道
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">饿了么</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	订单流水号
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">151681318351</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+					                 	 门店流水号
+					              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">151681318351</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	订单生效时间
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">2017-01-01 11:11:42</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+					                 	 订单状态
+					              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">已完成</span>
+									</div>
+								</div>
+							</div>
+							<div class=" layui-col-md3 layui-col-sm3 layui-col-xs3">
+								<!--交易金额-->
+								<fieldset class="layui-elem-field layui-field-title site-demo-button">
+									<legend>交易信息</legend>
+								</fieldset>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	交易金额
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">55.00 元</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	实收金额
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">35.00 元</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	服务费
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">5.00 元</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	餐盒费
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">2.00 元</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	配送费
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">3.00 元</span>
+									</div>
+								</div>
+							</div>
+							<div class=" layui-col-md5 layui-col-sm5 layui-col-xs5">
+								<!--用户信息-->
+								<!--<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>用户信息</blockquote>-->
+								<fieldset class="layui-elem-field layui-field-title site-demo-button">
+									<legend>用户信息</legend>
+								</fieldset>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	姓名
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">李三</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+						                  	电话
+						              </label>
+									<div class="layui-form-mid layui-word-aux">
+										<span class="x-black">13000000000</span>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+					                  	地址
+					              </label>
+									<div class="layui-form-mid layui-word-aux" style="width: calc(100% - 120px);">
+										<span class="x-black">石家庄市新华区生帝石家庄市新华区生帝石家庄市新华区生帝炸鸡汉堡店</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class=" layui-col-md12 layui-col-sm12 layui-col-xs12">
+						<div class="grid-demo layui-row layui-col-space25">
+							<!--商品信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-feiyong"></i>商品信息</blockquote>
+							<div class="layui-form-item layui-col-md12 layui-col-sm12 layui-col-xs12">
+								<table class="layui-table">
+					                <thead>
+					                    <tr>
+					                        <th>商品名称</th>
+					                        <th>商品数量</th>
+					                        <th>商品单价</th>
+					                    </tr>
+					                </thead>
+					                <tbody>
+					                    <tr>
+					                        <td>汤</td>
+					                        <td>×1</td>
+					                        <td>¥19.00</td>
+					                    </tr>
+					                    <tr>
+					                        <td>汤</td>
+					                        <td>×1</td>
+					                        <td>¥19.00</td>
+					                    </tr>
+					                    <tr>
+					                        <td>汤</td>
+					                        <td>×1</td>
+					                        <td>¥19.00</td>
+					                    </tr>
+					                    <tr>
+					                        <td>汤</td>
+					                        <td>×1</td>
+					                        <td>¥19.00</td>
+					                    </tr>
+					                    <tr>
+					                        <td>汤</td>
+					                        <td>×1</td>
+					                        <td>¥19.00</td>
+					                    </tr>
+					                </tbody>
+					            </table>
+							</div>
+						</div>	
+					</div>
+				</div>
+			</div>
+			<!--<div class="layui-row formbtnb">
+				<div class="grid-demo">
+					<div class="layui-form-item">
+						<label for="L_repass" class="layui-form-label">
+				      </label>
+						<button class="layui-btn layui-btn-danger formbtn" lay-filter="add" lay-submit="">退款</button>
+						<input type="button" value="返回" onclick="javascript:history.back();" class="layui-btn layui-btn-warm formbtn">
+						<button class="layui-btn layui-btn-warm formbtn" lay-filter="add" lay-submit="">返回</button>
+					</div>
+				</div>
+			</div>-->
+		</div>
+	</body>
+
+</html>

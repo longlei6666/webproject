@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style type="text/css">
+			.layui-btn+.layui-btn {
+				margin-left: -2px;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+		        <a href="">首页</a>
+		        <a href="">会员管理</a>
+		        <a><cite>会员管理</cite></a>
+		      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row demoTable">
+				<div class="layui-form layui-col-md4 layui-col-sm4 layui-col-xs4 x-so">
+					<div class="layui-input-inline">
+						<select name="userType" id="userType">
+							<option value="">使用状态</option>
+							<option value="2">启用</option>
+							<option value="1">禁用</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="countType" id="countType">
+							<option value="">可用次数</option>
+							<option value="0">未用完</option>
+							<option value="1">已用完</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="endTime" id="endTime">
+							<option value="">截止日期</option>
+							<option value="0">已到期</option>
+							<option value="7">7天内到期</option>
+							<option value="30">1月内到期</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="name" id="members_name" placeholder="姓名" autocomplete="off" class="layui-input">
+					</div>
+					<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
+					<!--<button class="layui-btn" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>-->
+				</div>
+			</div>
+			<table class="layui-hide" id="vip_card" lay-filter="vip_card"></table>
+		</div>
+		<script type="text/html" id="toolbar">
+			<a class="layui-btn layui-btn-xs" id="recharge" lay-event="recharge">充值</a>
+			<a class="layui-btn layui-btn-xs" id="expense" lay-event="expense">消费</a>
+			<a class="layui-btn layui-btn-xs" id="rechargerecord" lay-event="rechargerecord">充值记录</a>
+			<a class="layui-btn layui-btn-xs" id="expensecalendar" lay-event="expensecalendar">消费记录</a>
+			<!--<a class="layui-btn layui-btn-xs" id="passwordreset" lay-event="passwordreset">密码重置</a>-->
+			<a class="layui-btn layui-btn-xs" id="activation" lay-event="activation">激活</a>
+			<a class="layui-btn layui-btn-xs" id="reportloss" lay-event="reportloss">挂失</a>
+			<a class="layui-btn layui-btn-danger layui-btn-xs" id="freeze" lay-event="freeze">冻结</a>
+			<a class="layui-btn layui-btn-danger layui-btn-xs" id="logout" lay-event="logout">注销</a>
+		</script>
+		<script>
+			var serverUrl = window.parent.serverUrl
+			var userNumber = window.parent.userNumber
+			layui.use(['laydate', 'table', 'form'], function() {
+				var laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form;
+
+				//方法级渲染  
+				table.render({
+					type: "post",
+					url: serverUrl + 'member/getMembers?userNumber=' + userNumber,
+					async: true,
+					elem: '#vip_card',
+					height: 'full-210',
+					id: 'vip_cardList',
+					parseData: function(res) { //res 即为原始返回的数据
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.count, //解析数据长度
+							"data": changeRes(res.result,res.count), //解析数据列表
+						};
+					},
+					cols: [
+						[{
+							align: 'center',
+							//fixed: 'left',
+							type: 'checkbox'
+						}, {
+							align: 'center',
+							field: 'id',
+							title: '卡号/所属用户组',
+							templet: function(data) {
+								return data.card + ' / ' + data.cardName
+							},
+							sort: true,
+							width: 200
+						}, {
+							align: 'center',
+							field: 'username',
+							title: '姓名/手机号',
+							templet: function(data) {
+								return data.namea + ' / ' + data.cell
+							},
+							width: 200
+						}, {
+							align: 'center',
+							field: 'sex',
+							title: '积分/余额',
+							templet: function(data) {
+								return data.integral + ' / ' + data.acountBalance
+							},
+							sort: true,
+							width: 100
+						}, {
+							align: 'center',
+							field: 'count',
+							title: '可用次数',
+							width: 80
+						}, {
+							align: 'center',
+							field: 'endTime',
+							title: '截止日期',
+							width: 100
+						}, {
+							align: 'center',
+							field: 'insertTime',
+							title: '领卡时间',
+							sort: true,
+							width: 100
+						}, {
+							align: 'center',
+							field: 'userTypea',
+							title: '状态',
+							sort: true,
+							width: 80
+						}, {
+							align: 'center',
+							title: '操作',
+							toolbar: '#toolbar',
+							minWidth: 420
+						}]
+					],
+					page: true,
+					done: function(res, curr, count) {
+						console.log(res)
+						if(res.code == -2) {
+							layer.msg("会员列表为空")
+						}
+					}
+				});
+
+				//根据条件查询列表
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							var userType = $('#userType').val();
+							var countType = $('#countType').val();
+							var endTime = $('#endTime').val();
+							var members_name = $('#members_name').val();
+							//执行重载
+							table.reload('vip_cardList', {
+								url: serverUrl + 'member/getMembers?userNumber=' + userNumber,
+								where: {
+									userType: userType,
+									countType: countType,
+									endTime: endTime,
+									name: members_name
+								}
+							});
+						}
+					};
+				$('.x-so .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+
+				//监听工具条
+				table.on('tool(vip_card)', function(obj) {
+					var data = obj.data;
+					if(obj.event === 'recharge') { //充值
+						layer.open({
+							type: 2,
+							title: '充值',
+							shade: 0.5,
+							area: ['400px', '300px'],
+							maxmin: false,
+							resize: false,
+							content: ['vip-members-recharge.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								iframe.subPagerecharge(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'expense') { //消费
+						layer.open({
+							type: 2, //此处以iframe举例
+							title: '消费',
+							shade: 0.5,
+							area: ['400px', '300px'],
+							maxmin: false,
+							resize: false,
+							content: ['vip-members-record.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								iframe.subPagerecord(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'rechargerecord') { //充值记录
+						layer.open({
+							type: 2,
+							title: '充值记录',
+							shade: 0.5,
+							area: ['500px', '60%'],
+							maxmin: false,
+							resize: false,
+							content: ['vip-members-recharge-rec.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								iframe.subPagerechargerec(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'expensecalendar') { //消费记录
+						layer.open({
+							type: 2,
+							title: '消费记录',
+							shade: 0.5,
+							area: ['500px', '60%'],
+							maxmin: false,
+							resize: false,
+							content: ['vip-members-record-rec.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								iframe.subPagerecordrec(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'passwordreset') { //密码重置
+						layer.open({
+							type: 2,
+							title: '密码重置',
+							shade: 0.5,
+							area: ['350px', '250px'],
+							maxmin: false,
+							resize: false,
+							content: ['vip-card-passwordreset.html'],
+							success: function(success) {}
+						});
+					} else if(obj.event === 'activation') { //激活
+						var mydata = {
+							associatorNumber: data.associatorNumber,
+							userType: 2
+						}
+						layer.confirm('真的激活此会员卡么', {
+							icon: 3,
+							title: '提示'
+						}, function(index) {
+							// 发送请求
+							$.ajax({
+								type: "post",
+								url: serverUrl + "member/updateUserType",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.code == 0) {
+										layer.close(index);
+										layer.msg("会员卡激活成功");
+										// 刷新页面
+										var curr = $("#curr").val();
+										layui.table.reload('vip_cardList', {
+											page: {
+												curr: curr
+											}
+										});
+									} else if(data.code == 1) {
+										layer.msg("会员卡激活失败");
+									}
+								}
+							});
+						});
+					} else if(obj.event === 'reportloss') { //挂失
+						var mydata = {
+							associatorNumber: data.associatorNumber,
+							userType: 3
+						}
+						layer.confirm('真的挂失此会员卡么', {
+							icon: 3,
+							title: '提示'
+						}, function(index) {
+							// 发送请求
+							$.ajax({
+								type: "post",
+								url: serverUrl + "member/updateUserType",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.code == 0) {
+										layer.close(index);
+										layer.msg("会员卡已挂失");
+										// 刷新页面
+										var curr = $("#curr").val();
+										layui.table.reload('vip_cardList', {
+											page: {
+												curr: curr
+											}
+										});
+									} else if(data.code == 1) {
+										layer.msg("会员卡挂失失败");
+									}
+								}
+							});
+						});
+					} else if(obj.event === 'freeze') { //冻结
+						var mydata = {
+							associatorNumber: data.associatorNumber,
+							userType: 4
+						}
+						layer.confirm('真的冻结此会员卡么', {
+							icon: 3,
+							title: '提示'
+						}, function(index) {
+							// 发送请求
+							$.ajax({
+								type: "post",
+								url: serverUrl + "member/updateUserType",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.code == 0) {
+										layer.close(index);
+										layer.msg("会员卡已冻结");
+										// 刷新页面
+										var curr = $("#curr").val();
+										layui.table.reload('vip_cardList', {
+											page: {
+												curr: curr
+											}
+										});
+									} else if(data.code == 1) {
+										layer.msg("会员卡冻结失败");
+									}
+								}
+							});
+						});
+					} else if(obj.event === 'logout') { //注销
+						var mydata = {
+							associatorNumber: data.associatorNumber,
+							userType: 5
+						}
+						layer.confirm('真的注销此会员卡么', {
+							icon: 3,
+							title: '提示'
+						}, function(index) {
+							// 发送请求
+							$.ajax({
+								type: "post",
+								url: serverUrl + "member/updateUserType",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.code == 0) {
+										layer.close(index);
+										layer.msg("会员卡已注销");
+										// 刷新页面
+										var curr = $("#curr").val();
+										layui.table.reload('vip_cardList', {
+											page: {
+												curr: curr
+											}
+										});
+									} else if(data.code == 1) {
+										layer.msg("会员卡注销失败");
+									}
+								}
+							});
+						});
+					}
+				});
+
+				//日期时间范围1
+				laydate.render({
+					elem: '#test10',
+					type: 'datetime',
+					range: true
+				});
+				//日期时间范围2
+				laydate.render({
+					elem: '#test10-2',
+					type: 'datetime',
+					range: true
+				});
+			});
+
+			function changeRes(res,count) {
+				var res = res
+				if(res.length == 0){
+					return
+				}
+				for(var i = 0; i < res.length; i++) {
+					if(res[i].insertTime && res[i].endTime != "") {
+						res[i].insertTime = res[i].insertTime.split(' ')[0]
+						res[i].endTime = res[i].endTime.split(' ')[0]
+					}
+					if(!res[i].name){
+						res[i].namea = res[i].cell
+					}
+					if(res[i].userType == 1) {
+						res[i].userTypea = '未激活'
+					} else if(res[i].userType == 2) {
+						res[i].userTypea = '已激活'
+					} else if(res[i].userType == 3) {
+						res[i].userTypea = '已挂失'
+					} else if(res[i].userType == 4) {
+						res[i].userTypea = '已冻结'
+					} else if(res[i].userType == 5) {
+						res[i].userTypea = '已注销'
+					}
+				}
+				return res
+			}
+		</script>
+	</body>
+
+</html>

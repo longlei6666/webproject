@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商户添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">注册个人商户</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-content-padded" style="margin: 5px;">
+				<!--个人-->
+				<div class="mui-input-row">
+					<h5>唯一流水号<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>机构号<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>二级代理机构号<sub></sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>商户名称<sub>*</sub><span class="tips">与营业执照上相同</span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>证件类型<sub>*</sub><span class="tips"></span></h5>
+					<input id='showUserPicker' type="text" class="mui-input-clear" value="">
+				</div>
+				<div class="mui-input-row">
+					<h5><em id="showcate"></em>证件号码<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>证件到期日<sub>*</sub><span class="tips">格式YYYYMMDD</span></h5>
+					<input type="text" class="mui-input-clear" placeholder="长期请填20991231 无有效期请填 19000101">
+				</div>
+				<div class="mui-input-row">
+					<h5>法人身份证号<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>法人身份证到期日<sub>*</sub><span class="tips">(格式YYYYMMDD)</span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>联系人姓名<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>客服电话<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>联系电话<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>联系邮箱<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>经营范围<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id='hangyeResult' class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>商户所在地<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id='cityResult' class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账卡类型<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="showEntrycard" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账卡开户行联行号<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="hanglian" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账卡开户行<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="showopenbankPicker" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账卡户名<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账卡号<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>选择费率<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="Selectrate" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>小额清算金额<sub>*</sub><span class="tips">(单位分)</span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>清算类型<sub>*</sub><span class="tips"></span></h5>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">自动结算1</label>
+						<input id="settlement1" name="settlement" type="radio" value="0" checked>
+					</div>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">手动结算2</label>
+						<input id="settlement1" name="settlement" type="radio" value="1">
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<h5>是否开通D0提现<sub>*</sub><span class="tips"></span></h5>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">不开通1</label>
+						<input id="Radio1" name="jiesuanzh" type="radio" value="0" checked>
+					</div>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">开通2</label>
+						<input id="Radio2" name="jiesuanzh" type="radio" value="1">
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<h5>法人入账标识<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账证件类型<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账证件号<sub>*</sub><span class="tips">(单位分)</span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账证件到期日<sub>*</sub><span class="tips">(格式YYYYMMDD)</span></h5>
+					<input type="text" class="mui-input-clear">
+				</div>
+				<!--个人-->
+
+				<a href="sh-add-2.html" class="mui-btn mui-btn-primary nextstep" id="">提交信息</a>
+			</form>
+		</div>
+	</body>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.poppicker.js"></script>
+	<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangye.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/headbank.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangbie.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Rate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/openbank-city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				/**
+				 * 获取对象属性的值
+				 * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+				 * @param {Object} obj 对象
+				 * @param {String} param 属性名
+				 */
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//证件类型
+				var userPicker = new $.PopPicker();
+				userPicker.setData([{
+					value: '1',
+					text: '企业',
+					type: '三证合一',
+					cate: '营业执照号'
+				}, {
+					value: 'A',
+					text: '个人',
+					type: '身份证(一证下机)',
+					cate: '身份证号'
+				}, {
+					value: 'B',
+					text: '个体',
+					type: '个体户',
+					cate: '营业执照号'
+				}]);
+				var showUserPickerButton = doc.getElementById('showUserPicker');
+				var userResult1 = doc.getElementById('showUserPicker');
+				var userResult2 = doc.getElementById('showcate');
+				showUserPickerButton.addEventListener('tap', function(event) {
+					userPicker.show(function(items) {
+						userResult1.value = items[0].text;
+						userResult2.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+				//行业联示例
+				var hangyePicker = new $.PopPicker({
+					layer: 3
+				});
+				hangyePicker.setData(hangyeData3);
+				var showhangyePickerButton = doc.getElementById('hangyeResult');
+				var hangyeResult = doc.getElementById('hangyeResult');
+				showhangyePickerButton.addEventListener('tap', function(event) {
+					hangyePicker.show(function(items) {
+						hangyeResult.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+					});
+				}, false);
+				//-----------------------------------------
+				//地区级联示例
+				var cityPicker = new $.PopPicker({
+					layer: 3
+				});
+				cityPicker.setData(cityData3);
+				var showCityPickerButton = doc.getElementById('cityResult');
+				var cityResult = doc.getElementById('cityResult');
+				showCityPickerButton.addEventListener('tap', function(event) {
+					cityPicker.show(function(items) {
+						cityResult.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+					});
+				}, false);
+				//-----------------------------------------
+				//入账卡类型
+				var EntrycardPicker = new $.PopPicker();
+				EntrycardPicker.setData([{
+					value: '2',
+					text: '对私'
+				}]);
+				var showEntrycardPickerButton = doc.getElementById('showEntrycard');
+				var EntrycardResult = doc.getElementById('showEntrycard');
+				showEntrycardPickerButton.addEventListener('tap', function(event) {
+					EntrycardPicker.show(function(items) {
+						EntrycardResult.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+				//开户行
+				var openbankPicker = new $.PopPicker({
+					layer: 1
+				});
+				openbankPicker.setData(hangbieData);
+				var showopenbankPickerButton = doc.getElementById('showopenbankPicker');
+				var openbankResult = doc.getElementById('showopenbankPicker');
+				showopenbankPickerButton.addEventListener('tap', function(event) {
+					openbankPicker.show(function(items) {
+						openbankResult.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+				//选择费率
+				var SelectratePicker = new $.PopPicker();
+				SelectratePicker.setData(FYRate);
+				var showSelectrateButton = doc.getElementById('Selectrate');
+				var SelectrateResult1 = doc.getElementById('Selectrate');
+				showSelectrateButton.addEventListener('tap', function(event) {
+					SelectratePicker.show(function(items) {
+						SelectrateResult1.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+			});
+		})(mui, document);
+	</script>
+
+</html>

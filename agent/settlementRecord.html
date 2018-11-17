@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>鸿小搜管理中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<style>
+			.layui-row .layui-form .layui-input-inline {
+				width: 32%;
+			}
+			
+			.layui-row .layui-form .layui-input-inline .layui-input {
+				width: 100%;
+			}
+			
+			.layui-row .hs-o {
+				width: 70px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a>
+          <cite>结算记录</cite></a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md5 layui-col-sm5 x-so">
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" placeholder="开始日" name="startTime" id="startTime">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" placeholder="截止日" name="endTime" id="endTime">
+					</div>
+					<div class="layui-input-inline">
+						<select name="settlementState" id="settlementState">
+							<option value="">请选择结算状态</option>
+							<option value="1">已结算</option>
+							<option value="0">未结算</option>
+						</select>
+					</div>
+				</form>
+				<div class=" layui-col-md1 layui-col-sm1 hs-o">
+					<button class="layui-btn" data-type="reload">
+							<i class="layui-icon">&#xe615;</i>
+						</button>
+				</div>
+			</div>
+			<table class="layui-hide" id="LAY_table_Settlement" lay-filter="Settlement"></table>
+		</div>
+		<script>
+			var beginDate = new Date();
+			if(beginDate.getMonth() == 0) {
+				beginDate.setYear(beginDate.getYear() - 1);
+				beginDate.setMonth(12);
+			} else {
+				beginDate.setMonth(beginDate.getMonth() - 1);
+			}
+			var endDate = new Date();
+
+			// 选择日期插件  
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				laydate.render({
+					elem: '#startTime', //指定元素
+					type: 'date',
+					value: beginDate
+				});
+				laydate.render({
+					elem: '#endTime',
+					type: 'date',
+					value: endDate
+				});
+			});
+
+			layui.use('table', function() {
+				var table = layui.table;
+
+				table.render({
+					elem: '#LAY_table_Settlement',
+					page: true,
+					url: '.Settlement/getSettlementList',
+					cellMinWidth: 80,
+					height: 'full-200',
+					id: 'settlementList',
+					cols: [
+						[{
+							field: 'SettlementDate',
+							title: '日期',
+							align: 'center'
+						}, {
+							field: 'jiaoyijine',
+							title: '金额',
+							align: 'center'
+						}, {
+							field: 'SettlementTypeC',
+							title: '状态',
+							align: 'center'
+						}]
+					]
+				});
+
+				// 根據條件重载表格
+				var $ = layui.$,
+					active = {
+						reload: function() {
+
+							// 获取上面查询框的值
+							var startTime = $('#startTime');
+							var endTime = $('#endTime');
+							var settlementState = $('#settlementState');
+
+							//执行重载
+							table.reload('settlementList', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									startTime: startTime.val(),
+									endTime: endTime.val(),
+									settlementState: settlementState.val()
+								}
+							});
+						}
+					};
+
+				$('.layui-row .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>注册商户</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">法人信息</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-content-padded" style="margin: 5px;">
+
+				<div class="mui-input-row">
+					<h5>入账标识<sub>*</sub><span class="tips"></span></h5>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">非法人入账</label>
+						<input id="legalbooked" name="legalbooked" type="radio" value="0" checked>
+					</div>
+					<div class="mui-input-row mui-radio">
+						<label class="jiesuanlx">法人入账</label>
+						<input id="legalbooked" name="legalbooked" type="radio" value="1">
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<h5>入账人姓名<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="legalname" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账证件类型<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id='catetype' readonly= "true" class="mui-input-clear" value="">
+				</div>
+				<div class="mui-input-row">
+					<h5><em id="showcate"></em>入账证件号码<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="Entrycardnumber" class="mui-input-clear">
+				</div>
+				<div class="mui-input-row">
+					<h5>入账证件到期日<sub>*</sub><span class="tips">格式YYYYMMDD</span></h5>
+					<input type="text" id="Entrydate" class="mui-input-clear" placeholder="长期请填20991231 无有效期请填 19000101">
+				</div>
+
+				<a class="mui-btn mui-btn-primary nextstep" id="Submit">下一步</a>
+			</form>
+		</div>
+	</body>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.poppicker.js"></script>
+	<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangye.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/headbank.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/hangbie.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Rate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/openbank-city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				/**
+				 * 获取对象属性的值
+				 * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+				 * @param {Object} obj 对象
+				 * @param {String} param 属性名
+				 */
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//证件类型
+				var catetypePicker = new $.PopPicker();
+				catetypePicker.setData([{
+					value: '1',
+					text: '身份证'
+				}]);
+				var showcatetypeButton = doc.getElementById('catetype');
+				var catetypeResult = doc.getElementById('catetype');
+				showcatetypeButton.addEventListener('tap', function(event) {
+					catetypePicker.show(function(items) {
+						catetypeResult.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+
+				//提交
+				document.getElementById("Submit").addEventListener('click', function() {
+					var check = true;
+					var legalbooked= $("input[name='legalbooked']:checked")[0].value; //法人入账标识
+					if(legalbooked.trim() == "") {
+						mui.alert("法人入账标识不允许为空");
+						check = false;
+						return false;
+					}
+					var legalname = $("#legalname")[0].value; //法人姓名
+					if(legalname.trim() == "") {
+						mui.alert("法人姓名不允许为空");
+						check = false;
+						return false;
+					}
+					var catetype = $("#catetype")[0].value; //入账证件类型
+					if(catetype.trim() == "") {
+						mui.alert("入账证件类型不允许为空");
+						check = false;
+						return false;
+					}
+					var Entrycardnumber = $("#Entrycardnumber")[0].value; //入账证件号码
+					if(Entrycardnumber.trim() == "") {
+						mui.alert("入账证件号码不允许为空");
+						check = false;
+						return false;
+					}
+					var Entrydate = $("#Entrydate")[0].value; //入账证件到期日
+					if(Entrydate.trim() == "") {
+						mui.alert("入账证件到期日不允许为空");
+						check = false;
+						return false;
+					}
+					window.location.href = "sh-add-yhxx.html";
+					check && mui.ajax('${pageContext.request.contextPath}/salesingup/login_login', {
+						data: {
+							legalbooked: $("#legalbooked")[0].value, //法人入账标识
+							legalname: $("#legalname")[0].value, //法人姓名
+							catetype: $("#catetype")[0].value, //入账证件类型
+							Entrycardnumber: $("#Entrycardnumber")[0].value, //入账证件号码
+							Entrydate: $("#Entrydate")[0].value, //入账证件到期日
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							if("success" == data.result) {
+
+							} else {
+
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(type);
+						}
+					});
+				})
+
+
+			});
+		})(mui, document);
+	</script>
+
+</html>

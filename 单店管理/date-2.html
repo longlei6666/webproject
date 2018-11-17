@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>鸿小搜管理中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	</head>
+
+	<body>
+
+		<div class="layui-form">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">请选择日期</label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="test1" placeholder="">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="test2" placeholder="">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="test3" placeholder="">
+					</div>
+					<label class="layui-form-label">请选择月份</label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="test4" placeholder="">
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//常规用法
+				laydate.render({
+					elem: '#test1',
+					max: nowTime,
+					value: now,
+
+					done: function(value, date) {
+						var beginDates = getWeekStartDate1(value);
+						var endDates = getWeekEndDate1(value);
+						layer.alert('你选择的日期是：' + value + '<br>本周开始时间：' + beginDates + '<br>本周结束时间：' + endDates);
+
+					}
+				});
+				//常规用法
+				laydate.render({
+					elem: '#test2',
+					max: nowTime,
+					value: beginDate
+				});
+				//常规用法
+				laydate.render({
+					elem: '#test3',
+					max: nowTime,
+					value: now,
+				});
+				//常规用法
+				laydate.render({
+					elem: '#test4',
+					max: nowTime,
+					type: 'month',
+					value: now,
+					done: function(value, date) {
+						var beginMonths = getMonthStartDate1(value);
+						var endMonths = getMonthEndDate1(value);
+						layer.alert('你选择的日期是：' + value + '<br>本周开始时间：' + beginMonths + '<br>本周结束时间：' + endMonths);
+					}
+				});
+
+			});
+
+			/** 
+			 * 获取本周、本季度、本月、上月的开始日期、结束日期 
+			 */
+
+			//格式化日期：yyyy-MM-dd     
+			function formatDate(date) {
+				var myyear = date.getFullYear();
+				var mymonth = date.getMonth() + 1;
+				var myweekday = date.getDate();
+
+				if(mymonth < 10) {
+					mymonth = "0" + mymonth;
+				}
+				if(myweekday < 10) {
+					myweekday = "0" + myweekday;
+				}
+				return(myyear + "-" + mymonth + "-" + myweekday);
+			}
+
+			var now = new Date(); //当前日期     
+			var nowDayOfWeek = now.getDay(); //今天本周的第几天     
+			var nowDay = now.getDate(); //当前日     
+			var nowMonth = now.getMonth(); //当前月     
+			var nowYear = now.getYear(); //当前年     
+			nowYear += (nowYear < 2000) ? 1900 : 0; //    
+
+			//获得本周的开始日期     
+			function getWeekStartDate() {
+				var weekStartDate = new Date(nowYear, nowMonth, nowDay - (nowDayOfWeek - 1));
+				return formatDate(weekStartDate);
+			}
+
+			//获得本周的结束日期     
+			function getWeekEndDate() {
+				var weekEndDate = new Date(nowYear, nowMonth, nowDay + (7 - nowDayOfWeek));
+				return formatDate(weekEndDate);
+			}
+
+			//获得本月的开始日期 
+			function getMonthStartDate() {
+				var monthStartDate = new Date(nowYear, nowMonth, 1);
+				return formatDate(monthStartDate);
+			}
+
+			//获得本月的结束日期 
+			function getMonthEndDate() {
+				var monthEndDate = new Date(nowYear, nowMonth, getMonthDays(nowMonth));
+				return formatDate(monthEndDate);
+			}
+
+			var beginDate = getWeekStartDate();
+			var endDate = getWeekEndDate();
+			var beginDate1 = new Date();
+			var nowTime = new Date().valueOf();
+
+			// 格式化标准
+			function zhuan(date) {
+				var t = Date.parse(date);
+				if(!isNaN(t)) {
+					return new Date(Date.parse(date.replace(/-/g, "/")));
+				} else {
+					return new Date();
+				}
+			};
+
+			//获得本周的开始日期     
+			function getWeekStartDate1(value) {
+
+				var now = zhuan(value);
+				var nowDayOfWeek = now.getDay(); //今天本周的第几天     
+				var nowDay = now.getDate(); //当前日     
+				var nowMonth = now.getMonth(); //当前月     
+				var nowYear = now.getFullYear(); //当前年 
+				var weekStartDate = new Date(nowYear, nowMonth, nowDay - (nowDayOfWeek - 1));
+				return formatDate(weekStartDate);
+			}
+
+			function getWeekEndDate1(value) {
+				var now = zhuan(value);
+				var nowDayOfWeek = now.getDay(); //今天本周的第几天     
+				var nowDay = now.getDate(); //当前日     
+				var nowMonth = now.getMonth(); //当前月     
+				var nowYear = now.getFullYear(); //当前年 
+				var weekStartDate = new Date(nowYear, nowMonth, nowDay + (7 - nowDayOfWeek));
+				return formatDate(weekStartDate);
+			}
+
+			GetWeekDate.prototype.getWeeksDates = function(time) { //获取历史周排行的周一到周日时间段  
+				var qishu = (this.qishu || this.qishu == 0) ? this.qishu : this.getQishu(time);
+				//var qishu=this.getQishu(time);  
+
+				var WeeksTimes = []; //存放时间的二维数组  
+				minYear = 2015,
+					minMonth = 7,
+					minDay = 12;
+				for(var i = 0; i < qishu; i++) {
+					var sday;
+					var eday;
+					WeeksTimes[i] = [];
+					if(i == 0) { //如果离2015-07-12只相差1期  
+						sday = minDay + 1; //开始时间+1天  
+					} else { //如果离2015-07-12相差期数>1  
+						sday = minDay + 1 + 7 * i;
+					}
+					eday = minDay + 7 * (i + 1); //结束时间+7天  
+					WeeksTimes[i][0] = this.formatDate(new Date(minYear, minMonth - 1, sday)) + " " + this.beginHour;
+					WeeksTimes[i][1] = this.formatDate(new Date(minYear, minMonth - 1, eday)) + " " + this.endHour;
+				};
+				//如果是一周的周日就不要减去一期  
+				return WeeksTimes;
+
+			}
+
+			//获得本月的开始日期 
+			function getMonthStartDate1() {
+				var now = zhuan(value);
+				var nowDayOfWeek = now.getDay(); //今天本周的第几天     
+				var nowDay = now.getDate(); //当前日     
+				var nowMonth = now.getMonth(); //当前月     
+				var nowYear = now.getFullYear(); //当前年 
+				var monthStartDate = new Date(nowYear, nowMonth, 1);
+				return formatDate(monthStartDate);
+			}
+
+			//获得本月的结束日期 
+			function getMonthEndDate1() {
+				var now = zhuan(value);
+				var nowDayOfWeek = now.getDay(); //今天本周的第几天     
+				var nowDay = now.getDate(); //当前日     
+				var nowMonth = now.getMonth(); //当前月     
+				var nowYear = now.getFullYear(); //当前年 
+				var monthEndDate = new Date(nowYear, nowMonth, getMonthDays(nowMonth));
+				return formatDate(monthEndDate);
+			}
+		</script>
+	</body>
+
+</html>

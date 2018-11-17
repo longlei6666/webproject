@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_457932_cqbv0v0vg5yx2yb9.css" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<!--<script type="text/javascript" src="./js/ChinesePY.js"></script>-->
+
+		<!--<script src="js/jquery.provincesCity.js" type="text/javascript" charset="utf-8"></script>
+    	<script src="js/provincesData.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<link rel="stylesheet" href="css/style-addtab.css" />
+
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+
+		<style>
+			.layui-colla-content {
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<div class="layui-row layui-col-space10">
+				<div class=" layui-col-md8 layui-col-sm8 layui-col-xs8">
+					<form class="layui-form">
+						<!--基本资料-->
+
+						<div class="layui-form-item">
+							<div class="layui-input-inline">
+								<input type="text" name="username" placeholder="名称" autocomplete="off" class="layui-input">
+							</div>
+							<div class="layui-input-inline">
+								<select name="payment" id="">
+									<option value="">请选择父类类别</option>
+									<option>饮品</option>
+								</select>
+							</div>
+							<div class="layui-input-inline">
+								<select name="payment" id="">
+									<option value="">请选择子类类别</option>
+									<option>冷饮</option>
+									<option>热饮</option>
+								</select>
+							</div>
+							<div class="layui-input-inline">
+								<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<table class="layui-table">
+								<thead>
+									<tr>
+										<th width="100px">
+											<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+										</th>
+										<th>原料名称</th>
+										<th>单位</th>
+										<th>类别</th>
+										<th>单价</th>
+										<th>库存</th>
+										<th>库存金额</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr planid="001">
+										<td>
+											<input type="checkbox" id="planid001" onclick="actionplan(this)" name="compareplan" value="" lay-ignore/>
+										</td>
+										<td>雪碧</td>
+										<td>
+											<select id="province" name="province">
+												<option value="">请选择单位</option>
+												<option>采购单位</option>
+												<option>基本单位</option>
+											</select>
+										</td>
+										<td>冷饮</td>
+										<td>¥16.00</td>
+										<td>10</td>
+										<td>¥160.00</td>
+									</tr>
+									<tr planid="002">
+										<td>
+											<input type="checkbox" id="planid002" onclick="actionplan(this)" name="compareplan" value="" lay-ignore/>
+										</td>
+										<td>雪碧</td>
+										<td>
+											<select id="province" name="province">
+												<option value="">请选择单位</option>
+												<option>采购单位</option>
+												<option>基本单位</option>
+											</select>
+										</td>
+										<td>冷饮</td>
+										<td>¥16.00</td>
+										<td>10</td>
+										<td>¥160.00</td>
+									<tr planid="003">
+										<td>
+											<input type="checkbox" id="planid003" onclick="actionplan(this)" name="compareplan" value="" lay-ignore/>
+										</td>
+										<td>雪碧</td>
+										<td>
+											<select id="province" name="province">
+												<option value="">请选择单位</option>
+												<option>采购单位</option>
+												<option>基本单位</option>
+											</select>
+										</td>
+										<td>冷饮</td>
+										<td>¥16.00</td>
+										<td>10</td>
+										<td>¥160.00</td>
+									</tr>
+									<tr planid="004">
+										<td>
+											<input type="checkbox" id="planid004" onclick="actionplan(this)" name="compareplan" value="" lay-ignore/>
+										</td>
+										<td>雪碧</td>
+										<td>
+											<select id="province" name="province">
+												<option value="">请选择单位</option>
+												<option>采购单位</option>
+												<option>基本单位</option>
+											</select>
+										</td>
+										<td>冷饮</td>
+										<td>¥16.00</td>
+										<td>10</td>
+										<td>¥160.00</td>
+									</tr>
+									<tr planid="005">
+										<td>
+											<input type="checkbox" id="planid005" onclick="actionplan(this)" name="compareplan" value="" lay-ignore/>
+										</td>
+										<td>雪碧</td>
+										<td>
+											<select id="province" name="province">
+												<option value="">请选择单位</option>
+												<option>采购单位</option>
+												<option>基本单位</option>
+											</select>
+										</td>
+										<td>冷饮</td>
+										<td>¥16.00</td>
+										<td>10</td>
+										<td>¥160.00</td>
+									</tr>
+									<tr planid="006">
+										<td>
+											<input type="checkbox" id="planid006" onclick="actionplan(this)" name="compareplan" value="" lay-ignore/>
+										</td>
+										<td>雪碧</td>
+										<td>
+											<select id="province" name="province">
+												<option value="">请选择单位</option>
+												<option>采购单位</option>
+												<option>基本单位</option>
+											</select>
+										</td>
+										<td>冷饮</td>
+										<td>¥16.00</td>
+										<td>10</td>
+										<td>¥160.00</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="L_repass" class="layui-form-label">
+					      </label>
+							<button class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+							<button class="layui-btn layui-btn-warm formbtn" lay-filter="add" lay-submit="">取消</button>
+						</div>
+					</form>
+				</div>
+
+				<div class="layui-col-md4 layui-col-sm4 layui-col-xs4">
+					<div class="layui-form-item">
+						<blockquote class="layui-elem-quote">已选中列表</blockquote>
+						<ul class="choselist" id="choselist">
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//点击图标删除此行
+			function delplan(obj) {
+				var parent = obj.parentNode;
+				var id = parent.id;
+				parent.parentNode.removeChild(parent);
+				//去除选中的
+				var checkid = "planid" + id.substr(2, id.length);
+				document.getElementById(checkid).checked = false;
+			}
+
+			//checkbox的点击
+			function actionplan(obj) {
+				var planid = obj.parentNode.parentNode.getAttribute("planid");
+				var planname = obj.parentNode.parentNode.getElementsByTagName("td")[1].innerHTML;
+				var planlei = obj.parentNode.parentNode.getElementsByTagName("td")[2].value;
+				var planprice = obj.parentNode.parentNode.getElementsByTagName("td")[3].innerHTML;
+				addplan(planid, planname, planlei, planprice);
+			}
+
+			//选中一个元素添加到对比
+			function addplan(planid, planname, planlei, planprice) {
+
+				if(document.getElementById("planid" + planid).checked) {
+
+					$("#choselist").append("<li style='cursor:pointer;' id=li" + planid + ">" + "<p class=chosen>" + planname + "</p>" +
+						"<p><span class=category>" + planlei + "</span>" +
+						"<span class=price>" + planprice + "</span>" +
+						"</p><i onclick=delplan(this) class=layui-icon layui-unselect layui-tab-close>ဆ</i>" +
+						//"<input type='text' name='username' placeholder='加价' autocomplete='off' class='layui-input' style='width: 40%;display: inline-block;'>" +
+						"</li>");
+
+				} else {
+					var obj = document.getElementById("li" + planid);
+					obj.parentNode.removeChild(obj);
+				}
+
+			}
+		</script>
+
+		<script>
+			layui.use(['form', 'layedit', 'laydate', 'element', 'layer', 'upload'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+				var element = layui.element;
+				var layer = layui.layer;
+				var form = layui.form,
+					layedit = layui.layedit,
+					laydate = layui.laydate;
+
+				//在父层弹出一个层
+				$('#new').on('click', function() {
+					layer.open({
+						type: 2,
+						area: ['300px', '450px'],
+						fixed: false, //不固定
+						maxmin: true,
+						content: 'http://baidu.com'
+					});
+				});
+
+				//多图片上传
+				upload.render({
+					elem: '#test2',
+					url: '/upload/',
+					multiple: true,
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo2').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+						});
+					},
+					done: function(res) {
+						//上传完毕
+					}
+				});
+
+				//时间范围
+				laydate.render({
+					elem: '#test9',
+					type: 'time',
+					range: true
+				});
+
+				//监听提交
+				//				form.on('submit(add)', function(data) {
+				//					console.log(data);
+				//					//发异步，把数据提交给php
+				//					layer.alert("增加成功", {
+				//						icon: 6
+				//					}, function() {
+				//						// 获得frame索引
+				//						var index = parent.layer.getFrameIndex(window.name);
+				//						//关闭当前frame
+				//						parent.layer.close(index);
+				//					});
+				//					return false;
+				//				});
+
+			});
+
+			/*用户-删除*/
+			function member_del(obj, id) {
+				layer.confirm('确认要删除吗？', function(index) {
+					//发异步删除数据
+					$(obj).parents("tr").remove();
+					layer.msg('已删除!', {
+						icon: 1,
+						time: 1000
+					});
+				});
+			}
+		</script>
+
+	</body>
+
+</html>

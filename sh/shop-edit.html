@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>添加门店</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<!-- bootstrap  -->
+		<link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+		<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
+		<!-- 图片上传即使预览插件 -->
+		<%-- <link rel="stylesheet" href="./css/fileinput.min.css">
+		<script type="text/javascript" src="./js/fileinput.min.js"></script> --%>
+		<!-- 这个是汉化-->
+		<%-- <script type="text/javascript" src="./js/zh.js"></script> --%>
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./lib/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="./css/style.css">
+
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: ".hongsou/getProvince",
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							$("#province").append("<option value='" + data[i].ProvinceID + "'>" + data[i].ProvinceName + "</option>");
+						}
+					}
+				});
+			})
+		</script>
+	</head>
+	<style type="text/css">
+		#upload_img_list {
+			margin: 10px 0 0 0
+		}
+		
+		#upload_img_list dd {
+			position: relative;
+			margin: 0 10px 10px 0;
+			float: left
+		}
+		
+		#upload_img_list .operate {
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: 1
+		}
+		
+		#upload_img_list .operate i {
+			cursor: pointer;
+			background: #2F4056;
+			padding: 2px;
+			line-height: 15px;
+			text-align: center;
+			color: #fff;
+			margin-left: 1px;
+			float: left;
+			filter: alpha(opacity=80);
+			-moz-opacity: .8;
+			-khtml-opacity: .8;
+			opacity: .8
+		}
+		
+		#upload_img_list dd .img {
+			max-height: 150px;
+			max-width: 500px
+		}
+	</style>
+
+	<body>
+		<div class="x-body">
+			<form class="layui-form">
+				<input type="hidden" id="picAddress" name="picAddress" required="" autocomplete="off" class="layui-input" value="${shop.picAddress}">
+				<input value="${shop.shopNumber }" type="hidden" id="shopNumber" name="shopNumber" required="" lay-verify="required" autocomplete="off" class="layui-input">
+				<div class="layui-form-item">
+					<label for="username" class="layui-form-label">
+                  		<span class="x-red">*</span> 门店名称
+              		</label>
+					<div class="layui-input-inline">
+						<input value="${shop.shopName }" type="text" id="shopName" name="shopName" required="" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+ 				<div class="layui-form-item">
+					<label for="username" class="layui-form-label">
+		                	门店图片：
+		            </label>
+						<div class="layui-input-inline" style="width:calc(100% - 150px);">
+							<blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+								预览图：
+								<ul class="layui-upload-list layui-upload-mdlist" id="canpinImgList">
+								</ul>
+								<p id="canpinText"></p>
+							</blockquote>
+							<button type="button" class="layui-btn" id="selectcanpinImg">选择图片</button>
+							<button type="button" class="layui-btn" id="uploadcanpin">上传</button>
+						</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><span class="x-red">*</span> 请选择省市区</label>
+					<div class="layui-input-inline">
+						<select name="province" id="province" lay-ignore>
+							<option value="${shop.provinceID}">${shop.province}</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="city" id="city" lay-ignore>
+							<option value="${shop.cityID}">${shop.city}</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="area" id="area" lay-ignore>
+							<option value="${shop.areaID}">${shop.area}</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><span class="x-red">*</span> 门店地址</label>
+					<div class="layui-input-inline">
+						<input value="${ shop.address}" type="text" id="address" name="address" required="" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="phone" class="layui-form-label">
+				        <span class="x-red">*</span> 经纬度
+				    </label>
+					<div class="layui-input-inline">
+						<input type="text" id="latitudeAndLongitude" name="latitudeAndLongitude" required="" lay-verify="required" class="layui-input" value="${ shop.latitudeAndLongitude}">
+					</div>
+					<div class="layui-form-mid layui-word-aux">
+						<a href="http://lbs.qq.com/tool/getpoint/index.html" target="_blank" style="color:#0079f4;">拾取当前经纬度</a>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="phone" class="layui-form-label">
+                  	<span class="x-red">*</span> 门店电话
+              	</label>
+					<div class="layui-input-inline">
+						<input value="${shop.tphone}" type="text" id="tphone" name="tphone"  lay-verify="required|phone" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">备注1</label>
+					<div class="layui-input-inline" style="width: calc(100% - 150px);">
+						<textarea id="remarkOne" name="remarkOne" placeholder="请输入内容" class="layui-textarea">${shop.remarkOne}</textarea>
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">备注2</label>
+					<div class="layui-input-inline" style="width: calc(100% - 150px);">
+						<textarea id="remarkTwo" name="remarkTwo" placeholder="请输入内容" class="layui-textarea">${shop.remarkTwo}</textarea>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="L_repass" class="layui-form-label">
+              	</label>
+					<button class="layui-btn" lay-filter="add" lay-submit="">
+                 	保存
+              		</button>
+
+				</div>
+			</form>
+		</div>
+
+		<script>
+		layui.use(['form', 'layer','upload'], function() {
+			var $ = layui.jquery,
+				upload = layui.upload;
+			var form = layui.form,
+				layer = layui.layer;
+				//监听提交
+				form.on('submit(add)', function(data) {
+
+					//发异步，把数据提交给后台
+					$.ajax({
+						type: "post",
+						url: ".shop/editShop",
+						async: true,
+						data: data.field,
+						success: function(data) {
+							/* layer.alert("修改成功 ", {
+								icon: 6
+							}, function() {
+								// 获得frame索引
+								var index = parent.layer.getFrameIndex(window.name);
+								//关闭当前frame
+								parent.layer.close(index);
+							}); */
+							if(data.code == 0000) {
+								layer.alert("修改成功", {
+									icon: 6
+								}, function() {
+									// 刷新父页面
+									window.parent.location.reload();
+									// 获得frame索引
+									var index = parent.layer.getFrameIndex(window.name);
+									//关闭当前frame
+									parent.layer.close(index);
+								});
+
+							} else {
+								layer.msg(data.desc, {
+									icon: 6
+								}, function() {
+									// 刷新父页面
+									window.parent.location.reload();
+									// 获得frame索引
+									var index = parent.layer.getFrameIndex(window.name);
+									//关闭当前frame
+									parent.layer.close(index);
+								});
+							}
+						}
+					});
+					return false;
+				});
+				//门店图片上传
+				var demoListView = $('#canpinImgList'),
+					uploadListIns = upload.render({
+						elem: '#selectcanpinImg',
+						url: '.shop/addShopPic',
+						accept: 'images',
+						auto: false,
+						multiple: true,
+						bindAction: '#uploadcanpin',
+						choose: function(obj) {
+							var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+							//读取本地文件
+							obj.preview(function(index, file, result) {
+								var tr = $(['<li id="upload-' + index + '">', '<td><img src="' + result + '" alt="' + file.name + '" class="layui-upload-img layui-upload-mdimg"></td>', '<td>', '<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>', '<i class="layui-icon layui-btn-danger demo-delete img-delete mdimg-delete">&#xe640;</i>', '</td>', '</li>'].join(''));
+								//删除
+								tr.find('.demo-delete').on('click', function() {
+									delete files[index]; //删除对应的文件
+									tr.remove();
+									uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+								});
+								demoListView.append(tr);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								// 上传成功
+								layer.msg('上传成功');
+								// 获取上方的值,将后台传输过来的值进行拼接
+								var url = $("#picAddress").val();
+								url = url + res.desc + "--";
+								$("#picAddress").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							layer.msg('上传失败,请重新上传');
+						}
+					});
+			});
+
+
+			// 省市联动
+			$("#province").change(function() {
+				$("#city").empty();
+				$("#area").empty();
+				var pid = $("#province").val()
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: ".hongsou/getCity",
+					data: {
+						"provinceId": pid
+					},
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							$("#city").append("<option value='" + data[i].CityID + "'>" + data[i].CityName + "</option>");
+						}
+						$.ajax({
+							type: 'POST',
+							url: ".hongsou/getArea",
+							data: {
+								"cityId": data[0].CityID
+							},
+							success: function(data) {
+								for(var i = 0; i < data.length; i++) {
+									$("#area").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+								}
+							}
+						});
+
+					}
+				});
+			});
+
+			$("#city").change(function() {
+				$("#area").empty();
+				var cid = $("#city").val()
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: ".hongsou/getArea",
+					data: {
+						"cityId": cid
+					},
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							$("#area").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+						}
+					}
+				});
+			});
+		</script>
+		<script>
+		var attrcon = '${shop.picAddress }';
+		if(attrcon !=""){
+			if(attrcon.indexOf("--")>-1){
+				var result=attrcon.split("--");
+				for(var i=0;i<result.length-1;i++){
+					var tr = $(['<li id="upload-' + i + '">', '<td><img src="' + result[i] + '" class="layui-upload-img layui-upload-mdimg"><input type="hidden" id="upimg-'+i+'" value="'+result[i]+'"></td>', '<td>', '<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>', '<i class="layui-icon layui-btn-danger demo-delete img-delete mdimg-delete" onclick="demo('+i+')">&#xe640;</i>', '</td>', '</li>'].join(''));
+					$("#canpinImgList").append(tr);
+				}
+			}else{
+				$("#canpinImgList").append("<li><img class='layui-upload-img' style='max-width:100%' src='"+attrcon+"' ></li>");
+			}
+		}
+		function demo(ind){
+			var liids = document.getElementById("upload-"+ind);
+			var removesrc = $("#upimg-"+ind).val();
+			var attrcontent = $("#picAddress").val();
+			if(attrcontent !=""){
+				if(attrcontent.indexOf("--")>-1){
+					var url = "";
+					var result=attrcontent.split("--");
+					for(var i=0;i<result.length-1;i++){
+						if(result[i]!=removesrc){
+							url = url + result[i] + "--";
+						}	
+					}
+					$("#picAddress").val(url);
+				}
+			}
+			liids.remove();
+		}
+		</script>
+	</body>
+</html>

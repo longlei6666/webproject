@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>鸿搜管理中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./lib/layui/css/layui.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+	</head>
+
+	<body>
+		<div class="x-body">
+		<xblock>
+			<form class="layui-form" style="display: inline-block;width: auto;">
+				<div>
+					<select name="PaymentType" id="PaymentType" lay-ignore style="width: 100%;height: 39px;">
+						<option value="">请选择通道</option>
+					</select>
+				</div>
+			</form>
+			<button class="layui-btn" onclick="member_stop()" href="javascript:;" title="官方通道">
+				<i class="layui-icon"></i>切换
+			</button>
+			</xblock>
+			<input type="hidden" id="UserNumber" name="UserNumber" value="${UserNumber }">
+			<input type="hidden" id="biaoshi" name="biaoshi" value="${biaoshi }">
+			<div class="layui-form" id="divhongsou">
+			<c:if test="${not empty feilvList[0] }">
+				<div class="layui-form-item">
+					<label for="Merchants" class="layui-form-label layui-form-label2">
+						${feilvList[0].payType }费率:
+					</label>
+					<div class="layui-input-inline">
+						<select id="${feilvList[0].payTypeC }Rate" name="${feilvList[0].payTypeC }Rate" lay-verify="required" lay-search="">
+							<option value="">请选择费率</option>
+							<option value="0" <c:if test="${feilvList[0].Rate eq '0.28' }">selected='selected'</c:if>>0.00%</option>
+							<option value="0.22" <c:if test="${feilvList[0].Rate eq '0.22' }">selected='selected'</c:if>>0.22%</option>
+							<option value="0.25" <c:if test="${feilvList[0].Rate eq '0.25' }">selected='selected'</c:if>>0.25%</option>
+							<option value="0.28" <c:if test="${feilvList[0].Rate eq '0.28' }">selected='selected'</c:if>>0.28%</option>
+							<option value="0.30" <c:if test="${feilvList[0].Rate eq '0.30' }">selected='selected'</c:if>>0.30%</option>
+							<option value="0.35" <c:if test="${feilvList[0].Rate eq '0.35' }">selected='selected'</c:if>>0.35%</option>
+							<option value="0.38" <c:if test="${feilvList[0].Rate eq '0.38' }">selected='selected'</c:if>>0.38%</option>
+							<option value="0.45" <c:if test="${feilvList[0].Rate eq '0.45' }">selected='selected'</c:if>>0.45%</option>
+							<option value="0.48" <c:if test="${feilvList[0].Rate eq '0.48' }">selected='selected'</c:if>>0.48%</option>
+							<option value="0.50" <c:if test="${feilvList[0].Rate eq '0.50' }">selected='selected'</c:if>>0.50%</option>
+							<option value="0.52" <c:if test="${feilvList[0].Rate eq '0.52' }">selected='selected'</c:if>>0.52%</option>
+							<option value="0.55" <c:if test="${feilvList[0].Rate eq '0.55' }">selected='selected'</c:if>>0.55%</option>
+							<option value="0.60" <c:if test="${feilvList[0].Rate eq '0.60' }">selected='selected'</c:if>>0.60%</option>
+						</select>
+					</div>
+				</div>
+				</c:if>
+				<c:if test="${not empty feilvList[1] }">
+				<div class="layui-form-item">
+					<label for="Merchants" class="layui-form-label layui-form-label2">
+						${feilvList[1].payType }费率: 
+					</label>
+					<div class="layui-input-inline">
+						<select id="${feilvList[1].payTypeC }Rate" name="${feilvList[1].payTypeC }Rate" lay-verify="required" lay-search="">
+							<option value="">请选择费率</option>
+							<option value="0" <c:if test="${feilvList[1].Rate eq '0.28' }">selected='selected'</c:if>>0.00%</option>
+							<option value="0.22" <c:if test="${feilvList[1].Rate eq '0.22' }">selected='selected'</c:if>>0.22%</option>
+							<option value="0.25" <c:if test="${feilvList[1].Rate eq '0.25' }">selected='selected'</c:if>>0.25%</option>
+							<option value="0.28" <c:if test="${feilvList[1].Rate eq '0.28' }">selected='selected'</c:if>>0.28%</option>
+							<option value="0.30" <c:if test="${feilvList[1].Rate eq '0.30' }">selected='selected'</c:if>>0.30%</option>
+							<option value="0.35" <c:if test="${feilvList[1].Rate eq '0.35' }">selected='selected'</c:if>>0.35%</option>
+							<option value="0.38" <c:if test="${feilvList[1].Rate eq '0.38' }">selected='selected'</c:if>>0.38%</option>
+							<option value="0.45" <c:if test="${feilvList[1].Rate eq '0.45' }">selected='selected'</c:if>>0.45%</option>
+							<option value="0.48" <c:if test="${feilvList[1].Rate eq '0.48' }">selected='selected'</c:if>>0.48%</option>
+							<option value="0.50" <c:if test="${feilvList[1].Rate eq '0.50' }">selected='selected'</c:if>>0.50%</option>
+							<option value="0.52" <c:if test="${feilvList[1].Rate eq '0.52' }">selected='selected'</c:if>>0.52%</option>
+							<option value="0.55" <c:if test="${feilvList[1].Rate eq '0.55' }">selected='selected'</c:if>>0.55%</option>
+							<option value="0.60" <c:if test="${feilvList[1].Rate eq '0.60' }">selected='selected'</c:if>>0.60%</option>
+						</select>
+					</div>
+				</div>
+				</c:if>
+				<c:if test="${empty feilvList }">
+					<div class="layui-form-item">
+					<label for="Merchants" class="layui-form-label layui-form-label2">
+						支付宝支付费率:
+					</label>
+					<div class="layui-input-inline">
+						<select id="zhifubaoRate" name="zhifubaoRate" lay-verify="required" lay-search="">
+							<option value="">请选择费率</option>
+							<option value="0" >0.00%</option>
+							<option value="0.22" >0.22%</option>
+							<option value="0.25" >0.25%</option>
+							<option value="0.28" >0.28%</option>
+							<option value="0.30" >0.30%</option>
+							<option value="0.35" >0.35%</option>
+							<option value="0.38" >0.38%</option>
+							<option value="0.45" >0.45%</option>
+							<option value="0.48" >0.48%</option>
+							<option value="0.50" >0.50%</option>
+							<option value="0.52" >0.52%</option>
+							<option value="0.55" >0.55%</option>
+							<option value="0.60" >0.60%</option>
+						</select>
+					</div>
+				</div>
+				</c:if>
+				<c:if test="${empty feilvList}">
+					<div class="layui-form-item">
+					<label for="Merchants" class="layui-form-label layui-form-label2">
+						微信支付费率:
+					</label>
+					<div class="layui-input-inline">
+						<select id="weixinRate" name="weixinRate" lay-verify="required" lay-search="">
+							<option value="">请选择费率</option>
+							<option value="0" >0.00%</option>
+							<option value="0.22" >0.22%</option>
+							<option value="0.25" >0.25%</option>
+							<option value="0.28" >0.28%</option>
+							<option value="0.30" >0.30%</option>
+							<option value="0.35" >0.35%</option>
+							<option value="0.38" >0.38%</option>
+							<option value="0.45" >0.45%</option>
+							<option value="0.48" >0.48%</option>
+							<option value="0.50" >0.50%</option>
+							<option value="0.52" >0.52%</option>
+							<option value="0.55" >0.55%</option>
+							<option value="0.60" >0.60%</option>
+						</select>
+					</div>
+				</div>
+				</c:if>
+				<div class="layui-form-item">
+					<label for="L_repass" class="layui-form-label layui-form-label2"></label>
+					<button id="ss" class="layui-btn layui-btn-danger" lay-submit="" lay-filter="add">提交</button>
+				</div>
+			</div>
+			<div class="layui-form" id="divxindalu">
+				<div class="layui-form-item">
+					<label for="Merchants" class="layui-form-label layui-form-label2">
+						新大陆费率: 
+					</label>
+					<div class="layui-input-inline">
+						<select id="cardRate" name="cardRate" lay-verify="required" lay-search="">
+							<option value="">请选择费率</option>
+							<option value="0" <c:if test="${feilvList[0].Rate eq '0.28' }">selected='selected'</c:if>>0.00%</option>
+							<option value="0.22" <c:if test="${feilvList[0].Rate eq '0.22' }">selected='selected'</c:if>>0.22%</option>
+							<option value="0.25" <c:if test="${feilvList[0].Rate eq '0.25' }">selected='selected'</c:if>>0.25%</option>
+							<option value="0.28" <c:if test="${feilvList[0].Rate eq '0.28' }">selected='selected'</c:if>>0.28%</option>
+							<option value="0.30" <c:if test="${feilvList[0].Rate eq '0.30' }">selected='selected'</c:if>>0.30%</option>
+							<option value="0.35" <c:if test="${feilvList[0].Rate eq '0.35' }">selected='selected'</c:if>>0.35%</option>
+							<option value="0.38" <c:if test="${feilvList[0].Rate eq '0.38' }">selected='selected'</c:if>>0.38%</option>
+							<option value="0.45" <c:if test="${feilvList[0].Rate eq '0.45' }">selected='selected'</c:if>>0.45%</option>
+							<option value="0.48" <c:if test="${feilvList[0].Rate eq '0.48' }">selected='selected'</c:if>>0.48%</option>
+							<option value="0.50" <c:if test="${feilvList[0].Rate eq '0.50' }">selected='selected'</c:if>>0.50%</option>
+							<option value="0.52" <c:if test="${feilvList[0].Rate eq '0.52' }">selected='selected'</c:if>>0.52%</option>
+							<option value="0.55" <c:if test="${feilvList[0].Rate eq '0.55' }">selected='selected'</c:if>>0.55%</option>
+							<option value="0.60" <c:if test="${feilvList[0].Rate eq '0.60' }">selected='selected'</c:if>>0.60%</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label for="L_repass" class="layui-form-label layui-form-label2"></label>
+					<button id="ss" class="layui-btn layui-btn-danger" lay-filter="add" lay-submit="">提交</button>
+				</div>
+			</div>
+		</div>
+		<script>
+		layui.use(['form', 'layedit', 'laydate','element', 'layer','upload'], function(){
+		  var $ = layui.jquery
+		  var element = layui.element;
+		  var layer = layui.layer;
+		  var form = layui.form
+		form.on('submit(add)', function(data){
+			var UserNumber = $("#UserNumber").val();
+			var biaoshi = $("#biaoshi").val();
+			if(biaoshi == "xindalu"){
+				var rate = $("#cardRate").val();
+				var BankLogo = "xindalu"
+				data={
+					UserNumber : UserNumber,
+					biaoshi : biaoshi,
+					rate : rate,
+					BankLogo : BankLogo
+				}
+			}else if(biaoshi == "hongsou"){
+				var rate1 = $("#weixinRate").val();
+				var rate = $("#zhifubaoRate").val();
+				var BankLogo = "hongsou"
+				data={
+						UserNumber : UserNumber,
+						biaoshi : biaoshi,
+						rate : rate,
+						rate1 : rate1,
+						BankLogo :BankLogo
+					}
+			}
+		
+			$.ajax({
+				type: "post",
+				url: ".Configuration/putflConfiguration",
+				async: true,
+				data: data,
+				success: function(data) {
+					if(data.code == 0000) {
+						layer.alert("配置成功,请刷新页面!", {
+							icon: 6
+						}, function() {
+							// 获得frame索引
+							var index = parent.layer.getFrameIndex(window.name);
+							//关闭当前frame
+							parent.layer.close(index);
+						});
+
+					} else if(data.code != 0000) {
+						layer.alert("配置失败,请重新配置!");
+					}
+				}
+			});
+		});
+	});
+	</script>
+	<script>
+	var passageway = '${biaoshi}';
+	if(passageway== "xindalu"){
+		$("#divxindalu").show();
+		$("#divhongsou").hide();
+	}else if(passageway== "hongsou"){
+		$("#divxindalu").hide();
+		$("#divhongsou").show();
+	}
+	$.ajax({
+		type: 'POST',
+		async: true,
+		url: ".config/getPassageway",
+		success: function(data) {
+			for(var i = 0; i < data.length; i++) {
+				if(passageway == data[i].Passageway){
+					$("#PaymentType").append("<option value='" + data[i].Passageway + "' selected='selected'>" + data[i].PassagewayC + "</option>");
+				}else{
+					$("#PaymentType").append("<option value='" + data[i].Passageway + "'>" + data[i].PassagewayC + "</option>");
+				}
+			}
+		}
+	});
+	function member_stop(){
+		var PaymentType=$("#PaymentType").val();
+		var UserNumber = $("#UserNumber").val();
+		$.ajax({
+			type: 'POST',
+			async: true,
+			url: ".config/PaymentType",
+			data:{PaymentType:PaymentType,UserNumber:UserNumber},
+			success: function(data) {
+				if(data.code == 0000) {
+					layer.alert("切换成功!");
+					if(PaymentType == "xindalu"){
+						$("#biaoshi").val("xindalu");
+						$("#divxindalu").show();
+						$("#divhongsou").hide();
+					}else {
+						$("#biaoshi").val("hongsou");
+						$("#divxindalu").hide();
+						$("#divhongsou").show();
+					}
+				} else{
+					layer.alert("失败!");
+				}
+			}
+		});
+	}
+	</script>
+</body>
+</html>

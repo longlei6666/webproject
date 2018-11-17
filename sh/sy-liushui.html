@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+	</head>
+	<style type="text/css">
+		.layui-body {
+			overflow-y: scroll;
+		}
+		.text {
+			position: relative;
+		}
+		
+		.layui-input-clear {
+			position: absolute;
+			right: 10px;
+			top: 10px;
+			cursor: pointer;
+			display: none;
+			padding: 1px;
+		}
+		
+		.layui-input-clear:hover {
+			background-color: #FF5722;
+			color: #fff;
+			border-radius: 50%;
+		}
+	</style>
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb"> <a href="">流水</a> <a> <cite>交易数据明细</cite></a>
+		</span>
+			<a class="layui-btn layui-btn-small" style="line-height: 1.6em; margin-top: 3px; float: right" href="javascript:location.replace(location.href);" title="刷新"> <i class="layui-icon" style="line-height: 30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="demoTable">
+				<div class="layui-inline">
+					<form class="layui-form layui-col-md11 x-so">
+						<div class="layui-input-inline text">
+							<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+							<input name="Assistant" id="Assistant" placeholder="营业员" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-input-inline text">
+							<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+							<input name="orderCode" id="orderCode" placeholder="订单号" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-input-inline">
+							<!-- 需要数据对接(完成) -->
+							<select name="shopName" id="shopName" lay-search>
+								<option value="">--请选择门店--</option>
+								<c:forEach items="${shops }" var="shop">
+									<option value="${shop.ShopName }">${shop.ShopName }</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select name="payment" id="payment">
+								<option value="">请选择支付方式</option>
+								<option value="zhifubaopay">支付宝支付</option>
+								<option value="weixinpay">微信支付</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" placeholder="开始日" name="startTime" id="startTime">
+						</div>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" placeholder="截止日" name="endTime" id="endTime">
+						</div>
+						<div class="layui-input-inline">
+							<select name="orderStatus" id="orderStatus">
+								<option value="">请选择支付状态</option>
+								<option value="1">收款成功</option>
+								<option value="2">收款失败</option>
+								<option value="3">已退款</option>
+							</select>
+						</div>
+					</form>
+					<div class=" layui-col-md1">
+						<button class="layui-btn" data-type="reload">
+							<i class="layui-icon">&#xe615;</i>
+						</button>
+					</div>
+				</div>
+			</div>
+			<xblock>
+				<button class="layui-btn" id="baobiao">
+					<i class="layui-icon"></i>报表
+				</button>
+				<span class="x-left" style="line-height:40px;margin-left: 20px;">
+					交易笔数：<span style="color: red" id="Ocount"> </span> &nbsp; 
+					交易金额：<span style="color: red" id="ACollect"> </span>&nbsp;
+				</span>
+			</xblock>
+
+			<table class="layui-hide" id="LAY_table_bill" lay-filter="bill"></table>
+		</div>
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>
+		</script>
+		<script type="text/javascript">
+			$("input").focus(function() {
+				$(this).parent().children(".layui-input-clear").show();
+			});
+			$("input").blur(function() {
+				if($(this).val() == '') {
+					$(this).parent().children(".layui-input-clear").hide();
+				}
+			});
+			$(".layui-input-clear").click(function() {
+				$(this).parent().find('input').val('');
+				$(this).hide();
+			});
+			
+			$("#baobiao").click(function(){
+				var shopName = $('#shopName').val();//门店名称
+				var startTime = $("#startTime").val();
+				var endTime = $("#endTime").val();
+				var payment = $("#payment option:selected").text();
+				window.location.href = "${pageContext.request.contextPath }/Bill/getBillReport?shopName=" +encodeURI(encodeURI(shopName)) + "&startTime=" + startTime + "&endTime=" + endTime + "&payment=" + payment;
+			})
+		</script>
+
+		<script>
+			var startDate = new Date(new Date().setHours(0, 0, 0, 0));
+			var endDate = new Date();
+			
+			var nowTime = new Date().valueOf();
+			// 选择日期插件  
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				laydate.render({
+					elem: '#startTime',
+					type: 'datetime',
+				    max: nowTime,
+					value: startDate
+				});
+				laydate.render({
+					elem: '#endTime',
+					type: 'datetime',
+				    max: nowTime,
+					value: endDate
+				});
+			});
+
+			layui.use('table', function() {
+
+				var table = layui.table;
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_bill',
+					url: '${pageContext.request.contextPath }/Bill/getBillList',
+					method: "post",
+					page: true,
+					id: 'billlist',
+					cols: [
+						[{
+							field: 'dingdanhao',
+							title: '订单号',
+							align: 'center'
+						}, {
+							field: 'shopname',
+							title: '门店',
+							sort: true,
+							align: 'center'
+						}, {
+							field: 'Name',
+							title: '营业员',
+							align: 'center'
+						}, {
+							field: 'jiaoyijine',
+							title: '应收款',
+							align: 'center'
+						}, {
+							field: 'jiesuanjine',
+							title: '实收款',
+							align: 'center'
+						}, {
+							field: 'shopshouxufei',
+							title: '手续费',
+							align: 'center'
+						}, {
+							field: 'jiaoyileixing',
+							title: '支付方式',
+							sort: true,
+							align: 'center'
+						}, {
+							field: 'jiaoyizhuangtai',
+							title: '订单状态',
+							align: 'center'
+						}, {
+							field: 'jiaoyishijian',
+							title: '交易时间',
+							align: 'center'
+						}, {
+							field: 'operation',
+							title: '操作',
+							toolbar: "#tool",
+							align: 'center'
+						}]
+					], done : function(res, curr, count){
+						//如果是异步请求数据方式，res即为你接口返回的信息。
+						$("#ACollect").text(res.transactionAmount+' 元');
+						$("#Ocount").text(res.transactionNumber+' 笔');
+				    }
+				});
+
+				// 根據條件重载表格
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							// 获取上面查询框的值
+							var Assistant = $('#Assistant');
+							var shopName = $('#shopName');
+							var payment = $('#payment');
+							var startTime = $('#startTime');
+							var endTime = $('#endTime');
+							var orderStatus = $('#orderStatus');
+							var orderCode = $('#orderCode');
+
+							//执行重载
+							table.reload('billlist', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									Assistant: Assistant.val(),
+									payment: payment.val(),
+									startTime: startTime.val(),
+									endTime: endTime.val(),
+									orderStatus: orderStatus.val(),
+									shopName: shopName.val(),
+									orderCode: orderCode.val()
+								}
+							});
+						}
+					};
+
+				//监听工具条
+				table.on('tool(bill)', function(obj) {
+					var data = obj.data;
+					var shopName = $('#shopName').val();//门店名称
+					var startTime = $("#startTime").val();
+					var endTime = $("#endTime").val();
+					if(obj.event === 'detail') {
+						// 跳转流水详情页面
+						layer.open({
+							type: 2,
+							title: '流水详情',
+							area: ['400px', '400px'], //宽高
+							content: '${pageContext.request.contextPath }/Bill/getBillDetailsPage?orderCode=' + data.dingdanhao+'&startTime='+startTime+'&endTime='+endTime
+						});
+					}
+				});
+
+				$('.demoTable .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商户添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/xiaoshouzhushou.css">
+		<link rel="stylesheet" type="text/css" href="css/feedback.css" />
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">银行卡信息</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>账户类型</label>
+						<div class="customradio">
+							<div class="mui-input-row mui-radio mui-left">
+								<label>个人</label>
+								<input id="Radio1" name="jiesuanzh" type="radio" value="1" onclick="test(this)" checked>
+							</div>
+							<div class="mui-input-row mui-radio mui-left">
+								<label>企业</label>
+								<input id="Radio2" name="jiesuanzh" type="radio" value="2" onclick="test(this)">
+							</div>
+						</div>
+					</div>
+					<script type="text/javascript">
+						function test(obj) {
+							if(obj.id == "Radio1") {
+								document.getElementById("gerenk-yhk").style.display = "block";
+								document.getElementById("qiyek-yhk").style.display = "none";
+							} else {
+								document.getElementById("gerenk-yhk").style.display = "none";
+								document.getElementById("qiyek-yhk").style.display = "block";
+							}
+						}
+					</script>
+					<div class="mui-input-row">
+						<label style="width: 100%;">银行卡正反面照</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png"/>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">银行卡正反面照</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png"/>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">手持身份证照片</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png"/>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label>开户银行</label>
+						<input type="text" class="mui-input-clear" placeholder="请选择开户银行">
+					</div>
+					<div class="mui-input-row">
+						<label>开户支行</label>
+						<input type="text" class="mui-input-clear" placeholder="请选择开户支行">
+					</div>
+					<div class="mui-input-row">
+						<label>银行卡号</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入银行卡号">
+					</div>
+					<div id="gerenk-yhk">
+						<!--个人-->
+						<div class="mui-input-row">
+							<label>持卡人姓名</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入持卡人姓名">
+						</div>
+						<div class="mui-input-row">
+							<label>持卡人身份证号</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入持卡人身份证号">
+						</div>
+						<div class="mui-input-row">
+							<label>银行预留手机号</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入银行预留手机号">
+						</div>
+						<!--个人-->
+					</div>
+					<div id="qiyek-yhk" style="display: none;">
+						<!--企业-->
+						<div class="mui-input-row">
+							<label>公司名称</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入公司名称">
+						</div>
+						<div class="mui-input-row">
+							<label>联系人姓名</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入联系人姓名">
+						</div>
+						<div class="mui-input-row">
+							<label>联系人身份证</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入联系人身份证">
+						</div>
+						<!--企业-->
+					</div>
+				</form>
+				<a href="sh-add-3.html" class="mui-btn mui-btn-primary nextstep" id="">下一步</a>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+
+</html>

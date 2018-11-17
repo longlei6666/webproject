@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>商户详情</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<style type="text/css">
+			.x-black {
+				color: #333333;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href=".page/getMerchantsPage">商户管理</a>
+        <a>详情</a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form">
+					<div class=" layui-col-md6">
+						<div class="grid-demo">
+							<!--基本资料-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>基本资料</blockquote>
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>支付通道</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	支付宝
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.aliPay }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	微信
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.weChat }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+				                 	 银联卡
+				              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.unionPay }</span>
+								</div>
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>商户类型</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	商户类型
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.merchantType }</span>
+								</div>
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>商户详细信息</legend>
+							</fieldset>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 支付宝账号
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.aliPayNumber }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 商户微信号
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.weChatNumber }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  		企业Logo
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list" id="diventerpriseLogo">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.enterpriseLogo }">
+										<!-- <script>
+										var enterpriseLogo='${ merchantDetails.enterpriseLogo }';
+										if(enterpriseLogo!=''){
+											var logopics = enterpriseLogo.split("/");
+											enterpriseLogo = logopics[2];
+											var url = "/www/wwwroot/h5.qimipay.cn/sy_h5/images"+logopics[1]+"/"+enterpriseLogo;
+											$("#diventerpriseLogo").append('<img class="layui-upload-img" id="imgLogo" src=".Merchant/servletImages.do?imageurl='+url+'">')
+										}else{
+											$("#diventerpriseLogo").append('<img class="layui-upload-img" id="imgLogo"> ')
+										}
+										</script> -->
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 联系人
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.merchantUserName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	联系手机号
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.merchantUserPhone }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 联系邮箱
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.email }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 企业名称
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.companyName }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 企业简称
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.companyAbbreviation }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	默认门店
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.shopName }</span>
+								</div>
+							</div>
+
+							<!--<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	门店数量
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">1</span>
+								</div>
+							</div>-->
+
+							<!--基本资料-->
+
+							<!--支付扣费标准-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-group3"></i>支付扣费标准</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	支付宝
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.aliPayRate }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	微信
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.weChatPayRate }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+				                  	银联卡
+				              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.unionpayCardRate }</span>
+								</div>
+							</div>
+							<!--支付扣费标准-->
+
+							<!--银行卡信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-yinxingqia"></i>银行卡信息</blockquote>
+							<div class="layui-form-item">
+								<label class="layui-form-label">账户类型</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.accountType }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	入账银行卡正面照
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list" id="divbankpic">
+										<img class="layui-upload-img" id="demo1" src="${ merchantDetails.bankCardPhoto }">
+										<!-- <script>
+										var bankpic='${ merchantDetails.bankCardPhoto }';
+										if(bankpic!=''){
+											var logopics = bankpic.split("/");
+											bankpic = logopics[2];
+											var url = "/www/wwwroot/h5.qimipay.cn/sy_h5/images"+logopics[1]+"/"+bankpic;
+											$("#divbankpic").append('<img class="layui-upload-img" id="imgBankCard" src=".Merchant/servletImages.do?imageurl='+url+'">')
+										}else{
+											$("#divbankpic").append('<img class="layui-upload-img" id="imgBankCard">')
+										}
+										</script> -->
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	开户许可证照
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list" id="divopeningBankPhoto">
+										<img class="layui-upload-img" id="imgOpenAccount" src="${ merchantDetails.openingBankPhoto }">
+										<!-- <script>
+										var openingBankPhoto='${ merchantDetails.openingBankPhoto }';
+										if(openingBankPhoto!=''){
+											var logopics = openingBankPhoto.split("/");
+											openingBankPhoto = logopics[2];
+											var url = "/www/wwwroot/h5.qimipay.cn/sy_h5/images"+logopics[1]+"/"+openingBankPhoto;
+											$("#divopeningBankPhoto").append('<img class="layui-upload-img" id="imgOpenAccount" src=".Merchant/servletImages.do?imageurl='+url+'">')
+										}else{
+											$("#divopeningBankPhoto").append('<img class="layui-upload-img" id="imgOpenAccount">')
+										}
+										</script> -->
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">开户银行</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.openingBankName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">开户支行</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.openingBranchName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">银行卡号</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.bankCard }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">持卡人姓名</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.cardHoldingName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">身份证号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.idNumber }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">银行预留号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.bankMphone }</span>
+								</div>
+							</div>
+							<!--银行卡信息-->
+						</div>
+
+					</div>
+					<div class=" layui-col-md6">
+
+						<div class="grid-demo">
+							<!--执照信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-zhizhao"></i>执照信息</blockquote>
+							<div class="layui-form-item">
+								<label class="layui-form-label">注册地址</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.registeredAddress }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">商家经营类目</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.industryType }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">执照号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.businessLicense }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">执照有效期</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.businessLicenseTime }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                  	营业执照
+					              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list" id="divbusinessLicensePhoto">
+										<img class="layui-upload-img" id="imgBusinessLicense" src="${ merchantDetails.businessLicensePhoto }">
+										<!-- <script>
+										var businessLicensePhoto='${ merchantDetails.businessLicensePhoto }';
+										if(businessLicensePhoto!=''){
+											var logopics = businessLicensePhoto.split("/");
+											businessLicensePhoto = logopics[2];
+											var url = "/www/wwwroot/h5.qimipay.cn/sy_h5/images"+logopics[1]+"/"+businessLicensePhoto;
+											$("#divbusinessLicensePhoto").append('<img class="layui-upload-img" id="imgBusinessLicense" src=".Merchant/servletImages.do?imageurl='+url+'">')
+										}else{
+											$("#divbusinessLicensePhoto").append('<img class="layui-upload-img" id="imgBusinessLicense">')
+										}
+										</script> -->
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	特殊资质图片
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list" id="divspecialPhoto">
+										<img class="layui-upload-img" id="imgSpecialPhoto" src="${ merchantDetails.specialPhoto }">
+										<!-- <script>
+										var specialPhoto='${ merchantDetails.specialPhoto }';
+										if(specialPhoto!=''){
+											var logopics = specialPhoto.split("/");
+											specialPhoto = logopics[2];
+											var url = "/www/wwwroot/h5.qimipay.cn/sy_h5/images"+logopics[1]+"/"+specialPhoto;
+											$("#divspecialPhoto").append('<img class="layui-upload-img" id="imgSpecialPhoto" src=".Merchant/servletImages.do?imageurl='+url+'">')
+										}else{
+											$("#divspecialPhoto").append('<img class="layui-upload-img" id="imgSpecialPhoto">')
+										}
+										</script> -->
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">经营范围</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.scope }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">所在省</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.businessLicenseProvince }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">所在市</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.businessLicenseCity }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">是否三证合一</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.threeChinese }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">组织机构代码证</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.organizationStructure }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  		组织机构代码证图
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list" id="divorganizationStructurePhoto">
+										<img class="layui-upload-img" id="imgOrganizationStructure" src="${ merchantDetails.organizationStructurePhoto }">
+										<!-- <script>
+										var organizationStructurePhoto='${ merchantDetails.organizationStructurePhoto }';
+										if(organizationStructurePhoto!=''){
+											var logopics = organizationStructurePhoto.split("/");
+											organizationStructurePhoto = logopics[2];
+											var url = "/www/wwwroot/h5.qimipay.cn/sy_h5/images"+logopics[1]+"/"+organizationStructurePhoto;
+											$("#divorganizationStructurePhoto").append('<img class="layui-upload-img" id="imgOrganizationStructure" src=".Merchant/servletImages.do?imageurl='+url+'">')
+										}else{
+											$("#divorganizationStructurePhoto").append('<img class="layui-upload-img" id="imgOrganizationStructure">')
+										}
+										</script> -->
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	营业执照授权函图
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list" id="divbusinessLicenseAuthorizePhoto">
+										<img class="layui-upload-img" id="imgBusinessLicenseAuthorizePhoto" src="${ merchantDetails.businessLicenseAuthorizePhoto }">
+										<!-- <script>
+										var businessLicenseAuthorizePhoto='${ merchantDetails.businessLicenseAuthorizePhoto }';
+										if(businessLicenseAuthorizePhoto!=''){
+											var logopics = businessLicenseAuthorizePhoto.split("/");
+											businessLicenseAuthorizePhoto = logopics[2];
+											var url = "/www/wwwroot/h5.qimipay.cn/sy_h5/images"+logopics[1]+"/"+businessLicenseAuthorizePhoto;
+											$("#divbusinessLicenseAuthorizePhoto").append('<img class="layui-upload-img" id="imgBusinessLicenseAuthorizePhoto" src=".Merchant/servletImages.do?imageurl='+url+'">')
+										}else{
+											$("#divbusinessLicenseAuthorizePhoto").append('<img class="layui-upload-img" id="imgBusinessLicenseAuthorizePhoto">')
+										}
+										</script> -->
+									</div>
+								</div>
+							</div>
+
+							<!--执照信息-->
+
+							<!--法人信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-faren"></i>法人信息</blockquote>
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人姓名</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.legalPersonName }</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人证件类型</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.documentsTypeChinese }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人证件号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.legalPersonIdNumber }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人证件有效期</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">${ merchantDetails.idValidityPeriod }</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                  	法人证件正面照
+					              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list" id="divimgIdCardPic_FrontFace">
+										<img class="layui-upload-img" id="imgIdCardPic_FrontFace" src="${ merchantDetails.idCardPic_FrontFace }">
+										<!-- <script>
+										var idCardPic_FrontFace='${ merchantDetails.idCardPic_FrontFace }';
+										if(idCardPic_FrontFace!=''){
+											var logopics = idCardPic_FrontFace.split("/");
+											idCardPic_FrontFace = logopics[2];
+											var url = "/www/wwwroot/h5.qimipay.cn/sy_h5/images"+logopics[1]+"/"+idCardPic_FrontFace;
+											$("#divimgIdCardPic_FrontFace").append('<img class="layui-upload-img" id="imgIdCardPic_FrontFace" src=".Merchant/servletImages.do?imageurl='+url+'">')
+										}else{
+											$("#divimgIdCardPic_FrontFace").append('<img class="layui-upload-img" id="imgIdCardPic_FrontFace"> ')
+										}
+										</script> -->
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					              		法人证件背面照
+					              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list" id="divimgIdCardPic_ReverseSide">
+										<img class="layui-upload-img" id="imgIdCardPic_ReverseSide" src="${ merchantDetails.idCardPic_ReverseSide }">
+										<!-- <script>
+										var idCardPic_ReverseSide='${ merchantDetails.idCardPic_ReverseSide }';
+										if(idCardPic_ReverseSide!=''){
+											var logopics = idCardPic_ReverseSide.split("/");
+											idCardPic_ReverseSide = logopics[2];
+											var url = "/www/wwwroot/h5.qimipay.cn/sy_h5/images"+logopics[1]+"/"+idCardPic_ReverseSide;
+											$("#divimgIdCardPic_ReverseSide").append('<img class="layui-upload-img" id="imgIdCardPic_ReverseSide" src=".Merchant/servletImages.do?imageurl='+url+'">')
+										}else{
+											$("#divimgIdCardPic_ReverseSide").append('<img class="layui-upload-img" id="imgIdCardPic_ReverseSide"> ')
+										}
+										</script> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</body>
+
+</html>

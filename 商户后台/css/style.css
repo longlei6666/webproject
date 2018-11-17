@@ -1,0 +1,89 @@
+.layui-inline {
+	width: 100%;
+}
+
+
+.x-so input.layui-input {
+	width: 100%;
+}
+
+.xx-so {
+	width: 32%;
+}
+
+.layui-col-md7 .layui-input-inline {
+	width: 24%;
+}
+.layui-col-md4 .layui-input-inline {
+	width: 49%;
+}
+
+.login input[type=text],
+.login input[type=file],
+.login input[type=password],
+.login input[type=email],
+select {
+	height: 38px;
+}
+
+.layui-table-xq {
+	margin: 10px !important;
+	width: calc(100% - 20px) !important;
+}
+
+.laytable-cell-1-id {
+	text-align: right;
+}
+
+.layui-table-body {
+	overflow-x: hidden;
+}
+
+.iconfont-pay {
+	width: 26px;
+	height: 28px;
+	display: block;
+	margin-right: 10px;
+	text-align: center;
+	float: left;
+}
+
+.iconfont-pay .iconfont {
+	line-height: 28px;
+	font-size: 26px;
+}
+
+.chanpinname {
+	display: inline-block;
+	height: 28px;
+	line-height: 28px;
+}
+
+.icon-zhifubao {
+	color: rgb(0, 167, 255);
+}
+
+.icon-weixinzhifu1 {
+	color: rgb(76, 180, 21);
+}
+
+.icon-xianjin {
+	color: rgb(238, 174, 0);
+}
+
+.icon-eliaomo {
+	color: rgb(34, 149, 255);
+}
+
+.icon-MT {
+	color: rgb(7, 196, 189);
+}
+
+.layui-form-label{width: 120px;}
+
+.layui-input-inline.x-so {
+	    width: calc(100% - 150px);
+}
+.layui-input-inline.x-so .form-group .layui-upload-list .layui-upload-img{
+	    width:180px;height: 150px;margin-right: 1.5%;margin-bottom: 1.5%;
+}

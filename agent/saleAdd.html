@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./fonts/iconfont/iconfont.css">
+		<!--<link rel="stylesheet" href="//at.alicdn.com/t/font_457932_cqbv0v0vg5yx2yb9.css" />-->
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<link rel="stylesheet" href="./css/style.css" />
+		<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: ".getProvince",
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							$("#province").append("<option value='" + data[i].ProvinceID + "'>" + data[i].ProvinceName + "</option>");
+							$("#province3").append("<option value='" + data[i].ProvinceID + "'>" + data[i].ProvinceName + "</option>");
+							$("#province4").append("<option value='" + data[i].ProvinceID + "'>" + data[i].ProvinceName + "</option>");
+						}
+					}
+				});
+			});
+			$(function(){
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: ".config/getPassageway",
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							$("#PaymentType").append("<option value='" + data[i].Passageway + "'>" + data[i].PassagewayC + "</option>");
+						}
+					}
+				});
+			});
+			$(function(){
+				$("#PaymentType").change(function(){
+					var PCtype = $("#PaymentType").val();
+					console.log(PCtype);
+					
+					 //获取select dom对象
+			        var allSelect1 = document.getElementById("vxRate");
+			        //获取select下拉框下所有的选项
+			        var optionArr1 = allSelect1.getElementsByTagName("option");
+			        var len1 = optionArr1.length;
+			        for(var i=0;i<len1;i++){
+			            //将其对应序号的option删除
+			            allSelect1.remove(optionArr1[i]);
+			        }
+					 //获取select dom对象
+			        var allSelect = document.getElementById("alipayRate");
+			        //获取select下拉框下所有的选项
+			        var optionArr = allSelect.getElementsByTagName("option");
+			        var len = optionArr.length;
+			        for(var i=0;i<len;i++){
+			            //将其对应序号的option删除
+			            allSelect.remove(optionArr[i]);
+			        }
+					
+					$.ajax({
+						type: 'POST',
+						async: true,
+						data :{
+							BankLogo : PCtype,
+							Payment : "支付宝支付",
+							},
+						url: ".getRate",
+						success: function(data) {
+							console.log(data);
+							for(var i = 0; i < data.length; i++) {
+								$("#alipayRate").append("<option value='" + data[i].D0Rate + "'>" + data[i].D0RateC + "</option>");
+							}
+						}
+					});$.ajax({
+						type: 'POST',
+						async: true,
+						data :{
+							BankLogo : PCtype,
+							Payment : "微信支付",
+							},
+						url: ".getRate",
+						success: function(data) {
+							console.log(data);
+							for(var i = 0; i < data.length; i++) {
+								$("#vxRate").append("<option value='" + data[i].D0Rate + "'>" + data[i].D0RateC + "</option>");
+							}
+						}
+					});
+				})
+			})
+		</script>
+</head>
+<body>
+	<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form">
+					<div class=" layui-col-md12">
+						<div class="grid-demo">
+							<!-- 企业logo -->
+							<input type="hidden" name="shangLogo" id="shangLogo" />
+							<!-- 门头照 -->
+							<input type="hidden" name="shopLogo" id="shopLogo" />
+							<!-- 银行正面照 -->
+							<input type="hidden" name="bankCardPhoto" id="bankCardPhoto"/>
+							<!-- 银行反面照 -->
+							<input type="hidden" name="bankbackPhoto" id="bankbackPhoto"/>
+							<!-- 开户执照上传 -->
+							<input type="hidden" name="bankusercardPhoto" id="bankusercardPhoto"/>
+							<!-- 营业执照 -->
+							<input type="hidden" name="businessPhoto" id="businessPhoto">
+							<!-- 组织机构 -->
+							<input type="hidden" name="organizationPhoto" id="organizationPhoto">
+							<!-- 法人照片 -->
+							<input type="hidden" name="corpPhoto" id="corpPhoto">
+							<input type="hidden" name="corpbackPhoto" id="corpbackPhoto">
+							<input type="hidden" name="corphandPhoto" id="corphandPhoto">
+							<!--基本资料-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>商户信息</blockquote>
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>商户类型</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label"></label>
+								<div class="layui-input-inline">
+									<input type="radio" name="shleixing" value="小微" title="小微" lay-filter="shleixing" checked="">
+									<input type="radio" name="shleixing" value="企业" title="企业" lay-filter="shleixing">
+								</div>
+							</div>
+							
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>结算类型</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label"></label>
+								<div class="layui-input-inline">
+									<input type="radio" name="shBillxw" value="D+1" title="D+1" lay-filter="shBillxw" checked="">
+									<input type="radio" name="shBillxw" value="T+1" title="T+1" lay-filter="shBillxw">
+								</div>
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>个人信息</legend>
+							</fieldset>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									支付宝账号
+					            </label>
+								<div class="layui-input-inline">
+									<input type="text" id="zhifubaonum" name="zhifubaonum" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									微信商户号
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="weixinnum" name="weixinnum" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>管理员名称
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>管理员手机号
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="usercell" name="usercell" required="" lay-verify="required|phone" autocomplete="off" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-red">（作为商户登录帐号）</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>联系邮箱
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="email" name="email" required="" lay-verify="required|email" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="qiyek" style="display: none;">
+								<!--企业信息-->
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>企业名称
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="enterprisename" name="enterprisename" required=""  autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>企业Logo
+								</label>
+									<div class="layui-upload">
+										<div class="layui-upload-list">
+											<img class="layui-upload-img" id="imgLogo">
+											<p id="logoText"></p>
+										</div>
+										<button type="button" class="layui-btn uploadbtn" name="file" id="logofile">选择图片</button>
+										<button type="button" class="layui-btn uploadbtn" id="uploadLogo">上传图片</button>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>企业简称
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="enterpriseshort" name="enterpriseshort" required="" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									售卖类商品描述
+								</label>
+									<div class="layui-input-inline">
+										<textarea placeholder="请输入内容" class="layui-textarea" id="desc"></textarea>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>联系地址
+								</label>
+									<div class="layui-input-inline shengshiqu">
+										<select id="province4" name="province" lay-ignore >
+											<option value="">请选择省</option>
+										</select>
+										<select id="city4" name="city" lay-ignore >
+											<option value="">请选择市</option>
+										</select>
+										<select id="area4" name="area" lay-ignore >
+											<option value="">请选择区/县</option>
+										</select>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>详细地址
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="qiyeaddress" name="address" required="" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<!--企业信息-->
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>门店信息</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>门店名称
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="shopname" name="shopname" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>门店地址
+								</label>
+								<div class="layui-input-inline shengshiqu">
+									<select id="province" name="province" lay-ignore lay-verify="required" lay-search="">
+										<option value="">请选择省</option>
+									</select>
+									<select id="city" name="city" lay-ignore lay-verify="required" lay-search="">
+										<option value="">请选择市</option>
+									</select>
+									<select id="area" name="area" lay-ignore lay-verify="required" lay-search="">
+										<option value="">请选择区/县</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>详细地址
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="shopaddress" name="shopaddress" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									门店电话
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="shopcell" name="shopcell" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                <span class="x-red">* </span>门头照
+					            </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="shopimg">
+										<p id="shopText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="shopupload">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>联系手机号
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="clerkcell" name="clerkcell" required="" lay-verify="required|phone" autocomplete="off" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-red">（作为门店登录帐号）</span>
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">备注1</label>
+								<div class="layui-input-inline">
+									<textarea placeholder="请输入内容" class="layui-textarea" id="remark1"></textarea>
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">备注2</label>
+								<div class="layui-input-inline">
+									<textarea placeholder="请输入内容" class="layui-textarea" id="remark2"></textarea>
+								</div>
+							</div>
+							<!--基本资料-->
+
+							<!--银行卡信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-yinxingqia"></i>银行卡信息</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									账户类型
+								</label>
+								<div class="layui-input-inline">
+									<select name="contrller" id="atype">
+										<option value="个体">对私账户</option>
+										<option value="企业">对公账户</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									银行卡正面照
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="imgBankCard">
+										<p id="bankCardText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="selectBankCard">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="uploadBankCard">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									银行卡反面照
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="bankbackimg">
+										<p id="bankbackText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="bankback">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="bankbackupload">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									开户许可证照
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="bankusercardimg">
+										<p id="bankusercardText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="bankusercard">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="bankusercardupload">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>开户银行
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="openbank" name="openbank" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>开户支行
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="openbranch" name="openbranch" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>银行卡号
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="banknum" name="banknum" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="gerenk" style="display: block;">
+								<!--银行-个人-->
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>持卡人姓名
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="bankname" name="bankname" required="" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>身份证号码
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="IDcard" name="IDcard" required="" lay-verify="identity" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									银行预留号码
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="bankcell" name="bankcell" required="" lay-verify="phone" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<!--银行-个人-->
+							</div>
+							 <div class="qiyek" style="display: none;">
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>公司名称
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="comname" name="comname" required=""  autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>联系人姓名
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="comclerk" name="comclerk" required=""  autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									联系人身份证
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="comIDnum" name="comIDnum" required="" lay-verify="identity" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+							</div> 
+							<!--银行卡信息-->
+
+						</div>
+
+					</div>
+					<div class=" layui-col-md12">
+						<div class="grid-demo">
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-zhizhao"></i>执照信息</blockquote>
+							<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+									注册地址
+								</label>
+									<div class="layui-input-inline">
+										<input type="text" id="zhiaddress" name="zhiaddress" required="" lay-verify="required" autocomplete="off" class="layui-input">
+									</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+			                  	<span class="x-red">* </span>商家经营类目
+			              	</label>
+								<div class="layui-input-inline shengshiqu">
+									<select id="industryType" name="industryType" lay-verify="required" lay-search="">
+										<option value="">请选择类目</option>
+										<option value="餐饮/食品">餐饮/食品</option>
+										<option value="生活/家居">生活/家居</option>
+										<option value="票务/旅游">票务/旅游</option>
+										<option value="生活缴费">生活缴费</option>
+										<option value="金融">金融</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>执照名称
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="zhiname" name="zhiname" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>执照号码
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="zhinum" name="zhinum" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									执照有效截止期
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="test10" placeholder="">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>营业执照照片
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="businessimg">
+										<p id="businessText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="business">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="businessupload">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>企业经营范围
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="businessscope" name="businessscope" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>执照地址
+								</label>
+								<div class="layui-input-inline shengshiqu">
+									<select id="province3" name="province" lay-ignore lay-verify="required" lay-search="">
+										<option value="">请选择省</option>
+									</select>
+									<select id="city3" name="city" lay-ignore lay-verify="required" lay-search="">
+										<option value="">请选择市</option>
+									</select>
+									<select id="area3" name="area" lay-ignore lay-verify="required" lay-search="">
+										<option value="">请选择区/县</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label typetitlel">
+									组织机构代码证号
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="oranum" name="oranum" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>组织机构代码证图
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="organizationimg">
+										<p id="organizationText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="organization">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="organizationupload">上传图片</button>
+								</div>
+							</div>
+							<!--执照信息-->
+
+							<!--法人信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-faren"></i>法人信息</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>法人姓名
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="legalname" name="legalname" required="" lay-verify="required" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>证件类型
+								</label>
+								<div class="layui-input-inline">
+									<select id="cardtype" name="cardtype">
+										<option value="">请选择证件类型</option>
+										<option value="身份证">身份证</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>法人身份证号
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="legalIDnum" name="legalIDnum" required="" lay-verify="required|identity" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									法人证件有效期
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="test10-2" placeholder="">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>法人证件正面照
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="corpimg">
+										<p id="corpText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="corp">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="corpupload">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>法人证件背面照
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="corpbackimg">
+										<p id="corpbackText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="corpback">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="corpbackupload">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>法人手持身份证
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="corphandimg">
+										<p id="corphandText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="corphand">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="corphandupload">上传图片</button>
+								</div>
+							</div>
+							<!--法人信息-->
+
+							<!--支付扣费标准-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-group3"></i>支付通道与费率 </blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>选择通道
+								</label>
+								<div class="layui-input-inline">
+									<select id="PaymentType" name="PaymentType" lay-verify="required"  style="height: 39px;" lay-ignore="">
+										<option value="">请选择通道</option>
+										<!-- <option value="0">0.00%</option> -->
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>支付宝费率
+								</label>
+								<div class="layui-input-inline">
+									<select id="alipayRate" name="alipayRate" lay-verify="required" style="height: 39px;"  lay-ignore="">
+										<option value="">请选择费率</option>
+										<!-- <option value="0">0.00%</option> -->
+									</select>
+								</div>
+						</div><div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>微信费率
+								</label>
+								<div class="layui-input-inline" >
+									<select id="vxRate" name="vxRate" lay-verify="required"  style="height: 39px;" lay-ignore="">
+										<option value="">请选择费率</option>
+										<!-- <option value="0">0.00%</option> -->
+									</select>
+								</div>
+						</div>
+					</div>
+					<div class="layui-row formbtnb">
+						<div class="grid-demo">
+							<div class="layui-form-item">
+								<label for="L_repass" class="layui-form-label">
+						      </label>
+								<button class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+								<input type="button" value="返回" onclick="x_admin_close()" class="layui-btn layui-btn-warm formbtn">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+ 		<script>
+	 		layui.use(['form', 'layedit', 'laydate', 'element', 'layer', 'upload'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+				var element = layui.element;
+				var layer = layui.layer;
+				var form = layui.form,
+					layedit = layui.layedit,
+					laydate = layui.laydate;
+
+				//监听指定开关
+				form.on('radio(shBillxw)', function(data) {
+					console.log(data.value); //被点击的radio的value值
+					var checka = data.value;
+					var accountType = $("input[name='shleixing']:checked").val();//商户类型
+					if(accountType == '小微'){
+						$(".qiyek").hide(),
+						$(".gerenk").show();
+					}
+					else if(accountType == '企业'){
+						if(checka == 'D+1'){
+							$(".qiyek").hide(),
+							$(".gerenk").show();
+						}else{
+							$(".qiyek").show(),
+							$(".gerenk").hiden();
+						}
+					}
+				});
+				
+				//监听指定开关
+				form.on('radio(shleixing)', function(data) {
+					console.log(data.value); //被点击的radio的value值
+					var checka = data.value;
+					var billType = $("input[name='shBillxw']:checked").val();//进件类型
+					if(checka == '小微'){
+						$(".qiyek").hide(),
+						$(".gerenk").show();
+					}
+					else if(checka == '企业'){
+						if(billType == 'D+1'){
+							$(".qiyek").hide(),
+							$(".gerenk").show();
+						}else{
+							$(".qiyek").show(),
+							$(".gerenk").hiden();
+						}
+					}
+				});
+				//监听指定开关
+				form.on('radio(datetime)', function(data) {
+					console.log(data.value); //被点击的radio的value值
+					var checka = data.value;
+					if(checka == 2)
+						$(".zddatetime").show();
+					else
+						$(".zddatetime").hide();
+				});
+				 //自定义验证规则
+		          form.verify({
+		            nikename: function(value){
+		              if(value.length < 5){
+		                return '昵称至少得5个字符啊';
+		              }
+		            }
+		            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+		            ,repass: function(value){
+		                if($('#L_pass').val()!=$('#L_repass').val()){
+		                    return '两次密码不一致';
+		                }
+		            },identity:[/(^\d{15}$)|(^\d{17}(x|X|\d)$)/,"请输入正确的身份证号"]
+		            ,phone:[/^1\d{10}$/,"请输入正确的手机号"]
+		            ,email :[/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,"请输入正确的邮箱"]
+		          });
+				 
+		        //Logo上传
+					upload.render({
+						elem: '#logofile',
+						url: '.sale/addMerchantPic',
+						method: 'post',
+						auto: false,
+						bindAction: '#uploadLogo',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#imgLogo').attr('src', result);
+							});
+						},
+						done: function(res) {
+
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#shangLogo").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#logoText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+		        
+		        
+		        
+		        	//门店图片上传
+					upload.render({
+						elem: '#shopfile',
+						url: '.sale/addMerchantPic',
+						method: 'post',
+						auto: false,
+						bindAction: '#shopupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#shopimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#shopLogo").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#shopText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+				 
+				 
+		      
+
+					//银行卡照片正面上传
+					upload.render({
+						elem: '#selectBankCard',
+						url: '.sale/addMerchantPic',
+						auto: false,
+						bindAction: '#uploadBankCard',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#imgBankCard').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#bankCardPhoto").val(url);
+
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#bankCardText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+					
+					
+					//银行卡照片反面上传
+					upload.render({
+						elem: '#bankback',
+						url: '.sale/addMerchantPic',
+						auto: false,
+						bindAction: '#bankbackupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#bankbackimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#bankbackPhoto").val(url);
+
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#bankbackText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+					
+					//开户执照上传
+					upload.render({
+						elem: '#bankusercard',
+						url: '.sale/addMerchantPic',
+						auto: false,
+						bindAction: '#bankusercardupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#bankusercardimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#bankusercardPhoto").val(url);
+
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#bankusercardText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+					
+					//营业执照照片上传
+					upload.render({
+						elem: '#business',
+						url: '.sale/addMerchantPic',
+						auto: false,
+						bindAction: '#businessupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#businessimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							//如果上传失败
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#businessPhoto").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#businessText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+					//组织机构代码证照片上传
+					upload.render({
+						elem: '#organization',
+						url: '.sale/addMerchantPic',
+						auto: false,
+						bindAction: '#organizationupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#organizationimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							//如果上传失败
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#organizationPhoto").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#organizationText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+					//法人证件正面照片上传
+					upload.render({
+						elem: '#corp',
+						url: '.sale/addMerchantPic',
+						auto: false,
+						bindAction: '#corpupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#corpimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#corpPhoto").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#corpText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+
+					//法人证件反面照片上传
+					upload.render({
+						elem: '#corpback',
+						url: '.sale/addMerchantPic',
+						auto: false,
+						bindAction: '#corpbackupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#corpbackimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#corpbackPhoto").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#corpbackText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+					//法人证件反面照片上传
+					upload.render({
+						elem: '#corphand',
+						url: '.sale/addMerchantPic',
+						auto: false,
+						bindAction: '#corphandupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#corphandimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#corphandPhoto").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#corphandText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+					form.on('submit(add)', function(data){
+		        	  	var accountType = $("input[name='shleixing']:checked").val();//商户类型
+		        	  	var BillType = $("input[name='shBillxw']:checked").val();//结算方式
+		        	 	var zhifubaonum = $("#zhifubaonum").val();//支付宝账号
+		        		var weixinnum = $("#weixinnum").val();//微信账号
+		        		var username = $("#username").val();//商户名称
+		        		var usercell = $("#usercell").val();//商户手机号
+		        		var email = $("#email").val();//用户邮箱
+		        		var enterprisename =$("#enterprisename").val();//企业名称
+		        		var shangLogo =$("#shangLogo").val();//企业LOGO
+		        		var enterpriseshort = $("#enterpriseshort").val(); // 企业简称
+		        		var desc = $("#desc").val();//商品描述
+		        		var province4 = $("#province4 option:selected").text();
+		        		var city4 = $("#city4 option:selected").text();//企业省市区
+		        		var area4 = $("#area4 option:selected").text();
+		        		var qiyeaddress = $("#qiyeaddress").val();//企业详细地址
+		        	 	//门店信息
+		        	 	var shopname = $("#shopname").val(); // 门店名称
+		        	 	var province = $("#province option:selected").text();
+		        		var city = $("#city option:selected").text();//门店省市区
+		        		var area = $("#area option:selected").text();
+		        		var shopaddress = $("#shopaddress").val();
+		        		var shopcell = $("#shopcell").val();
+		        		var shopLogo = $("#shopLogo").val();
+		        		var clerkcell = $("#clerkcell").val();
+		        		var remark1 = $("#remark1").val();
+		        		var remark2 = $("#remark2").val();
+		        		//银行卡信息
+		        		var atype = $("#atype option:selected").val();
+						var bankCardPhoto = $("#bankCardPhoto").val();
+						var bankbackPhoto = $("#bankbackPhoto").val();
+		        		var bankusercardPhoto = $("#bankusercardPhoto").val();
+		        		var openbank = $("#openbank").val();//开户银行
+		        		var openbranch = $("#openbranch").val();//开户支行
+		        		var banknum = $("#banknum").val();//银行卡号
+		        		var bankname = $("#bankname").val();//持卡人姓名
+		        		var IDcard = $("#IDcard").val();//身份证号
+		        		var bankcell = $("#bankcell").val();//银行预留手机号
+		        		var comname = $("#comname").val();//公司名称
+		        		var comclerk = $("#comclerk").val();//联系人姓名
+		        		var comIDnum = $("#comIDnum").val();
+		        		//执照信息
+		        		var zhiaddress = $("#zhiaddress").val();//注册执照地址
+		        		var industryType = $("#industryType option:selected").val();//商家执照类型
+		        		var zhiname = $("#zhiname").val(); //执照号码
+		        		var zhinum = $("#zhinum").val(); //执照号码
+		        		var test10 = $("#test10").val(); //执照有效期
+		        		var businessPhoto = $("#businessPhoto").val();//营业执照
+		        		var businessscope = $("#businessscope").val();//经营范围
+		        		var province3 = $("#province3 option:selected").text();
+		        		var city3 = $("#city3 option:selected").text();//执照省市区
+		        		var area3 = $("#area3 option:selected").text();
+		        		var oranum = $("#oranum").val();//组织机构代码证号
+		        		var organizationPhoto = $("#organizationPhoto").val();//组织机构代码证图
+		        		//添加法人信息
+		        		var legalname = $("#legalname").val();//法人姓名
+		        		var cardtype = $("#cardtype option:selected").val();//证件类型
+		        		var legalIDnum = $("#legalIDnum").val();//法人身份证号
+		        		var legalTime = $("#test10-2").val();//法人证件有效期
+		        		var corpPhoto = $("#corpPhoto").val();//法人正面照
+		        		var corpbackPhoto = $("#corpbackPhoto").val();//法人背面照
+		        		var corphandPhoto = $("#corphandPhoto").val();//法人手持照
+		        		//获取费率
+		        		var alipayRate = $("#alipayRate option:selected").val();
+		        		var vxRate = $("#vxRate option:selected").val();
+		        		//通道
+		        		var tongdao = $("#PaymentType option:selected").val();
+						$.ajax({
+							type : "POST",
+							url : 'saleAdd2',
+							data : {
+								accountType : accountType,
+								BillType :  BillType,
+								zhifubaonum : zhifubaonum,
+								weixinnum : weixinnum,
+								username : username,
+								usercell : usercell,
+								email : email,
+								enterprisename : enterprisename,
+								shangLogo : shangLogo,
+								enterpriseshort : enterpriseshort,
+								desc : desc,
+								province4 : province4,
+								city4 : city4,
+								area4 : area4,
+								qiyeaddress : qiyeaddress,
+								shopname : shopname,
+								province : province,
+								city : city,
+								area : area,
+								shopaddress : shopaddress,
+								shopcell : shopcell,
+								shopLogo : shopLogo,
+								clerkcell : clerkcell,
+								remark1 : remark1,
+								remark2 : remark2,
+								atype : atype,
+								bankCardPhoto : bankCardPhoto,
+								bankbackPhoto : bankbackPhoto,
+								bankusercardPhoto : bankusercardPhoto,
+								openbank : openbank,
+								openbranch : openbranch,
+								banknum : banknum,
+								bankname : bankname,
+								IDcard : IDcard,
+								bankcell : bankcell,
+								zhiaddress: zhiaddress,
+								industryType : industryType,
+								zhiname : zhiname,
+								zhinum : zhinum,
+								test10 :  test10,
+								businessPhoto : businessPhoto,
+								businessscope : businessscope,
+								province3 : province3,
+								city3 : city3,
+								area3 : area3,
+								oranum : oranum,
+								organizationPhoto : organizationPhoto,
+								legalname : legalname,
+								cardtype : cardtype,
+								legalIDnum : legalIDnum,
+								legalTime : legalTime,
+								corpPhoto : corpPhoto,
+								corpbackPhoto : corpbackPhoto,
+								corphandPhoto : corphandPhoto,
+								tongdao : tongdao,
+								vxRate : vxRate,
+								alipayRate :alipayRate,
+								comname : comname,
+								comclerk : comclerk,
+								comIDnum : comIDnum
+							},
+							dataType : 'json',
+							cache : false,
+							success : function(data) {					
+								if ("success" == data.result) {	
+									 layer.alert("增加成功", {icon: 6},function () {
+										// 刷新父页面
+										window.parent.location.reload();
+										// 获得frame索引
+										var index = parent.layer.getFrameIndex(window.name);
+										//关闭当前frame
+										parent.layer.close(index);
+						            });
+									//进件
+									 /* var ShopNumber = data.ShopNumber;
+									 var UserNumber = data.UserNumber;
+									 $.ajax({
+										type: 'POST',
+										async:true,
+										cache : false,
+										data : {ShopNumber : ShopNumber,UserName : UserNumber,xdlUrl:"http://xs.51shanhe.com/sale/httpClient"},
+										url: ".xdldata"
+									}); */
+									 return false; 
+								} 
+								else {
+									layer.msg(data.msg);
+									return;
+								}
+							}
+						})
+		            
+			       });
+			});
+		</script>
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//日期时间范围1
+				laydate.render({
+					elem: '#test10',
+					type: 'date'
+				});
+				//日期时间范围2
+				laydate.render({
+					elem: '#test10-2',
+					type: 'date'
+				});
+
+			});
+		</script>
+		<script type="text/javascript">
+		// 省市联动
+		$("#province").change(function() {
+			$("#city").empty();
+			$("#area").empty();
+			$("#city").append("<option value=''>请选择市</option>");
+			$("#area").append("<option value=''>请选择区/县</option>");
+			var pid = $("#province").val()
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getCity",
+				data: {
+					"provinceId": pid
+				},
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$("#city").append("<option value='" + data[i].CityID + "'>" + data[i].CityName + "</option>");
+					}
+					$.ajax({
+						type: 'POST',
+						url: ".getArea",
+						data: {
+							"cityId": data[0].CityID
+						},
+						success: function(data) {
+							for(var i = 0; i < data.length; i++) {
+								$("#area").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+							}
+						}
+					});
+
+				}
+			});
+		});
+
+		// 市区联动
+		$("#city").change(function() {
+			$("#area").empty();
+			$("#area").append("<option value=''>请选择区/县</option>");
+			var cid = $("#city").val()
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getArea",
+				data: {
+					"cityId": cid
+				},
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$("#area").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+					}
+				}
+			});
+		});
+		
+		// 省市联动
+		$("#province3").change(function() {
+			$("#city3").empty();
+			$("#area3").empty();
+			$("#city3").append("<option value=''>请选择市</option>");
+			$("#area3").append("<option value=''>请选择区/县</option>");
+			var pid = $("#province3").val()
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getCity",
+				data: {
+					"provinceId": pid
+				},
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$("#city3").append("<option value='" + data[i].CityID + "'>" + data[i].CityName + "</option>");
+					}
+					$.ajax({
+						type: 'POST',
+						url: ".getArea",
+						data: {
+							"cityId": data[0].CityID
+						},
+						success: function(data) {
+							for(var i = 0; i < data.length; i++) {
+								$("#area3").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+							}
+						}
+					});
+
+				}
+			});
+		});
+
+		// 市区联动
+		$("#city3").change(function() {
+			$("#area3").empty();
+			$("#area3").append("<option value=''>请选择区/县</option>");
+			var cid = $("#city3").val();
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getArea",
+				data: {
+					"cityId": cid
+				},
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$("#area3").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+					}
+				}
+			});
+		});
+		
+		
+		
+		// 省市联动
+		$("#province4").change(function() {
+			$("#city4").empty();
+			$("#area4").empty();
+			$("#city4").append("<option value=''>请选择市</option>");
+			$("#area4").append("<option value=''>请选择区/县</option>");
+			var pid = $("#province4").val()
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getCity",
+				data: {
+					"provinceId": pid
+				},
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$("#city4").append("<option value='" + data[i].CityID + "'>" + data[i].CityName + "</option>");
+					}
+					$.ajax({
+						type: 'POST',
+						url: ".getArea",
+						data: {
+							"cityId": data[0].CityID
+						},
+						success: function(data) {
+							for(var i = 0; i < data.length; i++) {
+								$("#area4").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+							}
+						}
+					});
+
+				}
+			});
+		});
+
+		// 市区联动
+		$("#city4").change(function() {
+			$("#area4").empty();
+			$("#area4").append("<option value=''>请选择区/县</option>");
+			var cid = $("#city4").val()
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getArea",
+				data: {
+					"cityId": cid
+				},
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$("#area4").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+					}
+				}
+			});
+		});
+		
+		</script>
+</body>
+</html>

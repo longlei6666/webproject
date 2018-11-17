@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_457932_cqbv0v0vg5yx2yb9.css" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<script type="text/javascript" src="./js/ChinesePY.js"></script>
+
+		<!--<script src="js/jquery.provincesCity.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/provincesData.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<link rel="stylesheet" href="css/style.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+		<style>
+			/*.layui-form-select dl {
+				max-height: 155px;
+			}*/
+			
+			.layui-colla-content {
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md12">
+					<div class="grid-demo">
+						<!--基本资料-->
+						<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>新建固定套餐</blockquote>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>套餐名称：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>套餐首字母：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="pym" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	套餐码：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>套餐分类：
+				            </label>
+							<div class="layui-input-inline">
+								<select id="province" name="province">
+									<option value="">请选择套餐分类</option>
+									<option>甜点饮品</option>
+									<option>小吃/快餐</option>
+									<option>其他</option>
+									<select>
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								<a id="new" style="cursor: pointer;">新建套餐分类</a>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>套餐单位：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>起售份数：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>套餐价：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>套餐餐品：
+				            </label>
+							<div class="layui-input-inline" style="width:calc(100% - 150px);">
+								<table class="layui-table">
+									<thead>
+										<tr>
+											<th>餐品名称</th>
+											<th>零售价</th>
+											<th>规格</th>
+											<th><span class="x-red">* </span>包含份数</th>
+											<th>操作</th>
+											<th>是否提醒替换餐品</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>西红柿炒鸡蛋</td>
+											<td>￥10.00</td>
+											<td>
+												<select id="province" name="province">
+													<option value="">请选择套餐分类</option>
+													<option>甜点饮品</option>
+													<option>小吃/快餐</option>
+													<option>其他</option>
+												</select>
+											</td>
+											<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="最大100" class="layui-input"></td>
+											<td class="td-manage">
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="member_del()" href="javascript:;">删除</a>
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="x_admin_show('饮品-添加替换餐品','ct-taocan-add-gd-tihuan3.html')" href="javascript:;">添加替换餐品</a>
+											</td>
+											<td><input type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="是|否"></td>
+										</tr>
+										<tr>
+											<td>西红柿炒鸡蛋</td>
+											<td>￥10.00</td>
+											<td>
+												<select id="province" name="province">
+													<option value="">请选择套餐分类</option>
+													<option>甜点饮品</option>
+													<option>小吃/快餐</option>
+													<option>其他</option>
+												</select>
+											</td>
+											<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="最大100" class="layui-input"></td>
+											<td class="td-manage">
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="member_del()" href="javascript:;">删除</a>
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="x_admin_show('汉堡-添加替换餐品','ct-taocan-add-gd-tihuan3.html')" href="javascript:;">添加替换餐品</a>
+											</td>
+											<td><input type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="是|否"></td>
+										</tr>
+										<tr>
+											<td>西红柿炒鸡蛋</td>
+											<td>￥10.00</td>
+											<td>
+												<select id="province" name="province">
+													<option value="">请选择套餐分类</option>
+													<option>甜点饮品</option>
+													<option>小吃/快餐</option>
+													<option>其他</option>
+												</select>
+											</td>
+											<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="最大100" class="layui-input"></td>
+											<td class="td-manage">
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="member_del()" href="javascript:;">删除</a>
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="x_admin_show('饮品-添加替换餐品','ct-taocan-add-gd-tihuan3.html')" href="javascript:;">添加替换餐品</a>
+											</td>
+											<td><input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="是|否"></td>
+										</tr>
+										<tr>
+											<td>西红柿炒鸡蛋</td>
+											<td>￥10.00</td>
+											<td>
+												<select id="province" name="province">
+													<option value="">请选择套餐分类</option>
+													<option>甜点饮品</option>
+													<option>小吃/快餐</option>
+													<option>其他</option>
+												</select>
+											</td>
+											<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="最大100" class="layui-input"></td>
+											<td class="td-manage">
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="member_del()" href="javascript:;">删除</a>
+												<a class="layui-btn layui-btn-primary layui-btn-xs" onclick="x_admin_show('汉堡-添加替换餐品','ct-taocan-add-gd-tihuan3.html')" href="javascript:;">添加替换餐品</a>
+											</td>
+											<td><input type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="是|否"></td>
+										</tr>
+										<!--固定显示总额和添加-->
+										<tr>
+											<td colspan="6" style="text-align: center;cursor: pointer;" onclick="x_admin_show('添加餐品','ct-taocan-add-gd-add.html')">
+												<a class="layui-btn layui-btn">添加餐品</a>
+											</td>
+										</tr>
+										<!--固定显示总额和添加-->
+									</tbody>
+								</table>
+							</div>
+							<!--<div class="layui-form-mid layui-word-aux">
+								<a href="">添加规格</a>
+							</div>-->
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	餐品图片：
+				            </label>
+							<div class="layui-input-inline" style="width:calc(100% - 150px);">
+								<button type="button" class="layui-btn" id="test2">多图片上传</button>
+								<blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+									预览图：
+									<div class="layui-upload-list" id="demo2"></div>
+								</blockquote>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>售卖状态：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="radio" name="sex" value="在售" title="在售" checked="">
+								<input type="radio" name="sex" value="停售" title="停售">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>可售卖时间：
+				            </label>
+							<div class="layui-input-inline" style="width: auto;">
+								<input type="radio" name="smtime" value="1" title="不限时间" lay-filter="smtime" checked="">
+								<input type="radio" name="smtime" value="2" title="时间范围" lay-filter="smtime">
+							</div>
+							<div class="layui-input-inline zdtime" style="display: none;width: 290px;">
+								<input type="text" class="layui-input" id="test9" placeholder="自定义时间">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>每天可售卖时间：
+				            </label>
+							<div class="layui-input-inline" style="width: auto;">
+								<input type="radio" name="datetime" value="1" title="不限时间" lay-filter="datetime" checked="">
+								<input type="radio" name="datetime" value="2" title="时间范围" lay-filter="datetime">
+							</div>
+							<div class="layui-input-inline zddatetime" style="display: none;width: 200px;">
+								<input type="text" class="layui-input" id="test8" placeholder="自定义时间">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>后厨打印：
+				            </label>
+							<div class="layui-input-block">
+								<input type="radio" name="hcdy" value="是" title="是">
+								<input type="radio" name="hcdy" value="否" title="否" checked="">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>外卖渠道售卖：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="radio" name="waimaiqd" value="是" title="是">
+								<input type="radio" name="waimaiqd" value="否" title="否" checked="">
+							</div>
+							<!--<div class="layui-form-mid x-red">
+								<a href="">尚未开通外卖业务</a>
+							</div>-->
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	餐品描述：
+				            </label>
+							<div class="layui-input-inline">
+								<textarea placeholder="" class="layui-textarea"></textarea>
+							</div>
+						</div>
+						<!--基本资料-->
+
+						<button class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+					</div>
+				</form>
+
+			</div>
+			<div class="layui-row formbtnb">
+				<div class="grid-demo">
+					<div class="layui-form-item">
+						<label for="L_repass" class="layui-form-label">
+				      </label>
+						<button class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+						<button class="layui-btn layui-btn-warm formbtn" lay-filter="add" lay-submit="">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			layui.use(['form', 'layedit', 'laydate', 'element', 'layer', 'upload'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+				var element = layui.element;
+				var layer = layui.layer;
+				var form = layui.form,
+					layedit = layui.layedit,
+					laydate = layui.laydate;
+
+				//监听指定开关
+				form.on('switch(switchTest)', function(data) {
+					layer.tips('提醒：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+				});
+				//监听指定开关
+				form.on('radio(smtime)', function(data) {
+					console.log(data.value); //被点击的radio的value值
+					var checka = data.value;
+					if(checka == 2)
+						$(".zdtime").show();
+					else
+						$(".zdtime").hide();
+				});
+				//监听指定开关
+				form.on('radio(datetime)', function(data) {
+					console.log(data.value); //被点击的radio的value值
+					var checka = data.value;
+					if(checka == 2)
+						$(".zddatetime").show();
+					else
+						$(".zddatetime").hide();
+				});
+
+				//在父层弹出一个层
+				$('#new').on('click', function() {
+					layer.open({
+						type: 2,
+						area: ['300px', '450px'],
+						fixed: false, //不固定
+						maxmin: true,
+						content: 'http://baidu.com'
+					});
+				});
+
+				//多图片上传
+				upload.render({
+					elem: '#test2',
+					url: '/upload/',
+					multiple: true,
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo2').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+						});
+					},
+					done: function(res) {
+						//上传完毕
+					}
+				});
+
+				//时间范围
+				laydate.render({
+					elem: '#test9',
+					type: 'datetime',
+					range: true
+				});
+
+				//时间范围
+				laydate.render({
+					elem: '#test8',
+					type: 'time',
+					range: true
+				});
+
+				//监听提交
+				//				form.on('submit(add)', function(data) {
+				//					console.log(data);
+				//					//发异步，把数据提交给php
+				//					layer.alert("增加成功", {
+				//						icon: 6
+				//					}, function() {
+				//						// 获得frame索引
+				//						var index = parent.layer.getFrameIndex(window.name);
+				//						//关闭当前frame
+				//						parent.layer.close(index);
+				//					});
+				//					return false;
+				//				});
+
+			});
+
+			/*用户-删除*/
+			function member_del(obj, id) {
+				layer.confirm('确认要删除吗？', function(index) {
+					//发异步删除数据
+					$(obj).parents("tr").remove();
+					layer.msg('已删除!', {
+						icon: 1,
+						time: 1000
+					});
+				});
+			}
+		</script>
+
+	</body>
+
+</html>

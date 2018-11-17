@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_457932_cqbv0v0vg5yx2yb9.css" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<script type="text/javascript" src="./js/ChinesePY.js"></script>
+
+		<!--<script src="js/jquery.provincesCity.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/provincesData.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<link rel="stylesheet" href="./css/style.css" />
+		<link rel="stylesheet" href="./css/style-tagsadd.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+		<style>
+			/*.layui-form-select dl {
+				max-height: 155px;
+			}*/
+			
+			.layui-colla-content {
+				padding: 0;
+			}
+			
+			input::-webkit-input-placeholder {
+				color: #a9a9a9;
+			}
+			
+			.layui-elem-field {
+				margin-top: 10px;
+				margin-bottom: 0;
+				background-color: #fafafa;
+			}
+			.nosalelistli {overflow: hidden;transition: all 0.3s;}
+			.nosalelistli li{width: 80px;height: 75px;float: left;margin-right: 20px;background: #fff;border: 1px solid #eee;border-radius: 10px;padding: 20px;position: relative;transition: all 0.3s;}
+			.nosalelistli li:last-child{cursor: pointer;transition: all 0.3s;}
+			.nosalelistli li:last-child:hover{border-top-right-radius: 10px;transition: all 0.3s;}
+			.nosalelistli li:hover{border-top-right-radius: 0;transition: all 0.3s;}
+			.nosalelistli li .remove{position: absolute;top: 0px;right: 0px;opacity: 0;transition: all 0.3s;cursor: pointer;}
+			.nosalelistli li .remove:hover{background-color: #FF5722;color: #fff;}
+			.nosalelistli li:hover .remove{opacity: 1;transition: all 0.3s;}
+			.nosalelistli li .cpname{height: 55px;font-size: 14px;transition: all 0.3s;}
+			.nosalelistli li .price{font-size: 16px;transition: all 0.3s;}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md12">
+					<div class="grid-demo">
+						<!--基本资料-->
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	选择优惠类型：
+				            </label>
+							<div class="layui-input-inline">
+								<select id="province" name="province">
+									<option value="">请选择套餐分类</option>
+									<option>整单折扣</option>
+									<select>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	优惠名称：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="pym" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	整单折扣率：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="number" id="cpsousuo" name="cpsousuom1" required="" lay-verify="required" autocomplete="off" class="layui-input" onkeyup="">
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								<a>按百分比计算</a>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	可售卖时间：
+				            </label>
+							<div class="layui-input-inline" style="width: auto;">
+								<input type="radio" name="smtime" value="1" title="不限时间" lay-filter="smtime" checked="">
+								<input type="radio" name="smtime" value="2" title="时间范围" lay-filter="smtime">
+							</div>
+							<div class="layui-input-inline zdtime" style="display: none;width: 260px;">
+								<input type="text" class="layui-input" id="test9" placeholder="自定义时间">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	不参与活动餐品：
+				            </label>
+							<div class="layui-input-inline" style="width: auto;">
+								<input type="radio" name="nosale" value="1" title="无" lay-filter="nosale" checked="">
+								<input type="radio" name="nosale" value="2" title="部分菜品" lay-filter="nosale">
+							</div>
+							<div class="layui-input-inline nosalelist" style="display: ;width:calc(100% - 150px);">
+								<fieldset class="layui-elem-field">
+									<ul class="layui-field-box nosalelistli">
+										<li>
+											<i class="layui-icon layui-unselect layui-tab-close remove">ဆ</i>
+											<div class="cpname">黑椒鸡块(份)</div>
+											<div class="price">￥6.5</div>
+										</li>
+										<li>
+											<i class="layui-icon layui-unselect layui-tab-close remove">ဆ</i>
+											<div class="cpname">黑椒鸡块(份)</div>
+											<div class="price">￥6.5</div>
+										</li>
+										<li>
+											<i class="layui-icon layui-unselect layui-tab-close remove">ဆ</i>
+											<div class="cpname">黑椒鸡块(份)</div>
+											<div class="price">￥6.5</div>
+										</li>
+										<li>
+											<i class="layui-icon layui-unselect layui-tab-close remove">ဆ</i>
+											<div class="cpname">黑椒鸡块(份)</div>
+											<div class="price">￥6.5</div>
+										</li>
+										<li onclick="x_admin_show('添加餐品','ct-taocan-add-gd-tihuan3.html')">添加餐品</li>
+									</ul>
+								</fieldset>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	活动详情：
+				            </label>
+							<div class="layui-input-inline">
+								<textarea required="" lay-verify="required" placeholder="请输入内容" class="layui-textarea"></textarea>
+							</div>
+						</div>
+
+					</div>
+					<button class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+				</form>
+
+			</div>
+			<div class="layui-row formbtnb">
+				<div class="grid-demo">
+					<div class="layui-form-item">
+						<label for="L_repass" class="layui-form-label">
+				      </label>
+						<button class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+						<button class="layui-btn layui-btn-warm formbtn" lay-filter="add" lay-submit="">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			/*添加行并循环id和数列*/
+			var i = 1,
+				n = 1;
+
+			function tradd() {
+				var value = document.getElementsByName('cpsousuom1')[0].value;
+				var trcomp = "<tr>" +
+					"<td><input type='text' name='' placeholder='优惠名称' autocomplete='off' value='' class='layui-input'></td>" +
+					"<td>优惠类型</td>" +
+					"<td><input type='text' name='' placeholder='活动周期' autocomplete='off' value='' class='layui-input date-time'></td>" +
+					//"<td><input type='text' onclick='word(this)' id='cpsousuo" + n++ + "' name='cpsousuom' placeholder='最长20位' autocomplete='off' value='" + value + "00" + i++ + "' class='layui-input'></td>" +
+					//"<td><a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a></td>" +
+					"</tr>";
+				$("#saleaddlist tr:last-child").after(trcomp);
+			}
+
+			//					<td><div class="tagsadd layui-input clearfix">
+			//							<div class="taglist" id="myTags"></div>
+			//							<input id="tagsinput" name="" type="text" class="layui-input tagsaddinput" maxlength="50" placeholder="请输入.." />
+			//							<button id="tagsbtn" type="button" class="layui-btn" style="display: none;"></button></div></td>
+
+			function bqtradd() {
+				i++;
+				var trcompbq = "<tr>" +
+					"<td><input type='text' name='cpsousuo' placeholder='自定义' autocomplete='off' value='' class='layui-input'></td>" +
+					"<td><div class='tagsadd layui-input clearfix'>" +
+					"<div class='taglist myTags" + i + "'></div>" +
+					"<input name='' type='text' class='layui-input tagsaddinput tagsinput" + i + "' maxlength='50' placeholder='请输入..' />" +
+					"<button type='button' class=\'layui-btn tagsbtn" + i + "\'></button></div></td>" +
+					"<td><a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a></td>" +
+					"</tr>";
+				$("#bqaddlist").append(trcompbq);
+			}
+
+			//			$(document).ready(function() {
+			//				FancyForm.setup();
+			//			});
+
+			//			$(function() {
+			//				i++;
+			//				$('bqaddbtn').click(function() {
+			//					$('bqaddlist').append("<tr>" +
+			//					"<td><input type='text' name='cpsousuo' placeholder='自定义' autocomplete='off' value='' class='layui-input'></td>" +
+			//					"<td><div class='tagsadd layui-input clearfix'>" +
+			//					"<div class='taglist myTags" + i + "'></div>" +
+			//					"<input name='' type='text' class='layui-input tagsaddinput tagsinput" + i + "' maxlength='50' placeholder='请输入..' />" +
+			//					"<button type='button' class=\'layui-btn tagsbtn" + i + "\'></button></div></td>" +
+			//					"<td><a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a></td>" +
+			//					"</tr>");
+			//				});
+			//			})
+
+			/*点击获取值*/
+			function word(h) {
+				alert(h.value)
+			}
+
+			/*删除行*/
+			function trdel(obj) {
+				var tr = obj.parentNode.parentNode;
+				var tbody = tr.parentNode;
+				tbody.removeChild(tr);
+			}
+		</script>
+
+		<script src="js/tags-add.js" type="text/javascript" charset="utf-8"></script>
+
+		<script>
+			layui.use(['form', 'layedit', 'laydate', 'element', 'layer', 'upload'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+				var element = layui.element;
+				var layer = layui.layer;
+				var form = layui.form,
+					layedit = layui.layedit,
+					laydate = layui.laydate;
+
+				//同时绑定多个
+				lay('.date-item').each(function() {
+					laydate.render({
+						elem: this,
+						type: 'date',
+						range: true,
+						trigger: 'click',
+						btns: ['confirm']
+						//,showBottom: false
+					});
+				});
+
+				form.on('radio(smtime)', function(data) {
+					console.log(data.value); //被点击的radio的value值
+					var checka = data.value;
+					if(checka == 2)
+						$(".zdtime").show();
+					else
+						$(".zdtime").hide();
+				});
+
+				form.on('radio(nosale)', function(data) {
+					console.log(data.value); //被点击的radio的value值
+					var checka = data.value;
+					if(checka == 2)
+						$(".nosalelist").show();
+					else
+						$(".nosalelist").hide();
+				});
+
+				//多图片上传
+				upload.render({
+					elem: '#test2',
+					url: '/upload/',
+					multiple: true,
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo2').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+						});
+					},
+					done: function(res) {
+						//上传完毕
+					}
+				});
+
+				//时间范围
+				laydate.render({
+					elem: '#test9',
+					type: 'datetime',
+					range: true
+				});
+
+				//监听提交
+				form.on('submit(add)', function(data) {
+					console.log(data);
+					//发异步，把数据提交给php
+					layer.alert("增加成功", {
+						icon: 6
+					}, function() {
+						// 获得frame索引
+						var index = parent.layer.getFrameIndex(window.name);
+						//关闭当前frame
+						parent.layer.close(index);
+					});
+					return false;
+				});
+
+			});
+		</script>
+
+	</body>
+
+</html>

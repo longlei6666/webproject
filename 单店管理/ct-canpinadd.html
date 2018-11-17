@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_457932_cqbv0v0vg5yx2yb9.css" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<script type="text/javascript" src="./js/ChinesePY.js"></script>
+
+		<!--<script src="js/jquery.provincesCity.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/provincesData.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<link rel="stylesheet" href="./css/style.css" />
+		<link rel="stylesheet" href="./css/style-tagsadd.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+		<style>
+			/*.layui-form-select dl {
+				max-height: 155px;
+			}*/
+			
+			.layui-colla-content {
+				padding: 0;
+			}
+			
+			input::-webkit-input-placeholder {
+				color: #a9a9a9;
+			}
+			
+			.layui-table td,
+			.layui-table th {
+				border: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md12">
+					<div class="grid-demo">
+						<!--基本资料-->
+						<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>新建餐品</blockquote>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>餐品名称：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input" onkeyup="pym.value = Pinyin.GetJP(this.value)">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>餐品首字母：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="pym" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                	餐品码：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="cpsousuo" name="cpsousuom1" required="" lay-verify="required" autocomplete="off" class="layui-input" onkeyup="">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>餐品分类：
+				            </label>
+							<div class="layui-input-inline">
+								<select id="province" name="province">
+									<option value="">请选择餐品分类</option>
+									<option>甜点饮品</option>
+									<option>小吃/快餐</option>
+									<option>其他</option>
+									<select>
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								<a href="">新增餐品分类</a>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>餐品单位：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>餐品规格：
+				           </label>
+							<div class="layui-input-inline guigeadd">
+								<table class="layui-table">
+									<tbody id="guigeaddlist">
+										<tr>
+											<td><span class="x-red">* </span>规格</td>
+											<td><span class="x-red">* </span>售卖价</td>
+											<td>会员价</td>
+											<!--<td>餐品码排序</td>-->
+											<td>操作</td>
+										</tr>
+									</tbody>
+								</table>
+								<a id="guigeaddbtn" href="javascript:;" onclick="javascript:tradd(this);" class="layui-btn layui-btn-sm">添加规格</a>
+							</div>
+						</div>
+						<!--<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                
+				           </label>
+							<div class="layui-input-inline">
+								<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="会员价" class="layui-input">
+							</div>
+							<div class="layui-input-inline">
+								<input type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="餐品码" class="layui-input">
+							</div>
+						</div>-->
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>起售份数：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input" value="1">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>后厨打印：
+				            </label>
+							<div class="layui-input-block">
+								<input type="radio" name="hcdy" value="是" title="是">
+								<input type="radio" name="hcdy" value="否" title="否" checked="">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>售卖状态：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="radio" name="shoumaizt" value="在售" title="在售" checked="">
+								<input type="radio" name="shoumaizt" value="停售" title="停售">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+				                <span class="x-red">* </span>外卖渠道售卖：
+				            </label>
+							<div class="layui-input-inline">
+								<input type="radio" name="waimaiqd" value="是" title="是">
+								<input type="radio" name="waimaiqd" value="否" title="否" checked="">
+							</div>
+							<!--<div class="layui-form-mid x-red">
+								<a href="">尚未开通外卖业务</a>
+							</div>-->
+						</div>
+
+						<div class="layui-collapse" lay-filter="test">
+							<div class="layui-colla-item">
+								<h2 class="layui-colla-title">更多设置 (选填)</h2>
+								<div class="layui-colla-content layui-show">
+
+									<div class="grid-demo">
+										<div class="layui-form-item">
+											<label for="username" class="layui-form-label">
+							                	配菜：
+							            </label>
+											<div class="layui-input-inline">
+												<input type="radio" name="peicai" value="是" title="是">
+												<input type="radio" name="peicai" value="否" title="否" checked="">
+											</div>
+										</div>
+
+										<div class="layui-form-item">
+											<label for="username" class="layui-form-label">
+							                	可增加配菜：
+							            </label>
+											<div class="layui-input-inline">
+												<input type="radio" name="peicaiadd" value="是" title="是">
+												<input type="radio" name="peicaiadd" value="否" title="否" checked="">
+											</div>
+										</div>
+
+										<div class="layui-form-item">
+											<label for="username" class="layui-form-label">
+							                	称重菜：
+							            </label>
+											<div class="layui-input-inline">
+												<input type="radio" name="chengzc" value="是" title="是" disabled="">
+												<input type="radio" name="chengzc" value="否" title="否" disabled="">
+											</div>
+											<div class="layui-form-mid layui-word-aux x-red">
+												如果此餐品可作为配菜，则不能设置为称重菜
+											</div>
+										</div>
+
+										<div class="layui-form-item">
+											<label for="username" class="layui-form-label">
+								                <span class="x-red">* </span>餐品属性：
+								           </label>
+											<div class="layui-input-inline bqadd">
+												<style type="text/css">
+													/*#bqaddlist tr{display: none;}
+													#bqaddlist tr:nth-child(1){display: block;}
+													#bqaddlist tr:nth-child(2){display: block;}*/
+													.yincang{display: none;}
+												</style>
+
+												<script>
+													var i = 0,
+														j 
+													function shoppingcat() { 
+														if(i <= 12) { 
+															document.getElementById('div' + i).style.display = 'block' 
+															i++ 
+															j = i - 1 
+														}
+													}
+												</script>
+												<table class="layui-table">
+													<thead>
+														<th><span class="x-red">* </span>属性名(3个字内)</th>
+														<th><span class="x-red">* </span>属性标签(输入后，回车添加)</th>
+														<th>操作</th>
+													</thead>
+													<tbody id="bqaddlist">
+														<tr class="yincang" id="div1">
+															<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input" value="1"></td>
+															<td>
+																<div class="tagsadd layui-input clearfix">
+																	<div class="taglist myTags"></div>
+																	<input name="" type="text" class="layui-input tagsaddinput tagsinput" maxlength="50" placeholder="请输入.." />
+																	<button type="button" class="layui-btn tagsbtn"></button>
+																</div>
+															</td>
+															<td>
+																<a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a>
+															</td>
+														</tr>
+
+														<tr class="yincang" id="div2">
+															<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input" value="2"></td>
+															<td>
+																<div class="tagsadd layui-input clearfix">
+																	<div class="taglist myTags1" id=""></div>
+																	<input id="" name="" type="text" class="layui-input tagsaddinput tagsinput1" maxlength="50" placeholder="请输入.." />
+																	<button id="" type="button" class="layui-btn tagsbtn1"></button>
+																</div>
+															</td>
+															<td>
+																<a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a>
+															</td>
+														</tr>
+
+														<tr class="yincang" id="div3">
+															<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input" value="3"></td>
+															<td>
+																<div class="tagsadd layui-input clearfix">
+																	<div class="taglist myTags3" id=""></div>
+																	<input id="" name="" type="text" class="layui-input tagsaddinput tagsinput3" maxlength="50" placeholder="请输入.." />
+																	<button id="" type="button" class="layui-btn tagsbtn3"></button>
+																</div>
+															</td>
+															<td>
+																<a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a>
+															</td>
+														</tr>
+
+														<tr class="yincang" class="yincang" id="div4">
+															<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input" value="4"></td>
+															<td>
+																<div class="tagsadd layui-input clearfix">
+																	<div class="taglist myTags4" id=""></div>
+																	<input id="" name="" type="text" class="layui-input tagsaddinput tagsinput4" maxlength="50" placeholder="请输入.." />
+																	<button id="" type="button" class="layui-btn tagsbtn4"></button>
+																</div>
+															</td>
+															<td>
+																<a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a>
+															</td>
+														</tr>
+
+														<tr class="yincang" id="div5">
+															<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input" value="5"></td>
+															<td>
+																<div class="tagsadd layui-input clearfix">
+																	<div class="taglist myTags5" id=""></div>
+																	<input id="" name="" type="text" class="layui-input tagsaddinput tagsinput5" maxlength="50" placeholder="请输入.." />
+																	<button id="" type="button" class="layui-btn tagsbtn5"></button>
+																</div>
+															</td>
+															<td>
+																<a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a>
+															</td>
+														</tr>
+
+														<tr class="yincang" id="div6">
+															<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input" value="6"></td>
+															<td>
+																<div class="tagsadd layui-input clearfix">
+																	<div class="taglist myTags6" id=""></div>
+																	<input id="" name="" type="text" class="layui-input tagsaddinput tagsinput6" maxlength="50" placeholder="请输入.." />
+																	<button id="" type="button" class="layui-btn tagsbtn6"></button>
+																</div>
+															</td>
+															<td>
+																<a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a>
+															</td>
+														</tr>
+
+														<tr class="yincang" id="div7">
+															<td><input type="number" id="username" name="username" required="" lay-verify="required" autocomplete="off" placeholder="0" class="layui-input" value="7"></td>
+															<td>
+																<div class="tagsadd layui-input clearfix">
+																	<div class="taglist myTags7" id=""></div>
+																	<input id="" name="" type="text" class="layui-input tagsaddinput tagsinput7" maxlength="50" placeholder="请输入.." />
+																	<button id="" type="button" class="layui-btn tagsbtn7"></button>
+																</div>
+															</td>
+															<td>
+																<a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<a id="" onclick="shoppingcat();" class="layui-btn layui-btn-sm">添加规格</a>
+											</div>
+										</div>
+
+										<div class="layui-form-item">
+											<label for="username" class="layui-form-label">
+							                	可售卖时间：
+							           </label>
+											<div class="layui-input-inline">
+												<input type="text" class="layui-input" id="test9" placeholder="自定义时间">
+											</div>
+											<div class="layui-form-mid layui-word-aux x-red">
+												默认全天售卖
+											</div>
+										</div>
+
+										<div class="layui-form-item">
+											<label for="username" class="layui-form-label">
+							                	餐品图片：
+							            </label>
+											<div class="layui-input-inline" style="width:calc(100% - 150px);">
+												<button type="button" class="layui-btn" id="test2">多图片上传</button>
+												<blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+													预览图：
+													<div class="layui-upload-list" id="demo2"></div>
+												</blockquote>
+											</div>
+
+										</div>
+
+										<div class="layui-form-item">
+											<label for="username" class="layui-form-label">
+							                	餐品描述：
+							            </label>
+											<div class="layui-input-inline">
+												<textarea placeholder="" class="layui-textarea"></textarea>
+											</div>
+										</div>
+
+										<div class="layui-form-item">
+											<label for="username" class="layui-form-label">
+							                	套餐展示设置：
+							            </label>
+											<div class="layui-input-inline">
+												<input type="radio" name="taocanzs" value="在套餐和单品都展示" title="在套餐和单品都展示" checked="">
+												<input type="radio" name="taocanzs" value="仅在套餐展示" title="仅在套餐展示">
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</form>
+
+				<button class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+			</div>
+			<div class="layui-row formbtnb">
+				<div class="grid-demo">
+					<div class="layui-form-item">
+						<label for="L_repass" class="layui-form-label">
+				      </label>
+						<button class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+						<button class="layui-btn layui-btn-warm formbtn" lay-filter="add" lay-submit="">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			/*添加行并循环id和数列*/
+			var i = 1,
+				n = 1;
+
+			function tradd() {
+				var value = document.getElementsByName('cpsousuom1')[0].value;
+				var trcomp = "<tr>" +
+					"<td><input type='text' name='cpsousuo' placeholder='例：大份' autocomplete='off' value='' class='layui-input'></td>" +
+					"<td><input type='text' name='cpsousuo' placeholder='例：1.5' autocomplete='off' value='' class='layui-input'></td>" +
+					"<td><input type='text' name='cpsousuo' placeholder='例：1.0' autocomplete='off' value='' class='layui-input'></td>" +
+					//"<td><input type='text' onclick='word(this)' id='cpsousuo" + n++ + "' name='cpsousuom' placeholder='最长20位' autocomplete='off' value='" + value + "00" + i++ + "' class='layui-input'></td>" +
+					"<td><a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a></td>" +
+					"</tr>";
+				$("#guigeaddlist tr:last-child").after(trcomp);
+			}
+
+			//					<td><div class="tagsadd layui-input clearfix">
+			//							<div class="taglist" id="myTags"></div>
+			//							<input id="tagsinput" name="" type="text" class="layui-input tagsaddinput" maxlength="50" placeholder="请输入.." />
+			//							<button id="tagsbtn" type="button" class="layui-btn" style="display: none;"></button></div></td>
+
+			function bqtradd() {
+				i++;
+				var trcompbq = "<tr>" +
+					"<td><input type='text' name='cpsousuo' placeholder='自定义' autocomplete='off' value='' class='layui-input'></td>" +
+					"<td><div class='tagsadd layui-input clearfix'>" +
+					"<div class='taglist myTags" + i + "'></div>" +
+					"<input name='' type='text' class='layui-input tagsaddinput tagsinput" + i + "' maxlength='50' placeholder='请输入..' />" +
+					"<button type='button' class=\'layui-btn tagsbtn" + i + "\'></button></div></td>" +
+					"<td><a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a></td>" +
+					"</tr>";
+				$("#bqaddlist").append(trcompbq);
+			}
+
+			//			$(document).ready(function() {
+			//				FancyForm.setup();
+			//			});
+
+			//			$(function() {
+			//				i++;
+			//				$('bqaddbtn').click(function() {
+			//					$('bqaddlist').append("<tr>" +
+			//					"<td><input type='text' name='cpsousuo' placeholder='自定义' autocomplete='off' value='' class='layui-input'></td>" +
+			//					"<td><div class='tagsadd layui-input clearfix'>" +
+			//					"<div class='taglist myTags" + i + "'></div>" +
+			//					"<input name='' type='text' class='layui-input tagsaddinput tagsinput" + i + "' maxlength='50' placeholder='请输入..' />" +
+			//					"<button type='button' class=\'layui-btn tagsbtn" + i + "\'></button></div></td>" +
+			//					"<td><a class='layui-btn layui-btn-xs layui-btn-danger' title='删除' onclick='trdel(this)'>删除</a></td>" +
+			//					"</tr>");
+			//				});
+			//			})
+
+			/*点击获取值*/
+			function word(h) {
+				alert(h.value)
+			}
+
+			/*删除行*/
+			function trdel(obj) {
+				var tr = obj.parentNode.parentNode;
+				var tbody = tr.parentNode;
+				tbody.removeChild(tr);
+			}
+		</script>
+
+		<script src="js/tags-add.js" type="text/javascript" charset="utf-8"></script>
+
+		<script>
+			layui.use(['form', 'layedit', 'laydate', 'element', 'layer', 'upload'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+				var element = layui.element;
+				var layer = layui.layer;
+				var form = layui.form,
+					layedit = layui.layedit,
+					laydate = layui.laydate;
+
+				//				  //监听折叠
+				//				  element.on('collapse(test)', function(data){
+				//				    layer.msg('展开状态：'+ data.show);
+				//				  });
+
+				//多图片上传
+				upload.render({
+					elem: '#test2',
+					url: '/upload/',
+					multiple: true,
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo2').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+						});
+					},
+					done: function(res) {
+						//上传完毕
+					}
+				});
+
+				//时间范围
+				laydate.render({
+					elem: '#test9',
+					type: 'time',
+					range: true
+				});
+
+				//监听提交
+				form.on('submit(add)', function(data) {
+					console.log(data);
+					//发异步，把数据提交给php
+					layer.alert("增加成功", {
+						icon: 6
+					}, function() {
+						// 获得frame索引
+						var index = parent.layer.getFrameIndex(window.name);
+						//关闭当前frame
+						parent.layer.close(index);
+					});
+					return false;
+				});
+
+			});
+		</script>
+
+		<script>
+			layui.use(['form', 'layedit', 'laydate', 'element', 'layer', 'upload'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+				var element = layui.element;
+				var layer = layui.layer;
+				var form = layui.form,
+					layedit = layui.layedit,
+					laydate = layui.laydate;
+
+				//				  //监听折叠
+				//				  element.on('collapse(test)', function(data){
+				//				    layer.msg('展开状态：'+ data.show);
+				//				  });
+
+				//多图片上传
+				upload.render({
+					elem: '#test2',
+					url: '/upload/',
+					multiple: true,
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo2').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+						});
+					},
+					done: function(res) {
+						//上传完毕
+					}
+				});
+
+				//时间范围
+				laydate.render({
+					elem: '#test9',
+					type: 'time',
+					range: true
+				});
+
+				//监听提交
+				form.on('submit(add)', function(data) {
+					console.log(data);
+					//发异步，把数据提交给php
+					layer.alert("增加成功", {
+						icon: 6
+					}, function() {
+						// 获得frame索引
+						var index = parent.layer.getFrameIndex(window.name);
+						//关闭当前frame
+						parent.layer.close(index);
+					});
+					return false;
+				});
+
+			});
+		</script>
+
+	</body>
+
+</html>

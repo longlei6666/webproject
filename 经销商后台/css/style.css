@@ -1,0 +1,132 @@
+.x-so {
+	margin-bottom: 20px;
+}
+
+.x-so .layui-form.layui-col-md11{width: auto;}
+.x-so .layui-col-md1{width: auto;}
+
+.grid-demo {
+	padding: 10px;
+}
+
+.layui-elem-quote {
+	font-size: 2rem;
+	font-weight: 300;
+}
+
+.layui-elem-quote .iconfont {
+	font-size: 2rem;
+	font-weight: 300;
+	margin-right: 10px;
+}
+
+.layui-elem-field legend {
+	font-size: 16px;
+}
+
+.layui-form-item .layui-input-inline {
+	width: 50%;
+}
+
+.layui-form-label {
+	width: 90px;
+}
+
+.uploadtitle {
+	height: 100px;
+	padding: 0 15px;
+	line-height: 100px;
+	width: 105px;
+	padding-left: 0;
+}
+
+.layui-upload-img {
+	width: 100px;
+	height: 100px;
+	margin: 0 10px 0 0;
+	float: left;
+}
+
+.layui-upload-list p {
+	float: left;
+}
+
+.uploadbtn,
+#demoText {
+	margin-top: 30px;
+	margin-right: 20px;
+}
+
+.shengshiqu select {
+	width: 32.5%;
+	height: 38px;
+}
+
+.sheng select {
+	width: 50%;
+	height: 38px;
+}
+
+.shi select {
+	width: 50%;
+	height: 38px;
+}
+
+.shengshiqu .layui-form-select {
+	width: 33.3%;
+	float: left;
+}
+
+.typetitlel {
+	width: 105px;
+	padding-left: 0;
+}
+
+.formbtnb {
+	padding: 20px 0;
+	border-top: 1px solid #e5e5e5;
+}
+
+.formbtn {
+	width: 150px;
+}
+
+.layui-left {
+	float: left;
+}
+
+.layui-table-body {
+	overflow: hidden;
+}
+
+.login input[type=text],
+.login input[type=file],
+.login input[type=password],
+.login input[type=email],
+select {
+	height: 38px;
+}
+
+.layui-col-md5 .layui-input-inline {
+	width: 24.2%;
+}
+
+.layui-col-md5 .layui-input-inline.xx-so {
+	width: 32%;
+}
+
+.layui-col-md7 .layui-input-inline {
+	width: 19.5%;
+}
+
+.layui-col-md9 .layui-input-inline {
+	width: 16.2%;
+}
+
+.layui-col-md10 .layui-input-inline {
+	width: 13.5%;
+}
+
+.x-so input.layui-input {
+	width: 100%;
+}

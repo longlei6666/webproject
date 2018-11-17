@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./fonts/iconfont/iconfont.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<link rel="stylesheet" href="./css/style.css" />
+		<script type="text/javascript" src="./js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var AccountType = '${list[0].AccountType}';
+				if(AccountType == 'A'||AccountType == '小微'){
+					//个人
+					document.getElementById("feifaren").style.display = "none";
+					document.getElementById("faren").style.display = "block";
+					document.getElementById("getilx").style.display = "none";
+					document.getElementById("BusinessName").style.display = "none";
+					document.getElementById("BusinessNumber").style.display = "none";
+					document.getElementById("zzyouxiaoqi").style.display = "none";
+					
+				}else{
+					document.getElementById("feifaren").style.display = "block";
+					document.getElementById("faren").style.display = "none";
+					document.getElementById("getilx").style.display = "block";
+					document.getElementById("BusinessName").style.display = "block";
+					document.getElementById("BusinessNumber").style.display = "block";
+					document.getElementById("zzyouxiaoqi").style.display = "block";
+				}
+				
+				var Settlement = "${list1[0].Settlement}";
+				//0非法人
+				if(Settlement == '0' ||AccountType == '企业'){
+					document.getElementById("feifrxx").style.display = "block";
+					document.getElementById("feifrxx1").style.display = "block";
+					document.getElementById("feifryh").style.display = "block";
+				}else{
+					document.getElementById("feifrxx").style.display = "none";
+					document.getElementById("feifrxx1").style.display = "none";
+					document.getElementById("feifryh").style.display = "none";
+				}
+				
+				$.ajax({
+					type: 'get',
+					url: "./js/hangye.js?v=2",
+					success: function(data) {
+						var strdata = eval(data);
+						var IndustryName = '${list[0].IndustryName}';
+						if(strdata.length>0){
+							for(var i1 = 0;i1<strdata.length;i1++){
+								for(var i2 = 0;i2<strdata[i1].children.length;i2++){
+									for(var i3 = 0;i3<strdata[i1].children[i2].children.length;i3++){
+										if(strdata[i1].text + " - " + strdata[i1].children[i2].text + " - " + strdata[i1].children[i2].children[i3].text==IndustryName){
+											$("#hangyeResult").append("<option value='" + strdata[i1].children[i2].children[i3].value + "' selected='selected'>" + strdata[i1].text + " - " + strdata[i1].children[i2].text + " - " + strdata[i1].children[i2].children[i3].text + "</option>");
+										}
+										else{
+											$("#hangyeResult").append("<option value='" + strdata[i1].children[i2].children[i3].value + "'>" + strdata[i1].text + " - " + strdata[i1].children[i2].text + " - " + strdata[i1].children[i2].children[i3].text + "</option>");
+										}
+									}
+								}
+							}
+						}
+					}
+				});
+			})
+			$(function() {
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: ".getProvince",
+					success: function(data) {
+						var province = '${list[0].UserProvinceName}';
+						for(var i = 0; i < data.length; i++) {
+							if(province==data[i].ProvinceName){
+								$("#province").append("<option value='" + data[i].ProvinceID + "' selected='selected'>" + data[i].ProvinceName + "</option>");
+							}else{
+								$("#province").append("<option value='" + data[i].ProvinceID + "'>" + data[i].ProvinceName + "</option>");
+							}
+						}
+					}
+				});
+			});
+		$(function(){
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getCity",
+				data: {
+					"provinceId": $("#province").val()
+				},
+				success: function(data) {
+					var CityName='${list[0].UserCityName }';
+					for(var i = 0; i < data.length; i++) {
+						if(CityName==data[i].CityName){
+							$("#city").append("<option value='" + data[i].CityID + "' selected='selected'>" + data[i].CityName + "</option>");
+						}else{
+							$("#city").append("<option value='" + data[i].CityID + "'>" + data[i].CityName + "</option>");
+						}
+					}
+				}
+			});
+ 		});
+		$(function(){
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getArea",
+				data: {
+					"cityId": $("#city").val()
+				},
+				success: function(data) {
+					var AreaName='${list[0].UserAreaName }';
+					for(var i = 0; i < data.length; i++) {
+						if(AreaName==data[i].AreaName){
+							$("#area").append("<option value='" + data[i].AreaID + "' selected='selected'>" + data[i].AreaName + "</option>");
+						}else{
+							$("#area").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+						}
+					}
+				}
+			});
+ 		});
+		
+		$(function(){
+			var PaymentType ='${rateList[0].BankLogo }'; 
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".config/getPassageway",
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						if(PaymentType == data[i].Passageway){
+							$("#area3").append("<option value='" + data[i].Passageway + "' selected='selected'>" + data[i].PassagewayC + "</option>");
+						}else{
+							$("#PaymentType").append("<option value='" + data[i].Passageway + "'>" + data[i].PassagewayC + "</option>");
+						}
+					}
+				}
+			});
+		})
+		//通道费率
+		$(function(){
+				var zfbRate = '${rateList[0].Rate }';
+				var vxRate1 = '${vxRateList[0].Rate }';
+				$("#PaymentType").change(function(){
+					var PCtype = $("#PaymentType").val();
+					console.log(PCtype);
+					 //获取select dom对象
+			        var allSelect1 = document.getElementById("vxRate");
+			        //获取select下拉框下所有的选项
+			        var optionArr1 = allSelect1.getElementsByTagName("option");
+			        var len1 = optionArr1.length;
+			        for(var i=0;i<len1;i++){
+			            //将其对应序号的option删除
+			            allSelect1.remove(optionArr1[i]);
+			        }
+					 //获取select dom对象
+			        var allSelect = document.getElementById("alipayRate");
+			        //获取select下拉框下所有的选项
+			        var optionArr = allSelect.getElementsByTagName("option");
+			        var len = optionArr.length;
+			        for(var i=0;i<len;i++){
+			            //将其对应序号的option删除
+			            allSelect.remove(optionArr[i]);
+			        }
+			       	//支付宝费率
+					$.ajax({
+						type: 'POST',
+						async: true,
+						data :{
+							BankLogo : PCtype,
+							Payment : "支付宝支付",
+							},
+						url: ".getRate",
+						success: function(data) {
+							console.log(data);
+							for(var i = 0; i < data.length; i++) {
+								$("#alipayRate").append("<option value='" + data[i].D0Rate + "'>" + data[i].D0RateC + "</option>");
+							}
+						}
+					});
+			       	//微信费率
+			       	$.ajax({
+						type: 'POST',
+						async: true,
+						data :{
+							BankLogo : PCtype,
+							Payment : "微信支付",
+							},
+						url: ".getRate",
+						success: function(data) {
+							console.log(data);
+							for(var i = 0; i < data.length; i++) {
+								$("#vxRate").append("<option value='" + data[i].D0Rate + "'>" + data[i].D0RateC + "</option>");
+							}
+						}
+					});
+				})
+			})
+		</script>
+		<script type="text/javascript">
+		function searchbranch(obj){
+			if (!obj.value.length){
+				
+			}else{
+				getsearchbranch(obj.value);
+			}
+		}
+		function getsearchbranch(branchvalue){
+			var bankName = $("#hanglian").val(); //入账卡开户行
+			var bankID = $("#openbank option:selected").val();//入账开户行代码
+			if(bankID == ""){
+				alert("请选择开户行");
+				return;
+			}
+			$("#bankID").val(bankID);
+			document.getElementById("branchdiv").style="display:black";
+			$.ajax({
+				url:'.getsearchbranch',
+				data: {
+					bankName: bankName, //入账卡开户行
+					bankID : bankID//入账开户行代码
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success:function(data1){
+					//服务器返回响应，根据响应结果，分析是否登录成功；
+					if (data1.length > 0) {
+						var html = "";
+						$("#searchResult1 ul").html('');
+						for ( var i = 0; i < data1.length; i++) {
+							html += '<li class="mui-table-view-cell" onclick="selbranch(\''
+								+ data1[i].text
+								+ '\',\''+data1[i].value+'\')">'
+								+ data1[i].text + '</li>';
+						}
+						$("#searchResult1 ul").append(html);
+					}else{
+						$("#searchResult1 ul").html('');
+						$("#searchResult1 ul").append('<li style="width: 100%; height: 100%; text-align: center; color: #ccc;">暂无数据</li>');
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type);
+				}
+			});
+		}
+		function selbranch(branchName,branchId){
+			$("#hanglian").val(branchName);
+			$("#hanglianID").val(branchId);
+			document.getElementById("brankInfo").style="display:block";
+			document.getElementById("branchdiv").style="display:none";
+		}
+		
+		</script>
+</head>
+<body>
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form">
+					<div class=" layui-col-md12">
+						<div class="grid-demo">
+							<!--基本资料-->
+							<input type="hidden"  id="ShopNumber" value="${ShopNumber }">
+							<input type="hidden"  id="UserNumber" value="${UserNumber }">
+							<input type="hidden"  id="BB_UserNumber" value="${list[0].BB_UserNumber}">
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>商户名称
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="ShopName" name="ShopName" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${list[0].ShopName}">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label"></label>
+								<div class="layui-input-inline">
+									<input id="idtype2" name="idtype" type="radio" value="B" title="个体" lay-filter="shleixing" 
+									<c:if test="${list[0].AccountType eq 'B'}" >checked="checked"</c:if>
+									<c:if test="${list[0].AccountType eq '企业'}" >checked="checked"</c:if>>
+									<input id="idtype3" name="idtype" type="radio" value="A" title="个人" lay-filter="shleixing" 
+									<c:if test="${list[0].AccountType eq 'A'}" >checked="checked"</c:if>
+									<c:if test="${list[0].AccountType eq '小微'}" >checked="checked"</c:if>>
+								</div>
+							</div>
+							
+							<div class="layui-form-item" id="BusinessName" style="display: none;">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>个体工商户营业执照营业执照名称
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="BusinessLicenseName" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${list[0].BusinessLicenseName}" >
+								</div>
+							</div>
+							<div class="layui-form-item" id="BusinessNumber" style="display: none;">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>个体工商户营业执照营业执照证件号码
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="Idnumber" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${list[0].BusinessLicense}" >
+								</div>
+							</div>
+							
+							
+							<div class="layui-form-item" id='zzyouxiaoqi' style="display: none;">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>个体工商户营业执照证件到期日 格式YYYYMMDD
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="Idexpirydate" required="" lay-verify="required" placeholder="" class="layui-input" value="${list[0].BusinessLicenseTime}">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>法人姓名
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="Contactname" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${list[0].UserName}" >
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>法人身份证号
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="Identitycard" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${list[0].LegalPersonID}" >
+								</div>
+							</div>
+							<div class="layui-form-item" id='fryouxiaoqi'>
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>法人身份证到期日(格式YYYYMMDD)
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="Identitycarddate" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${list[0].LegalPersonDate}">
+								</div>
+							</div>
+							
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>联系电话
+								</label>
+								<div class="layui-input-inline">
+									<input type="number" id="contacttel" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${list[0].UserCell}">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>经营范围
+								</label>
+								<div class="layui-input-inline">
+									<select id="hangyeResult" name="hangye3" lay-ignore lay-verify="required" style="height: 39px">
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>商户所在地
+								</label>
+								
+								<div class="layui-input-inline shengshiqu">
+									<select id="province" name="province" lay-ignore lay-verify="required" lay-search="">
+									<option value="${list[0].UserProvinceName }"></option>
+									</select>
+									<select id="city" name="city" lay-ignore lay-verify="required" lay-search="">
+									<option value="${list[0].UserCityName }"></option>
+									</select>
+									<select id="area" name="area" lay-ignore lay-verify="required" lay-search="">
+									<option value="${list[0].UserAreaName }"></option>
+									</select>
+								</div>
+							</div>
+								<div class="layui-input-inline">
+									<input type="hidden" id="cityResult" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${list[0].UserProCitAreName}">
+									<input type="hidden" id='provinceID' value="${list[0].UserProvinceName}"> 
+									<input type="hidden" id='cityID' value="${list[0].UserCityName}">
+									<input type="hidden" id='districtID' value="${list[0].UserAreaName}">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>商户所在详细地址
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" id="detailedaddress" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${list[0].UserAddress}">
+								</div>
+							</div>
+							
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label"></label>
+								<div class="layui-input-inline" id="faren">
+									<input type="radio" id="legalbookeds" name="legalbookeds" value="1" title="法人入账" lay-filter="legalbooked" checked>
+								</div>
+								<div class="layui-input-inline" id="feifaren">
+									<input type="radio" id="legalbooked0" name="legalbookeds" value="0" title="非法人入账" lay-filter="legalbooked" 
+									<c:if test="${listf[0].Settlement eq 2}">checked</c:if>
+									<c:if test="${list[0].AccountType eq '企业'}">checked</c:if>>
+									<input type="radio" id="legalbooked1" name="legalbookeds" value="1" title="法人入账" lay-filter="legalbooked" 
+									<c:if test="${listf[0].Settlement eq 1}">checked</c:if>
+									<c:if test="${list[0].AccountType eq '小微'}">checked</c:if>>
+								</div>
+							</div>
+							<div id ="feifrxx">
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+										<span class="x-red">* </span>入账人姓名
+									</label>
+									<div class="layui-input-inline">
+										<input type="text" id="legalname" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${listk[0].LegalPersonName}">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+										<span class="x-red">* </span>入账证件号码
+									</label>
+									<div class="layui-input-inline">
+										<input type="text" id="Entrycardnumber" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${listk[0].LegalPersonID}">
+									</div>
+								</div>
+								<div class="layui-form-item" id='zzyouxiaoqi'>
+									<label for="username" class="layui-form-label">
+										<span class="x-red">* </span>入账证件到期日 格式YYYYMMDD
+									</label>
+									<div class="layui-input-inline">
+										<input type="text" id="Entrydate" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${listk[0].LegalPersonDate}">
+									</div>
+								</div>
+							</div>
+								
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>入账卡开户行
+								</label>
+								<div class="layui-input-inline">
+									
+									<select id=openbank name="openbank" lay-search="" onchange="selbank(this)">
+										<option value="0102" <c:if test="${listk[0].OpeningBank eq '中国工商银行'}">selected="selected"</c:if>>中国工商银行</option>
+										<option value="0103" <c:if test="${listk[0].OpeningBank eq '中国农业银行'}">selected="selected"</c:if>>中国农业银行</option>
+										<option value="0104" <c:if test="${listk[0].OpeningBank eq '中国银行'}">selected="selected"</c:if>>中国银行</option>
+										<option value="0105" <c:if test="${listk[0].OpeningBank eq '中国建设银行'}">selected="selected"</c:if>>中国建设银行</option>
+										<option value="0301" <c:if test="${listk[0].OpeningBank eq '交通银行'}">selected="selected"</c:if>>交通银行</option>
+										<option value="0308" <c:if test="${listk[0].OpeningBank eq '招商银行'}">selected="selected"</c:if>>招商银行</option>
+										<option value="0309" <c:if test="${listk[0].OpeningBank eq '兴业工商银行'}">selected="selected"</c:if>>兴业银行</option>
+										<option value="0305" <c:if test="${listk[0].OpeningBank eq '中国民生银行'}">selected="selected"</c:if>>中国民生银行</option>
+										<option value="0306" <c:if test="${listk[0].OpeningBank eq '广东发展银行'}">selected="selected"</c:if>>广东发展银行</option>
+										<option value="0307" <c:if test="${listk[0].OpeningBank eq '平安银行股份有限公司'}">selected="selected"</c:if>>平安银行股份有限公司</option>
+										
+										<option value="0310" <c:if test="${listk[0].OpeningBank eq '上海浦东发展银行'}">selected="selected"</c:if>>上海浦东发展银行</option>
+										<option value="0304" <c:if test="${listk[0].OpeningBank eq '华夏银行'}">selected="selected"</c:if>>华夏银行</option>
+										<option value="0313" <c:if test="${listk[0].OpeningBank eq '其他城市商业银行'}">selected="selected"</c:if>>其他城市商业银行</option>
+										<option value="0314" <c:if test="${listk[0].OpeningBank eq '其他农村商业银行'}">selected="selected"</c:if>>其他农村商业银行</option>
+										<option value="0315" <c:if test="${listk[0].OpeningBank eq '恒丰银行'}">selected="selected"</c:if>>恒丰银行</option>
+										<option value="0403" <c:if test="${listk[0].OpeningBank eq '中国邮政储蓄银行股份有限公司'}">selected="selected"</c:if>>中国邮政储蓄银行股份有限公司</option>
+										<option value="0303" <c:if test="${listk[0].OpeningBank eq '中国光大银行'}">selected="selected"</c:if>>中国光大银行</option>
+										<option value="0302" <c:if test="${listk[0].OpeningBank eq '中信银行'}">selected="selected"</c:if>>中信银行</option>
+										<option value="0316" <c:if test="${listk[0].OpeningBank eq '浙商银行股份有限公司'}">selected="selected"</c:if>>浙商银行股份有限公司</option>
+										<option value="0318" <c:if test="${listk[0].OpeningBank eq '渤海银行股份有限公司'}">selected="selected"</c:if>>渤海银行股份有限公司</option>
+										
+										<option value="0319" <c:if test="${listk[0].OpeningBank eq '徽商银行'}">selected="selected"</c:if>>徽商银行</option>
+										<option value="0322" <c:if test="${listk[0].OpeningBank eq '上海农村商业银行'}">selected="selected"</c:if>>上海农村商业银行</option>
+										<option value="0402" <c:if test="${listk[0].OpeningBank eq '其他农村信用合作社'}">selected="selected"</c:if>>其他农村信用合作社</option>
+									</select>
+									
+									
+								</div>
+							</div>
+							<div class="layui-form-item" id="zhihanglist" style="overflow:initial;">
+								<label for="username" class="layui-form-label">
+									<span class="x-red">* </span>入账卡开户行联行号
+								</label>
+								<div class="layui-input-inline">
+									<input type="text" required="" lay-verify="required" autocomplete="off" class="layui-input" placeholder="搜索支行" id="hanglian"  onkeyup="searchbranch(this)" value="${listk[0].OpeningBranch}" >
+									<style>
+									#zhihanglist .mui-icon-clear{top:35px !important;}
+									.branchdiv{width:100%;max-height:300px;background:#fff;overflow:auto;position: absolute;z-index:9999;border: 1px solid #c8c7cc;border-radius: 3px;}
+									#searchResult1{width:100%;}
+									#searchResult1 .mui-table-view{width:100%;}
+									#searchResult1 .mui-table-view li{width:100%;line-height:36px;padding:0 10px;box-sizing: border-box;border-bottom:1px solid #c2c2c2;}
+									#searchResult1 .mui-table-view li:hover{background:#5FB878;color:#fff;}
+									</style>
+									<div class="branchdiv" id="branchdiv" style="display:none;">
+										<div id="searchResult1">
+											<ul class="mui-table-view"></ul>
+										</div>
+									</div>
+								</div>
+								<input type="hidden" id='hanglianID' value="${listk[0].OpeningBranchId}">
+								<input type="hidden" id='bankID' value="${listk[0].OpeningBankId}">
+								
+							</div>
+							<div id="feifrxx1">
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+										<span class="x-red">* </span>入账卡户名
+									</label>
+									<div class="layui-input-inline">
+										<input type="text" id="Cardaccountname" required="" lay-verify="required" autocomplete="off" class="layui-input"value="${listk[0].CardHoldingName}">
+									</div>
+								</div>	
+							</div>
+							
+							
+							<div id="brankInfo" >
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+										<span class="x-red">* </span>入账卡号
+									</label>
+									<div class="layui-input-inline">
+										<input type="text" id="Accountnumbers" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${listp[0].BankCard}">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label">
+										<span class="x-red">* </span>选择费率
+									</label>
+									<div class="layui-input-inline">
+										<input type="text" id="Selectrate" readonly="readonly" required="" lay-verify="required" autocomplete="off" class="layui-input"value="0.25%">
+									</div>
+									<input type="hidden" id="PCrate" required="" lay-verify="required" autocomplete="off" class="layui-input"value="0.25">
+									<input type="hidden" id="PCrateBM" required="" lay-verify="required" autocomplete="off" class="layui-input"value="N0309">
+								</div>
+							</div>
+							<div id="branchdiv" style="display:none;">
+								<div class="mui-content">
+									<div id="searchResult1">
+										<ul class="mui-table-view"></ul>
+									</div>
+								</div>
+							</div>
+							<input type="hidden" id="urlSite" name="urlSite" value="${listp[0].PicListUrl }">
+							<input type="hidden" id="oldurlSite" name="urlSite" value="${listp[0].PicListUrl }" >
+							<div class="layui-form-item" id="getilx">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>营业执照照片
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="businessimg" src="${listp[0].BusinessLicensePhoto}">
+										<input type="hidden" id="BusinessPhotograph" name="BusinessPhotograph" value="${listp[0].BusinessLicensePhoto}">
+										<p id="businessText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile1">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="businessupload">上传图片</button>
+								</div>
+							</div>
+							
+							
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>法人证件正面照
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="corpimg" src="${listp[0].LegalPersonIDPositive}">
+										<input type="hidden" id="LegalPersonIdCardFace" name="LegalPersonIdCardFace" value="${listp[0].LegalPersonIDPositive }">
+										<p id="corpText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile2">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="corpupload">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>法人证件背面照
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="corpbackimg" src="${listp[0].LegalPersonIDOpposite}">
+										<input type="hidden" id="LegalPersonIdCardReversePhotograph" name="LegalPersonIdCardReversePhotograph" value="${listp[0].LegalPersonIDOpposite }">
+										<p id="corpbackText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile3">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="corpbackupload">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                <span class="x-red">* </span>门脸照
+					            </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="imgLogo" src="${listp[0].ShopFacePhoto}">
+										<input type="hidden" id="FrontPhotos" name="FrontPhotos" value="${listp[0].ShopFacePhoto }">
+										<p id="shopText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile4">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="ShopFacePhoto">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                <span class="x-red">* </span>门头照
+					            </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="shopimg" src="${listp[0].ShopDoorheadPhoto}">
+										<input type="hidden" id="DoorHeadPhoto" name="DoorHeadPhoto" value="${listp[0].ShopDoorheadPhoto }">
+										<p id="shopText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile5">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="ShopDoorheadPhoto">上传图片</button>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                <span class="x-red">* </span>入账银行卡正面照
+					            </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="bankcardimg" src="${listp[0].BankCardPositive}">
+										<input type="hidden" id="BankCardPositivePhoto" name="BankCardPositivePhoto" value="${listp[0].BankCardPositive }">
+										<p id="shopText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile6">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="uploadBankCard">上传图片</button>
+								</div>
+							</div>
+							
+							
+							<div id="feifryh">
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label uploadtitle">
+						                <span class="x-red">* </span>对私账户身份证正面照片
+						            </label>
+									<div class="layui-upload">
+										<div class="layui-upload-list">
+											<img class="layui-upload-img" id="duisizimg" src="${listp[0].AdmissionIDPositive}">
+											<input type="hidden" id="IdCardFront" name="IdCardFront" value="${listp[0].AdmissionIDPositive }">
+											<p id="shopText"></p>
+										</div>
+										<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile7">选择图片</button>
+										<button type="button" class="layui-btn uploadbtn" id="AdmissionIDPositive">上传图片</button>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label uploadtitle">
+						                <span class="x-red">* </span>对私账户身份证反面照片
+						            </label>
+									<div class="layui-upload">
+										<div class="layui-upload-list">
+											<img class="layui-upload-img" id="duisifimg" src="${listp[0].AdmissionIDOpposite}">
+											<input type="hidden" id="IdCardBack" name="IdCardBack" value="${listp[0].AdmissionIDOpposite }">
+											<p id="shopText"></p>
+										</div>
+										<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile8">选择图片</button>
+										<button type="button" class="layui-btn uploadbtn" id="AdmissionIDOpposite">上传图片</button>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="username" class="layui-form-label uploadtitle">
+						                <span class="x-red">* </span>入账非法人证明照片
+						            </label>
+									<div class="layui-upload">
+										<div class="layui-upload-list">
+											<img class="layui-upload-img" id="feifareimg" src="${listp[0].AdmissionNotLegalPersonIDPositive}">
+											<input type="hidden" id="ThatPhoto" name="ThatPhoto" value="${listp[0].AdmissionNotLegalPersonIDPositive }">
+											<p id="shopText"></p>
+										</div>
+										<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile9">选择图片</button>
+										<button type="button" class="layui-btn uploadbtn" id="AdmissionNotLegalPersonIDPositive">上传图片</button>
+									</div>
+								</div>
+								
+							</div>
+							
+							
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+									<span class="x-red">* </span>法人手持身份证
+								</label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="corphandimg" src="${listp[0].LegalPersonHoldID}">
+										<input type="hidden" id="HandPhoto" name="HandPhoto" value="${listp[0].LegalPersonHoldID }">
+										<p id="corphandText"></p>
+									</div>
+									<button type="button" class="layui-btn uploadbtn" name="file" id="shopfile10">选择图片</button>
+									<button type="button" class="layui-btn uploadbtn" id="LegalPersonHoldID">上传图片</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="layui-row formbtnb">
+						<div class="grid-demo">
+							<div class="layui-form-item">
+								<label for="L_repass" class="layui-form-label">
+						      </label>
+								<button class="layui-btn formbtn" lay-filter="add" lay-submit="">修改</button>
+								<input type="button" value="返回" onclick="x_admin_close()" class="layui-btn layui-btn-warm formbtn">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+ 		<script>
+			layui.use(['form', 'layedit', 'laydate', 'element', 'layer', 'upload'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+				var element = layui.element;
+				var layer = layui.layer;
+				var form = layui.form,
+					layedit = layui.layedit,
+					laydate = layui.laydate;
+
+				//日期时间范围1
+				laydate.render({
+					elem: '#Idexpirydate',
+					type: 'date',
+					format: 'yyyyMMdd'
+				});
+				//日期时间范围2
+				laydate.render({
+					elem: '#Identitycarddate',
+					type: 'date',
+					format: 'yyyyMMdd'
+				});
+				//日期时间范围2
+				laydate.render({
+					elem: '#Entrydate',
+					type: 'date',
+					format: 'yyyyMMdd'
+				});
+				
+				//监听指定开关
+				form.on('radio(shleixing)', function(data) {
+					console.log(data.value); //被点击的radio的value值
+					if(data.elem.id == "idtype2") {
+						//个体
+						document.getElementById("BusinessName").style.display = "block";
+						document.getElementById("BusinessNumber").style.display = "block";	
+						document.getElementById("zzyouxiaoqi").style.display = "block";
+						document.getElementById("feifaren").style.display = "block";
+						document.getElementById("faren").style.display = "none";
+						document.getElementById("getilx").style.display = "block";
+						
+					} else if(data.elem.id == "idtype3") {
+						document.getElementById("BusinessName").style.display = "none";
+						document.getElementById("BusinessNumber").style.display = "none";
+						document.getElementById("zzyouxiaoqi").style.display = "none";
+						document.getElementById("feifaren").style.display = "none";
+						document.getElementById("faren").style.display = "block";
+						document.getElementById("getilx").style.display = "none";
+						document.getElementById("feifryh").style.display = "none";
+					}
+				});
+				form.on('radio(legalbooked)',function(data){
+					console.log(data.value); //被点击的radio的value值
+					if(data.elem.id=="legalbooked2"){
+						//0 非法人入账
+						document.getElementById("feifrxx").style.display = "block";
+						document.getElementById("feifrxx1").style.display = "block";
+						document.getElementById("feifryh").style.display = "block";
+					} else{
+						//1法人入账
+						document.getElementById("feifrxx").style.display = "none";
+						document.getElementById("feifrxx1").style.display = "none";
+						document.getElementById("feifryh").style.display = "none";
+					}
+				})
+					
+					//营业执照照片上传
+					upload.render({
+						elem: '#shopfile1',
+						url: '.salesingupfuyou/addPic?type=1',
+						auto: false,
+						bindAction: '#businessupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#businessimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							//如果上传失败
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								$("#BusinessPhotograph").val(res.desc);
+								$("#urlSite").val(res.url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#businessText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+					//法人证件正面照片上传
+					upload.render({
+						elem: '#shopfile2',
+						url: '.salesingupfuyou/addPic?type=2',
+						auto: false,
+						bindAction: '#corpupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#corpimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								$("#LegalPersonIdCardFace").val(res.desc);
+								$("#urlSite").val(res.url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#corpText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+
+					//法人证件反面照片上传
+					upload.render({
+						elem: '#shopfile3',
+						url: '.salesingupfuyou/addPic?type=3',
+						auto: false,
+						bindAction: '#corpbackupload',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#corpbackimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+
+								// 获取后台返回的地址,并存储到上方隐藏域
+								url = res.desc;
+								$("#LegalPersonIdCardReversePhotograph").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#corpbackText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					 //门脸上传
+					upload.render({
+						elem: '#shopfile4',
+						url: '.salesingupfuyou/addPic?type=4',
+						method: 'post',
+						auto: false,
+						bindAction: '#ShopFacePhoto',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#imgLogo').attr('src', result);
+							});
+						},
+						done: function(res) {
+
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								$("#FrontPhotos").val(res.desc);
+								$("#urlSite").val(res.url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#logoText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+		        
+		        	//门头上传
+					upload.render({
+						elem: '#shopfile5',
+						url: '.salesingupfuyou/addPic?type=5',
+						method: 'post',
+						auto: false,
+						bindAction: '#ShopDoorheadPhoto',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#shopimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								$("#DoorHeadPhoto").val(res.desc);
+								$("#urlSite").val(res.url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#shopText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+		        	
+					//银行卡照片正面上传
+					upload.render({
+						elem: '#shopfile6',
+						url: '.salesingupfuyou/addPic?type=6',
+						auto: false,
+						bindAction: '#uploadBankCard',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#bankcardimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								$("#BankCardPositivePhoto").val(res.desc);
+								$("#urlSite").val(res.url);
+
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#bankCardText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					
+					//对私账户身份证正面照片
+					upload.render({
+						elem: '#shopfile7',
+						url: '.salesingupfuyou/addPic?type=7',
+						auto: false,
+						bindAction: '#AdmissionIDPositive',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#duisizimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								$("#IdCardFront").val(res.desc);
+								$("#urlSite").val(res.url);
+
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#bankbackText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					//对私账户身份证放反面照片
+					upload.render({
+						elem: '#shopfile8',
+						url: '.salesingupfuyou/addPic?type=8',
+						auto: false,
+						bindAction: '#AdmissionIDOpposite',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#duisifimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								$("#IdCardBack").val(res.desc);
+								$("#urlSite").val(res.url);
+
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#bankbackText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					//非法人证明
+					upload.render({
+						elem: '#shopfile9',
+						url: '.salesingupfuyou/addPic?type=9',
+						auto: false,
+						bindAction: '#AdmissionNotLegalPersonIDPositive',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#feifareimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								$("#ThatPhoto").val(res.desc);
+								$("#urlSite").val(res.url);
+
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#bankusercardText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					//手持身份证
+					upload.render({
+						elem: '#shopfile10',
+						url: '.salesingupfuyou/addPic?type=11',
+						auto: false,
+						bindAction: '#LegalPersonHoldID',
+						accept:"images",
+				        exts: 'jpg|png|gif|bmp|jpeg',
+						choose: function(obj) {
+							obj.preview(function(index, file, result) {
+								$('#corphandimg').attr('src', result);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								layer.msg('上传成功');
+								// 获取后台返回的地址,并存储到上方隐藏域
+								$("#HandPhoto").val(res.desc);
+								$("#urlSite").val(res.url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#bankusercardText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+					form.on('submit(add)', function(data){
+		        	  	var index = parent.layer.getFrameIndex(window.name);
+		        	  	var ShopNumber = $("#ShopNumber").val();
+		        	  	var UserNumber = $("#UserNumber").val();
+		        	  	var isId = new RegExp("^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$");
+		        	  	var ShopName = $("#ShopName").val();
+		        	  	if(ShopName.trim() == "") {
+		        	  		layer.alert("商户名称不允许为空");return;
+						}else{
+							var isMe = new RegExp("^([a-z]|[A-Z]|[0-9]|[\\u4e00-\\u9fa5]){0,20}$");
+							if(!isMe.test(ShopName)){
+								layer.alert("商户名称不能含有特殊符号且长度为20");return ;
+							}else{
+								$("#BusinessLicenseName").val(ShopName);
+							}
+						}
+		        	  	var idtype= $("input[name='idtype']:checked").val(); //证件类型
+		        	  	if(idtype==""||idtype=="undefined"||idtype==undefined){
+							layer.alert("证件类型不允许为空");return;
+						}
+		        	  	var BusinessLicenseName = $("#BusinessLicenseName").val();//营业执照名称
+		        	  	if(idtype=="B"){
+							if(BusinessLicenseName.trim() == ""){
+								layer.alert("营业执照名称不允许为空");return;
+							}
+						}else{
+							var isMe =  new RegExp("^([a-z]|[A-Z]|[0-9]|[\\u4e00-\\u9fa5]){0,50}$");
+							if(!isMe.test(BusinessLicenseName)){
+								layer.alert("营业名称不能含有特殊符号且长度为50");return;
+							}
+						}
+		        	  	var isID = new RegExp("^([0-9]|[A-Z]){0,20}$");
+		        	  	var Idnumber = $("#Idnumber").val(); //证件号码
+		        	  	if(idtype == "B"){
+							if(Idnumber.trim() == "") {
+								layer.alert("证号码不允许为空");return;
+							}else if(!isID.test(Idnumber)) {
+								layer.alert("证件号码错误");return;
+							}
+						}
+		        	  	var isdata = new RegExp("^[0-9]*$");
+		        	  	var Idexpirydate = $("#Idexpirydate").val(); //证件到期日
+						if(idtype == "B"){
+							if(Idexpirydate.trim() == "") {
+								layer.alert("证件到期日不允许为空");return;
+							}else if(!isdata.test(Idexpirydate)){
+								layer.alert("证件到期日格式不正确");return;
+							}
+						}
+		        	  	
+						var Identitycard = $("#Identitycard").val(); //法人身份证号
+						if(Identitycard.trim() == "") {
+							layer.alert("法人身份证号码不允许为空");return;
+						}else{
+							if(!isId.test(Identitycard)){
+								layer.alert("法人身份证号码长度有误或者含有特殊符号");return;   
+							}
+						}
+						var Identitycarddate = $("#Identitycarddate").val(); //法人身份证到期日
+						if(Identitycarddate.trim() == "") {
+							layer.alert("法人身份证到期日不允许为空");return;
+						}else if(!isdata.test(Identitycarddate)){
+							layer.alert("法人身份证到期日格式不正确");return;
+						}
+						//验证个人入账的时候给证件类型和日期赋值
+						if(idtype == "A"){
+							var abc =$("#Identitycard").val();
+							$("#Idnumber").val(abc);
+							 var zxcv = $("#Identitycarddate").val();
+							$("#Idexpirydate").val(zxcv);
+						}
+						var Contactname = $("#Contactname").val(); //联系人姓名
+						if(Contactname.trim() == "") {
+							layer.alert("联系人姓名不允许为空");return;
+						}else{
+							var isCo = new RegExp("^([a-z]|[A-Z]|[0-9]|[\\u4e00-\\u9fa5]){0,15}$"); 
+						 	if(!isCo.test(Contactname)){
+						 		layer.alert("联系人姓名不能含有特殊符号");return;
+						    }
+						}
+						
+						
+						var Servicetel = $("#contacttel")[0].value; //客服电话
+						var contacttel = $("#contacttel")[0].value; //联系电话
+						if(contacttel.trim() == "") {
+							layer.alert("联系电话不允许为空");return;
+						}else{
+							var reg = /^1[3|4|5|6|7|8][0-9]{9}$/;
+							if(!reg.test(contacttel)){
+								layer.alert("联系电话无效，请重新输入");return;
+							} 
+						}
+						var Contactemail = "97104421@qq.com"; //联系邮箱
+						var hangyeResult = $("#hangyeResult option:selected").text(); //经营范围
+						if(hangyeResult.trim() == "") {
+							layer.alert("经营范围不允许为空");;return;
+						}
+						var provinceID = $("#province option:selected").text();
+						var cityID = $("#city option:selected").text();
+						var districtID = $("#area option:selected").text();
+						if(province==''){
+							layer.alert("请选择省份");;return;
+						}if(city==''){
+							layer.alert("请选择市");;return;
+						}if(area==''){
+							layer.alert("请选择区");;return;
+						}
+						var detailedaddress = $("#detailedaddress").val(); //商户所在详细地址
+						if(detailedaddress.trim() == "") {
+							layer.alert("商户所在地不允许为空");return;
+						}
+						var Wx_busi_flag=1;//是否开启绿洲
+						var IndustrySonType = $("#hangyeResult option:selected").val();//经营范围代码
+						
+						var cityResult = provinceID+cityID+districtID;
+						
+						var legalbooked = $("input[name='legalbookeds']:checked").val(); //法人入账标识
+						if(legalbooked.trim() == "") {
+							layer.alert("法人入账标识不允许为空"); return;
+						}
+						//0非法人
+						if(legalbooked =="0"){
+							var legalname = $("#legalname").val(); //法人姓名
+							if(legalname.trim() == "") {
+								layer.alert("法人姓名不允许为空"); return ;
+							}else{
+								var isCo =   new RegExp("^([a-z]|[A-Z]|[0-9]|[\\u4e00-\\u9fa5]){0,15}$"); 
+							 	if(!isCo.test(legalname)){
+							 		layer.alert("法人姓名无效"); return;
+							    }
+							}
+							var Entrycardnumber = $("#Entrycardnumber").val(); //入账证件号码
+							if(Entrycardnumber.trim() == "") {
+								layer.alert("入账证件号码不允许为空"); return;
+							}else{
+								var isEn =   new RegExp("^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$");
+								if(!isEn.test(Entrycardnumber)){
+									layer.alert("入账证件号码输入过长或者有误"); return;   
+								}
+							}
+							var Entrydate = $("#Entrydate").val(); //入账证件到期日
+							if(Entrydate.trim() == "") {
+								layer.alert("入账证件到期日不允许为空"); return;
+							}
+							var Cardaccountname = $("#Cardaccountname").val(); //入账卡户名
+							if(Cardaccountname.trim() == "") {
+								layer.alert("入账卡户名不允许为空"); return;
+							}
+						}
+						var openbank = $("#openbank option:selected").text(); //入账卡开户行
+						if(openbank.trim() == "") {
+							layer.alert("入账卡开户行不允许为空"); return;
+						}
+						var BankID =$("#bankID").val();//银行编码
+						if(BankID.trim() == "") {
+							layer.alert("入账卡开户行不允许为空"); return;
+						}
+						var hanglian = $("#hanglian").val(); //入账卡开户行联行号名称
+						if(hanglian.trim() == "") {
+							layer.alert("入账卡联行号名称不允许为空"); return;
+						}
+						var hanglianID = $("#hanglianID").val(); //入账卡开户行联行号
+						if(hanglian.trim() == "") {
+							layer.alert("入账卡联行号名称不允许为空"); return;
+						}
+						if(legalbooked =="1"){
+							var legalname =$("#Contactname").val();
+							var Cardaccountname =$("#Contactname").val();//入账卡户名
+							var Entrycardnumber =$("#Identitycard").val();
+							var Entrydate =$("#Identitycarddate").val();
+						}else{
+							var legalname =$("#legalname").val();
+							var Cardaccountname = $("#Cardaccountname").val(); //入账卡户名
+							var Entrycardnumber =$("#Entrycardnumber").val();
+							var Entrydate =$("#Entrydate").val();
+						}
+						var Accountnumbers = $("#Accountnumbers").val(); //入账卡号
+						if(Accountnumbers.trim() == "") {
+							layer.alert("入账卡号不允许为空"); return;
+						}
+						var PCrate = $("#PCrate").val(); //选择费率值
+						var PCrateBM = $("#PCrateBM").val(); //选择费率编码
+						var Clearamount = 100; //小额清算金额
+						var settlement = 1; //清算类型
+						var settlementd1 = "1"; //D1结算
+						var settlementd0 = ""; //是否开通D0提现
+						var D0rated = ""; //D0费率值
+						var D0ratedBM = ""; //D0费率代码
+						var Entrycard ="2"; //入账卡类型
+		        	  	
+						
+						var BusinessPhotograph=$("#BusinessPhotograph").val();//营业执照
+						if(idtype =="B"){//企业，个体B，个人A
+							if(BusinessPhotograph == "") {
+								layer.alert("营业执照照片不允许为空");return;
+							}
+						}
+						var LegalPersonIdCardFace=$("#LegalPersonIdCardFace").val();//法人身份证正面照片
+						if(LegalPersonIdCardFace == "") {
+							layer.alert("法人身份证正面照片不允许为空");return;
+						}
+						var LegalPersonIdCardReversePhotograph=$("#LegalPersonIdCardReversePhotograph").val();//法人身份证反面照片
+						if(LegalPersonIdCardReversePhotograph == "") {
+							layer.alert("法人身份证反面照片不允许为空");return;
+						}
+						var FrontPhotos=$("#FrontPhotos").val();//门脸照片
+						if(FrontPhotos == "") {
+							layer.alert("门脸照片不允许为空");return;
+						}
+						var DoorHeadPhoto=$("#DoorHeadPhoto").val();//门头照片
+						if(DoorHeadPhoto == "") {
+							layer.alert("门头照片不允许为空");return;
+						}
+						var BankCardPositivePhoto=$("#BankCardPositivePhoto").val();//入账银行卡正面照片
+						if(BankCardPositivePhoto == "") {
+							layer.alert("入账银行卡照片不允许为空");return;
+						}
+						
+						var IdCardFront=$("#IdCardFront").val();//对私账户身份证正面照片
+						var IdCardBack=$("#IdCardBack").val();//对私账户身份证反面照片
+						var ThatPhoto=$("#ThatPhoto").val();//入账非法人证明照片
+						//非法人入账
+						if(legalbooked=="0"){
+							if(IdCardFront == "") {
+								layer.alert("对私账户身份证正面照片不允许为空");return;
+							}if(IdCardBack == "") {
+								layer.alert("对私账户身份证反面照片不允许为空");return;
+							}if(ThatPhoto == "") {
+								layer.alert("入账非法人证明照片不允许为空");return;
+							}
+						}
+						var HandPhoto=$("#HandPhoto").val();//手持证件照片
+						if(HandPhoto == "") {
+							layer.alert("手持证件照片不允许为空");return;
+						}
+						var BankCard=$("#Accountnumbers").val();//卡号
+						var PicListUrl=$("#urlSite").val();//图片文件地址
+						var oldurlSite=$("#oldurlSite").val();
+		        	  	
+						var mydatash = {
+								BB_UserNumber:$("#BB_UserNumber").val(),
+								ShopNumber:ShopNumber,
+				        	  	UserNumber:UserNumber,
+				        	  	ShopName:ShopName,
+				        	  	BusinessLicenseName : BusinessLicenseName,//营业执照名称
+				        	  	License_type: idtype, //证件类型
+				        	  	Idnumber : Idnumber, //证件号码
+				        	  	Idexpirydate : Idexpirydate, //证件到期日
+								Identitycard : Identitycard, //法人身份证号
+								Identitycarddate : Identitycarddate, //法人身份证到期日
+								Contactname : Contactname, //联系人姓名
+								Servicetel : contacttel, //客服电话
+								contacttel : contacttel, //联系电话
+								Contactemail : "97104421@qq.com", //联系邮箱
+								IndustrySonType : IndustrySonType,//经营范围代码
+								hangyeResult : hangyeResult, //经营范围
+								detailedaddress : detailedaddress, //商户所在详细地址
+								Wx_busi_flag:"1",//是否开启绿洲
+								provinceID : provinceID,//省代码
+								cityID : cityID,//市代码
+								districtID : districtID,//区代码
+								cityResult : cityResult
+								};
+						
+						var mydatayh = {
+								ShopNumber:ShopNumber,
+				        	  	UserNumber:UserNumber,
+								legalbooked : $("input[name='legalbookeds']:checked").val(), //法人入账标识
+								legalname : legalname, //法人姓名
+								Entrycardnumber : Entrycardnumber, //入账证件号码
+								Entrydate : Entrydate, //入账证件到期日
+								openbank : openbank, //入账卡开户行 
+								BankID :$("#openbank option:selected").val(),//银行编码 
+								hanglian : hanglian, //入账卡开户行联行号名称
+								hanglianID : hanglianID, //入账卡开户行联行号
+								Cardaccountname :Cardaccountname, //入账卡户名
+								Accountnumbers : Accountnumbers, //入账卡号
+								PCrate : PCrate, //选择费率值
+								PCrateBM : PCrateBM, //选择费率编码
+								};
+						var mydatapic = {
+								ShopNumber:ShopNumber,
+				        	  	UserNumber:UserNumber,
+				        	  	BankCard:BankCard,
+								BusinessPhotograph:BusinessPhotograph,//营业执照
+								LegalPersonIdCardFace:LegalPersonIdCardFace,//法人身份证正面照片
+								LegalPersonIdCardReversePhotograph:LegalPersonIdCardReversePhotograph,//法人身份证反面照片
+								FrontPhotos:FrontPhotos,//门脸照片
+								DoorHeadPhoto:DoorHeadPhoto,//门头照片
+								BankCardPositivePhoto:BankCardPositivePhoto,//入账银行卡正面照片
+								IdCardFront:IdCardFront,//对私账户身份证正面照片
+								IdCardBack:IdCardBack,//对私账户身份证反面照片
+								ThatPhoto:ThatPhoto,//入账非法人证明照片
+								HandPhoto:HandPhoto,//手持证件照片
+								PicListUrl:$("#urlSite").val(),//图片文件地址
+								oldurlSite:$("#oldurlSite").val()
+								};
+						 $.ajax({
+							type: 'POST',
+							async: true,
+							data:mydatash,
+							url: ".merchantAdd2",
+							success: function(data) {
+								if ("success" == data.result) {
+									$.ajax({
+										type: 'POST',
+										async: true,
+										data:mydatayh,
+										url: ".merchantAddyh",
+										success: function(data) {
+											if ("success" == data.result) {
+												$.ajax({
+													type: 'POST',
+													async: true,
+													data:mydatapic,
+													url: ".copypic",
+													success: function(data) {
+
+														if ("success" == data.result) {
+															var ShopNumber = $("#ShopNumber").val();
+											        	  	var UserNumber = $("#UserNumber").val();
+															
+															//进件http://smplat.51shanhe.com/smplat/salesingup/goindexsale?QRCodeNumber=&SalesNumber=180710111118686
+															$.ajax({
+																data:{ShopNumber : ShopNumber,UserNumber : UserNumber,xdlUrl:"http://smplat.51shanhe.com/smplat/httpClient"},
+																dataType:'json',//服务器返回json格式数据
+																type:'post',//HTTP请求类型
+																url:'.xdldata',
+																success:function(data){
+																	var jsonmsg = eval('('+data.msg+')');
+																	if("success" == jsonmsg.result){
+																		layer.alert("富友进件成功", {icon: 6},function () {
+																			// 刷新父页面
+																			window.parent.location.reload();
+																			// 获得frame索引
+																			var index = parent.layer.getFrameIndex(window.name);
+																			//关闭当前frame
+																			parent.layer.close(index);
+															            });
+																	}else{
+																		layer.alert(jsonmsg.msg);
+																	}
+																}
+															})
+														}else {
+															layer.msg(data.msg);
+															return;
+														}
+													}
+												});
+												
+											}else {
+												layer.msg(data.msg);
+												return;
+											}
+										}
+									});
+								}else {
+									layer.msg(data.msg);
+									return;
+								}
+							}
+						});
+			       });
+			});
+		</script>
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//日期时间范围1
+				laydate.render({
+					elem: '#test10',
+					type: 'date'
+				});
+				//日期时间范围2
+				laydate.render({
+					elem: '#test10-2',
+					type: 'date'
+				});
+
+			});
+		</script>
+		<script type="text/javascript">
+		// 省市联动
+		$("#province").change(function() {
+			$("#city").empty();
+			$("#area").empty();
+			$("#city").append("<option value=''>请选择市</option>");
+			$("#area").append("<option value=''>请选择区/县</option>");
+			var pid = $("#province").val()
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getCity",
+				data: {
+					"provinceId": pid
+				},
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$("#city").append("<option value='" + data[i].CityID + "'>" + data[i].CityName + "</option>");
+					}
+					$.ajax({
+						type: 'POST',
+						url: ".getArea",
+						data: {
+							"cityId": data[0].CityID
+						},
+						success: function(data) {
+							for(var i = 0; i < data.length; i++) {
+								$("#area").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+							}
+						}
+					});
+				}
+			});
+		});
+
+		// 市区联动
+		$("#city").change(function() {
+			$("#area").empty();
+			$("#area").append("<option value=''>请选择区/县</option>");
+			var cid = $("#city").val()
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getArea",
+				data: {
+					"cityId": cid
+				},
+				success: function(data) {
+					for(var i = 0; i < data.length; i++) {
+						$("#area").append("<option value='" + data[i].AreaID + "'>" + data[i].AreaName + "</option>");
+					}
+				}
+			});
+			
+		});
+		
+		</script>
+</body>
+</html>

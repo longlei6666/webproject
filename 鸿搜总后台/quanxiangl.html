@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_457932_cqbv0v0vg5yx2yb9.css" />
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">权限管理</a>
+        <a>添加</a>
+      </span>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md6">
+        	<div class="grid-demo no-skin">
+  					
+  					<div id="layui-xtree-demo1"></div>
+  					
+  					<script src="./js/layui-xtree.js"></script>
+						<script type="text/javascript">
+						
+						    //tree数据结构
+						    var json = [
+						            {
+						                title: "系统设置", value: "系统设置", data: [
+						                  { title: "账号管理", value: "账号管理", data: [] }
+						                , { title: "权限管理", value: "j权限管理", data: [] }
+						                ]
+						            }
+						            , 
+						            {
+						                title: "业务运营", value: "业务运营", data: [
+						                  { title: "商户管理", value: "商户管理", data: [] }
+						                , { title: "渠道管理", value: "渠道管理", data: [] }
+						                , { title: "提现管理", value: "提现管理", data: [] }
+						                , { title: "流水管理", value: "流水管理", data: [] }
+						                , { title: "门店管理", value: "门店管理", data: [] }
+						                ]
+						            }
+						    ];
+						
+						
+						    layui.use('form', function () {
+						        var form = layui.form;
+						
+						        //创建tree
+						        var xtree = new layuiXtree({
+						            elem: 'layui-xtree-demo1' //放xtree的容器（必填）
+						             , form: form              //layui form对象 （必填）
+						             , data: json              //数据，结构请参照下面 （必填）
+						             , isopen: true            //初次加载时全部展开，默认true （选填）
+						             , color: "#000"           //图标颜色 （选填）
+						             , icon: {                 //图标样式 （选填）
+						                 open: "&#xe623;"      //节点打开的图标
+						                 , close: "&#xe625;"   //节点关闭的图标
+						                 , end: "&#xe602;"     //末尾节点的图标
+						             }
+						        });
+						
+						        document.getElementById('btn_getCk').onclick = function () {
+						
+						            var oCks = xtree.GetChecked(); //获取全部选中的末级节点checkbox对象
+						
+						            for (var i = 0; i < oCks.length; i++) {
+						                console.log(oCks[i].value);
+						            }
+						        }
+						
+						
+						    });
+						
+						
+						</script>
+  					
+        	</div>
+        </form>
+        
+      </div>
+      <div class="layui-row formbtnb">
+      	<div class="grid-demo">
+				  <div class="layui-form-item">
+				      <label for="L_repass" class="layui-form-label">
+				      </label>
+				      <button  class="layui-btn formbtn" lay-filter="add" lay-submit="">增加</button>
+				      <button  class="layui-btn layui-btn-warm formbtn" lay-filter="add" lay-submit="">取消</button>
+				  </div>
+      	</div>
+      </div>
+    </div>
+    
+    
+    
+<!-- PAGE CONTENT ENDS -->  
+  
+        <!--[if !IE]> -->  
+        <script type="text/javascript">  
+            window.jQuery || document.write("<script src='js/jquery.min.js'>"+"<"+"/script>");  
+        </script>  
+  
+        <!-- <![endif]-->  
+  
+        <!--[if IE]>  
+				<script type="text/javascript">  
+				 window.jQuery || document.write("<script src='js/jquery.js'>"+"<"+"/script>");  
+				</script>  
+				<![endif]-->  
+          
+  
+        <script>  
+            $(function(){  
+                check3();  
+                check2();  
+                check1();  
+            })  
+            function check1(){  
+                $('.check1').click(function(){  
+                    var ok=$(this).prop("checked");  
+                    $(this).parents('tr').find("input[type='checkbox']").prop('checked',ok);  
+                })  
+            };  
+            function check2()  
+            {  
+                $('.check2').click(function(){  
+                    var ok=$(this).prop("checked");  
+                    $(this).parents('.listleft').siblings().andSelf().find('.check3').prop("checked",ok);  
+                    var oCheck2=$(this).parents('.listbox').siblings().andSelf().find(".check2");     
+                    $(this).parents('tr').find('.check1').prop("checked",trueorfalse(oCheck2));  
+                      
+                })  
+            }  
+  
+            function check3()  
+            {  
+                $('.check3').click(function(){  
+                    var ockeck3 = $(this).parent().siblings().andSelf().find(".check3");  
+                    $(this).parents('.listbox').find('.check2').prop("checked",trueorfalse(ockeck3));  
+                    var oCheck1=$(this).parents('.listbox').siblings().andSelf().find('.check2');  
+                    $(this).parents('tr').find('.check1').prop("checked",trueorfalse(oCheck1))  
+                      
+                })  
+            }  
+              
+            // 找同级元素的checked状态  
+            function trueorfalse(obj)  
+            {  
+                var bool = false;  
+                $(obj).each(function(){  
+  
+                    if($(this).prop("checked"))  
+                    {  
+                        bool= true;  
+                    }  
+                })  
+                return bool;  
+            }  
+        </script>  
+    
+  </body>
+
+</html>

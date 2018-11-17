@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商户添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/xiaoshouzhushou.css">
+		<link rel="stylesheet" type="text/css" href="css/feedback.css" />
+		<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">商户信息</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label style="font-weight: 600;">商户信息</label>
+						<div class="customradio">
+							<div class="mui-input-row mui-radio mui-left">
+								<label>个人</label>
+								<input id="Radio1" name="jiesuanzh" type="radio" value="1" onclick="test(this)" checked>
+							</div>
+							<div class="mui-input-row mui-radio mui-left">
+								<label>企业</label>
+								<input id="Radio2" name="jiesuanzh" type="radio" value="2" onclick="test(this)">
+							</div>
+						</div>
+					</div>
+					<script type="text/javascript">
+						function test(obj) {
+							if(obj.id == "Radio1") {
+								document.getElementById("qiye-xx").style.display = "none";
+							} else {
+								document.getElementById("qiye-xx").style.display = "block";
+							}
+						}
+					</script>
+					<!--个人-->
+					<div class="mui-input-row">
+						<label>支付宝帐号</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入支付宝帐号">
+					</div>
+					<div class="mui-input-row">
+						<label>微信商户号</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入微信商户号">
+					</div>
+					<div class="mui-input-row">
+						<label>管理员名称</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入管理员名称">
+					</div>
+					<div class="mui-input-row">
+						<label>管理员手机号</label>
+						<input type="text" class="mui-input-clear" placeholder="作为商户登录帐号">
+					</div>
+					<div class="mui-input-row">
+						<label>联系邮箱</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入联系邮箱">
+					</div>
+					<!--企业-->
+					<div id="qiye-xx" style="display: none;">
+						<div class="mui-input-row">
+							<label>企业名称</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入企业名称">
+						</div>
+						<div class="mui-input-row">
+							<label style="width: 100%;">企业logo</label>
+							<div class="row image-list image-list-body mentouz">
+								<img src="./images/iconfont-tianjia.png" />
+							</div>
+						</div>
+						<div class="mui-input-row">
+							<label>企业简介</label>
+							<textarea rows="3" placeholder="请输入企业简介"></textarea>
+						</div>
+						<div class="mui-input-row">
+							<label>售卖类商品描述</label>
+							<textarea rows="3" placeholder="请输入售卖类商品描述"></textarea>
+						</div>
+						<div class="mui-input-row" id='showCityPicker4'>
+							<label>联系地址</label>
+							<input type="text" id='cityResult4' class="mui-input-clear" placeholder="请选择联系地址">
+						</div>
+						<div class="mui-input-row">
+							<label>详细地址</label>
+							<input type="text" class="mui-input-clear" placeholder="请输入详细地址">
+						</div>
+					</div>
+					<!--企业-->
+					<div class="mui-input-row">
+						<label style="font-weight: 600;">门店信息</label>
+					</div>
+					<div class="mui-input-row">
+						<label>门店名称</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入门店名称">
+					</div>
+					<div class="mui-input-row" id='showCityPicker3'>
+						<label>门店地址</label>
+						<input type="text" id='cityResult3' class="mui-input-clear" placeholder="请选择门店地址">
+					</div>
+					<div class="mui-input-row">
+						<label>详细地址</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入详细地址">
+					</div>
+					<div class="mui-input-row">
+						<label>门店电话</label>
+						<input type="text" class="mui-input-clear" placeholder="请输入门店电话">
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 100%;">门店头照片</label>
+						<div class="row image-list image-list-body mentouz">
+							<img src="./images/iconfont-tianjia.png" />
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label>联系手机号</label>
+						<input type="text" class="mui-input-clear" placeholder="作为门店登录帐号">
+					</div>
+					<div class="mui-input-row" style="margin: 10px 5px;">
+						<textarea id="textarea" class="beizhuk" rows="5" placeholder="备注一"></textarea>
+					</div>
+					<div class="mui-input-row" style="margin: 10px 5px;">
+						<textarea id="textarea2" class="beizhuk" rows="5" placeholder="备注二"></textarea>
+					</div>
+					<!--个人-->
+
+				</form>
+				<a href="sh-add-2.html" class="mui-btn mui-btn-primary nextstep" id="">下一步</a>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.poppicker.js"></script>
+	<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				/**
+				 * 获取对象属性的值
+				 * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+				 * @param {Object} obj 对象
+				 * @param {String} param 属性名
+				 */
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//-----------------------------------------
+				//地区级联示例
+				var cityPicker3 = new $.PopPicker({
+					layer: 3
+				});
+				cityPicker3.setData(cityData3);
+				var showCityPickerButton3 = doc.getElementById('showCityPicker3');
+				var cityResult3 = doc.getElementById('cityResult3');
+				showCityPickerButton3.addEventListener('tap', function(event) {
+					cityPicker3.show(function(items) {
+						cityResult3.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+				//地区级联示例
+				var cityPicker4 = new $.PopPicker({
+					layer: 3
+				});
+				cityPicker4.setData(cityData3);
+				var showCityPickerButton4 = doc.getElementById('showCityPicker4');
+				var cityResult4 = doc.getElementById('cityResult4');
+				showCityPickerButton4.addEventListener('tap', function(event) {
+					cityPicker4.show(function(items) {
+						cityResult4.value = _getParam(items[0], 'text') + " - " + _getParam(items[1], 'text') + " - " + _getParam(items[2], 'text');
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				//-----------------------------------------
+			});
+		})(mui, document);
+	</script>
+
+</html>

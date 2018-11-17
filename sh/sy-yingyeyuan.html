@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>鸿小搜管理中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=no, minimum-scale=1, initial-scale=1,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        	<a href="">营业员</a>
+        	<a>
+            <cite>营业员管理</cite></a>
+        </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md6 x-so">
+					<style>
+						.text {
+							position: relative;
+						}
+						
+						.layui-input-clear {
+							position: absolute;
+							right: 10px;
+							top: 10px;
+							cursor: pointer;
+							display: none;
+							padding: 1px;
+						}
+						
+						.layui-input-clear:hover {
+							background-color: #FF5722;
+							color: #fff;
+							border-radius: 50%;
+						}
+                      .layui-table-body{
+                      overflow-x: scroll;}
+					</style>
+					<div class="layui-input-inline xx-so text">
+						<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+						<input type="text" name="userName" id="userName" placeholder="账号" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline xx-so text">
+						<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+						<input type="text" name="name" id="name" placeholder="姓名" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline xx-so">
+						<select name="shopName" id="shopName" lay-search>
+							<option value="">门店</option>
+							<c:forEach items="${shops }" var="shop">
+								<option value="${shop.ShopName }">${shop.ShopName }</option>
+							</c:forEach>
+						</select>
+					</div>
+				</form>
+				<div class=" layui-col-md1">
+					<button class="layui-btn" data-type="reload">
+					<i class="layui-icon">&#xe615;</i>
+				</button>
+				</div>
+			</div>
+			<xblock>
+				<button class="layui-btn" onclick="x_admin_show('添加营业员','.Assistant/getAssistantPage',600,400)">
+	        		<i class="layui-icon"></i>添加
+	       		</button>
+			</xblock>
+			<table class="layui-hide" id="LAY_table_Assistant" lay-filter="Assistant"></table>
+
+		</div>
+		<script type="text/javascript">
+			$("input").focus(function() {
+				$(this).parent().children(".layui-input-clear").show();
+			});
+			$("input").blur(function() {
+				if($(this).val() == '') {
+					$(this).parent().children(".layui-input-clear").hide();
+				}
+			});
+			$(".layui-input-clear").click(function() {
+				$(this).parent().find('input').val('');
+				$(this).hide();
+			});
+		</script>
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+			
+			<a class="layui-btn layui-btn-xs" lay-event="weixinPush">微信推送</a>
+			<a class="layui-btn layui-btn-xs" lay-event="resetting">重置密码</a>
+			<a class="layui-btn layui-btn-xs" lay-event="resetpassword">修改密码</a>
+			<a class="layui-btn layui-btn-xs" lay-event="pay">一码付</a>
+			<a class="layui-btn layui-btn-xs" lay-event="downpay">下载一码付</a>
+		</script>
+		<script type="text/html" id="toolzhuang">
+			{{# if(d.biaoshi == 0){ }}
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="disable">已启用</a>
+			{{# } }} {{# if(d.biaoshi == 1){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="open">已禁用</a>
+			{{# } }} 
+		</script>
+		<script type="text/html" id="tooltuikuan">
+			{{# if(d.tuikuanshifou == 1){ }}
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="openRefund">已禁用退款</a>
+			{{# } }} {{# if(d.tuikuanshifou == 0){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="disableRefund">已启用退款</a>
+			{{# } }}
+		</script>
+		<script>
+			layui.use('table', function() {
+
+				var table = layui.table;
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_Assistant',
+					url: '.Assistant/getAssistantList',
+					method: "post",
+					height: 'full-195',
+    				cellMinWidth: 100, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+					page: true,
+					id: 'assistantlist',
+					cols: [
+						[{
+							field: 'Name',
+							title: '姓名',
+							//width: '8%',
+							align: 'center',
+							fixed: true
+						}, {
+							field: 'shoujihao',
+							title: '手机号',
+							//width: '8%',
+							align: 'center'
+						}, {
+							field: 'ShopName',
+							title: '所属门店',
+							//width: '12%',
+							align: 'center',
+							sort: true
+						}, {
+							field: 'leixing',
+							align: 'center',
+							//width: '8%',
+							title: '类型 '
+						}, {
+							field: 'zhuangtai',
+							align: 'center',
+							//width: '8%',
+							title: '状态',
+							toolbar: "#toolzhuang"
+						}, {
+							field: 'tuikuanquanxian',
+							align: 'center',
+							//width: '8%',
+							title: '退款',
+							toolbar: "#tooltuikuan"
+						}, {
+							field: 'operation',
+							width: 450,
+							title: '操作',
+							toolbar: "#tool"
+						}]
+					]
+				});
+
+				// 根據條件重载表格
+				var $ = layui.$,
+					active = {
+						reload: function() {
+
+							// 获取上面查询框的值
+							var userName = $('#userName');
+							var name = $('#name');
+							var shop = $('#shopName');
+
+							//执行重载
+							table.reload('assistantlist', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									userName: userName.val(),
+									name: name.val(),
+									shopName: shop.val()
+								}
+							});
+						}
+					};
+
+				//监听工具条
+				table.on('tool(Assistant)', function(obj) {
+					var data = obj.data;
+					var logGid = data.LogGid;
+					var shop = data.ShopName;
+					if(obj.event == 'edit') {
+						layer.open({
+							type: 2,
+							title: '编辑',
+							area: ['420px', '360px'], //宽高
+							content: '.Assistant/getAssistantEditPage?mphone=' + data.shoujihao + '&name=' + data.Name + '&logGid=' + logGid+ '&shop=' + shop,
+							end: function() {
+								$('.layui-row .layui-btn').click();
+							}
+						});
+					} else if(obj.event == 'resetting') {
+
+						var data = {
+							"logGid": logGid,
+							"mphone": data.shoujihao,
+						}
+						layer.confirm('确定要重置密码吗?(默认密码手机号后六位)', function(index) {
+
+							$.ajax({
+								type: "post",
+								url: ".Assistant/putAssistantPwd",
+								async: true,
+								data: data,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('重置成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+								}
+							});
+						});
+					} else if(obj.event == 'resetpassword'){
+						layer.prompt({
+						  formType: 2,
+						  value: '',
+						  title: '请输入密码',
+						  area: ['200px', '20px'] //自定义文本域宽高
+						}, function(value, index, elem){
+						  
+						  if(value== ''){
+							  layer.msg('请输入密码！');return;
+						  }else{
+							  mydata = {
+								"LogGid": logGid,
+								"Password": value,
+							  }
+							  layer.confirm('确定要修改密码吗?', function(index) {
+									$.ajax({
+										type: "post",
+										url: ".Assistant/setAssistantPwd",
+										async: true,
+										data: mydata,
+										success: function(data) {
+											if(data.code == 0000) {
+												layer.msg('修改成功 ', {icon: 6,time:1000},function(){
+													// 刷新父页面
+													window.location.reload();
+													//关闭当前frame
+													layer.close(index);
+												});
+											} else if(data.code == 0001) {
+												layer.msg(data.desc);
+											}
+										}
+									});
+								});
+						  	}
+						});
+						
+						
+					} else if(obj.event == 'pay') {
+
+						// 跳转流水详情页面
+						layer.open({
+							type: 2,
+							title: '桌牌二维码',
+							area: ['35%', '90%'], //宽高
+							content: '.Assistant/getQrCode?clerkNumber=' + data.ClerkNumber
+						});
+
+					} else if(obj.event == 'downpay') {
+						var kuai =  350;//600 -> 800 小
+						var kuai2 =  350;
+						var kuai3 = 180;//600->500 左移
+						var kuai4 = 360;//570->950 下
+						window.location.href=".qrcode/downservletImages.do?qrcodeurl="+data.qrcodeurl+"&qrcodeId="+data.qrcodeId+"&kuan="+kuai+"&kuan2="+kuai2+"&kuan3="+kuai3+"&kuan4="+kuai4+"&logo1="+550+"&logo2="+250;
+					} else if(obj.event == 'disable') {
+						var data = {
+							"logGid": logGid,
+							"state": 1,
+							"disableType": 0
+						}
+
+						layer.confirm('确定要禁用么?', function(index) {
+
+							// 发送请求,将本店员或店长的功能进行禁用
+							$.ajax({
+								type: "get",
+								url: ".Assistant/putAssistantStatus",
+								async: true,
+								data: data,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('禁用成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+
+									$('.layui-row .layui-btn').click();
+								}
+							});
+							layer.close(index);
+						});
+
+					} else if(obj.event == 'open') {
+						var data = {
+							"logGid": logGid,
+							"state": 0,
+							"disableType": 0
+						}
+
+						layer.confirm('确定要启用么?', function(index) {
+
+							// 发送请求,将本店员或店长的功能进行启用
+							$.ajax({
+								type: "get",
+								url: ".Assistant/putAssistantStatus",
+								async: true,
+								data: data,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('启用成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+
+									$('.layui-row .layui-btn').click();
+								}
+							});
+
+							layer.close(index);
+						});
+					} else if(obj.event == 'disableRefund') {
+						var data = {
+							"logGid": logGid,
+							"state": 1,
+							"disableType": 1
+						}
+						layer.confirm('确定要禁用退款么', function(index) {
+
+							// 发送请求,将本店员或店长的功能进行禁用
+							$.ajax({
+								type: "get",
+								url: ".Assistant/putAssistantStatus",
+								async: true,
+								data: data,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('禁用成功 ', {
+											icon: 6
+										});
+										$('.layui-row .layui-btn').click();
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+								}
+							});
+						});
+					} else if(obj.event == 'openRefund') {
+						var data = {
+							"logGid": logGid,
+							"state": 0,
+							"disableType": 1
+						}
+						layer.confirm('确定要启用么?', function(index) {
+							// 发送请求,将本店员或店长的功能进行启用
+							$.ajax({
+								type: "get",
+								url: ".Assistant/putAssistantStatus",
+								async: true,
+								data: data,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('启用成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+									$('.layui-row .layui-btn').click();
+								}
+							});
+						});
+					}else if(obj.event == 'weixinPush') {
+						layer.open({
+							type: 2,
+							title: '微信推送',
+							area: ['80%', '60%'], //宽高
+							content: '.clerk/getAssistantwxPushPage?ClerkNumber=' + data.ClerkNumber,
+							end: function() {
+								
+							}
+						});
+					}
+				});
+
+				$('.layui-row .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+			});
+		</script>
+	</body>
+
+</html>

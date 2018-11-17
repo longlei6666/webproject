@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>layui</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="./lib/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="./css/style-addtab.css" media="all">
+		<!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+	</head>
+
+	<body>
+		<div class="layui-btn-group demoTable">
+			<button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
+			<button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
+			<button class="layui-btn" data-type="isAll">验证是否全选</button>
+		</div>
+
+		<table class="layui-table" lay-data="{ height:332, url:'./456.json', page:true, id:'idTest'}" lay-filter="demo">
+			<thead>
+				<tr>
+					<th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+					<th lay-data="{field:'cpname',}">餐品名称</th>
+					<th lay-data="{field:'guige'}">规格</th>
+					<th lay-data="{field:'zhuangt', sort: true, style:'cursor: pointer;'}">售卖状态</th>
+					<th lay-data="{field:'price', sort: true, event: 'setSign'}">零售价</th>
+				</tr>
+			</thead>
+		</table>
+
+		<div class="layui-col-md4 layui-col-sm4 layui-col-xs4">
+			<div class="layui-form-item">
+				<blockquote class="layui-elem-quote">
+					已选餐品（<span id="chosenum">0</span>）
+				</blockquote>
+				<ul class="choselist" id="choselist">
+
+				</ul>
+			</div>
+		</div>
+
+		<script src="./lib/layui/layui.js" charset="utf-8"></script>
+		<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+		<script>
+			layui.use('table', function() {
+				var table = layui.table;
+
+				//监听表格复选框选择
+				table.on('checkbox(demo)', function(obj) {
+					console.log(obj)
+				});
+				var $ = layui.$,
+					active = {
+						getCheckData: function() { //获取选中数据
+							var checkStatus = table.checkStatus('idTest'),
+								data = checkStatus.data;
+
+							//layer.alert(JSON.stringify(data, ["username", "city", "sign"])); data[0].username
+							//document.getElementById("choselist").innerHTML = JSON.stringify(data, ["username", "city", "price"]);
+
+							// 先获取他的长度
+							var count = data.length;
+							var aaa = "";
+							var li;
+							for(var i = 0; i < count; i++) {
+								li = document.getElementById("choselist");
+								aaa += " <li>" + "<p class=chosen>" + data[i].cpname + "</p>" +
+									"<p><span class=category>" + data[i].guige + "</span>" +
+									"<span class=price>" + data[i].price + "</span>" +
+									"</p><i onclick=delplan(this) style='cursor:pointer;' class=layui-icon layui-unselect layui-tab-close>ဆ</i></li>";
+								li.innerHTML = aaa;
+							}
+						},
+						getCheckLength: function() { //获取选中数目
+							var checkStatus = table.checkStatus('idTest'),
+								data = checkStatus.data;
+							//layer.msg('选中了：' + data.length + ' 个');
+							document.getElementById("chosenum").innerHTML = data.length;
+						}
+					};
+
+				$('.demoTable .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+			});
+
+			//点击图标删除此行
+			function delplan(obj) {
+				var parent = obj.parentNode;
+				var id = parent.id;
+				parent.parentNode.removeChild(parent);
+				//去除选中的
+				//				var checkid = "planid" + id.substr(2, id.length);
+				//				document.getElementById(checkid).checked = false;
+			}
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>鸿搜管理中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./lib/layui/css/layui.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+	</head>
+		<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: ".yunlb/getylbunitList",
+					success: function(data) {
+						var UnitType='${list[0].UnitType}'
+						for(var i = 0; i < data.length; i++) {
+							if(UnitType == data[i].unitType ){
+								$("#unittype").append("<option value='" + data[i].token + "' selected='selected'>" + data[i].unitType + "</option>");
+							}else{
+								$("#unittype").append("<option value='" + data[i].token + "'>" + data[i].unitType + "</option>");
+							}
+						}
+					}
+				});
+			})
+		</script>
+	<body>
+		<div class="x-body">
+			<div class="layui-form" id="unitadd">
+				<input type="hidden" id="UserNumber" name="UserNumber" value="${UserNumber }">
+				<input type="hidden" id="ShopNumber" name="ShopNumber" value="${ShopNumber }">
+				<div class="layui-form-item">
+					<label for="Merchants" class="layui-form-label layui-form-label2">
+						设备号:
+					</label>
+					<div class="layui-input-inline layui-input-inline2">
+						<input type="text" id="shebei" name="shebei" disabled="disabled" readonly="readonly" class="layui-input" value="${list[0].UnitId}">
+					</div>
+				</div>
+				
+				 <div class="layui-form-item">
+					<label for="Merchants" class="layui-form-label layui-form-label2">
+						设备型号: 
+					</label>
+					<div class="layui-input-inline">
+						<select id="unittype" name="unittype" disabled="disabled" readonly="readonly" lay-ignore style="height: 39px;">
+							<option value="">请选择设备型号</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="Merchants" class="layui-form-label layui-form-label2">
+						音量: 
+					</label>
+					<div class="layui-input-inline layui-input-inline2">
+						<select id="yinliang" name="yinliang" lay-ignore style="height: 39px;">
+							<option value="">请选择音量</option>
+							<option value="10" <c:if test="${list[0].UnitYinLiang eq 10 }">selected='selected'</c:if>>10%</option>
+							<option value="20" <c:if test="${list[0].UnitYinLiang eq 20 }">selected='selected'</c:if>>20%</option>
+							<option value="30" <c:if test="${list[0].UnitYinLiang eq 30 }">selected='selected'</c:if>>30%</option>
+							<option value="40" <c:if test="${list[0].UnitYinLiang eq 40 }">selected='selected'</c:if>>40%</option>
+							<option value="50" <c:if test="${list[0].UnitYinLiang eq 50 }">selected='selected'</c:if>>50%</option>
+							<option value="60" <c:if test="${list[0].UnitYinLiang eq 60 }">selected='selected'</c:if>>60%</option>
+							<option value="70" <c:if test="${list[0].UnitYinLiang eq 70 }">selected='selected'</c:if>>70%</option>
+							<option value="80" <c:if test="${list[0].UnitYinLiang eq 80 }">selected='selected'</c:if>>80%</option>
+							<option value="90" <c:if test="${list[0].UnitYinLiang eq 90 }">selected='selected'</c:if>>90%</option>
+							<option value="100" <c:if test="${list[0].UnitYinLiang eq '100' }">selected='selected'</c:if>>100%</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="L_repass" class="layui-form-label layui-form-label2"></label>
+					<button id="ss" class="layui-btn layui-btn-danger" lay-submit="" lay-filter="add">提交</button>
+				</div>
+			</div>
+		</div>
+		<script>
+			layui.use(['form', 'layer'], function() {
+				var form = layui.form,
+				layer = layui.layer;
+				//监听提交
+				form.on('submit(add)', function(data) {
+					var UserNumber = $("#UserNumber").val();
+					var ShopNumber = $("#ShopNumber").val();
+					var shebei = $("#shebei").val();
+					if (shebei.trim()==""){
+						layer.alert("请输入设备码");
+	        	  		return;
+					}
+					var xinghao = $("#unittype").find("option:selected").text();
+					if (xinghao.trim()==""){
+						layer.alert("请选择型号");
+	        	  		return;
+					}
+					var yinliang = $("#yinliang").val();
+					if (yinliang==""){
+						layer.alert("请设置音量");
+	        	  		return;
+					}
+					var mydata={
+							UserNumber:UserNumber,
+							ShopNumber:ShopNumber,
+							SheBei:shebei,
+							XingHao:xinghao,
+							Token:$("#unittype").val(),
+							YinLiang:yinliang
+					}
+					//发异步，把数据提交给后台
+					$.ajax({
+						type: "post",
+						url: ".yunlb/addylb",
+						async: true,
+						data: mydata,
+						success: function(data) {
+							if(data.result == "success") {
+								// 绑定云喇叭
+								$.ajax({
+									type: "post",
+									url: ".yunlb/setylbvoicedata",
+									async: true,
+									data: mydata,
+									success: function(datas) {
+										if(datas.code == 0) {
+											layer.alert("设置成功!", {
+												icon: 6
+											}, function() {
+												// 刷新父页面
+												window.parent.location.reload();
+												// 获得frame索引
+												var index = parent.layer.getFrameIndex(window.name);
+												//关闭当前frame
+												parent.layer.close(index);
+											});
+										}else if(datas.code == 1){
+											layer.alert("未知错误");
+										}else if(datas.code == 2){
+											layer.alert("绑定失败，设备码不存在");
+										}else if(datas.code == 3){
+											layer.alert("绑定失败，设备码已经被其它用户绑定");
+										}else if(datas.code == 4){
+											layer.alert("绑定失败，设备码已经被同一用户绑定");
+										}else if(datas.code == 5){
+											layer.alert("解绑失败，设备码被任何用户绑定");
+										}else if(datas.code == 6){
+											layer.alert("失败，未提供设备码");
+										}else if(datas.code == 8){
+											layer.alert("失败，此Token无此设备权限");
+										}else if(datas.code == 9){
+											layer.alert("失败，无效的Token");
+										}else if(datas.code == 17){
+											layer.alert("错误，重复的请求");
+										}
+									}
+								});
+							} else {
+								layer.alert(data.desc);
+							}
+						}
+					});
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

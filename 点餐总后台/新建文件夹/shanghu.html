@@ -1,0 +1,447 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/configuration/css/font.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/configuration/css/xadmin.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/configuration/css/style.css">
+		<script type="text/javascript" src="${pageContext.request.contextPath }/configuration/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath }/configuration/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath }/configuration/js/xadmin.js"></script>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">业务运营</a>
+        <a>
+          <cite>商户管理</cite></a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md7 x-so">
+					<div class="layui-input-inline">
+						<select name="merchantName" id="merchantName" lay-search>
+							<option value="">--请选择商户--</option>
+							<c:forEach items="${merchants }" var="merchant">
+								<option value="${merchant.UserName }">${merchant.UserName }</option>
+							</c:forEach>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="merchantCode" id="merchantCode" placeholder="商户编号" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<select name="state" id="state">
+							<option value="">状态</option>
+							<option value="0">正常</option>
+							<option value="1">禁用</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input class="layui-input" placeholder="开始时间" name="startTime" id="startTime">
+					</div>
+					<div class="layui-input-inline">
+						<input class="layui-input" placeholder="截止时间" name="endTime" id="endTime">
+					</div>
+				</form>
+				<div class="layui-col-md1">
+					<button class="layui-btn" lay-submit="" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索</button>
+				</div>
+			</div>
+			<xblock>
+				<a href="${pageContext.request.contextPath }/merchant/getAddMerchantPage" class="layui-btn"><i class="layui-icon"></i><cite>添加商户</cite></a>
+			</xblock>
+
+			<table class="layui-hide" id="LAY_table_merchant" lay-filter="merchant"></table>
+		</div>
+		
+		<script type="text/html" id="takeout">
+			<input type="checkbox" name="switchs" value="{{d.switchE}}" title="{{d.UserNumber}}" lay-skin="switch" lay-text="开|关" lay-filter="takeoutSwitch" {{ d.switchE==0 ? 'checked' : '' }}>
+		</script>
+	
+
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="particulars">详情</a>
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="modification">修改</a>
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="disable">禁用</a>
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="paymentSettings">支付设置</a>
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="assistantList">营业员列表</a>
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="refundableAuthority">退款权限</a>
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="refundableAuthority" >退款权限</a>
+		</script>
+		
+		
+	
+				
+		
+		
+		<script>
+// 			// 选择日期插件  
+     		layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				laydate.render({
+					elem: '#startTime', //指定元素
+					type: 'datetime'
+				});
+				laydate.render({
+					elem: '#endTime',
+					type: 'datetime'
+				});
+			});
+
+			layui.use('table', function() {
+
+				var table = layui.table,
+				form = layui.form;
+
+
+				//方法级渲染
+				table.render({
+					elem: '#LAY_table_merchant',
+					url: '${pageContext.request.contextPath }/Merchant/getMerchantList',
+					cellMinWidth: 80,
+					height: 'full-200',
+					method: "post",
+					page: true,
+					id: 'merchantlist',
+					cols: [
+						[{
+							field: 'CompanyName',
+							title: '商户名称',
+							sort: true,
+							fixed: true
+						}, {
+							field: 'UserNumber',
+							title: '商户号',
+							sort: true
+						}, {
+							field: 'ProvinceCity',
+							title: '所在省市',
+							sort: true
+						}, {
+							field: 'UserName',
+							title: '管理员名称'
+						}, {
+							field: 'Cell',
+							title: '管理员电话'
+						}, {
+							field: 'CreateTime',
+							title: '创建时间',
+							sort: true
+						}, {
+							field: 'TypeC',
+							title: '审核状态',
+							sort: true
+						}, {
+							field: 'UserType',
+							title: '类型'
+						},{
+							field: 'RefundPermissions',
+							title: '退款权限'
+						},{
+							field: 'takeout',
+							title: '外卖',
+							templet: '#takeout'
+						}, {
+							field: 'operation',
+							title: '操作',
+							width: '35%',
+							toolbar: "#tool"
+						}]
+					]
+				});
+				
+				
+			
+			
+				// 根據條件重载表格
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							// 获取上面查询框的值
+							var merchantName = $('#merchantName');
+							var merchantCode = $('#merchantCode');
+							var state = $('#state');
+							var startTime = $('#startTime');
+							var endTime = $('#endTime');
+
+							//执行重载
+							table.reload('merchantlist', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									merchantName: merchantName.val(),
+									merchantCode: merchantCode.val(),
+									state: state.val(),
+									startTime: startTime.val(),
+									endTime: endTime.val()
+								}
+							});
+						}
+					};
+
+				//监听工具条
+				table.on('tool(merchant)', function(obj) {
+					var data = obj.data;
+
+					if(obj.event === 'particulars') {
+						// 跳转商户详情页面
+						layer.open({
+							type: 2,
+							title: '商户详情',
+							area: ['100%', '100%'], //宽高
+							content: '${pageContext.request.contextPath }/Merchant/getMerchantDetailPage?merchantNumber=' + data.UserNumber
+						});
+					} else if(obj.event == 'modification') {
+
+						// 跳转修改商户页面
+						layer.open({
+							type: 2,
+							title: '修改商户',
+							area: ['100%', '100%'], //宽高
+							content: '${pageContext.request.contextPath }/Merchant/getMerchantEditPage?merchantNumber=' + data.UserNumber
+						});
+
+					} else if(obj.event == 'disable') {
+
+						if(data.TypeE == 0) {
+
+							var mydata = {
+								"merchantNumber": data.UserNumber,
+								"merchantStatus": 1
+							}
+
+							// 禁用商户
+							layer.confirm('真的要禁用么?', function(index) {
+
+								// 发送请求,将商户进行禁用
+								$.ajax({
+									type: "post",
+									url: "${pageContext.request.contextPath }/merchant/disableMerchant",
+									async: true,
+									data: mydata,
+									success: function(data) {
+										if(data.code == 0000) {
+											layer.alert('禁用成功 ', {
+												icon: 6
+											});
+										} else if(data.code == 0001) {
+											layer.msg(data.desc);
+										}
+
+										// 刷新页面
+										$('.layui-row .layui-btn').click();
+									}
+								});
+								layer.close(index);
+							});
+
+						} else if(data.TypeE == 1) {
+
+							var mydata = {
+								"merchantNumber": data.UserNumber,
+								"merchantStatus": 0
+							}
+
+							// 禁用门店
+							layer.confirm('真的要启用么?', function(index) {
+
+								// 发送请求,将商户进行启用
+								$.ajax({
+									type: "post",
+									url: "${pageContext.request.contextPath }/merchant/disableMerchant",
+									async: true,
+									data: mydata,
+									success: function(data) {
+										if(data.code == 0000) {
+											layer.alert('启用成功 ', {
+												icon: 6
+											});
+										} else if(data.code == 0001) {
+											layer.msg(data.desc);
+										}
+
+										// 刷新页面
+										$('.layui-row .layui-btn').click();
+									}
+								});
+								layer.close(index);
+							});
+						}
+
+					} else if(obj.event == 'paymentSettings') {
+
+						// 跳转商户配置页面
+						layer.open({
+							type: 2,
+							title: '商户配置',
+							area: ['100%', '100%'], //宽高
+							content: '${pageContext.request.contextPath }/Merchant/getMerchantConfigurationPage?merchantNumber=' + data.UserNumber
+						});
+
+					} else if(obj.event == 'assistantList') {
+
+						// 跳转营业员列表页面
+						layer.open({
+							type: 2,
+							title: '营业员列表',
+							area: ['100%', '100%'],
+							content: '${pageContext.request.contextPath }/Assisant/getAssisantListPage?merchantNumber=' + data.UserNumber + '&merchantPhone=' + data.Cell
+						});
+
+					} else if(obj.event == 'refundableAuthority') {
+						
+						var merchantNumber = data.UserNumber;
+						
+						if(data.RefundPermissionsInt == 0) {
+							var data = {
+								"merchantNumber": merchantNumber,
+								"state": 1
+							}
+
+							layer.confirm('真的要禁用么?', function(index) {
+
+								// 发送请求,将本店员或店长的功能进行禁用
+								$.ajax({
+									type: "get",
+									url: "${pageContext.request.contextPath }/Merchant/putMerchantRefundPermissions",
+									async: true,
+									data: data,
+									success: function(data) {
+										if(data.code == 0000) {
+											layer.alert('禁用成功 ', {
+												icon: 6
+											});
+										} else if(data.code == 0001) {
+											layer.msg(data.desc);
+										}
+
+										$('.layui-row .layui-btn').click();
+									}
+								});
+								layer.close(index);
+							});
+
+						} else if(data.RefundPermissionsInt == 1) {
+							
+							var data = {
+								"merchantNumber": merchantNumber,
+								"state": 0
+							}
+
+							layer.confirm('真的要启用么?', function(index) {
+
+								// 发送请求,将本店员或店长的功能进行启用
+								$.ajax({
+									type: "get",
+									url: "${pageContext.request.contextPath }/Merchant/putMerchantRefundPermissions",
+									async: true,
+									data: data,
+									success: function(data) {
+										if(data.code == 0000) {
+											layer.alert('启用成功 ', {
+												icon: 6
+											});
+										} else if(data.code == 0001) {
+											layer.msg(data.desc);
+										}
+
+										$('.layui-row .layui-btn').click();
+									}
+								});
+
+								layer.close(index);
+							});
+						}
+					}
+				});
+
+				$('.layui-row .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+				
+				
+				//监听开关操作
+				form.on('switch(takeoutSwitch)', function(obj) {
+				
+					var merchantNumber = this.title;
+
+					// 判断现在状态是开还是关,关则开之,开则关之
+					// 关闭状态
+					if(this.value == 1) {
+						var mydata = {
+								"merchantNumber": merchantNumber,
+								"takeoutStatus": 0
+							}
+
+						// 发送异步进行开启店铺外卖权限
+						$.ajax({
+							type: "post",
+							url: "${pageContext.request.contextPath }/switch/startSwitch",
+							async: true,
+							data: mydata,
+							success: function(data) {
+								if(data.code == 0000) {
+									layer.alert('开启成功 ', {
+										icon: 6
+									});
+								} else if(data.code == 0001) {
+									layer.msg(data.desc);
+								}
+								// 刷新页面
+								$('.layui-row .layui-btn').click();
+							}
+						});
+					} else if(this.value == 0) {
+						
+						var mydata = {
+								"merchantNumber": merchantNumber,
+								"takeoutStatus": 1
+							}
+
+							// 发送异步进行关闭店铺外卖权限
+							$.ajax({
+								type: "post",
+								url: "${pageContext.request.contextPath }/switch/stopSwitch",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.code == 0000) {
+										layer.alert('关闭成功 ', {
+											icon: 6
+										});
+									} else if(data.code == 0001) {
+										layer.msg(data.desc);
+									}
+									// 刷新页面
+									$('.layui-row .layui-btn').click();
+							}
+						});
+					}
+				});
+			});
+			
+		</script>
+	
+
+	</body>
+
+</html>

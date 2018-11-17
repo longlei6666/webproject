@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./fonts/iconfont/iconfont.css">
+		<!--<link rel="stylesheet" href="//at.alicdn.com/t/font_457932_cqbv0v0vg5yx2yb9.css" />-->
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+
+		<!--<script src="js/jquery.provincesCity.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/provincesData.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<link rel="stylesheet" href="css/style.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">商户管理</a>
+        <a>详情</a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form">
+					<div class=" layui-col-md6">
+						<div class="grid-demo">
+							<!--基本资料-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>基本资料</blockquote>
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>支付通道</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	支付宝
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">官方</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	微信
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">官方</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+				                 	 银联卡
+				              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">官方</span>
+								</div>
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>商户类型</legend>
+							</fieldset>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	商户类型
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">个体</span>
+								</div>
+							</div>
+
+							<fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+								<legend>商户详细信息</legend>
+							</fieldset>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 支付宝账号
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">89********@qq.com</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  		企业Logo
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 联系人
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">陈先森</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	联系手机号
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">13188870001</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 联系邮箱
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">zxh@hongsou.com.cn</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 企业名称
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">济南历下禾拓饮品店</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	 企业简称
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">甘杯饮品</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	商品描述
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">冷饮</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	客服
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black"></span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	门店数量
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">1</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	联系地址
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">山东省济南市历下区泉城路26号世茂广场F-1层E138-4号</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="phone" class="layui-form-label">
+				                  	经纬度
+				              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">114.539354,38.048824</span>
+								</div>
+								<div class="layui-form-mid layui-word-aux">
+									<a href="" class="x-red">百度地图查看位置</a>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                	门店图片
+					            </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">备注1</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">备注1</span>
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">备注2</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">备注2</span>
+								</div>
+							</div>
+							<!--基本资料-->
+
+							<!--支付扣费标准-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-group3"></i>支付扣费标准</blockquote>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	支付宝
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">0.55</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+					                  	微信
+					              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">0.6</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">
+				                  	银联卡
+				              </label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">0.6</span>
+								</div>
+							</div>
+							<!--支付扣费标准-->
+
+							<!--银行卡信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-yinxingqia"></i>银行卡信息</blockquote>
+							<div class="layui-form-item">
+								<label class="layui-form-label">账户类型</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">对私账户</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	入账银行卡正面照
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	开户许可证照
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">开户银行</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">中国建设银行</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">开户支行</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">中国建设银行天桥支行金色阳光花园分理处</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">银行卡号</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">6227074201087748</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">持卡人姓名</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">马延秀</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">身份证号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">370103197610115527</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">银行预留号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black"></span>
+								</div>
+							</div>
+							<!--银行卡信息-->
+
+						</div>
+
+					</div>
+					<div class=" layui-col-md6">
+
+						<div class="grid-demo">
+							<!--执照信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-zhizhao"></i>执照信息</blockquote>
+							<div class="layui-form-item">
+								<label class="layui-form-label">注册地址</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">山东省济南市历下区泉城路26号世贸广场F-1层E138-4号</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">商家经营类目</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">生活百货-饮食保健-乳制品/冷饮</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">执照号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">92370102MA3ER453X5</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">执照有效期</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black"></span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                  	营业执照
+					              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	特殊资质图片
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">经营范围</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">冷饮</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">所在省</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">370000</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">所在市</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">370100</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">是否三证合一</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black"></span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">组织机构代码证</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black"></span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  		组织机构代码证图
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+				                  	营业执照授权函图
+				              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+
+							<!--执照信息-->
+
+							<!--法人信息-->
+							<blockquote class="layui-elem-quote"><i class="iconfont icon-faren"></i>法人信息</blockquote>
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人姓名</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">马延秀</span>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人证件类型</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">RESIDENT</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人证件号码</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">370103197610115527</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">法人证件有效期</label>
+								<div class="layui-form-mid layui-word-aux">
+									<span class="x-black">2025-09-03</span>
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					                  	法人证件正面照
+					              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label uploadtitle">
+					              		法人证件背面照
+					              </label>
+								<div class="layui-upload">
+									<div class="layui-upload-list">
+										<img class="layui-upload-img" id="demo1">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class=" layui-col-md12">
+						<blockquote class="layui-elem-quote"><i class="iconfont icon-faren"></i>审核结果</blockquote>
+						<form>
+							<div class="layui-form-item">
+								<label for="username" class="layui-form-label">审核结果</label>
+								<div class="layui-input-inline">
+									<input type="radio" name="sex" value="通过" title="通过" checked="">
+									<input type="radio" name="sex" value="不通过" title="不通过">
+								</div>
+							</div>
+							<div class="layui-form-item layui-form-text">
+								<label class="layui-form-label">审核说明</label>
+								<div class="layui-input-inline">
+									<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+
+			</div>
+			<div class="layui-row formbtnb">
+				<div class="grid-demo">
+					<div class="layui-form-item">
+						<label for="L_repass" class="layui-form-label">
+				      </label>
+						<button class="layui-btn formbtn" lay-filter="add" lay-submit="">提交</button>
+						<input type="button" value="返回" onclick="javascript:history.back();" class="layui-btn layui-btn-warm formbtn">
+						<!--<button class="layui-btn layui-btn-warm formbtn" lay-filter="add" lay-submit="">返回</button>-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#start' //指定元素
+				});
+
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#end' //指定元素
+				});
+			});
+
+			/*用户-停用*/
+			function member_stop(obj, id) {
+				layer.confirm('确认要停用吗？', function(index) {
+
+					if($(obj).attr('title') == '启用') {
+
+						//发异步把用户状态进行更改
+						$(obj).attr('title', '停用')
+						$(obj).find('i').html('&#xe62f;');
+
+						$(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+						layer.msg('已停用!', {
+							icon: 5,
+							time: 1000
+						});
+
+					} else {
+						$(obj).attr('title', '启用')
+						$(obj).find('i').html('&#xe601;');
+
+						$(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+						layer.msg('已启用!', {
+							icon: 5,
+							time: 1000
+						});
+					}
+
+				});
+			}
+
+			/*用户-删除*/
+			function member_del(obj, id) {
+				layer.confirm('确认要删除吗？', function(index) {
+					//发异步删除数据
+					$(obj).parents("tr").remove();
+					layer.msg('已删除!', {
+						icon: 1,
+						time: 1000
+					});
+				});
+			}
+
+			function delAll(argument) {
+
+				var data = tableCheck.getData();
+
+				layer.confirm('确认要删除吗？' + data, function(index) {
+					//捉到所有被选中的，发异步进行删除
+					layer.msg('删除成功', {
+						icon: 1
+					});
+					$(".layui-form-checked").not('.header').parents('tr').remove();
+				});
+			}
+		</script>
+
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//日期时间范围1
+				laydate.render({
+					elem: '#test10',
+					type: 'datetime',
+					range: true
+				});
+				//日期时间范围2
+				laydate.render({
+					elem: '#test10-2',
+					type: 'datetime',
+					range: true
+				});
+
+			});
+		</script>
+
+		<script>
+			layui.use('upload', function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+
+				//普通图片上传
+				var uploadInst = upload.render({
+					elem: '#test1',
+					url: '/upload/',
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo1').attr('src', result); //图片链接（base64）
+						});
+					},
+					done: function(res) {
+						//如果上传失败
+						if(res.code > 0) {
+							return layer.msg('上传失败');
+						}
+						//上传成功
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#demoText');
+						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+
+				//多图片上传
+				upload.render({
+					elem: '#test2',
+					url: '/upload/',
+					multiple: true,
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo2').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+						});
+					},
+					done: function(res) {
+						//上传完毕
+					}
+				});
+
+				//绑定原始文件域
+				upload.render({
+					elem: '#test20',
+					url: '/upload/',
+					done: function(res) {
+						console.log(res)
+					}
+				});
+
+			});
+		</script>
+
+	</body>
+
+</html>

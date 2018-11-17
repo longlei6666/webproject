@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>鸿小搜管理中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_521163_7jos951enyuy2e29.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">参数</a>
+        <a><cite>参数配置</cite></a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+		<xblock>
+				<form class="layui-form" style="display: inline-block;width: auto;">
+					<div>
+						<select name="PaymentType" id="PaymentType" lay-ignore style="width: 100%">
+							<option value="">请选择通道</option>
+						</select>
+					</div>
+				</form>
+				<button class="layui-btn" onclick="member_stop()" href="javascript:;" title="官方通道">
+					<i class="layui-icon"></i>切换
+				</button>
+				<!--<span class="x-left" style="/*line-height:40px;*/margin-left: 20px;">
+
+					您现在所属 “ <span class="tongdao" style="color: red;font-size: 18px;">官方通道</span> ”，点击切换通道
+
+				</span>-->
+			</xblock>
+			<table class="layui-table" lay-even="" lay-skin="row">
+				<colgroup>
+					<col width="20%">
+					<col width="15%">
+					<col width="30%">
+					<col>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>支付产品</th>
+						<th>支付方式</th>
+						<th>授权到期时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<span class="iconfont-pay"><i class="iconfont icon-zhifubao"></i></span>
+							<span class="chanpinname">官方支付宝</span>
+						</td>
+						<td>支付宝</td>
+						<td>
+							<c:if test="${aliAuthorizedTime == ' ' }">未授权,请前去授权!</c:if>
+
+							<c:if test="${aliAuthorizedTime != ' ' }"> ${aliAuthorizedTime }<span style="color:orangered;font-size: 12px;">（到期后请重新授权）</span></c:if>
+						</td>
+						<td>
+							<a href="${ ali_authoriseUrl}" class="layui-btn layui-btn-xs" target="_blank">
+								授权</a>
+							<a class="layui-btn layui-btn-xs" onclick="x_admin_show('二维码授权','.Configuration/AuthorizeQrCode?type=ali',400,400)" href="javascript:;">
+								二维码
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="iconfont-pay"><i class="iconfont icon-weixinzhifu1"></i></span>
+							<span class="chanpinname">官方微信</span>
+						</td>
+						<td>微信</td>
+						<td>
+							<c:if test="${wxAuthorizedTime == ' ' }">请在查看中配置您的微信信息!</c:if>
+							<c:if test="${wxAuthorizedTime != ' ' }">永不过期</c:if>
+						</td>
+						<td class="td-manage">
+							<a class="layui-btn layui-btn-xs" onclick="x_admin_show('微信支付','.Parameter/getWeixinPage')">
+								查看</a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="iconfont-pay"><i class="iconfont icon-xianjin"></i></span>
+							<span class="chanpinname">现金（预充值）</span>
+						</td>
+						<td>现金</td>
+						<td>永不过期</td>
+						<td class="td-manage">
+						</td>
+					</tr>
+					<tr id="fuyou" style="display: none;">
+						<td>
+							<span class="iconfont-pay"><i class="iconfont icon-xianjin"></i></span>
+							<span class="chanpinname">富友通道</span>
+						</td>
+						<td></td>
+						<td></td>
+						<td class="td-manage">
+							<a class="layui-btn layui-btn-xs" onclick="x_admin_show('富友配置','.Parameter/getFuYouPage')">
+								查看</a>
+						</td>
+					</tr>
+					
+					<tr id="xindalu" style="display: none;">
+						<td>
+							<span class="iconfont-pay"><i class="iconfont icon-xianjin"></i></span>
+							<span class="chanpinname">新大陆通道</span>
+						</td>
+						<td></td>
+						<td></td>
+						<td class="td-manage">
+							<a class="layui-btn layui-btn-xs" onclick="x_admin_show('新大陆配置','.Parameter/getXinDaLuPage')">
+								查看</a>
+						</td>
+					</tr>
+					
+					<tr id="yunlaba" style="display: none;">
+						<td>
+							<span class="iconfont-pay"><i class="iconfont icon-xianjin"></i></span>
+							<span class="chanpinname">云喇叭通道</span>
+						</td>
+						<td></td>
+						<td></td>
+						<td class="td-manage">
+							<a class="layui-btn layui-btn-xs" onclick="x_admin_show('云喇叭配置','.Parameter/getYunLaBaPage')">
+								查看</a>
+						</td>
+						
+					</tr>
+				</tbody>
+			</table>
+<%-- 			<table class="layui-table" lay-even="" lay-skin="row">
+				<colgroup>
+					<col width="50%">
+					<col width="50%">
+					<col>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>外卖名称</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr id="mtTakeout">
+						<td>
+							<span class="iconfont-pay"><i class="iconfont icon-MT"></i></span>
+							<span class="chanpinname">美团</span>
+						</td>
+						<td>
+							<a class="layui-btn layui-btn-xs" onclick="x_admin_show('授权','.Configuration/getMtShopAuthorizationPage')" href="javascript:;">
+								授权</a>
+						</td>
+					</tr>
+					<tr id="elemTakeout">
+						<td>
+							<span class="iconfont-pay"><i class="iconfont icon-eliaomo"></i></span>
+							<span class="chanpinname">饿了么</span>
+						</td>
+						<td>
+							<a class="layui-btn layui-btn-xs" onclick="x_admin_show('授权','.Configuration/getElemaShopAuthorizationPage')" href="javascript:;">
+								授权
+							</a>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+ --%>		</div>
+	</body>
+	<script type="text/javascript">
+		var code = '${ MerchantsPermissions } ';
+		var passageway = '${passagedata[0].biaoshi}';
+		if(passageway == 'xindalu'){
+			$("#xindalu").show();
+		}else if(passageway == 'fuyou'){
+			$("#fuyou").show();
+		}else if(passageway == 'yunlaba'){
+			$("#yunlaba").show();
+		}
+		/*if(code == 1) {
+			// 商户权限没有开启
+			document.getElementById("mtTakeout").style.display = "none";
+			document.getElementById("elemTakeout").style.display = "none";
+		}*/
+		$.ajax({
+			type: 'POST',
+			async: true,
+			url: ".config/getPassageway",
+			success: function(data) {
+				for(var i = 0; i < data.length; i++) {
+					if(passageway == data[i].Passageway){
+						$("#PaymentType").append("<option value='" + data[i].Passageway + "' selected='selected'>" + data[i].PassagewayC + "</option>");
+					}else{
+						$("#PaymentType").append("<option value='" + data[i].Passageway + "'>" + data[i].PassagewayC + "</option>");
+					}
+				}
+			}
+		});
+		function member_stop(){
+			var PaymentType=$("#PaymentType").val();
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".config/PaymentType",
+				data:{PaymentType:PaymentType},
+				success: function(data) {
+					if(data.code == 0000) {
+						layer.alert("切换成功!");
+						//刷新当前页面
+						window.location.reload();
+						if(PaymentType == "xindalu"){
+							$("#xindalu").show();
+							$("#fuyou").hide();
+							$("#yunlaba").hide();
+						}else if(PaymentType == "fuyou"){
+							$("#fuyou").show();
+							$("#xindalu").hide();
+							$("#yunlaba").hide();
+						}else if(PaymentType == "yunlaba"){
+							$("#yunlaba").show();
+							$("#xindalu").hide();
+							$("#fuyou").hide();
+						}
+					} else{
+						layer.alert("失败!");
+						$("#xindalu").hide();
+						$("#fuyou").hide();
+						$("#yunlaba").hide();
+					}
+				}
+			});
+		}
+	</script>
+
+</html>

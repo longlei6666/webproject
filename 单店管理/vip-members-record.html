@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style>
+			.layui-input-block {
+				margin-left: 0;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form" action="" lay-filter="recharge">
+					<!--基本设置-->
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<select name="payType" lay-verify="recharge_lx" lay-filter="recharge_lx">
+								<option value="">请选择充值类型</option>
+								<option value="0">余额消费</option>
+								<!--<option value="1">积分消费</option>-->
+								<option value="1">次数消费</option>
+							</select>
+						</div>
+					</div>
+					<input type="hidden" name="associatorNumber">
+					<input type="hidden" name="userNumber">
+					<div class="layui-form-item">
+						<div class="layui-input-block" id="recharge_lxJe">
+							<input type="number" name="paymentMoney" autocomplete="off" placeholder="请输入要充值的金额" class="layui-input">
+						</div>
+						<!--<div class="layui-input-block" id="recharge_lxJf" style="display: none;">
+							<input type="number" name="integral" autocomplete="off" placeholder="请输入要充值的积分" class="layui-input">
+						</div>-->
+					</div>
+
+					<div class="layui-form-item">
+						<div class="layui-input-block" style="text-align: center;">
+							<button class="layui-btn" lay-submit="" lay-filter="add">确认</button>
+							<button type="reset" class="layui-btn layui-btn-primary">取消</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			function subPagerecord(d, l) { //调用父页面方法
+				var serverUrl = window.parent.serverUrl
+				var associatorNumber = d.associatorNumber
+				var userNumber = l
+
+				layui.use(['laydate', 'table', 'upload', 'form'], function() {
+					var $ = layui.jquery,
+						upload = layui.upload,
+						laydate = layui.laydate,
+						table = layui.table,
+						form = layui.form,
+						admin = layui.admin,
+						element = layui.element,
+						layer = layui.layer;
+
+					/*---------- 优惠设置 ----------*/
+					form.on('select(recharge_lx)', function(data) {
+						if(data.value == "") {
+							$('#recharge_lxJe').hide()
+							$('#recharge_lxJe input').get(0).removeAttribute("lay-verify", "recharge_je")
+							//$('#recharge_lxJf').hide()
+							//$('#recharge_lxJf input').get(0).removeAttribute("lay-verify", "recharge_jf")
+						} else if(data.value == "0") {
+							$('#recharge_lxJe').show()
+							$('#recharge_lxJe input').get(0).setAttribute("lay-verify", "recharge_je")
+							//$('#recharge_lxJf').hide()
+							//$('#recharge_lxJf input').get(0).removeAttribute("lay-verify", "recharge_jf")
+						} else if(data.value == "1") {
+							$('#recharge_lxJe').hide()
+							$('#recharge_lxJe input').get(0).removeAttribute("lay-verify", "recharge_je")
+							//$('#recharge_lxJf').hide()
+							//$('#recharge_lxJf input').get(0).removeAttribute("lay-verify", "recharge_jf")
+						//} else if(data.value == "1") {
+						//	$('#recharge_lxJe').hide()
+						//	$('#recharge_lxJe input').get(0).removeAttribute("lay-verify", "recharge_je")
+						//	$('#recharge_lxJf').show()
+						//	$('#recharge_lxJf input').get(0).setAttribute("lay-verify", "recharge_jf")
+						}
+					});
+
+					/*---------- 表单初始赋值 ----------*/
+					form.val('recharge', {
+						"userNumber": userNumber,
+						"associatorNumber": associatorNumber,
+					})
+
+					/*---------- 自定义验证规则 ----------*/
+					form.verify({
+						recharge_lx: function(value) {
+							if(value == "") {
+								return '请选择充值类型';
+							}
+						},
+						recharge_je: function(value) {
+							if(value == "") {
+								return '充值金额不能为空！';
+							}
+						},
+						//recharge_jf: function(value) {
+						//	if(value == "") {
+						//		return '充值积分不能为空！';
+						//	}
+						//}
+					});
+
+					/*---------- 监听提交 ----------*/
+					form.on('submit(add)', function(data) {
+
+						//var addData = JSON.stringify(data.field)
+
+						var addData = {
+							payType:data.field.payType,
+							userNumber:userNumber,
+							associatorNumber:associatorNumber,
+							paymentMoney:data.field.paymentMoney,
+						}
+
+						// 发送请求
+						$.ajax({
+							type: "post",
+							url: serverUrl + "member/consumption",
+							async: true,
+							data: addData,
+							success: function(data) {
+								if(data.code == "0") {
+									var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+									parent.layer.close(index); //再执行关闭
+									parent.layer.msg(data.msg);
+									parent.layui.table.reload('vip_cardList');
+								} else if(data.code == "1") {
+									layer.msg(data.msg);
+								}
+							}
+						});
+						return false;
+					});
+
+				});
+			}
+		</script>
+	</body>
+
+</html>
