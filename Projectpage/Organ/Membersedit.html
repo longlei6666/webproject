@@ -18,35 +18,33 @@
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-		<style type="text/css">
-			.layui-form-label {
-				padding-left: 15px;
-				width: 80px;
-			}
-		</style>
+    <style type="text/css">
+    	.layui-form-label{padding-left: 15px;width: 80px;}
+    </style>
 	</head>
 
 	<body id="iosiframe">
 		<div class="x-body">
 			<div class="layui-row">
 				<form class="layui-form" lay-filter="basic">
+					
 					<div class="layui-form-item">
 						<label class="layui-form-label">密码</label>
 						<div class="layui-input-inline">
-							<input type="password" name="password" id="passWord" lay-verify="pass" class="layui-input">
+							<input type="password" name="servicetel" lay-verify="pass" class="layui-input" id="passWord">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">重复密码</label>
 						<div class="layui-input-inline">
-							<input type="password" name="repassword" id="repassWord" lay-verify="repass" class="layui-input">
+							<input type="password" name="serviceqq" lay-verify="repass" class="layui-input"  id="repassWord">
 						</div>
 					</div>
 					<div class="layui-form-item layui-layout-admin">
 						<div class="layui-input-block">
 							<div class="layui-footer" style="left: 0;text-align: center;">
 								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-								<button class="layui-btn layui-btn-primary">取消</button>
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 							</div>
 							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
 						</div>
@@ -54,7 +52,12 @@
 				</form>
 			</div>
 		</div>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
+			var serverUrl = 'http://192.168.1.190:5002/'
+			var userNumber = window.parent.userNumber;
+
 			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
 				layui.$.support.cors = true; //允许ajax跨域
 				var $ = layui.jquery,
@@ -64,8 +67,14 @@
 					form = layui.form,
 					laytpl = layui.laytpl;
 
-				//自定义验证规则
+				//表单初始赋值
+				form.val('basic', {
+				
+					
+				})
+
 				form.verify({
+					
 					pass: [/^[0-9A-Za-z]{6,12}$/, '密码必须6到12位'],
 					repass: function(value) {
 						if($('#passWord').val() != $('#repassWord').val()) {
@@ -73,12 +82,26 @@
 						}
 					}
 				});
-
 				//监听提交
 				form.on('submit(add)', function(data) {
 					layer.alert(JSON.stringify(data.field), {
 						title: '最终的提交信息'
 					})
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.Mechanism,
+						{
+						'shopNumber':1000181007300324376,
+						'tabletableNumber':'ZT635DD6',
+						'paymentType':'2'
+						},
+						function(data){
+							console.log(data)
+						},
+						function(data){
+							console.log('222')
+						}
+					)
 					return false;
 				});
 

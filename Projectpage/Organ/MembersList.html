@@ -141,7 +141,7 @@
 							type: 2,
 							title: '编辑',
 							shade: 0.5,
-							area: ['400px', '250px'],
+							area: ['400px', '300px'],
 							maxmin: false,
 							resize: false,
 							content: ['Membersedit.html'],
@@ -149,7 +149,7 @@
 								// 获取子页面的iframe
 								var iframe = window['layui-layer-iframe' + index];
 								// 向子页面的全局函数child传参
-								iframe.subPage(data, userNumber)
+								iframe.subPage(data)
 							}
 						});
 					} else if(obj.event === 'logout') { //注销

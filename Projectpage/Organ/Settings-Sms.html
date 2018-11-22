@@ -82,6 +82,8 @@
 				</form>
 			</div>
 		</div>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
 			var serverUrl = 'http://192.168.1.190:5002/'
 			var userNumber = window.parent.userNumber
@@ -142,9 +144,33 @@
 
 				//监听提交
 				form.on('submit(add)', function(data) {
-					layer.alert(JSON.stringify(data.field), {
+					
+					console.log(data.field)
+					var data = data.field;
+					if(data.merchantca){
+						data.merchantca = 'on'
+					}else{
+						data.merchantca = 'off'
+					}
+					layer.alert(JSON.stringify(data), {
 						title: '最终的提交信息'
 					})
+					
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.Mechanism,
+						{
+						'shopNumber':1000181007300324376,
+						'tabletableNumber':'ZT635DD6',
+						'paymentType':'2'
+						},
+						function(data){
+							console.log(data)
+						},
+						function(data){
+							console.log('222')
+						}
+					)
 					return false;
 				});
 
