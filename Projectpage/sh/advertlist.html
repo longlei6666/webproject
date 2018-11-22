@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>分类管理</title>
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="../../public/css/font.css">
+	<link rel="stylesheet" href="../../public/css/xadmin.css">
+	<link rel="stylesheet" href="../../public/css/style.css">
+	<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+	<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+</head>
+<body>
+	<div class="x-nav">
+		<span class="layui-breadcrumb">
+	        <a href="">首页</a>
+	        <a>
+       		<cite>广告管理</cite></a>
+  		 </span>
+		<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+			<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+	</div>
+	<div class="x-body">
+		<xblock>
+			<a class="layui-btn"  onclick="x_admin_show('新建广告','.advert/goadvertaddedit',800,520)" ><i class="layui-icon"></i>新建广告</a>
+		</xblock>
+		<table class="layui-table" id="LAY_table_advert" lay-filter="advert">
+		</table>
+	</div>
+	<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-primary layui-btn-xs"  lay-event="edit">修改</a>
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="delete">删除</a>
+	</script>
+	<script type="text/html" id="zhuangtai">
+			{{# if(d.advertiseOpen == 1){ }}
+			<a class="layui-btn layui-btn-normal layui-btn-xs layui-btn-danger" lay-skin="zhuangtai" lay-filter="zhuangtai" lay-event="zhuangtaidisable">已禁用</a>
+			{{# } }} {{# if(d.advertiseOpen == 0){ }}
+			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-filter="zhuangtai" lay-skin="zhuangtai" lay-event="zhuangtaiopen">已启用</a>
+			{{# } }}
+	</script>	
+	<script>
+		layui.use(['table','form'], function() {
+
+			var table = layui.table
+			,form = layui.form;
+			//方法级渲染
+			table.render({
+				elem: '#LAY_table_advert',
+				url: '${pageContext.request.contextPath }/advert/getadvertlist',
+				method: "post",
+				height : 'full-220',
+				page: true,
+				id: 'advertlist',
+				cols: [
+					[{
+						field: 'advertiseName',
+						title: '广告名称',
+						width: '10%'
+					}, {
+						field: 'advertiseUrl',
+						title: '广告地址'
+					}, {
+						field: 'OperatorNumber',
+						title: '代理商ID'
+					}, {
+						field: 'advertiseOpenC',
+						title: '状态',
+						toolbar: "#zhuangtai"
+					}, {
+						field: 'operation',
+						title: '操作',
+						toolbar: "#tool"
+					}, ]
+				]
+			});
+
+			// 根據條件重载表格
+			var $ = layui.$,
+				active = {
+					reload: function() {
+						//执行重载
+						table.reload('advertlist', {
+							page: {
+								curr: 1 //重新从第 1 页开始
+							},
+							where: {
+							}
+						});
+					}
+				};
+			//监听工具条
+			table.on('tool(advert)', function(obj) {
+				var data = obj.data;
+				if(obj.event === 'edit') {
+					// 跳转编辑详情页面
+					layer.open({
+						type: 2,
+						title: '编辑广告',
+						area: ['800px', '520px'],
+						content: '.advert/goadvertaddedit?advertNumber=' + data.advertiseId,
+						end: function() {
+						}
+					});
+				}
+				if(obj.event === 'delete') {
+					// 弹出是否要删除门店
+					layer.confirm('确定要删除广告吗?', function(index) {
+						var mydata = {
+							"advertNumber": data.advertiseId,
+						}
+						// 发送请求,将分类进行逻辑删除
+						$.ajax({
+							type: "post",
+							url: ".advert/advertdel",
+							async: true,
+							data: mydata,
+							success: function(data) {
+								if(data.result == "success") {
+									layer.msg('删除成功 ', {icon: 1,time:1000},function(){
+										// 刷新页面
+										window.location.href=window.location.href
+									});
+								} else if(data.result == "erro") {
+									layer.msg(data.msg);
+								}
+								
+							}
+						});
+					});
+				}
+				if(obj.event === 'zhuangtaidisable') {
+					var mydata = {
+							"advertNumber": data.advertiseId,
+							"advertName": data.advertiseName,
+							"advertUrl" : data.advertUrl,//跳转地址
+							"advertOpen" : 0,
+							"OperatorNumber" : data.OperatorNumber,
+							"advertState" : data.advertState,
+							"advertQudao" : data.advertQudao,
+							"advertiseUrl" : data.advertiseUrl,//图片地址
+							"LaunchTime" : data.advertiseStarttime,
+							"InvalidTime" : data.advertiseEndtime
+						}
+					// 禁用分类
+					layer.confirm('真的要启用吗?', function(index) {
+						// 发送请求
+						$.ajax({
+							type: "post",
+							url: ".advert/advertaddedit",
+							async: true,
+							data: mydata,
+							success: function(data) {
+								if(data.result == "success") {
+									layer.msg('操作成功 ', {icon: 1,time:1000},function(){
+										// 刷新页面
+										window.location.href=window.location.href
+									});
+								} else if(data.result == "false") {
+									layer.msg(data.msg);
+								}
+							}
+						});
+					});
+				}
+				if(obj.event === 'zhuangtaiopen') {
+					var mydata = {
+							"advertNumber": data.advertiseId,
+							"advertName": data.advertiseName,
+							"advertUrl" : data.advertiseUrl,//跳转地址
+							"advertOpen" : 1,
+							"OperatorNumber" : data.OperatorNumber,
+							"advertState" : data.advertState,
+							"advertQudao" : data.advertQudao,
+							"advertiseUrl" : data.advertiseUrl,//图片地址
+							"LaunchTime" : data.advertiseStarttime,
+							"InvalidTime" : data.advertiseEndtime
+						}
+					// 禁用分类
+					layer.confirm('真的要禁用吗?', function(index) {
+						// 发送请求
+						$.ajax({
+							type: "post",
+							url: ".advert/advertaddedit",
+							async: true,
+							data: mydata,
+							success: function(data) {
+								if(data.result == "success") {
+									layer.msg('操作成功 ', {icon: 1,time:1000},function(){
+										// 刷新页面
+										window.location.href=window.location.href
+									});
+								} else if(data.result == "false") {
+									layer.msg(data.msg);
+								}
+							}
+						});
+					});
+				}
+			})
+			$('.layui-btn').on('click', function() {
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
+			});
+		});
+	</script>
+</body>
+</html>

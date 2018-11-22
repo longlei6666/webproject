@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商户添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="./css/mui.min.css">
+		<link rel="stylesheet" href="./css/xiaoshouzhushou.css">
+		<link rel="stylesheet" type="text/css" href="./css/feedback.css" />
+		<link rel="stylesheet" type="text/css" href="./css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="./css/app.css" />
+		<link href="./css/mui.picker.css" rel="stylesheet" />
+		<link href="./css/mui.poppicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" id="btngoback"></a>
+			<h1 class="mui-title">二维码绑定</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+					<input type="hidden" id="QRCodeNumber" name="QRCodeNumber" value="${pd.QRCodeNumber }">
+					<input type="hidden" id="UserNumber" name="UserNumber" value="${pd.UserNumber }">
+					<input type="hidden" id="ShopNumber" name="ShopNumber" value="${pd.ShopNumber }">
+					<input type="hidden" id="AccountType" name="AccountType" value="${pd.AccountType }">
+				<form class="mui-input-group">
+					<div class="mui-input-row" >
+						<label><span style="color: red">* </span>二维码</label>
+						<input type="hidden" id="zhifubaoRate" name="zhifubaoRate" value="${list[0].Rate }">
+						<input type="text" id="userResult" class="mui-input-clear" placeholder="请输入二维码" >
+					</div>
+				</form>
+				<a class="mui-btn mui-btn-primary nextstep" id="input_check">绑定</a>
+			</div>
+		</div>
+	</body>
+	<script src="./js/mui.min.js "></script>
+	<script src="./js/mui.view.js "></script>
+	<script src="./js/mui.picker.js"></script>
+	<script src="./js/mui.poppicker.js"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				document.getElementById("btngoback").addEventListener('click', function() {
+					var UserNumber = $("#UserNumber")[0].value;
+					var ShopNumber = $("#ShopNumber")[0].value;
+					var QRCodeNumber = $("#QRCodeNumber")[0].value;
+					window.location.href = '${pageContext.request.contextPath}/saleshop/gosaleshopbaobei?UserNumber='+UserNumber+'&ShopNumber='+ShopNumber+'&QRCodeNumber='+QRCodeNumber;		
+				});
+				//-----------------------------------------
+				document.getElementById("input_check").addEventListener('click', function() {
+					var check = true;
+					var QRCodeNumber = document.getElementById("userResult").value;
+					var ShopNumber = '${pd.ShopNumber }';
+					if(QRCodeNumber.trim() == "") {
+						mui.alert("二维码不允许为空");check = false;return false;
+					}
+					check && mui.ajax('${pageContext.request.contextPath}/saleshop/gosaleshopbindingcode?',{
+						data:{
+							ShopNumber : '${pd.ShopNumber }',
+							QRCodeNumber : document.getElementById("userResult").value,
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						success:function(data){
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							var UserNumber = $("#UserNumber")[0].value;
+							var ShopNumber = $("#ShopNumber")[0].value;
+							var QRCodeNumber = $("#QRCodeNumber")[0].value;
+							if ("success" == data.result) {
+						 		mui.alert('绑定成功', function() {
+									window.location.href = '${pageContext.request.contextPath}/saleshop/gosaleshopmanage?UserNumber='+UserNumber+'&ShopNumber='+ShopNumber+'&QRCodeNumber='+QRCodeNumber;
+			                	});
+							} else{
+								mui.alert(data.msg);
+								return;
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							//异常处理；
+							console.log(type);
+						}
+					});
+				});
+			});
+		})(mui, document);
+	</script>
+
+</html>

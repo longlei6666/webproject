@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style type="text/css">
+			.layui-btn+.layui-btn {
+				margin-left: -2px;
+			}
+			
+			.border {
+				box-shadow: 0 0 30px rgba(0, 0, 0, .1);
+				padding: 15px 25px;
+			}
+			
+			.ibox-title h5 {
+				font-size: 16px;
+				color: #5b6e89;
+				display: block;
+				line-height: 60px;
+				margin: 0;
+				font-weight: 600;
+			}
+			
+			.ibox-title a {
+				font-size: 16px;
+				font-weight: 600;
+			}
+			
+			.ibox-content {
+				border: none;
+				padding-bottom: 20px;
+			}
+			
+			.ibox-content p {
+				line-height: 20px;
+			}
+			
+			.ibox-content1 p strong {
+				font-size: 16px;
+			}
+			
+			.ibox-content1 p .span1 {
+				font-size: 16px;
+				color: #0087ffbf;
+				font-weight: 600;
+				line-height: 30px;
+			}
+			
+			.ibox-content1 p .span2 {
+				margin-left: 80px;
+				color: #008000b0;
+				font-size: 16px;
+				font-weight: 600;
+				line-height: 30px;
+			}
+			
+			.ibox-content1 p .span3 {
+				font-size: 16px;
+				color: #008000b0;
+				font-weight: 600;
+				line-height: 30px;
+			}
+			
+			.ibox-content1 p .span4 {
+				margin-left: 80px;
+				font-size: 16px;
+				color: #ff0000b3;
+				font-weight: 600;
+				line-height: 30px;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+		        <a href="">首页</a>
+		        <a href="">财务分析</a>
+		        <a><cite>接口交易统计</cite></a>
+		      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-form x-so">
+				<div class="layui-input-inline">
+					<input type="text" name="couponName" id="couponName" placeholder="日期" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-input-inline coupons_screen">
+					<button class="layui-btn" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+				</div>
+			</div>
+			<div class="layui-row layui-col-space30">
+				<!--报表-->
+				<div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
+					<div class="grid-demo border">
+						<div class="ibox-title">
+							<h5 style="width: 100%;">微信公众号-901   <a href="./manage_Statistics_productChannelFinance_id_901.html" style="float:right;color:red;">支付通道统计</a></h5>
+						</div>
+						<div class="ibox-content">
+							<p>交易金额：<span>0</span>元</p>
+							<p>手续费 &nbsp;&nbsp;&nbsp;：<span>0</span>元</p>
+							<p>入金总额：<span>0</span>元</p>
+						</div>
+						<div class="ibox-content ibox-content1">
+							<p>
+								<span class="span1">交易笔数：<strong>123</strong>笔</span>
+								<span class="span2">成功率：<strong>120</strong>%</span>
+							</p>
+							<p>
+								<span class="span3">成功笔数：<strong>456</strong>笔</span>
+								<span class="span4">失败笔数：<strong>123</strong>笔</span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
+					<div class="grid-demo border">
+						<div class="ibox-title">
+							<h5 style="width: 100%;">微信公众号-901   <a href="./manage_Statistics_productChannelFinance_id_901.html" style="float:right;color:red;">支付通道统计</a></h5>
+						</div>
+						<div class="ibox-content">
+							<p>交易金额：<span>0</span>元</p>
+							<p>手续费 &nbsp;&nbsp;&nbsp;：<span>0</span>元</p>
+							<p>入金总额：<span>0</span>元</p>
+						</div>
+						<div class="ibox-content ibox-content1">
+							<p>
+								<span class="span1">交易笔数：<strong>123</strong>笔</span>
+								<span class="span2">成功率：<strong>120</strong>%</span>
+							</p>
+							<p>
+								<span class="span3">成功笔数：<strong>456</strong>笔</span>
+								<span class="span4">失败笔数：<strong>123</strong>笔</span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
+					<div class="grid-demo border">
+						<div class="ibox-title">
+							<h5 style="width: 100%;">微信公众号-901   <a href="./manage_Statistics_productChannelFinance_id_901.html" style="float:right;color:red;">支付通道统计</a></h5>
+						</div>
+						<div class="ibox-content">
+							<p>交易金额：<span>0</span>元</p>
+							<p>手续费 &nbsp;&nbsp;&nbsp;：<span>0</span>元</p>
+							<p>入金总额：<span>0</span>元</p>
+						</div>
+						<div class="ibox-content ibox-content1">
+							<p>
+								<span class="span1">交易笔数：<strong>123</strong>笔</span>
+								<span class="span2">成功率：<strong>120</strong>%</span>
+							</p>
+							<p>
+								<span class="span3">成功笔数：<strong>456</strong>笔</span>
+								<span class="span4">失败笔数：<strong>123</strong>笔</span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			function changeRes(res) {
+				var res = res
+				if(res.length == 0) {
+					return
+				}
+				for(var i = 0; i < res.length; i++) {
+					if(res[i].merchantstype == 0) {
+						res[i].merchantstypea = '普通商户'
+					} else if(res[i].merchantstype == 1) {
+						res[i].merchantstypea = '补贴商户'
+					}
+					if(res[i].type == 0) {
+						res[i].typea = '禁用'
+					} else if(res[i].type == 1) {
+						res[i].typea = '启用'
+					}
+					if(res[i].audittype == 1) {
+						res[i].audittypea = '未审核'
+					} else if(res[i].audittype == 2) {
+						res[i].audittypea = '审核中'
+					} else if(res[i].audittype == 3) {
+						res[i].audittypea = '已审核'
+					}
+				}
+				return res
+			}
+			var serverUrl = window.parent.serverUrl
+			var userNumber = window.parent.userNumber
+			layui.use(['laydate', 'table', 'form'], function() {
+				var laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form;
+
+				//方法级渲染  
+				table.render({
+					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+					url: 'https://easy-mock.com/mock/5be8d89ba5f5e073df414199/example/shList1',
+					elem: '#members1',
+					id: 'vip_cardList1',
+					parseData: function(res) { //res 即为原始返回的数据
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.count, //解析数据长度
+							"data": changeRes(res.result), //解析数据列表
+						};
+					},
+					cols: [
+						[{
+							title: '排名',
+							type: 'numbers'
+						}, {
+							align: 'center',
+							field: 'merchants',
+							width: 130,
+							title: '商户号',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'merchantsname',
+							width: 130,
+							title: '用户名'
+						}, {
+							align: 'center',
+							field: 'merchantstypea',
+							title: '订单金额',
+							sort: true
+						}]
+					],
+					done: function(res, curr, count) {
+						console.log(res.data.addtime)
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

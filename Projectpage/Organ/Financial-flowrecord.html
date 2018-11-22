@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style type="text/css">
+			.layui-btn+.layui-btn {
+				margin-left: -2px;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+		        <a href="">首页</a>
+		        <a href="">财务分析</a>
+		        <a><cite>流水记录</cite></a>
+		      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form layui-col-md4 layui-col-sm4 layui-col-xs4 x-so">
+					<div class="layui-input-inline">
+						<input type="text" name="couponName" id="couponName" placeholder="商户号" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="couponName" id="couponName" placeholder="订单号" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="couponName" id="couponName" placeholder="起始时间" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<select name="cardVoucherName" id="cardVoucherName">
+							<option value="">通道</option>
+							<option value="901">微信公众号</option>
+							<option value="902">微信扫码支付1</option>
+							<option value="903">支付宝扫码支付</option>
+							<option value="904">支付宝手机</option>
+							<option value="905">QQ手机支付</option>
+							<option value="907">网银支付</option>
+							<option value="908">QQ扫码支付</option>
+							<option value="909">百度钱包</option>
+							<option value="910">京东支付</option>
+							<option value="911">快捷支付</option>
+							<option value="912">银联扫码</option>
+							<option value="913">快捷支付</option>
+							<option value="914">三方微信扫码</option>
+							<option value="915">官方微信H5</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="type" id="type">
+							<option value="">类型</option>
+							<option value="1">付款</option>
+							<option value="3">手动增加</option>
+							<option value="4">手动减少</option>
+							<option value="6">结算</option>
+							<option value="10">委托结算</option>
+							<option value="11">提款驳回</option>
+							<option value="12">代付驳回</option>
+							<option value="7">冻结</option>
+							<option value="8">解冻</option>
+							<option value="9">提成</option>
+							<option value="13">投诉保证金解冻</option>
+							<option value="14">扣除代付结算手续费</option>
+							<option value="15">代付结算驳回退回手续费</option>
+							<option value="16">扣除手动结算手续费</option>
+							<option value="17">手动结算驳回退回手续费</option>
+
+						</select>
+					</div>
+					<div class="layui-input-inline coupons_screen">
+						<button class="layui-btn" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+					</div>
+				</div>
+			</div>
+			<xblock>
+				<button class="layui-btn" onclick="x_admin_show('添加商户','./Merchants-add.html')"><i class="layui-icon"></i>添加商户</button>
+			</xblock>
+			<table class="layui-hide" id="members" lay-filter="members"></table>
+		</div>
+		<script>
+			function changeRes(res) {
+				var res = res
+				if(res.length == 0) {
+					return
+				}
+				for(var i = 0; i < res.length; i++) {
+					if(res[i].merchantstype == 0) {
+						res[i].merchantstypea = '普通商户'
+					} else if(res[i].merchantstype == 1) {
+						res[i].merchantstypea = '补贴商户'
+					}
+					if(res[i].type == 0) {
+						res[i].typea = '禁用'
+					} else if(res[i].type == 1) {
+						res[i].typea = '启用'
+					}
+					if(res[i].audittype == 1) {
+						res[i].audittypea = '未审核'
+					} else if(res[i].audittype == 2) {
+						res[i].audittypea = '审核中'
+					} else if(res[i].audittype == 3) {
+						res[i].audittypea = '已审核'
+					}
+				}
+				return res
+			}
+			var serverUrl = window.parent.serverUrl
+			var userNumber = window.parent.userNumber
+			layui.use(['laydate', 'table', 'form'], function() {
+				var laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form;
+
+				//方法级渲染  
+				table.render({
+					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+					url: 'https://easy-mock.com/mock/5be8d89ba5f5e073df414199/example/shList',
+					elem: '#members',
+					height: 'full-210',
+					id: 'vip_cardList',
+					parseData: function(res) { //res 即为原始返回的数据
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.count, //解析数据长度
+							"data": changeRes(res.result), //解析数据列表
+						};
+					},
+					cols: [
+						[{
+							type: 'numbers'
+						}, {
+							align: 'center',
+							field: 'merchants',
+							width: 200,
+							title: '订单号',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'merchantsname',
+							width: 100,
+							title: '用户名'
+						}, {
+							align: 'center',
+							field: 'merchantstypea',
+							width: 200,
+							title: '类型',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'belongagent',
+							width: 110,
+							title: '用户名(提成)'
+						}, {
+							align: 'center',
+							field: 'typea',
+							width: 100,
+							title: '提成级别',
+						}, {
+							align: 'center',
+							field: 'audittypea',
+							width: 100,
+							title: '原金额',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'addtime',
+							width: 100,
+							title: '变动金额',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'addtime',
+							width: 100,
+							title: '变动后金额',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'addtime',
+							width: 180,
+							title: '变动时间',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'addtime',
+							width: 150,
+							title: '通道',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'addtime',
+							width: 250,
+							title: '备注',
+							sort: true
+						}]
+					],
+					page: true,
+					done: function(res, curr, count) {
+						console.log(res)
+					}
+				});
+
+				//监听工具条
+				table.on('tool(members)', function(obj) {
+					var data = obj.data;
+					if(obj.event === 'loginTo') { //直接登录商户后台
+						window.open("http://www.baidu.com?useNumber=123456", "useNumber=123456")
+					} else if(obj.event === 'channelSet') { //直接登录商户后台
+						layer.open({
+							type: 2,
+							title: '编辑',
+							shade: 0.5,
+							area: ['90%', '90%'],
+							maxmin: false,
+							resize: false,
+							content: ['Merchants-List-channel.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								//var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								//iframe.subPage(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'rate') { //费率
+						layer.open({
+							type: 2,
+							title: '设置费率',
+							shade: 0.5,
+							area: ['650px', '90%'],
+							maxmin: false,
+							resize: false,
+							content: ['Merchants-List-rate.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								//var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								//iframe.subPage(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'pass') { //设置密码
+						layer.open({
+							type: 2,
+							title: '重置密码',
+							shade: 0.5,
+							area: ['460px', '350px'],
+							maxmin: false,
+							resize: false,
+							content: ['Merchants-List-pass.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								//var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								//iframe.subPage(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'edit') { //编辑商户
+						layer.open({
+							type: 2,
+							title: '编辑',
+							shade: 0.5,
+							area: ['90%', '90%'],
+							maxmin: false,
+							resize: false,
+							content: ['Merchants-List-edit.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								//var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								//iframe.subPage(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'secretkey') { //秘钥secretkey
+						layer.open({
+							type: 2,
+							title: '秘钥',
+							shade: 0.5,
+							area: ['400px', '270px'],
+							maxmin: false,
+							resize: false,
+							content: ['Merchants-List-secretkey.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								//var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								//iframe.subPage(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'logout') { //注销
+						var zhuxiaoData = {
+							card: data.card,
+							cardType: 5
+						}
+						layer.confirm('真的删除此会员卡么', {
+							icon: 3,
+							title: '提示'
+						}, function(index) {
+							// 发送请求
+							$.ajax({
+								type: "post",
+								url: serverUrl + "memberCard/updateAssociatorCard",
+								async: true,
+								dataType: "json",
+								contentType: "application/json",
+								data: JSON.stringify(zhuxiaoData),
+								success: function(data) {
+									if(data.code == 0) {
+										layer.close(index);
+										layer.msg("会员卡已注销");
+										// 刷新页面
+										var curr = $("#curr").val();
+										layui.table.reload('vip_cardList', {
+											page: {
+												curr: curr
+											}
+										});
+									} else if(data.code == 1) {
+										layer.msg("会员卡注销失败");
+									}
+								}
+							});
+						});
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

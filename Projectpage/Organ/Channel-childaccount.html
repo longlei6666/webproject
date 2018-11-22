@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style type="text/css">
+			.layui-btn+.layui-btn {
+				margin-left: -2px;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<xblock>
+				<button class="layui-btn" onclick="x_admin_show('添加子帐号','./Channel-childaccount-add.html','600')"><i class="layui-icon"></i>添加子帐号</button>
+			</xblock>
+			<table class="layui-hide" id="members" lay-filter="members"></table>
+		</div>
+		<script type="text/html" id="toolbar">
+			<a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">编辑</a>
+			<a class="layui-btn layui-btn-xs" id="riskctrl" lay-event="riskctrl">风控</a>
+			<a class="layui-btn layui-btn-danger layui-btn-xs" id="logout" lay-event="logout">删除</a>
+		</script>
+		<script>
+			var serverUrl = window.parent.serverUrl
+			var userNumber = window.parent.userNumber
+			layui.use(['laydate', 'table', 'form'], function() {
+				var laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form;
+
+				//方法级渲染  
+				table.render({
+					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+					url: './json/vip-card.json',
+					elem: '#members',
+					height: 'full-210',
+					id: 'vip_cardList',
+					//					parseData: function(res) { //res 即为原始返回的数据
+					//						return {
+					//							"code": res.code, //解析接口状态
+					//							"msg": res.msg, //解析提示文本
+					//							"count": res.count, //解析数据长度
+					//							"data": changeRes(res.result,res.count), //解析数据列表
+					//						};
+					//					},
+					cols: [
+						[{
+							align: 'center',
+							type: 'checkbox'
+						}, {
+							align: 'center',
+							field: 'id',
+							width: 150,
+							title: '编号',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'username',
+							width: 350,
+							title: '账户名称'
+						}, {
+							align: 'center',
+							field: 'sex',
+							width: 350,
+							title: '账户状态',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'sex',
+							width: 350,
+							title: '轮询权重',
+							sort: true
+						}, {
+							align: 'center',
+							field: 'sex',
+							width: 350,
+							title: '成本费率模式',
+							sort: true
+						}, {
+							align: 'center',
+							title: '操作',
+							toolbar: '#toolbar',
+							minWidth: 400
+						}]
+					],
+					page: true,
+					done: function(res, curr, count) {
+						console.log(res)
+					}
+				});
+				
+				//监听性别操作
+				form.on('switch(toolbar_switch)', function(data) {
+					layer.tips('自助核销：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+				});
+
+				//监听工具条
+				table.on('tool(members)', function(obj) {
+					var data = obj.data;
+					if(obj.event === 'edit') { //编辑
+						layer.open({
+							type: 2,
+							title: '编辑',
+							shade: 0.5,
+							area: ['600px', '90%'],
+							maxmin: false,
+							resize: false,
+							content: ['Channel-childaccount-edit.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								//var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								//iframe.subPage(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'riskctrl') { //风控
+						layer.open({
+							type: 2,
+							title: '风控',
+							shade: 0.5,
+							area: ['600px', '90%'],
+							maxmin: false,
+							resize: false,
+							content: ['Channel-childaccount-riskctrl.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								//var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								//iframe.subPage(data, userNumber)
+							}
+						});
+					} else if(obj.event === 'logout') { //注销
+						var zhuxiaoData = {
+							card: data.card,
+							cardType: 5
+						}
+						layer.confirm('真的删除此会员卡么', {
+							icon: 3,
+							title: '提示'
+						}, function(index) {
+							// 发送请求
+							$.ajax({
+								type: "post",
+								url: serverUrl + "memberCard/updateAssociatorCard",
+								async: true,
+								dataType: "json",
+								contentType: "application/json",
+								data: JSON.stringify(zhuxiaoData),
+								success: function(data) {
+									if(data.code == 0) {
+										layer.close(index);
+										layer.msg("会员卡已注销");
+										// 刷新页面
+										var curr = $("#curr").val();
+										layui.table.reload('vip_cardList', {
+											page: {
+												curr: curr
+											}
+										});
+									} else if(data.code == 1) {
+										layer.msg("会员卡注销失败");
+									}
+								}
+							});
+						});
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>基于 Layui form 组件的省市区联动选择的实现</title>
+
+		<link rel="stylesheet" href="../../public/lib/layui/css/layui.css" />
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js"></script>
+		<script type="text/javascript" src="../../public/js/data.js"></script>
+		<script type="text/javascript" src="../../public/js/province.js"></script>
+		<script type="text/javascript">
+			var defaults = {
+				s1: 'provid',
+				s2: 'cityid',
+				s3: 'areaid',
+				v1: null,
+				v2: null,
+				v3: null
+			};
+		</script>
+	</head>
+
+	<body>
+		<div style="width:800px;margin:50px auto;">
+			<div class="layui-form">
+				<div class="layui-form-item">
+					<label class="layui-form-label">选择地区</label>
+					<div class="layui-input-inline">
+						<select name="provid" id="provid" lay-filter="provid" lay-search="">
+							<option value="">请选择省</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="cityid" id="cityid" lay-filter="cityid" lay-search="">
+							<option value="">请选择市</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="areaid" id="areaid" lay-filter="areaid" lay-search="">
+							<option value="">请选择县/区</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item layui-layout-admin">
+					<div class="layui-input-block">
+						<div class="layui-footer" style="left: 0;text-align: center;">
+							<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+							<button class="layui-btn layui-btn-primary">取消</button>
+						</div>
+						<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

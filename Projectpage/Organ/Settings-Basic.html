@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+		        <a href="">首页</a>
+		        <a href="">系统设置</a>
+		        <a><cite>基本设置</cite></a>
+		      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form" lay-filter="basic">
+					<div class="layui-form-item">
+						<label class="layui-form-label">网站名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="sitename" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">网站域名</label>
+						<div class="layui-input-block">
+							<input type="text" name="domain" lay-verify="url" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">联系邮箱</label>
+						<div class="layui-input-block" style="width: 180px;">
+							<input type="text" name="email" lay-verify="email" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">客服电话</label>
+						<div class="layui-input-inline" style="width: 180px;">
+							<input type="text" name="servicetel" lay-verify="number" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">网站客服QQ</label>
+						<div class="layui-input-inline" style="width: 180px;">
+							<input type="text" name="serviceqq" lay-verify="number" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">总后台路径</label>
+						<div class="layui-input-block" style="width: 360px;">
+							<input type="text" name="totalUrl" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">代理商路径</label>
+						<div class="layui-input-block" style="width: 360px;">
+							<input type="text" name="agentUrl" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">商户路径</label>
+						<div class="layui-input-block" style="width: 360px;">
+							<input type="text" name="merchantsUrl" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">公司版权</label>
+						<div class="layui-input-block">
+							<textarea name="copyright" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					<style type="text/css">
+						.layui-upload-img {
+							width: 150px;
+							height: 150px;
+							border: 1px solid #e6e6e6;
+							border-radius: 2px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+						}
+						
+						#demoText {
+							width: 150px;
+							height: auto;
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+						}
+						
+						#demoText span {
+							margin-top: 10px;
+						}
+						
+						#demoText a {
+							margin-top: 10px;
+						}
+					</style>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">平台logo</label>
+						<div class="layui-input-block">
+							<div class="layui-upload-img" id="test1">
+								<img src="images/zhifubao.png" id="demo1" style="max-width: 100%;height: auto;">
+							</div>
+							<p id="demoText"></p>
+							<!--<button type="button" class="layui-btn">上传图片</button>-->
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">商户认证</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="merchantca" lay-filter="switchTest" lay-skin="switch" lay-text="开启|关闭">
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">网站统计代码</label>
+						<div class="layui-input-block">
+							<textarea name="title" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">最大次数限制</label>
+						<div class="layui-input-inline" style="width: 100px;">
+							<input type="text" name="servicetel" lay-verify="number" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">设置验证错误最大次数限制</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">超限冻结时间</label>
+						<div class="layui-input-inline" style="width: 100px;">
+							<input type="text" name="serviceqq" lay-verify="number" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">设置验证错误超限冻结时间(分钟)</div>
+					</div>
+
+					<div class="layui-form-item layui-layout-admin">
+						<div class="layui-input-block">
+							<div class="layui-footer" style="left: 0;text-align: center;">
+								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+							</div>
+							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var serverUrl = 'http://192.168.1.190:5002/'
+			var userNumber = window.parent.userNumber
+			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload', 'element'], function() {
+				layui.$.support.cors = true; //允许ajax跨域
+				var $ = layui.jquery,
+					upload = layui.upload,
+					laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					laytpl = layui.laytpl;
+
+				//表单初始赋值
+				form.val('basic', {
+					"sitename": "河北鸿搜网络",
+					"domain": "http://www.hongsou.com.cn",
+					"email": "kf@qq.com",
+					"servicetel": "13088889999",
+					"serviceqq": "88889999",
+					"totalUrl": "/zonghoutai/",
+					"agentUrl": "/dailishang/",
+					"merchantsUrl": "/dailishang/",
+					"title": "通用后台管理模板系统",
+					"merchantca": true,
+				})
+
+				//普通图片上传
+				var uploadInst = upload.render({
+					elem: '#test1',
+					url: '/upload/',
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo1').attr('src', result); //图片链接（base64）
+						});
+					},
+					done: function(res) {
+						//如果上传失败
+						if(res.code > 0) {
+							return layer.msg('上传失败');
+						}
+						//上传成功
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#demoText');
+						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+
+				//监听指定开关
+				form.on('switch(switchTest)', function(data) {
+					layer.tips('商户认证：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						data.elem.value = "0"
+						console.log(data.elem.value)
+					} else if(data.elem.checked == false) {
+						data.elem.value = "1"
+						console.log(data.elem.value)
+					}
+				});
+
+				//监听提交
+				form.on('submit(add)', function(data) {
+					layer.alert(JSON.stringify(data.field), {
+						title: '最终的提交信息'
+					})
+					return false;
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

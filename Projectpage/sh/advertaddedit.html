@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>广告管理</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<link rel="stylesheet" href="../../public/css/style.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<style type="text/css">
+			.layui-upload-img {
+				width: 100px;
+				height: 100px;
+				margin: 0 10px 0 0;
+				float: left;
+			}
+			
+			.uploadbtn,
+			#demoText {
+				margin-top: 30px;
+				margin-right: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md12">
+					<div class="grid-demo">
+						<!--基本资料-->
+						<input type="hidden" id="advertNumber" name="advertNumber" value="${advertInfo[0].advertiseNumber }">
+						<div class="layui-form-item">
+							<label for="CategoryName" class="layui-form-label">
+		                <span class="x-red">* </span>广告名称：
+		            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="advertName" name="advertName" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${advertInfo[0].advertiseName}">
+							</div>
+						</div>
+						<input type="hidden" name="canpinPicAddress" id="canpinPicAddress" value="${advertInfo[0].advertiseUrl }" />
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label uploadtitle"><span class="x-red">* </span>广告图片：</label>
+							<div class="layui-upload">
+								<div class="layui-upload-list" id="diventerpriseLogo">
+									<!-- <img class="layui-upload-img" id="imgLogo"> -->
+									<script>
+										var enterpriseLogo = '${advertInfo[0].advertiseUrl }';
+										if(enterpriseLogo != '') {
+											var url = enterpriseLogo;
+											$("#diventerpriseLogo").append('<img class="layui-upload-img" id="imgLogo" src="' + url + '">')
+										} else {
+											$("#diventerpriseLogo").append('<img class="layui-upload-img" id="imgLogo"> ')
+										}
+									</script>
+									<p id="logoText"></p>
+								</div>
+								<button type="button" class="layui-btn uploadbtn" name="file" id="file">选择图片</button>
+								<button type="button" class="layui-btn uploadbtn" id="uploadLogo">上传</button>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">图片跳转地址：
+		            </label>
+							<div class="layui-input-inline">
+								<textarea id="advertUrl" name="advertUrl" placeholder="请输入跳转地址" class="layui-textarea">${advertInfo[0].advertUrl }</textarea>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="CategoryName" class="layui-form-label">
+		                <span class="x-red">* </span>代理商ID：
+		            </label>
+							<div class="layui-input-inline">
+								<input type="text" id="OperatorNumber" name="OperatorNumber" required="" lay-verify="required" autocomplete="off" class="layui-input" value="${advertInfo[0].dailishang}">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label for="username" class="layui-form-label">
+						<span class="x-red">* </span>开启按钮
+					</label>
+							<div class="layui-input-block">
+								<c:if test="${not empty advertInfo }">
+									<input type="radio" name="Enable" value="0" title="启用" <c:if test="${advertInfo[0].advertiseOpen eq '0' }">checked="checked"</c:if>>
+								<input type="radio" name="Enable" value="1" title="禁用" <c:if test="${advertInfo[0].advertiseOpen eq '1' }">checked="checked"</c:if>>
+								</c:if>
+								<c:if test="${empty advertInfo }">
+									<input type="radio" name="Enable" value="0" title="启用" checked="checked">
+									<input type="radio" name="Enable" value="1" title="禁用">
+								</c:if>
+							</div>
+						</div>
+						<!--<div class="layui-form-item">
+					<label for="username" class="layui-form-label">
+		                <span class="x-red">* </span>投放时间：
+		            </label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="advertiseStarttime" name="advertiseStarttime" placeholder="投放时间" value="${advertInfo[0].advertiseStarttime}">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="username" class="layui-form-label">
+		                <span class="x-red">* </span>结束时间：
+		            </label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="advertiseEndtime" name="advertiseEndtime" placeholder="结束时间" value="${advertInfo[0].advertiseEndtime}">
+					</div>
+				</div>-->
+					</div>
+				</form>
+				<div class="grid-demo">
+					<div class="layui-form-item">
+						<label for="L_repass" class="layui-form-label">
+		      </label>
+						<button class="layui-btn formbtn" lay-filter="add" lay-submit="">保存</button>
+						<button class="layui-btn layui-btn-warm formbtn" onclick="x_admin_close()">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			layui.use(['form', 'layedit', 'laydate', 'element', 'layer', 'upload', 'table'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+				var element = layui.element;
+				var layer = layui.layer;
+				var form = layui.form,
+					layedit = layui.layedit,
+					laydate = layui.laydate;
+				var table = layui.table;
+				/* //餐品图片上传
+				var demoListView = $('#canpinImgList'),
+					uploadListIns = upload.render({
+						elem: '#selectcanpinImg',
+						url: '.advert/addadvertPic',
+						auto: false,
+						multiple: true,
+						bindAction: '#uploadcanpin',
+						choose: function(obj) {
+							var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+							//读取本地文件
+							obj.preview(function(index, file, result) {
+								var tr = $(['<li id="upload-' + index + '">', '<td><img src="' + result + '" alt="' + file.name + '" class="layui-upload-img layui-upload-mdimg"></td>', '<td>', '<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>', '<i class="layui-icon layui-btn-danger demo-delete img-delete mdimg-delete">&#xe640;</i>', '</td>', '</li>'].join(''));
+
+								//删除
+								tr.find('.demo-delete').on('click', function() {
+									delete files[index]; //删除对应的文件
+									tr.remove();
+									uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+								});
+								demoListView.append(tr);
+							});
+						},
+						done: function(res) {
+							if(res.code == 0) {
+								// 上传成功
+								layer.msg('上传成功');
+								// 获取上方的值,将后台传输过来的值进行拼接
+								var url = $("#canpinPicAddress").val();
+								url = url + res.desc + "--";
+								$("#canpinPicAddress").val(url);
+							} else {
+								layer.alert('上传失败,请重新上传!');
+							}
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							layer.msg('上传失败,请重新上传');
+						}
+					}); */
+				//Logo上传
+				upload.render({
+					elem: '#file',
+					url: '.advert/addadvertPic',
+					method: 'post',
+					auto: false,
+					accept: 'images',
+					bindAction: '#uploadLogo',
+					choose: function(obj) {
+						obj.preview(function(index, file, result) {
+							$("#imgLogo").attr("src", result);
+						});
+					},
+					done: function(res) {
+
+						if(res.code == 0) {
+							layer.msg("上传成功");
+							// 获取后台返回的地址,并存储到上方隐藏域
+							url = res.desc;
+							$("#canpinPicAddress").val(url);
+						} else {
+							layer.alert("上传失败,请重新上传!");
+						}
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#logoText');
+						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+				//时间范围
+				laydate.render({
+					elem: '#advertiseStarttime',
+					type: 'datetime'
+				}); //时间范围
+				laydate.render({
+					elem: '#advertiseEndtime',
+					type: 'datetime'
+				});
+
+				//监听提交
+				form.on('submit(add)', function(data) {
+					var myDate = getNowFormatDate();
+					var advertNumber = $("#advertNumber").val();
+					var advertName = $("#advertName").val();
+					var canpinPicAddress = $("#canpinPicAddress").val();
+					var Enable = $("input[name='Enable']:checked").val();
+					var advertUrl = $("#advertUrl").val();
+					var OperatorNumber = $("#OperatorNumber").val();
+					var advertiseStarttime = myDate;
+					var advertiseEndtime = myDate;
+					if(advertName == '' || advertName == undefined) {
+						layer.alert("请输入广告名称");
+						return;
+					}
+					if(canpinPicAddress == '' || canpinPicAddress == undefined) {
+						layer.alert("请上传图片");
+						return;
+					}
+					if(Enable == '' || Enable == undefined) {
+						layer.alert("请选择状态");
+						return;
+					}
+					if(advertUrl == '' || advertUrl == undefined) {
+						layer.alert("请输入图片跳转地址");
+						return;
+					}
+					/* if(advertiseStarttime==''||advertiseStarttime==undefined){
+						layer.alert("请选择投放时间");
+						return;
+					}if(advertiseEndtime==''||advertiseEndtime==undefined){
+						layer.alert("请选择到期时间");
+						return;
+					} */
+					else {
+						$.ajax({
+							type: "post",
+							url: ".advert/advertaddedit",
+							async: true,
+							data: {
+								advertNumber: advertNumber,
+								advertName: advertName,
+								advertiseUrl: canpinPicAddress, //图片地址
+								advertOpen: Enable,
+								advertUrl: advertUrl, //跳转地址
+								OperatorNumber: OperatorNumber,
+								LaunchTime: advertiseStarttime,
+								InvalidTime: advertiseEndtime
+							},
+							success: function(data) {
+								if("false" == data.result) {
+									layer.alert(data.msg, {
+										icon: 6
+									})
+									return;
+								} else {
+									layer.alert("保存成功 ", {
+										icon: 6
+									}, function() {
+										// 刷新父页面
+										window.parent.location.reload();
+										// 获得frame索引
+										var index = parent.layer
+											.getFrameIndex(window.name);
+										//关闭当前frame
+										parent.layer.close(index);
+									});
+								}
+							}
+						});
+					}
+				});
+			});
+		</script>
+		<script>
+			function getNowFormatDate() {
+				var date = new Date();
+				var seperator1 = "-";
+				var seperator2 = ":";
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if(month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if(strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
+					" " + date.getHours() + seperator2 + date.getMinutes() +
+					seperator2 + date.getSeconds();
+				return currentdate;
+			}
+		</script>
+	</body>
+
+</html>

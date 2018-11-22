@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form" action="" lay-filter="cardAdd">
+					<div class="layui-form-item">
+						<label class="layui-form-label">商户名称</label>
+						<div class="layui-input-inline">
+							<input type="text" name="disCount" autocomplete="off" placeholder="商户名称" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">商户号</label>
+						<div class="layui-input-inline">
+							<input type="text" name="disCount" autocomplete="off" placeholder="商户号" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">商户秘钥</label>
+						<div class="layui-input-inline">
+							<input type="text" name="disCount" autocomplete="off" placeholder="商户秘钥" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">公众号APPID</label>
+						<div class="layui-input-inline">
+							<input type="text" name="disCount" autocomplete="off" placeholder="公众号APPID" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">小程序APPID</label>
+						<div class="layui-input-inline">
+							<input type="text" name="disCount" autocomplete="off" placeholder="小程序APPID" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">APPSECRET</label>
+						<div class="layui-input-inline">
+							<input type="text" name="disCount" autocomplete="off" placeholder="APPSECRET" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">终端号</label>
+						<div class="layui-input-inline">
+							<input type="text" name="disCount" autocomplete="off" placeholder="终端号" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">成本费率模式</label>
+						<div class="layui-input-inline widthauto">
+							<input type="radio" name="Costratemodel" value="0" title="继承通道" checked="">
+							<input type="radio" name="Costratemodel" value="1" title="自定义">
+						</div>
+						<div class="layui-input-inline">
+							<input type="text" name="disCount" autocomplete="off" placeholder="自定义成本费率" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">通道状态</label>
+						<div class="layui-input-inline">
+							<div class="layui-input-inline">
+								<input type="checkbox" name="consumptionPreferences" lay-skin="switch" lay-filter="consumptionPreferences" lay-text="开|关">
+							</div>
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-layout-admin">
+						<div class="layui-input-block">
+							<div class="layui-footer" style="left: 0;text-align: center;">
+								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			function changeRes(res) {
+				var res = res
+				if(res.length == 0) {
+					return
+				}
+				for(var i = 0; i < res.length; i++) {
+					if(res[i].type == 0) {
+						res[i].typea = '可用'
+					} else {
+						res[i].typea = '不可用'
+					}
+					if(res[i].startTime && res[i].endTime != "") {
+						res[i].startTime = res[i].startTime.split(' ')[0]
+						res[i].endTime = res[i].endTime.split(' ')[0]
+					}
+					if(res[i].couponMoney != "") {
+						res[i].couponMoneya = parseFloat(res[i].couponMoney).toFixed(2)
+					}
+					if(res[i].couponMoney == 0) {
+						res[i].couponMoneya = res[i].discount + ' 折'
+					}
+					if(res[i].useTimePeriod == 0) {
+						res[i].useTimePeriod = "长期"
+					} else if(res[i].useTimePeriod == 1) {
+						res[i].useTimePeriod = res[i].startTime + ' ~ ' + res[i].endTime
+					}
+
+				}
+				return res
+			}
+			var serverUrl = window.parent.serverUrl
+			var userNumber = window.parent.userNumber
+			layui.use(['laydate', 'table', 'upload', 'form'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload,
+					laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer;
+				var tableSelect = layui.tableSelect;
+
+				//表单初始赋值
+				form.val('cardAdd', {
+					"userNumber": userNumber
+				})
+
+				/*---------- 下拉表格选择器 ----------*/
+				tableSelect.render({
+					elem: '#couponsSelect',
+					searchKey: 'couponName',
+					checkedKey: 'couponNumber',
+					searchPlaceholder: '搜索优惠券',
+					table: {
+						url: serverUrl + 'coupon/selectCoupon?type=0&pageAll=0&userNumber=' + userNumber,
+						parseData: function(res) { //res 即为原始返回的数据
+							return {
+								"code": res.code, //解析接口状态
+								"msg": res.msg, //解析提示文本
+								"count": res.count, //解析数据长度
+								"data": changeRes(res.result), //解析数据列表
+							};
+						},
+						cols: [
+							[{
+								align: 'center',
+								//fixed: 'left',
+								type: 'checkbox'
+							}, {
+								align: 'center',
+								field: 'couponName',
+								title: '卷名称',
+								sort: true,
+								width: 150
+							}, {
+								align: 'center',
+								field: 'couponMoneya',
+								title: '卷金额(元)/券折扣(折)',
+								sort: true,
+								width: 150
+							}, {
+								align: 'center',
+								field: 'cardVoucherName',
+								title: '卷类型',
+								sort: true,
+								width: 80
+							}, {
+								align: 'center',
+								field: 'useTimePeriod',
+								title: '有效期',
+								sort: true,
+								width: 200
+							}]
+						]
+					},
+					done: function(elem, data) {
+						var newjson = []
+						layui.each(data.data, function(index, item) {
+							newjson.push(item.couponNumber)
+						})
+						elem.val(newjson.join("|"))
+					}
+				})
+
+				/*---------- 优惠设置 ----------*/
+				form.on('select(youhuiSelect)', function(data) {
+					if(data.value == "") {
+						$('#GF_wx').hide()
+						$('#GF_zfb').hide()
+						$('#FY').hide()
+					} else if(data.value == "0") {
+						$('#GF_wx').show()
+						$('#GF_zfb').hide()
+						$('#FY').hide()
+					} else if(data.value == "1") {
+						$('#GF_wx').hide()
+						$('#GF_zfb').show()
+						$('#FY').hide()
+					} else if(data.value == "2") {
+						$('#GF_wx').hide()
+						$('#GF_zfb').hide()
+						$('#FY').show()
+					}
+				});
+
+				/*---------- 生日 ----------*/
+				laydate.render({ //当前卡有效期开始时间
+					elem: '#startTime',
+					value: new Date()
+				});
+				laydate.render({ //当前卡有效期结束时间
+					elem: '#endTime',
+					value: new Date()
+				});
+				laydate.render({ //积分的清零日期
+					elem: '#integralZerotime'
+				});
+
+				/*---------- 普通图片上传 ----------*/
+				var uploadInst = upload.render({
+					elem: '#logoupload',
+					url: '/upload/',
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#logoimg').attr('src', result); //图片链接（base64）
+						});
+					},
+					done: function(res) {
+						//如果上传失败
+						if(res.code > 0) {
+							return layer.msg('上传失败');
+						}
+						//上传成功
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#demoText');
+						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+
+				/*---------- 自定义验证规则 ----------*/
+				form.verify({
+					title: function(value) {
+						if(value.length == "") {
+							return '不能为空！';
+						}
+					},
+					rechargeJe: function(value) {
+						if($('#giveJe').val() != "" && $('#rechargeJe').val() == "") {
+							return '充值金额不能为空！';
+						}
+					},
+					giveJe: function(value) {
+						if($('#rechargeJe').val() != "" && $('#giveJe').val() == "") {
+							return '赠送金额不能为空！';
+						}
+					},
+					rechargeJf: function(value) {
+						if($('#giveJf').val() != "" && $('#rechargeJf').val() == "") {
+							return '充值金额不能为空！';
+						}
+					},
+					giveJf: function(value) {
+						if($('#rechargeJf').val() != "" && $('#giveJf').val() == "") {
+							return '赠送积分不能为空！';
+						}
+					},
+					pass: [/(.+){6,12}$/, '密码必须6到12位'],
+					content: function(value) {
+						layedit.sync(editIndex);
+					}
+				});
+
+				/*---------- 监听开关 ----------*/
+				//form.on('switch(level)', function(data) { //等级开关
+				//	layer.tips('等级开关：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+				//});
+				form.on('switch(consumptionPreferences)', function(data) { //消费优惠开关
+					layer.tips('消费优惠：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#Consumer').show()
+						data.elem.value = "0"
+						console.log(data.elem.value)
+					} else if(data.elem.checked == false) {
+						data.elem.value = "1"
+						console.log(data.elem.value)
+						$('#Consumer').hide()
+					}
+				});
+				form.on('switch(rechargePreferences)', function(data) { //充值优惠开关
+					layer.tips('充值优惠：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#Top_up').show()
+						data.elem.value = "0"
+						console.log(data.elem.value)
+					} else if(data.elem.checked == false) {
+						data.elem.value = "1"
+						console.log(data.elem.value)
+						$('#Top_up').hide()
+					}
+				});
+				form.on('switch(timesCountPreferences)', function(data) { //计次开关
+					layer.tips('计次：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#would').show()
+						data.elem.value = "0"
+						console.log(data.elem.value)
+					} else if(data.elem.checked == false) {
+						data.elem.value = "1"
+						console.log(data.elem.value)
+						$('#would').hide()
+					}
+				});
+				form.on('switch(timePreferences)', function(data) { //计时开关
+					layer.tips('计时：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					if(data.elem.checked == true) {
+						$('#timing').show()
+						data.elem.value = "0"
+						console.log(data.elem.value)
+						$('#timing input').get(0).setAttribute("lay-verify", "title")
+					} else if(data.elem.checked == false) {
+						data.elem.value = "1"
+						console.log(data.elem.value)
+						$('#timing').hide()
+						$('#timing input').get(0).removeAttribute("lay-verify", "title")
+						$('#timingData input').get(0).removeAttribute("lay-verify", "title")
+					}
+				});
+				form.on('radio(cardvalid)', function(data) { //设置会员卡的有效期
+					if(data.value == 1) {
+						$('#Cardvalid').show()
+						$('#startTime').get(0).setAttribute("lay-verify", "title")
+						$('#endTime').get(0).setAttribute("lay-verify", "title")
+					} else {
+						$('#Cardvalid').hide()
+						$('#startTime').get(0).removeAttribute("lay-verify", "title")
+						$('#endTime').get(0).removeAttribute("lay-verify", "title")
+					}
+				});
+				form.on('radio(timing)', function(data) { //设置业务的有效期
+					if(data.value == 1) {
+						$('#timingData').show()
+						$('#timingData input').get(0).setAttribute("lay-verify", "title")
+					} else {
+						$('#timingData').hide()
+						$('#timingData input').get(0).removeAttribute("lay-verify", "title")
+					}
+				});
+				form.on('radio(Resetdate)', function(data) { //积分清零日期开关
+					if(data.value == 1) {
+						$('#ResetdateData').show()
+						$('#ResetdateData input').get(0).setAttribute("lay-verify", "title")
+					} else {
+						$('#ResetdateData').hide()
+						$('#ResetdateData input').get(0).removeAttribute("lay-verify", "title")
+					}
+				});
+				/*---------- 监听提交 ----------*/
+				form.on('submit(add)', function(data, index) {
+					if(!data.field.consumptionPreferences) { //消费优惠开关
+						data.field.consumptionPreferences = '1'
+					}
+					if(!data.field.rechargePreferences) { //充值优惠开关
+						data.field.rechargePreferences = '1'
+					}
+					if(!data.field.timesCountPreferences) { //计次开关
+						data.field.timesCountPreferences = '1'
+					}
+					if(!data.field.timePreferences) { //计时开关
+						data.field.timePreferences = '1'
+					}
+					if(data.field.invalid == 0) {
+						data.field.endTime = "9999-12-31"
+					}
+
+					var rechargeJe = $('#rechargeJe').val()
+					var rechargeJf = $('#rechargeJf').val()
+					var giveJe = $('#giveJe').val()
+					var giveJf = $('#giveJf').val()
+					var Integral = $('#Integral').val()
+					var paymentreturn = $('#paymentreturn').val()
+					var fullSubtraction_j = $('#fullSubtraction_j').val()
+					var fullSubtraction_m = $('#fullSubtraction_m').val()
+
+					if(!data.field.giveMoneyR) {
+						data.field.giveMoneyR = rechargeJe + ":" + giveJe
+					}
+					if(data.field.giveMoneyR == ":") {
+						data.field.giveMoneyR = ""
+					}
+					if(!data.field.giveIntegralR) {
+						data.field.giveIntegralR = rechargeJf + ":" + giveJf
+					}
+					if(data.field.giveIntegralR == ":") {
+						data.field.giveIntegralR = ""
+					}
+					if(Integral != "") {
+						data.field.offsetProportions = Integral + ":1"
+					}
+					if(Integral == "") {
+						data.field.offsetProportions = ""
+					}
+					if(paymentreturn != "") {
+						data.field.returnIntegralRatio = "1:" + paymentreturn
+					}
+					if(paymentreturn == "") {
+						data.field.returnIntegralRatio = ""
+					}
+					if(!data.field.fullSubtraction) {
+						data.field.fullSubtraction = fullSubtraction_m + ":" + fullSubtraction_j
+					}
+					if(data.field.fullSubtraction == ":") {
+						data.field.fullSubtraction = ""
+					}
+
+					var addData = JSON.stringify(data.field)
+
+					// 发送请求
+					$.ajax({
+						type: "post",
+						url: serverUrl + "memberCard/addMemberCard",
+						async: true,
+						dataType: "json",
+						contentType: "application/json",
+						data: addData,
+						success: function(data) {
+							if(data.code == "0") {
+								var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+								parent.layer.close(index); //再执行关闭
+								parent.layer.msg(data.msg);
+								parent.layui.table.reload('vip_cardList');
+							} else if(data.code == "1") {
+								layer.msg("添加会员卡失败");
+							}
+						}
+					});
+					return false;
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

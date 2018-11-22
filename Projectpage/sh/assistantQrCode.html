@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>收款二维码</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/js/qrcode.min.js"></script>
+		<script type="text/javascript" src="../../public/js/pako.min.js"></script>
+		<style>
+			html,body{height:100%;margin:0;}
+			#qrcode{height:100%;}
+			#qrimg{height:99%;display:block;margin:0 auto;}
+		</style>
+	</head>
+	<body>
+		<div id="qrcode">
+			<img id="qrimg" src="">
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				var kuai =  350;//600 -> 800 小
+				var kuai2 =  350;
+				var kuai3 = 180;//600->500 左移
+				var kuai4 = 360;//570->950 下
+				var imgcont = ".qrcode/servletImages.do?qrcodeurl=${assistantQrCode[0].qrcodeurl}&qrcodeId=${assistantQrCode[0].qrcodeId}&background=./images/background.png&kuan="+kuai+"&kuan2="+kuai2+"&kuan3="+kuai3+"&kuan4="+kuai4+"&logo1="+582+"&logo2="+250;
+				$("#qrimg").attr("src",imgcont)
+			})
+		</script>
+	</body>
+</html>

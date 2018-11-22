@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>注册商户</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="./css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="./css/mystyle.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="./css/app.css" />
+		<link href="./css/mui.picker.css" rel="stylesheet" />
+		<link href="./css/mui.poppicker.css" rel="stylesheet" />
+		<link href="./css/mui.dtpicker.css" rel="stylesheet" />
+		<link href="${pageContext.request.contextPath}/configuration/css/iconfont.css" rel="stylesheet" />
+		<script src="./js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			function searchbranch(obj) {
+				if(!obj.value.length) {
+
+				} else {
+					getsearchbranch(obj.value);
+				}
+			}
+
+			function getsearchbranch(branchvalue) {
+				mui.ajax('${pageContext.request.contextPath}/getsearchbranch', {
+					data: {
+						bankName: $("#hanglian")[0].value, //入账卡开户行
+						bankID: $("#bankID")[0].value //入账开户行代码
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data1) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						if(data1.length > 0) {
+							var html = "";
+							$("#searchResult1 ul").html('');
+							for(var i = 0; i < data1.length; i++) {
+								html += '<li class="mui-table-view-cell" onclick="selbranch(\'' +
+									data1[i].text +
+									'\',\'' + data1[i].value + '\')">' +
+									data1[i].text + '</li>';
+							}
+							$("#searchResult1 ul").append(html);
+						} else {
+							$("#searchResult1 ul").html('');
+							$("#searchResult1 ul").append('<li style="width: 100%; height: 100%; text-align: center; color: #ccc;">暂无数据</li>');
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+
+			function selbranch(branchName, branchId) {
+				$("#hanglian")[0].value = branchName;
+				$("#hanglianID")[0].value = branchId;
+				document.getElementById("brankInfo").style = "display:block";
+				document.getElementById("branchdiv").style = "display:none";
+			}
+		</script>
+	</head>
+	<script type="text/javascript">
+		//D0费率显示隐藏
+		function diva() { //隐藏
+			document.getElementById('D0rate').style.display = "none";
+		};
+
+		function divb() { //显示
+			document.getElementById('D0rate').style.display = "";
+		};
+	</script>
+	<script type="text/javascript">
+		$(function() {
+			var License_type = '${list1[0].License_type}';
+			var frlx = '${list1[0].Settlement}';
+			if(frlx == "0") {
+				if(License_type == "A") {
+					document.getElementById("frxxlx1").style.display = "none";
+				}
+			}
+		})
+	</script>
+
+	<body>
+		<input type="hidden" id="QRCodeNumber" name="QRCodeNumber" value="${pd.QRCodeNumber }">
+		<input type="hidden" id="UserNumber" name="UserNumber" value="${pd.UserNumber }">
+		<input type="hidden" id="ShopNumber" name="ShopNumber" value="${pd.ShopNumber }">
+		<!-- //商户类型 -->
+		<input type="hidden" id="License_type" name="License_type" value="${list1[0].License_type }">
+		<input type="hidden" id="idtype" name="idtype" value="${pd.idtype }">
+		<!-- //法人信息 -->
+		<input type="hidden" id="frname" name="frname" value="${list1[0].frname }">
+		<input type="hidden" id="FRID" name="License_type" value="${list1[0].FRID }">
+		<input type="hidden" id="FRIDDATE" name="FRIDDATE" value="${list1[0].FRIDDATE }">
+		<header class="mui-bar mui-bar-nav">
+			<!-- <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="btngoback"></a> -->
+			<i class="iconfont" id="Fanhui">&#xe630;</i>
+			<h1 class="mui-title">银行卡信息</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-content-padded" style="margin: 5px;padding-bottom:40px;">
+				<!--法人-->
+				<c:if test="${list1[0].License_type ne 'A' }">
+					<div class="mui-input-row">
+						<h5>
+							法人入账标识<sub>*</sub><span class="tips"></span>
+						</h5>
+						<div class="mui-input-row mui-radio">
+							<label class="jiesuanlx">非法人入账</label>
+							<c:if test="${empty list1[0].Settlement }">
+								<input id="legalbooked" name="legalbooked" type="radio" value="0" onclick="test(this)">
+							</c:if>
+							<c:if test="${not empty list1[0].Settlement }">
+								<input id="legalbooked" name="legalbooked" type="radio" value="0" onclick="test(this)" <c:if test="${list1[0].Settlement eq '0'}">checked="checked"</c:if>>
+				</c:if>
+				</div>
+				<div class="mui-input-row mui-radio">
+					<label class="jiesuanlx">法人入账</label>
+					<c:if test="${empty list1[0].Settlement }">
+						<input id="legalbooked1" name="legalbooked" type="radio" value="1" checked onclick="test(this)">
+					</c:if>
+					<c:if test="${not empty list1[0].Settlement }">
+						<input id="legalbooked1" name="legalbooked" type="radio" value="1" onclick="test(this)" <c:if test="${list1[0].Settlement eq '1'}">checked="checked"</c:if>>
+					</c:if>
+				</div>
+				</div>
+				</c:if>
+				<c:if test="${list1[0].License_type eq 'A' }">
+					<div class="mui-input-row">
+						<h5>
+							法人入账标识<sub>*</sub><span class="tips"></span>
+						</h5>
+						<div class="mui-input-row mui-radio">
+							<label class="jiesuanlx">法人入账</label>
+							<c:if test="${empty list1[0].Settlement }">
+								<input id="legalbooked1" name="legalbooked" type="radio" value="1" checked>
+							</c:if>
+							<c:if test="${not empty list1[0].Settlement }">
+								<input id="legalbooked1" name="legalbooked" type="radio" value="1" checked <c:if test="${list1[0].Settlement eq '1'}">checked="checked"</c:if>>
+				</c:if>
+				</div>
+				</div>
+				</c:if>
+				<script type="text/javascript">
+					function test(obj) {
+						if(obj.id == "legalbooked") {
+							/* document.getElementById("frxx").style.display = "block"; */
+							document.getElementById("feifrxx").style.display = "block";
+							document.getElementById("feifrxx2").style.display = "block";
+						} else if(obj.id == "legalbooked1") {
+							/* document.getElementById("frxx").style.display = "none"; */
+							document.getElementById("feifrxx").style.display = "none";
+							document.getElementById("feifrxx2").style.display = "none";
+						}
+					}
+				</script>
+				<c:if test="${empty list1[0].Settlement }">
+					<div id="feifrxx" style="display: none;">
+						<div class="mui-input-row">
+							<h5>
+										入账人姓名<sub>*</sub><span class="tips"></span>
+									</h5>
+							<input type="text" id="legalname" class="mui-input-clear" value="${list1[0].LegalPersonName}">
+						</div>
+						<%-- <div class="mui-input-row">
+									<h5>
+										入账证件类型<sub>*</sub><span class="tips"></span>
+									</h5>
+									<input type="text" id='catetype' class="mui-input-clear" value="${list[0].LegalPersonType}">
+								</div> --%>
+						<div class="mui-input-row">
+							<h5>
+										<em id="showcate"></em>入账证件号码<sub>*</sub><span class="tips"></span>
+									</h5>
+							<input type="text" id="Entrycardnumber" class="mui-input-clear" value="${list1[0].LegalPersonID}">
+						</div>
+						<div class="mui-input-row" id='zzyouxiaoqi'>
+							<h5>
+										入账证件到期日<sub>*</sub><span class="tips">格式YYYYMMDD</span>
+									</h5>
+							<input type="text" id="Entrydate" class="mui-input-clear" placeholder="长期请填20991231 无有效期请填 19000101" value="${list1[0].LegalPersonDate}">
+						</div>
+					</div>
+				</c:if>
+				<c:if test="${list1[0].Settlement eq '0' }">
+					<div id="frxxlx1">
+						<div id="feifrxx" style="display:block;">
+							<div class="mui-input-row">
+								<h5>
+									入账人姓名<sub>*</sub><span class="tips"></span>
+								</h5>
+								<input type="text" id="legalname" class="mui-input-clear" value="${list1[0].LegalPersonName}">
+							</div>
+							<%-- <div class="mui-input-row">
+								<h5>
+									入账证件类型<sub>*</sub><span class="tips"></span>
+								</h5>
+								<input type="text" id='catetype' class="mui-input-clear" value="${list[0].LegalPersonType}">
+							</div> --%>
+							<div class="mui-input-row">
+								<h5>
+									<em id="showcate"></em>入账证件号码<sub>*</sub><span class="tips"></span>
+								</h5>
+								<input type="text" id="Entrycardnumber" class="mui-input-clear" value="${list1[0].LegalPersonID}">
+							</div>
+							<div class="mui-input-row" id='zzyouxiaoqi'>
+								<h5>
+									入账证件到期日<sub>*</sub><span class="tips">格式YYYYMMDD</span>
+								</h5>
+								<input type="text" id="Entrydate" class="mui-input-clear" placeholder="长期请填20991231 无有效期请填 19000101" value="${list1[0].LegalPersonDate}">
+							</div>
+						</div>
+					</div>
+				</c:if>
+
+				<c:if test="${list1[0].Settlement eq '1' }">
+					<div id="feifrxx" style="display:none;">
+						<div class="mui-input-row">
+							<h5>
+										入账人姓名<sub>*</sub><span class="tips"></span>
+									</h5>
+							<input type="text" id="legalname" class="mui-input-clear" value="">
+						</div>
+						<%-- <div class="mui-input-row">
+									<h5>
+										入账证件类型<sub>*</sub><span class="tips"></span>
+									</h5>
+									<input type="text" id='catetype' class="mui-input-clear" value="${list[0].LegalPersonType}">
+								</div> --%>
+						<div class="mui-input-row">
+							<h5>
+										<em id="showcate"></em>入账证件号码<sub>*</sub><span class="tips"></span>
+									</h5>
+							<input type="text" id="Entrycardnumber" class="mui-input-clear" value="">
+						</div>
+						<div class="mui-input-row" id='zzyouxiaoqi'>
+							<h5>
+										入账证件到期日<sub>*</sub><span class="tips">格式YYYYMMDD</span>
+									</h5>
+							<input type="text" id="Entrydate" class="mui-input-clear" placeholder="长期请填20991231 无有效期请填 19000101" value="">
+						</div>
+					</div>
+				</c:if>
+
+				<!--个人-->
+				<%-- <div class="mui-input-row">
+					<h5>入账卡类型<sub>*</sub><span class="tips">企业对私打款选双账号</span></h5>
+					<div class="mui-input-row mui-radio Entrycard">
+						<label class="jiesuanlx">对公</label>
+						<c:if test="${empty list }" >
+						<input id="Entrycard1" name="Entrycard" type="radio" value="1" onclick="test(this)" >
+						</c:if>
+						<c:if test="${not empty list }" >
+						<input id="Entrycard1" name="Entrycard" type="radio" value="1" onclick="test(this)"
+						<c:if test="${list[0].SettlementCardIdentification eq '1'}" >checked="checked"</c:if>>
+						</c:if>
+					</div>
+					<div class="mui-input-row mui-radio Entrycard">
+						<label class="jiesuanlx">对私</label>
+						<c:if test="${empty list }" >
+						<input id="Entrycard2" name="Entrycard" type="radio" value="2" onclick="test(this)" checked>
+						</c:if>
+						<c:if test="${not empty list }" >
+						<input id="Entrycard2" name="Entrycard" type="radio" value="2" onclick="test(this)"	
+						<c:if test="${list[0].SettlementCardIdentification eq '2'}" >checked="checked"</c:if>>
+						</c:if>
+					</div>
+					<div class="mui-input-row mui-radio Entrycard">
+						<label class="jiesuanlx">双账号</label>
+						<c:if test="${empty list }" >
+						<input id="Entrycard3" name="Entrycard" type="radio" value="4" onclick="test(this)" >
+						</c:if>
+						<c:if test="${not empty list }" >
+						<input id="Entrycard3" name="Entrycard" type="radio" value="4" onclick="test(this)"
+						<c:if test="${list[0].SettlementCardIdentification eq '4'}" >checked="checked"</c:if>>
+						</c:if>
+					</div>
+					<script type="text/javascript">
+						  function test(obj) {
+							if(obj.id == "Entrycard3") {
+								document.getElementById("onecard").style.display = "block";
+								document.getElementById("twocard").style.display = "block";
+							} else if(obj.id == "Entrycard2"){
+								document.getElementById("onecard").style.display = "block";
+								document.getElementById("twocard").style.display = "none";
+							} else if(obj.id == "Entrycard1"){
+								document.getElementById("onecard").style.display = "block";
+								document.getElementById("twocard").style.display = "none";
+							}
+						}  
+					</script>
+				</div> --%>
+				<%-- <c:if test="${list[0].SettlementCardIdentification eq '4'}" >
+				<div id="twocard">
+					<div class="mui-input-row">
+						<h5>入账卡开户行<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="openbank2" class="mui-input-clear"value="${list[0].PublicOpeningBank}">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡开户行联行号<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="hanglian2" class="mui-input-clear"value="${list[0].PublicOpeningBranch}">
+						<input type="hidden" id='hanglianID2' value="${list[0].PublicOpeningBranchId}">
+						<input type="hidden" id='bankID2' value="${list[0].PublicOpeningBankId}">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡户名<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Cardaccountname2" class="mui-input-clear"value="${list[0].PublicCardHoldingName}"
+						onKeyUp="if(this.value.length>20){this.value=this.value.substr(0,50)};this.value=this.value.replace(/[^\w\u4E00-\u9FA5]/g, '');">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡号<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Accountnumbers2" class="mui-input-clear"value="${list[0].PublicBankCard}"
+                                  onKeyUp="if(this.value.length>11){this.value=this.value.substr(0,40)};this.value=this.value.replace(/[^\d]/g,'');">
+					</div>
+				</div>
+				</c:if> --%>
+				<%-- <div id="twocard" style="display: none;">
+				<c:if test="${!list[0].SettlementCardIdentification eq '4'}" >
+					<div class="mui-input-row">
+						<h5>入账卡开户行<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="openbank2" class="mui-input-clear"value="${list[0].PublicOpeningBank}">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡开户行联行号<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="hanglian2" readonly="readonly" class="mui-input-clear"value="${list[0].PublicOpeningBranch}">
+						<input type="hidden" id='hanglianID2' value="">
+						<input type="hidden" id='bankID2' value="">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡户名<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Cardaccountname2" class="mui-input-clear"value="${list[0].PublicCardHoldingName}"
+						onKeyUp="if(this.value.length>20){this.value=this.value.substr(0,50)};this.value=this.value.replace(/[^\w\u4E00-\u9FA5]/g, '');">
+					</div>
+					<div class="mui-input-row">
+						<h5>入账卡号<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Accountnumbers2" class="mui-input-clear"value="${list[0].PublicBankCard}"
+                                  onKeyUp="if(this.value.length>11){this.value=this.value.substr(0,40)};this.value=this.value.replace(/[^\d]/g,'');">
+					</div>
+				</c:if>
+				</div> --%>
+				<div class="mui-input-row">
+					<h5>入账卡开户行<sub>*</sub><span class="tips"></span></h5>
+					<input type="text" id="openbank" class="mui-input-clear" value="${list[0].OpeningBank}">
+				</div>
+				<div class="mui-input-row" id="zhihanglist" style="overflow:initial;">
+					<h5>入账卡开户行联行号<sub>*</sub><span class="tips"></span></h5>
+					<%-- <input type="text" id="hanglian" class="mui-input-clear" value="${list[0].OpeningBranch}" onkeyup="searchbranch(this)"> --%>
+					<input type="text" class="mui-input-clear" placeholder="搜索支行" id="hanglian" onkeyup="searchbranch(this)" value="${list[0].OpeningBranch}">
+					<input type="hidden" id='hanglianID' value="${list[0].OpeningBranchId}">
+					<input type="hidden" id='bankID' value="${list[0].OpeningBankId}">
+					<style>
+						#zhihanglist .mui-icon-clear {
+							top: 35px !important;
+						}
+						
+						#branchdiv {
+							width: 100%;
+							max-height: 300px;
+							overflow: auto;
+							position: absolute;
+							top: 64px;
+							z-index: 9999;
+							border: 1px solid #c8c7cc;
+							border-radius: 3px;
+						}
+					</style>
+					<div id="branchdiv" style="display:none;">
+						<div class="mui-content">
+							<div id="searchResult1">
+								<ul class="mui-table-view"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<c:if test="${list1[0].Settlement eq '0' }">
+					<div id="frxxlx1">
+						<div class="mui-input-row" id="feifrxx2" style="display:block;">
+							<h5>入账卡户名<sub>*</sub><span class="tips"></span></h5>
+							<input type="text" id="Cardaccountname" class="mui-input-clear" value="${list[0].CardHoldingName}">
+						</div>
+					</div>
+				</c:if>
+				<c:if test="${list1[0].Settlement eq '1' }">
+					<div class="mui-input-row" id="feifrxx2" style="display:none;">
+						<h5>入账卡户名<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Cardaccountname" class="mui-input-clear" value="">
+					</div>
+				</c:if>
+				<c:if test="${empty  list1[0].Settlement  }">
+					<div class="mui-input-row" id="feifrxx2" style="display: none;">
+						<h5>入账卡户名<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Cardaccountname" class="mui-input-clear" value="">
+					</div>
+				</c:if>
+
+				<div id="brankInfo">
+					<div class="mui-input-row">
+						<h5>入账卡号<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Accountnumbers" class="mui-input-clear" value="${list[0].BankCard}">
+					</div>
+					<c:if test="${empty list[0].Source}">
+						<div class="mui-input-row">
+							<h5>选择费率<sub>*</sub><span class="tips"></span></h5>
+							<!-- <input type="text" id="Selectrate" readonly="readonly" class="mui-input-clear" value="0.25%">
+							<input type="hidden" id="PCrate" class="mui-input-clear" value="0.25">
+							<input type="hidden" id="PCrateBM" class="mui-input-clear" value="N0309"> -->
+							<c:if test="${not empty list[0].Rate }">
+								<select class="Selectrate" id="Selectrate" readonly="readonly">
+									<option value="0.10" <c:if test="${list[0].Rate eq 0.10 }">selected="selected"</c:if>>0.10%</option>
+							<option value="0.25" <c:if test="${list[0].Rate eq 0.25 }">selected="selected"</c:if>>0.25%</option>
+					</select>
+					<input type="hidden" id="PCrate" class="mui-input-clear" value="${list[0].Rate}">
+					<input type="hidden" id="PCrateBM" class="mui-input-clear" value="${list[0].RateIdentification }">
+					</c:if>
+					<c:if test="${empty list[0].Rate }">
+						<select class="Selectrate" id="Selectrate" readonly="readonly">
+							<option value="0.10">0.10%</option>
+							<option value="0.25" selected="selected">0.25%</option>
+						</select>
+						<input type="hidden" id="PCrate" class="mui-input-clear" value="0.25">
+						<input type="hidden" id="PCrateBM" class="mui-input-clear" value="N0309">
+					</c:if>
+
+					</div>
+					<style>
+						.Selectrate {
+							padding: 10px 15px !important;
+							border: 1px solid #ccc !important;
+							line-height: 14px;
+						}
+						
+						.mui-input-row select {
+							font-size: 14px;
+						}
+					</style>
+					</c:if>
+					<c:if test="${list[0].Source eq 1 }">
+						<div class="mui-input-row">
+							<h5>选择费率<sub>*</sub><span class="tips"></span></h5>
+							<input type="text" id="Selectrate" readonly="readonly" class="mui-input-clear" value="0.25%">
+							<input type="hidden" id="PCrate" class="mui-input-clear" value="0.25">
+							<input type="hidden" id="PCrateBM" class="mui-input-clear" value="N0313">
+						</div>
+					</c:if>
+					<%-- <div class="mui-input-row">
+						<h5>D1结算<sub>*</sub><span class="tips"></span></h5>
+						<div class="mui-input-row mui-radio">
+							<label class="jiesuanlx">不开通</label>
+							<c:if test="${empty list }" >
+							<input id="settlementd1" name="jiesuand1" type="radio" value="0"  checked>
+							</c:if>
+							<c:if test="${not empty list }" >
+							<input id="settlementd1" name="jiesuand1" type="radio" value="0" 
+							<c:if test="${list[0].D1Dalance eq '0'}" >checked="checked"</c:if>>
+							</c:if>
+						</div>
+						<div class="mui-input-row mui-radio">
+							<label class="jiesuanlx">开通</label>
+							<c:if test="${empty list }" >
+							<input id="settlementd1" name="jiesuand1" type="radio" value="1"  >
+							</c:if>
+							<c:if test="${not empty list }" >
+							<input id="settlementd1" name="jiesuand1" type="radio" value="1" 
+							<c:if test="${list[0].D1Dalance eq '1'}" >checked="checked"</c:if>>
+							</c:if>
+						</div>
+					</div> 
+					<div class="mui-input-row">
+						<h5>是否开通D0提现<sub>*</sub><span class="tips"></span></h5>
+						<div class="mui-input-row mui-radio">
+							<label class="jiesuanlx">不开通</label>
+							<c:if test="${empty list }" >
+							<input id="settlementd0" name="jiesuand0" type="radio" value="0" onClick="return diva()" checked>
+							</c:if>
+							<c:if test="${not empty list }" >
+							<input id="settlementd0" name="jiesuand0" type="radio" value="0" onClick="return diva()" 
+							<c:if test="${list[0].D0PutForward eq '0'}" >checked="checked"</c:if>>
+							</c:if>
+						</div>
+						<div class="mui-input-row mui-radio">
+							<label class="jiesuanlx">开通</label>
+							<c:if test="${empty list }" >
+							<input id="settlementd0" name="jiesuand0" type="radio" value="1" onClick="return divb()" >
+							</c:if>
+							<c:if test="${not empty list }" >
+							<input id="settlementd0" name="jiesuand0" type="radio" value="1" onClick="return divb()"
+							<c:if test="${list[0].D0PutForward eq '1'}" >checked="checked"</c:if>>
+							</c:if>
+						</div>
+					</div>
+					<c:if test="${not empty list }" >
+						<c:if test="${list[0].D0PutForward eq '1'}" >
+							<div class="mui-input-row" id="D0rate">
+								<h5>选择费率<sub>*</sub><span class="tips"></span></h5>
+								<input type="text" id="Selectrated0" readonly="readonly" class="mui-input-clear" value="${list[0].D0Rate}">
+								<input type="hidden" id="D0rated" class="mui-input-clear" value="${list[0].D0Rate}">
+								<input type="hidden" id="D0ratedBM" class="mui-input-clear" value="${list[0].D0RateIdentification }">
+								
+							</div>
+						</c:if>
+						<c:if test="${list[0].D0PutForward eq '0'}" >
+							<div class="mui-input-row" id="D0rate" style="display: none;">
+								<h5>选择费率<sub>*</sub><span class="tips"></span></h5>
+								<input type="text" id="Selectrated0" readonly="readonly" class="mui-input-clear" value="${list[0].D0Rate}">
+								<input type="hidden" id="D0rated" class="mui-input-clear" value="${list[0].D0Rate}">
+								<input type="hidden" id="D0ratedBM" class="mui-input-clear" value="${list[0].D0RateIdentification }">
+							</div>
+						</c:if>
+					</c:if>
+					<c:if test="${empty list }" >
+					<div class="mui-input-row" id="D0rate" style="display: none;">
+						<h5>选择费率<sub>*</sub><span class="tips"></span></h5>
+						<input type="text" id="Selectrated0" readonly="readonly" class="mui-input-clear" value="${list[0].D0Rate}">
+						<input type="hidden" id="D0rated" class="mui-input-clear" value="${list[0].D0Rate}">
+						<input type="hidden" id="D0ratedBM" class="mui-input-clear" value="${list[0].D0RateIdentification }">
+					</div>
+					</c:if>
+					<!--个人-->--%>
+				</div>
+
+				<div id="branchdiv" style="display:none;">
+					<div class="mui-content">
+						<div id="searchResult1">
+							<ul class="mui-table-view"></ul>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div id="caozuo" style=" text-align:center;">
+				<i class="iconfont btngoback" id="btngoback"> &#xe622;</i>
+				<!-- <a class="mui-btn mui-btn-primary nextstep" id="Fanhui" style="width: 150px;">返回</a>
+				<a class="mui-btn mui-btn-primary nextstep" id="Submit" style="width: 150px;">下一步</a> -->
+				<i class="iconfont Submit" id="Submit">&#xe621;</i>
+			</div>
+		</div>
+	</body>
+	<script src="./js/mui.min.js "></script>
+	<script src="./js/mui.view.js "></script>
+	<script src="./js/mui.datepicker.js"></script>
+	<script src="./js/mui.picker.js"></script>
+	<script src="./js/mui.poppicker.js"></script>
+	<script src="./js/hangye.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./js/hangbie.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./js/Rate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./js/D0Rate.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				var flag = false;
+				//创建遮罩蒙板
+				var mask = mui.createMask(function() {
+					//设置点击蒙板不会自动消失
+					//但调用close方法关闭mask时，必须返回true
+					return flag;
+				});
+				var legalbooked = $("input[name='legalbooked']:checked")[0].value; //法人入账标识
+				var result = $('#Entrydate')[0];
+				var btns = $('#zzyouxiaoqi');
+				btns.each(function(i, btn) {
+					btn.addEventListener('tap', function() {
+						var optionsJson = this.getAttribute('data-options') || '{}';
+						var options = JSON.parse(optionsJson);
+
+						//if(options.starttoday === 1) {
+						var endDate = "2099-11-31"
+						var endDateArray = endDate.split('-');
+						end = new Date();
+						options.beginDate = new Date(end.valueOf() + 1 * 24 * 60 * 60 * 1000); //明天
+						options.endDate = new Date(parseInt(endDateArray[0]), parseInt(endDateArray[1]), parseInt(endDateArray[2]));
+						//}
+						var picker = new $.DtPicker(options);
+						picker.show(function(rs) {
+							var youxiaoqi = rs.y.text + rs.m.text + rs.d.text;
+							result.value = youxiaoqi;
+							picker.dispose();
+						});
+
+					}, false);
+				});
+				/**
+				 * 获取对象属性的值
+				 * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+				 * @param {Object} obj 对象
+				 * @param {String} param 属性名
+				 */
+				//导航返回事件
+				document.getElementById("btngoback").addEventListener('click', function() {
+					var QRCodeNumber = $("#QRCodeNumber")[0].value;
+					window.location.href = '${pageContext.request.contextPath}/salesingup/gomerchantAdd?UserNumber=' + $("#UserNumber")[0].value + '&ShopNumber=' + $("#ShopNumber")[0].value;
+				});
+				var Source = '${list[0].Source}';
+				//导航返回事件
+				document.getElementById("Fanhui").addEventListener('click', function() {
+					if(Source != "1") {
+						var QRCodeNumber = $("#QRCodeNumber")[0].value;
+						var UserNumber = $("#UserNumber")[0].value; //商户编号
+						var ShopNumber = $("#ShopNumber")[0].value; //店铺编号
+						window.location.href = '${pageContext.request.contextPath}/salesingup/goindexsale?UserNumber=' + UserNumber + '&ShopNumber=' + ShopNumber + '&QRCodeNumber=' + QRCodeNumber;
+					}
+				});
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//开户行
+				var openbankPicker = new mui.PopPicker();
+				var Selectbank1Picker = new mui.PopPicker();
+				openbankPicker.setData(hangbieData);
+				var showopenbankPickerButton = doc.getElementById('openbank');
+				var openbankResult = doc.getElementById('openbank');
+				showopenbankPickerButton.addEventListener('tap', function(event) {
+					openbankPicker.show(function(items) {
+						openbankResult.value = items[0].text;
+						$("#bankID")[0].value = items[0].value;
+						/* mui.ajax('${pageContext.request.contextPath}/getsearchbranch', {
+							data: {
+								bankName: $("#openbank")[0].value, //入账卡开户行
+							},
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							success: function(data) {
+								Selectbank1Picker.setData("");
+								//服务器返回响应，根据响应结果，分析是否返回成功；
+								if(data !=""){
+								 	var bankylData = eval(data);
+									Selectbank1Picker.setData(bankylData);
+									var showUserPickerButton = doc.getElementById('hanglian');
+									var userResult = doc.getElementById('hanglian');
+									showUserPickerButton.addEventListener('tap', function(event) {
+										Selectbank1Picker.show(function(itemss) {
+											userResult.value =itemss[0].text;
+											$("#hanglianID")[0].value=itemss[0].value;
+										});
+									}, false);
+								}
+							}
+						}) */
+					});
+				}, false);
+
+				/* //双账户开户行
+				 var bank_type='${list[0].SettlementCardIdentification}';
+				if(bank_type==4){ 
+					var openbankPicker1 = new mui.PopPicker();
+					var twoSelectbank1Picker = new mui.PopPicker();
+					openbankPicker1.setData(hangbieData);
+					var twoopenbankResult = doc.getElementById('openbank2');
+						twoopenbankResult.addEventListener('tap', function(event) {
+						openbankPicker1.show(function(items) {
+							twoopenbankResult.value = items[0].text;
+							$("#bankID2")[0].value=items[0].value;
+							/* mui.ajax('${pageContext.request.contextPath}/getsearchbranch', {
+								data: {
+									bankName: $("#openbank2")[0].value, //入账卡开户行
+								},
+								dataType: 'json', //服务器返回json格式数据
+								type: 'post', //HTTP请求类型
+								success: function(data) {
+									twoSelectbank1Picker.setData("");
+									//服务器返回响应，根据响应结果，分析是否返回成功；
+									if(data !=""){
+									 	var bankylData = eval(data);
+									 		twoSelectbank1Picker.setData(bankylData);
+										var twouserResult = doc.getElementById('hanglian2');
+										twouserResult.addEventListener('tap', function(event) {
+											twoSelectbank1Picker.show(function(itemss) {
+												twouserResult.value = itemss[0].text;
+												$("#hanglianID2")[0].value=itemss[0].value;
+											});
+										}, false);
+									}
+								}
+							}) 
+						});
+					}, false); */
+
+				document.getElementById("hanglian").addEventListener('click', function() {
+					document.getElementById("branchdiv").style = "display:black";
+				});
+				//-----------------------------------------
+				//PC选择费率
+				/* var SelectratePicker = new $.PopPicker();
+				SelectratePicker.setData(FYRate);
+				var showSelectrateButton = doc.getElementById('Selectrate');
+				var SelectrateResult1 = doc.getElementById('Selectrate');
+				showSelectrateButton.addEventListener('tap', function(event) {
+					SelectratePicker.show(function(items) {
+						SelectrateResult1.value = items[0].text;//获取费率值中文
+						$("#PCrate")[0].value=items[0].text1;//获取费率值
+						$("#PCrateBM")[0].value=items[0].value;//获取费率编码
+
+					});
+				}, false); */
+
+				//提交
+				document.getElementById("Submit").addEventListener('click', function() {
+					var check = true;
+					//法人
+					var legalbooked = $("input[name='legalbooked']:checked")[0].value; //法人入账标识
+					if(legalbooked.trim() == "") {
+						mui.alert("法人入账标识不允许为空");
+						check = false;
+						return false;
+					}
+					if(legalbooked == "0") {
+						var legalname = $("#legalname")[0].value; //法人姓名
+						if(legalname.trim() == "") {
+							mui.alert("法人姓名不允许为空");
+							check = false;
+							return false;
+						} else {
+							var isCo = new RegExp("^([a-z]|[A-Z]|[0-9]|[\\u4e00-\\u9fa5]){0,15}$");
+							if(!isCo.test(legalname)) {
+								mui.alert("法人姓名无效");
+								check = false;
+								return false;
+							}
+						}
+						var Entrycardnumber = $("#Entrycardnumber")[0].value; //入账证件号码
+						if(Entrycardnumber.trim() == "") {
+							mui.alert("入账证件号码不允许为空");
+							check = false;
+							return false;
+						} else {
+							var isEn = new RegExp("^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$");
+							if(!isEn.test(Entrycardnumber)) {
+								mui.alert("入账证件号码输入过长或者有误");
+								check = false;
+								return false;
+							}
+						}
+						var Entrydate = $("#Entrydate")[0].value; //入账证件到期日
+						if(Entrydate.trim() == "") {
+							mui.alert("入账证件到期日不允许为空");
+							check = false;
+							return false;
+						}
+						var Cardaccountname = $("#Cardaccountname")[0].value; //入账卡户名
+						if(Cardaccountname.trim() == "") {
+							mui.alert("入账卡户名不允许为空");
+							check = false;
+							return false;
+						}
+					}
+					//银行
+					var hanglian = $("#hanglian")[0].value; //入账卡开户行联行号
+					if(hanglian.trim() == "") {
+						mui.alert("入账开户行联行号不允许为空");
+						check = false;
+						return false;
+					}
+					var openbank = $("#openbank")[0].value; //入账卡开户行
+					if(openbank.trim() == "") {
+						mui.alert("入账卡开户行不允许为空");
+						check = false;
+						return false;
+					}
+
+					var Accountnumbers = $("#Accountnumbers")[0].value; //入账卡号
+					if(Accountnumbers.trim() == "") {
+						mui.alert("入账卡号不允许为空");
+						check = false;
+						return false;
+					}
+					/* //双账户
+					var Cardtype = $("input[name='Entrycard']:checked")[0].value;
+					if(Cardtype==4){
+						var hanglian2 = $("#hanglian2")[0].value; //入账卡开户行联行号
+						if(hanglian2.trim() == "") {
+							mui.alert("入账开户行联行号不允许为空");
+							check = false;
+							return false;
+						}
+						var openbank2 = $("#openbank2")[0].value; //入账卡开户行
+						if(openbank2.trim() == "") {
+							mui.alert("入账卡开户行不允许为空");
+							check = false;
+							return false;
+						}
+						var Cardaccountname2 = $("#Cardaccountname2")[0].value; //入账卡户名
+						if(Cardaccountname2.trim() == "") {
+							mui.alert("入账卡户名不允许为空");
+							check = false;
+							return false;
+						}
+						var Accountnumbers2 = $("#Accountnumbers2")[0].value; //入账卡号
+						if(Accountnumbers2.trim() == "") {
+							mui.alert("入账卡号不允许为空");
+							check = false;
+							return false;
+						}
+					} */
+					var Selectrate = $("#Selectrate")[0].value; //选择费率
+					if(Selectrate.trim() == "") {
+						mui.alert("费率不允许为空");
+						check = false;
+						return false;
+					} else if(Selectrate == "0.10") {
+						$("#PCrate")[0].value = "0.10"; //选择费率值
+						PCrateBM: $("#PCrateBM")[0].value = "N0313"; //选择费率编码
+					} else if(Selectrate == "0.25") {
+						$("#PCrate")[0].value = "0.25"; //选择费率值
+						$("#PCrateBM")[0].value = "N0309"; //选择费率编码
+					}
+					var Clearamount = 100; //小额清算金额
+					var settlement = 1; //结算类型
+					/* var Clearamount = $("#Clearamount")[0].value; //小额清算金额
+					if(Clearamount.trim() == "") {
+						mui.alert("小额清算金额不允许为空");
+						check = false;
+						return false;
+					} */
+					if(legalbooked == "1") {
+						var legalname = $("#frname")[0].value;
+						var Cardaccountname = $("#frname")[0].value; //入账卡户名
+						var Entrycardnumber = $("#FRID")[0].value;
+						var Entrydate = $("#FRIDDATE")[0].value;
+					} else {
+						var legalname = $("#legalname")[0].value;
+						var Cardaccountname = $("#Cardaccountname")[0].value; //入账卡户名
+						var Entrycardnumber = $("#Entrycardnumber")[0].value;
+						var Entrydate = $("#Entrydate")[0].value;
+					}
+					mui.toast("请稍等...");
+					mask.show(); //显示遮罩
+					check && mui.ajax('${pageContext.request.contextPath}/bankCardAdd2', {
+						data: {
+							legalbooked: $("input[name='legalbooked']:checked")[0].value, //法人入账标识
+							legalname: legalname, //法人姓名
+							Entrycardnumber: Entrycardnumber, //入账证件号码
+							Entrydate: Entrydate, //入账证件到期日
+							UserNumber: $("#UserNumber")[0].value, //商户id
+							ShopNumber: $("#ShopNumber")[0].value, //店铺id
+							idtype: $("#idtype")[0].value, //证件类型
+							openbank: $("#openbank")[0].value, //入账卡开户行
+							/*openbank2: $("#openbank2")[0].value, //双账号入账卡开户行 */
+							BankID: $("#bankID")[0].value, //银行编码
+							/* BankID2:$("#bankID2")[0].value,//银行编码 */
+							hanglian: $("#hanglian")[0].value, //入账卡开户行联行号名称
+							/* hanglian2: $("#hanglian2")[0].value, //双账号入账卡开户行联行号名称 */
+							hanglianID: $("#hanglianID")[0].value, //入账卡开户行联行号
+							/*hanglianID2: $("#hanglianID2")[0].value, //双账号入账卡开户行联行号  */
+							Cardaccountname: Cardaccountname, //入账卡户名
+							/* Cardaccountname2: $("#Cardaccountname2")[0].value, //双账号入账卡户名 */
+							Accountnumbers: $("#Accountnumbers")[0].value, //入账卡号
+							/* Accountnumbers2: $("#Accountnumbers2")[0].value, //双账号入账卡号 */
+							PCrate: $("#PCrate")[0].value, //选择费率值
+							PCrateBM: $("#PCrateBM")[0].value, //选择费率编码
+							Clearamount: Clearamount, //小额清算金额
+							settlement: settlement, //清算类型
+							settlementd1: "1", //D1结算
+							settlementd0: "", //是否开通D0提现
+							D0rated: "", //D0费率值
+							D0ratedBM: "", //D0费率代码
+							Entrycard: "2", //入账卡类型
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							//关闭遮罩蒙板
+							flag = true;
+							mask.close();
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							if("success" == data.result) {
+								window.location.href = '${pageContext.request.contextPath}/salesingup/goPhotoAdd?QRCodeNumber=${pd.QRCodeNumber}&UserNumber=${pd.UserNumber}&ShopNumber=${pd.ShopNumber}&BankCard=' + $("#Accountnumbers")[0].value;
+							} else {
+								mui.alert(data.msg);
+								return false;
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(type);
+						}
+					});
+				})
+			});
+		})(mui, document);
+	</script>
+
+</html>

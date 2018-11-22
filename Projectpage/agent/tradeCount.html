@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title></title>
+		<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<link rel="stylesheet" href="../../public/css/style.css">
+		<link rel="stylesheet" href="../../public/css/style-baobiao.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					type: 'POST',
+					async: true,
+					url: ".getqudao",
+					success: function(data) {
+						for(var i = 0; i < data.length; i++) {
+							$("#payment").append("<option value='" + data[i].Passageway + "'>" + data[i].PassagewayC + "</option>");
+						}
+					}
+				});
+			})
+		</script>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a>
+          <cite>概览统计</cite></a>
+      </span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row x-so">
+				<div class="layui-form">
+					<div class="layui-input-inline">
+						<input type="text" name="shopname" id="shopname" placeholder="门店名称" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<select name="payment" id="payment">
+							<option value="">所属渠道</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" placeholder="开始时间" name="startTime" id="startTime">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" placeholder="截止时间" name="endTime" id="endTime">
+					</div>
+					<div class="layui-input-inline">
+						<button class="layui-btn" lay-submit="" lay-filter="sreach" data-type="reload" title="搜索" id="btn"><i class="layui-icon">&#xe615;</i></button>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row layui-col-space15 baobiao">
+				<div class="layui-col-md1 layui-col-sm1 layui-col-xs1">
+					<div class="baobiaok" style="height: 137px;">
+						<div class="baobiaolist">
+							<p class="baobiaolistitle">门店数量</p>
+							<p class="baobiaolistct"><span id="shopnum">1</span> 个</p>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md3 layui-col-sm3 layui-col-xs3">
+					<div class="baobiaok">
+						<div class="baobiaolist">
+							<p class="baobiaolistitle">交易笔数</p>
+							<p class="baobiaolistct"><span id="buss">1</span> 笔</p>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc dnsj">
+								<div></div>
+								<p><span id="zbuss">1</span> 单</p>
+							</div>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc wmsj">
+								<div></div>
+								<p><span id="wbuss">1</span> 单</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md3 layui-col-sm3 layui-col-xs3">
+					<div class="baobiaok">
+						<div class="baobiaolist">
+							<p class="baobiaolistitle"><span style="font-size: 18px;">商家收入（元）</span></p>
+							<p class="baobiaolistct"><span id="bussmoney">1</span> 元</p>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc dnsj">
+								<div></div>
+								<p><span id="zbussmoney">1</span> 元</p>
+							</div>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc wmsj">
+								<div></div>
+								<p><span id="wbussmoney">1</span> 元</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md3 layui-col-sm3 layui-col-xs3">
+					<div class="baobiaok">
+						<div class="baobiaolist">
+							<p class="baobiaolistitle"><span style="font-size: 18px;">商家退款（元）</span></p>
+							<p class="baobiaolistct"><span id="backmoney">1</span> 元</p>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc dnsj">
+								<div></div>
+								<p><span id="zbackmoney">1</span> 元</p>
+							</div>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc wmsj">
+								<div></div>
+								<p><span id="wbackmoney">1</span> 元</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md1 layui-col-sm1 layui-col-xs1">
+					<div class="baobiaok" style="height: 137px;">
+						<div class="baobiaolist">
+							<p class="baobiaolistitle">佣金</p>
+							<p class="baobiaolistct"><span id="brokerage">00</span> 元</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<table class="layui-table" id="table1" lay-filter="useruv"></table>
+		</div>
+	</body>
+
+	<script>
+		//列表
+		layui.use(['table', 'layer'], function() {
+
+			$ = layui.jquery;
+			var layer = layui.layer;
+			var table = layui.table;
+
+			//方法级渲染
+			table.render({
+				elem: '#table1',
+				url: '.getTradeList',
+				page: true,
+				limits: [10, 20],
+				method: "post",
+				id: 'tradeInfo',
+				cols: [
+					[{
+						field: 'ShopName',
+						title: '门店姓名'
+					}, {
+						field: 'UserName',
+						title: '商户名称',
+						align: 'center'
+					}, {
+						field: 'ShopTell',
+						title: '手机号码',
+						align: 'center'
+					}, {
+						field: 'AgentName',
+						title: '所属代理商',
+						align: 'center'
+					}, {
+						field: 'Share',
+						title: '佣金',
+						align: 'center'
+					}, {
+						field: 'TransactionNumber',
+						title: '交易笔数',
+						align: 'center'
+					}, {
+						field: 'TransactionMoney',
+						title: '商家收入',
+						align: 'center'
+					}, {
+						field: 'RefundMoney',
+						title: '商家退款',
+						align: 'center'
+					}, {
+						field: 'UserType',
+						title: '类型',
+						align: 'center'
+					}]
+				]
+			})
+
+			// 根據條件重载表格
+			var $ = layui.$,
+				active = {
+					reload: function() {
+						// 获取上面查询框的值
+						var shopname = $("#shopname").val();
+						var startTime = $("#startTime").val();
+						var endTime = $("#endTime").val();
+						var passway = $("#payment option:selected").val();
+						//执行重载
+						table.reload('tradeInfo', {
+							page: {
+								curr: 1 //重新从第 1 页开始
+							},
+							where: {
+								shopname: shopname,
+								starttime: startTime,
+								endtime: endTime,
+								passway: passway
+							}
+						});
+					}
+				};
+
+			$('.layui-row .layui-btn').on('click', function() {
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
+			});
+		});
+	</script>
+	<script>
+		var beginDate = new Date();
+		if(beginDate.getMonth() == 1) {
+			beginDate.setYear(beginDate.getYear() - 1);
+			beginDate.setMonth(12);
+		} else {
+			beginDate.setMonth(beginDate.getMonth() - 1);
+		}
+		var endDate = new Date();
+		// 选择日期插件  
+		layui.use('laydate', function() {
+			var laydate = layui.laydate;
+			laydate.render({
+				elem: '#startTime', //指定元素
+				type: 'datetime',
+				value: beginDate
+			});
+			laydate.render({
+				elem: '#endTime',
+				type: 'datetime',
+				value: endDate
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$("#btn").click(function() {
+			var shopname = $("#shopname").val();
+			var startTime = $("#startTime").val();
+			var endTime = $("#endTime").val();
+			var passway = $("#payment option:selected").val();
+			$.ajax({
+				type: 'POST',
+				async: true,
+				url: ".getShangData",
+				data: {
+					"startTime": startTime,
+					"endTime": endTime,
+					"ShopName": shopname,
+					"passway": passway
+				},
+				success: function(data) {
+					$("#shopnum").text(data[0].ShopNumber);
+					$("#buss").text(data[0].TransactionNumber);
+					$("#zbuss").text(data[0].ZTransactionNumber);
+					$("#wbuss").text(data[0].WTransactionNumber);
+					$("#bussmoney").text(data[0].TransactionMoney);
+					$("#zbussmoney").text(data[0].ZTransactionMoney);
+					$("#wbussmoney").text(data[0].WTransactionMoney);
+					$("#backmoney").text(data[0].RefundMoney);
+					$("#zbackmoney").text(data[0].ZRefundMoney);
+					$("#wbackmoney").text(data[0].WRefundMoney);
+					$("#brokerage").text(data[0].Share);
+				}
+			});
+		});
+	</script>
+
+</html>

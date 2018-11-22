@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>注册商户</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="./css/mui.min.css">
+		<link rel="stylesheet" href="./css/xiaoshouzhushou.css">
+		<link rel="stylesheet" type="text/css" href="./css/feedback.css" />
+		<link rel="stylesheet" type="text/css" href="./css/mystyle.css?v=1" />
+		<link href="./css/mui.picker.css" rel="stylesheet" />
+		<link href="./css/mui.poppicker.css" rel="stylesheet" />
+		<link href="./css/mui.dtpicker.css" rel="stylesheet" />
+		<link href="${pageContext.request.contextPath}/configuration/css/iconfont.css" rel="stylesheet" />
+		<script src="./js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.weui-uploader__input-box {
+				float: left;
+				position: relative;
+				margin-right: 9px;
+				margin-bottom: 9px;
+				width: 60px;
+				height: 60px;
+				background-image:url(./images/iconfont-tianjia.png);
+				background-size: cover;
+			}
+			
+			.weui-uploader__input {
+				position: absolute;
+				z-index: 1;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+			}
+			
+			.weui-uploader__input-box:after {
+				width: 20px;
+				height: 20px;
+				content: '';
+				font-size: 40px;
+				color: #D9D9D9;
+				position: absolute;
+				top: calc(50% - 9px);
+				left: calc(50% - 11px);
+			}
+			
+			.weui-uploader__input-box:before {
+				width: 2px;
+				height: 39.5px;
+			}
+			
+			.weui-uploader__huixian10 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian10 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian11 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian11 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian12 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian12 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian13 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian13 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian14 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian14 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian15 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian15 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian16 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian16 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian17 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian17 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian18 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian18 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian19 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian19 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian20 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian20 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian21 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian21 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian22 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian22 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian23 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian23 img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian24 {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.weui-uploader__huixian24 img {
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+		<script>
+			/* window.onload=function(){
+							var u = navigator.userAgent;
+							var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+							var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+							if(isAndroid){
+								$("input[type='file']").attr("capture","camera");
+							}
+						} */
+		</script>
+		<script type="text/javascript">
+			$(function() {
+				var yyZZ = $("#AccountType")[0].value; //商户
+				var Ccard = $("#Creditcard")[0].value; //入账卡类型
+				var duisi = $("#legalbooked")[0].value;
+				console.log(yyZZ);
+				console.log(duisi);
+				console.log(Ccard);
+				if(yyZZ == 'A') { //个人不传
+					$("#yingyezhizhao").css("display", "none");
+				}
+				if(duisi == '1') { //法人不传
+					$("#duisizhanghu").css("display", "none");
+				}
+				/* if((yyZZ != "A" || Ccard == "1")){
+					$("#kaihuxukez").css("display","block");
+				} */
+			})
+		</script>
+	</head>
+
+	<body>
+		<input type="hidden" id="QRCodeNumber" name="QRCodeNumber" value="${pd.QRCodeNumber }">
+		<input type="hidden" id="UserNumber" name="UserNumber" value="${pd.UserNumber }">
+		<input type="hidden" id="ShopNumber" name="ShopNumber" value="${pd.ShopNumber }">
+		<input type="hidden" id="BankCard" name="BankCard" value="${pd.BankCard }">
+		<input type="hidden" id="AccountType" name="AccountType" value="${list[0].AccountType }">
+		<!-- 商户类型（企业/个体/个人） -->
+		<input type="hidden" id="legalbooked" name="legalbooked" value="${list[0].legalbooked }">
+		<!-- 入账类型（法人/非法人） -->
+		<input type="hidden" id="Creditcard" name="Creditcard" value="${list[0].Creditcard }">
+		<!-- 入账卡类型 （对私/对公/双账户）-->
+		<input type="hidden" id="urlSite" name="urlSite" value="${list[0].PicListUrl }">
+		<input type="hidden" id="oldurlSite" name="urlSite" value="${list[0].PicListUrl }">
+		<header class="mui-bar mui-bar-nav">
+			<!-- <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="btngoback"></a> -->
+			<i class="iconfont" id="Fanhui">&#xe630;</i>
+			<a id="chekPhoto" class="mui-pull-right" style="font-size:16px;padding:0;color:#fff;line-height:44px;">提交</a>
+			<h1 class="mui-title">照片信息</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;padding-bottom:40px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row" id="yingyezhizhao" style="display: block;">
+						<h5>营业执照照片<sub>*</sub></h5>
+						<div class="row image-list image-list-body mentouz">
+							<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+							<c:if test="${empty list[0].BusinessLicensePhoto }">
+								<div class="weui-uploader__input-box" id="upload-container11">
+									<input id="uploaderInputidup11" class="weui-uploader__input" type="file" accept="image/*">
+									<input type="hidden" id="BusinessPhotograph" name="BusinessPhotograph">
+								</div>
+							</c:if>
+							<c:if test="${not empty list[0].BusinessLicensePhoto }">
+								<div class="weui-uploader__input-box" id="upload-container11">
+									<input id="uploaderInputidup11" class="weui-uploader__input" type="file" accept="image/*">
+									<div class="weui-uploader__huixian11"><img src="${list[0].BusinessLicensePhoto }?temp=<%=Math.random()%>" id="BusinessPhotograph1" value="${list[0].BusinessLicensePhoto }"></div>
+									<input type="hidden" id="BusinessPhotograph" name="BusinessPhotograph" value="${list[0].BusinessLicensePhoto }">
+								</div>
+							</c:if>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<h5>法人身份证正面照片<sub>*</sub></h5>
+						<div class="row image-list image-list-body mentouz">
+							<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+							<c:if test="${empty list[0].LegalPersonIDPositive }">
+								<div class="weui-uploader__input-box" id="upload-container12">
+									<input id="uploaderInputidup12" class="weui-uploader__input" type="file" accept="image/*">
+									<input type="hidden" id="LegalPersonIdCardFace" name="LegalPersonIdCardFace">
+								</div>
+							</c:if>
+							<c:if test="${not empty list[0].LegalPersonIDPositive }">
+								<div class="weui-uploader__input-box" id="upload-container12">
+									<input id="uploaderInputidup12" class="weui-uploader__input" type="file" accept="image/*">
+									<div class="weui-uploader__huixian12"><img src="${list[0].LegalPersonIDPositive }?temp=<%=Math.random()%>" id="LegalPersonIdCardFace1" value="${list[0].LegalPersonIDPositive }"></div>
+									<input type="hidden" id="LegalPersonIdCardFace" name="LegalPersonIdCardFace" value="${list[0].LegalPersonIDPositive }">
+								</div>
+							</c:if>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<h5>法人身份证反面照片<sub>*</sub></h5>
+						<div class="row image-list image-list-body mentouz">
+							<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+							<c:if test="${empty list[0].LegalPersonIDOpposite }">
+								<div class="weui-uploader__input-box" id="upload-container13">
+									<input id="uploaderInputidup13" class="weui-uploader__input" type="file" accept="image/*">
+									<input type="hidden" id="LegalPersonIdCardReversePhotograph" name="LegalPersonIdCardReversePhotograph">
+								</div>
+							</c:if>
+							<c:if test="${not empty list[0].LegalPersonIDOpposite }">
+								<div class="weui-uploader__input-box" id="upload-container13">
+									<input id="uploaderInputidup13" class="weui-uploader__input" type="file" accept="image/*">
+									<div class="weui-uploader__huixian13"><img src="${list[0].LegalPersonIDOpposite }?temp=<%=Math.random()%>" id="LegalPersonIdCardReversePhotograph1" value="${list[0].LegalPersonIDOpposite }"></div>
+									<input type="hidden" id="LegalPersonIdCardReversePhotograph" name="LegalPersonIdCardReversePhotograph" value="${list[0].LegalPersonIDOpposite }">
+								</div>
+							</c:if>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<h5>门脸照片<sub>*</sub></h5>
+						<div class="row image-list image-list-body mentouz">
+							<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+							<c:if test="${empty list[0].ShopFacePhoto }">
+								<div class="weui-uploader__input-box" id="upload-container14">
+									<input id="uploaderInputidup14" class="weui-uploader__input" type="file" accept="image/*">
+									<input type="hidden" id="FrontPhotos" name="FrontPhotos">
+								</div>
+							</c:if>
+							<c:if test="${not empty list[0].ShopFacePhoto }">
+								<div class="weui-uploader__input-box" id="upload-container14">
+									<input id="uploaderInputidup14" class="weui-uploader__input" type="file" accept="image/*">
+									<div class="weui-uploader__huixian14"><img src="${list[0].ShopFacePhoto }?temp=<%=Math.random()%>" id="FrontPhotos1" value="${list[0].ShopFacePhoto }"></div>
+									<input type="hidden" id="FrontPhotos" name="FrontPhotos" value="${list[0].ShopFacePhoto }">
+								</div>
+							</c:if>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<h5>门头照片<sub>*</sub></h5>
+						<div class="row image-list image-list-body mentouz">
+							<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+							<c:if test="${empty list[0].ShopDoorheadPhoto }">
+								<div class="weui-uploader__input-box" id="upload-container15">
+									<input id="uploaderInputidup15" class="weui-uploader__input" type="file" accept="image/*">
+									<input type="hidden" id="DoorHeadPhoto" name="FronDoorHeadPhototPhotos">
+								</div>
+							</c:if>
+							<c:if test="${not empty list[0].ShopDoorheadPhoto }">
+								<div class="weui-uploader__input-box" id="upload-container15">
+									<input id="uploaderInputidup15" class="weui-uploader__input" type="file" accept="image/*">
+									<div class="weui-uploader__huixian15"><img src="${list[0].ShopDoorheadPhoto }?temp=<%=Math.random()%>" id="DoorHeadPhoto1" value="${list[0].ShopDoorheadPhoto }"></div>
+									<input type="hidden" id="DoorHeadPhoto" name="DoorHeadPhoto" value="${list[0].ShopDoorheadPhoto }">
+								</div>
+							</c:if>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<h5>入账银行卡正面照片<sub>*</sub></h5>
+						<div class="row image-list image-list-body mentouz">
+							<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+							<c:if test="${empty list[0].BankCardPositive }">
+								<div class="weui-uploader__input-box" id="upload-container16">
+									<input id="uploaderInputidup16" class="weui-uploader__input" type="file" accept="image/*">
+									<input type="hidden" id="BankCardPositivePhoto" name="BankCardPositivePhoto">
+								</div>
+							</c:if>
+							<c:if test="${not empty list[0].BankCardPositive }">
+								<div class="weui-uploader__input-box" id="upload-container16">
+									<input id="uploaderInputidup16" class="weui-uploader__input" type="file" accept="image/*">
+									<div class="weui-uploader__huixian16"><img src="${list[0].BankCardPositive }?temp=<%=Math.random()%>" id="BankCardPositivePhoto1" value="${list[0].BankCardPositive }"></div>
+									<input type="hidden" id="BankCardPositivePhoto" name="BankCardPositivePhoto" value="${list[0].BankCardPositive }">
+								</div>
+							</c:if>
+						</div>
+					</div>
+					<%-- <c:if test="${pd.legalbooked eq'0'}" > --%>
+					<div id="duisizhanghu" style="display: block;">
+						<div class="mui-input-row">
+							<h5>对私账户身份证正面照片<sub>*</sub></h5>
+							<div class="row image-list image-list-body mentouz">
+								<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+								<c:if test="${empty list[0].AdmissionIDPositive }">
+									<div class="weui-uploader__input-box" id="upload-container17">
+										<input id="uploaderInputidup17" class="weui-uploader__input" type="file" accept="image/*">
+										<input type="hidden" id="IdCardFront" name="IdCardFront">
+									</div>
+								</c:if>
+								<c:if test="${not empty list[0].AdmissionIDPositive }">
+									<div class="weui-uploader__input-box" id="upload-container17">
+										<input id="uploaderInputidup17" class="weui-uploader__input" type="file" accept="image/*">
+										<div class="weui-uploader__huixian17"><img src="${list[0].AdmissionIDPositive }?temp=<%=Math.random()%>" id="IdCardFront1" value="${list[0].AdmissionIDPositive }"></div>
+										<input type="hidden" id="IdCardFront" name="IdCardFront" value="${list[0].AdmissionIDPositive }">
+									</div>
+								</c:if>
+							</div>
+						</div>
+						<div class="mui-input-row">
+							<h5>对私账户身份证反面照片<sub>*</sub></h5>
+							<div class="row image-list image-list-body mentouz">
+								<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+								<c:if test="${empty list[0].AdmissionIDOpposite }">
+									<div class="weui-uploader__input-box" id="upload-container18">
+										<input id="uploaderInputidup18" class="weui-uploader__input" type="file" accept="image/*">
+										<input type="hidden" id="IdCardBack" name="IdCardBack">
+									</div>
+								</c:if>
+								<c:if test="${not empty list[0].AdmissionIDOpposite }">
+									<div class="weui-uploader__input-box" id="upload-container18">
+										<input id="uploaderInputidup18" class="weui-uploader__input" type="file" accept="image/*">
+										<div class="weui-uploader__huixian18"><img src="${list[0].AdmissionIDOpposite }?temp=<%=Math.random()%>" id="IdCardBack1" value="${list[0].AdmissionIDOpposite }"></div>
+										<input type="hidden" id="IdCardBack" name="IdCardBack" value="${list[0].AdmissionIDOpposite }">
+									</div>
+								</c:if>
+							</div>
+						</div>
+						<div class="mui-input-row">
+							<h5>入账非法人证明照片<sub>*</sub></h5>
+							<div class="row image-list image-list-body mentouz">
+								<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+								<c:if test="${empty list[0].AdmissionNotLegalPersonIDPositive }">
+									<div class="weui-uploader__input-box" id="upload-container19">
+										<input id="uploaderInputidup19" class="weui-uploader__input" type="file" accept="image/*">
+										<input type="hidden" id="ThatPhoto" name="ThatPhoto">
+									</div>
+								</c:if>
+								<c:if test="${not empty list[0].AdmissionNotLegalPersonIDPositive }">
+									<div class="weui-uploader__input-box" id="upload-container19">
+										<input id="uploaderInputidup19" class="weui-uploader__input" type="file" accept="image/*">
+										<div class="weui-uploader__huixian19"><img src="${list[0].AdmissionNotLegalPersonIDPositive }?temp=<%=Math.random()%>" id="ThatPhoto1" value="${list[0].AdmissionNotLegalPersonIDPositive }"></div>
+										<input type="hidden" id="ThatPhoto" name="ThatPhoto" value="${list[0].AdmissionNotLegalPersonIDPositive }">
+									</div>
+								</c:if>
+							</div>
+						</div>
+					</div>
+
+					<div class="mui-input-row">
+						<h5>手持证件照片<sub>*</sub></h5>
+						<div class="row image-list image-list-body mentouz">
+							<%-- <img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" /> --%>
+							<c:if test="${empty list[0].LegalPersonHoldID }">
+								<div class="weui-uploader__input-box" id="upload-container20">
+									<input id="uploaderInputidup20" class="weui-uploader__input" type="file" accept="image/*">
+									<input type="hidden" id=HandPhoto name="HandPhoto">
+								</div>
+							</c:if>
+							<c:if test="${not empty list[0].LegalPersonHoldID }">
+								<div class="weui-uploader__input-box" id="upload-container20">
+									<input id="uploaderInputidup20" class="weui-uploader__input" type="file" accept="image/*">
+									<div class="weui-uploader__huixian20"><img src="${list[0].LegalPersonHoldID }?temp=<%=Math.random()%>" id="HandPhoto1" value="${list[0].LegalPersonHoldID }"></div>
+									<input type="hidden" id="HandPhoto" name="HandPhoto" value="${list[0].LegalPersonHoldID }">
+								</div>
+							</c:if>
+						</div>
+					</div>
+
+					<%-- <div class="mui-input-row" id="kaihuxukez" style="display: none;">
+						<h5>开户许可证<sub>*</sub></h5>
+						<div class="row image-list image-list-body mentouz">
+							<img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" />
+							<c:if test="${empty list[0].OpeningPermission }" >
+								<div class="weui-uploader__input-box" id="upload-container21">
+									<input id="uploaderInputidup21" class="weui-uploader__input" type="file" accept="image/*" >
+									<input type="hidden" id=LicencePhoto name="LicencePhoto">
+								</div>
+							</c:if>
+							<c:if test="${not empty list[0].OpeningPermission }" >
+								<div class="weui-uploader__input-box" id="upload-container21">
+									<input id="uploaderInputidup21" class="weui-uploader__input" type="file" accept="image/*" >
+									<div class="weui-uploader__huixian21"><img src="${list[0].OpeningPermission }?temp=<%=Math.random()%>" id="LicencePhoto1" value="${list[0].OpeningPermission }"></div>
+			<input type="hidden" id="LicencePhoto" name="LicencePhoto" value="${list[0].OpeningPermission }">
+		</div>
+		</c:if>
+		</div>
+		</div> --%>
+		<%-- <div id="lanhai">
+						<div class="mui-input-row">
+							<h5>蓝海收银台照片<sub>(开通蓝海必传)</sub></h5>
+							<div class="row image-list image-list-body mentouz">
+								<img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" />
+								<c:if test="${empty list[0].BlueSeaCashier }" >
+									<div class="weui-uploader__input-box" id="upload-container22">
+										<input id="uploaderInputidup22" class="weui-uploader__input" type="file" accept="image/*" >
+										<input type="hidden" id=BlueDescPhoto name="BlueDescPhoto">
+									</div>
+								</c:if>
+								<c:if test="${not empty list[0].BlueSeaCashier }" >
+									<div class="weui-uploader__input-box" id="upload-container22">
+										<input id="uploaderInputidup22" class="weui-uploader__input" type="file" accept="image/*" >
+										<div class="weui-uploader__huixian22"><img src="${list[0].BlueSeaCashier }?temp=<%=Math.random()%>" id="BlueDescPhoto1" value="${list[0].BlueSeaCashier }"></div>
+		<input type="hidden" id="BlueDescPhoto" name="BlueDescPhoto" value="${list[0].BlueSeaCashier }">
+		</div>
+		</c:if>
+		</div>
+		</div>
+		<div class="mui-input-row">
+			<h5>蓝海门店内景照片<sub>(开通蓝海必传)</sub></h5>
+			<div class="row image-list image-list-body mentouz">
+				<img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" />
+				<c:if test="${empty list[0].BlueSeaInstore }">
+					<div class="weui-uploader__input-box" id="upload-container23">
+						<input id="uploaderInputidup23" class="weui-uploader__input" type="file" accept="image/*">
+						<input type="hidden" id=BlueShopPhoto name="BlueShopPhoto">
+					</div>
+				</c:if>
+				<c:if test="${not empty list[0].BlueSeaInstore }">
+					<div class="weui-uploader__input-box" id="upload-container23">
+						<input id="uploaderInputidup23" class="weui-uploader__input" type="file" accept="image/*">
+						<div class="weui-uploader__huixian23"><img src="${list[0].BlueSeaInstore }?temp=<%=Math.random()%>" id="BlueShopPhoto1" value="${list[0].BlueSeaInstore }"></div>
+						<input type="hidden" id="BlueShopPhoto" name="BlueShopPhoto" value="${list[0].BlueSeaInstore }">
+					</div>
+				</c:if>
+			</div>
+		</div>
+		<div class="mui-input-row">
+			<h5>蓝海餐饮平台入驻照片<sub>(开通蓝海必传)</sub></h5>
+			<div class="row image-list image-list-body mentouz">
+				<img src="${pageContext.request.contextPath}/configuration/images/iconfont-tianjia.png" />
+				<c:if test="${empty list[0].BlueSeaCatering }">
+					<div class="weui-uploader__input-box" id="upload-container24">
+						<input id="uploaderInputidup24" class="weui-uploader__input" type="file" accept="image/*">
+						<input type="hidden" id=BluePlatformPhoto name="BluePlatformPhoto">
+					</div>
+				</c:if>
+				<c:if test="${not empty list[0].BlueSeaCatering }">
+					<div class="weui-uploader__input-box" id="upload-container24">
+						<input id="uploaderInputidup24" class="weui-uploader__input" type="file" accept="image/*">
+						<div class="weui-uploader__huixian24"><img src="${list[0].BlueSeaCatering }?temp=<%=Math.random()%>" id="BluePlatformPhoto1" value="${list[0].BlueSeaCatering }"></div>
+						<input type="hidden" id="BluePlatformPhoto" name="BluePlatformPhoto" value="${list[0].BlueSeaCatering }">
+					</div>
+				</c:if>
+			</div>
+		</div>
+		</div> --%>
+		</form>
+		</div>
+		<div id="caozuo" style=" text-align:center;">
+			<i class="iconfont btngoback" id="btngoback"> &#xe622;</i>
+			<!-- <a class="mui-btn mui-btn-primary nextstep" id="Fanhui" style="width: 150px;">返回</a>
+              <a class="mui-btn mui-btn-primary nextstep" id="Submit" style="width: 150px;">下一步</a> -->
+			<i class="iconfont Submit" id="">&#xe621;</i>
+		</div>
+		</div>
+	</body>
+	<script src="./js/mui.min.js "></script>
+	<script src="./js/mui.view.js "></script>
+	<script src="./js/lrz.all.bundle.js?v=7687367"></script>
+	<script src="./js/sh-add-pic.js?v=14"></script>
+	<script>
+		var basepath = '${pageContext.request.contextPath}';
+		var flag = false;
+		//创建遮罩蒙板
+		var mask = mui.createMask(function() {
+			//设置点击蒙板不会自动消失
+			//但调用close方法关闭mask时，必须返回true
+			return flag;
+		});
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+
+				//导航返回事件
+				document.getElementById("btngoback").addEventListener('click', function() {
+					var QRCodeNumber = $("#QRCodeNumber")[0].value;
+					window.location.href = '${pageContext.request.contextPath}/salesingup/gobankCardAdd?UserNumber=' + $("#UserNumber")[0].value + '&ShopNumber=' + $("#ShopNumber")[0].value + '&QRCodeNumber=' + $("#QRCodeNumber")[0].value + '&legalbooked=' + $("#legalbooked")[0].value;
+				});
+				var Source = '${list[0].Source}';
+				//导航返回事件
+				document.getElementById("Fanhui").addEventListener('click', function() {
+					if(Source != "1") {
+						var QRCodeNumber = $("#QRCodeNumber")[0].value;
+						var UserNumber = $("#UserNumber")[0].value; //商户编号
+						var ShopNumber = $("#ShopNumber")[0].value; //店铺编号
+						window.location.href = '${pageContext.request.contextPath}/salesingup/goindexsale?UserNumber=' + UserNumber + '&ShopNumber=' + ShopNumber + '&QRCodeNumber=' + QRCodeNumber;
+					}
+				});
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				document.getElementById("chekPhoto").addEventListener('click', function() {
+					var check = true;
+					/* var ShopDoorheadPhoto = $("#ShopDoorheadPhoto")[0].value;
+					if(ShopDoorheadPhoto == "") {
+						mui.alert("企业LOGO不允许为空");check = false;return false;
+						ShopDoorheadPhoto == "";
+					}else{
+						ShopDoorheadPhoto = $("#ShopDoorheadPhoto")[0].value;
+					} */
+					var BusinessPhotograph = $("#BusinessPhotograph")[0].value;
+					var LegalPersonIdCardFace = $("#LegalPersonIdCardFace")[0].value;
+					if(LegalPersonIdCardFace == "") {
+						mui.alert("法人身份证正面照片不允许为空");
+						check = false;
+						return false;
+						LegalPersonIdCardFace == "";
+					} else {
+						LegalPersonIdCardFace = $("#LegalPersonIdCardFace")[0].value;
+					}
+					var LegalPersonIdCardReversePhotograph = $("#LegalPersonIdCardReversePhotograph")[0].value;
+					if(LegalPersonIdCardReversePhotograph == "") {
+						mui.alert("法人身份证反面照片不允许为空");
+						check = false;
+						return false;
+						LegalPersonIdCardReversePhotograph == "";
+					} else {
+						LegalPersonIdCardReversePhotograph = $("#LegalPersonIdCardReversePhotograph")[0].value;
+					}
+					var FrontPhotos = $("#FrontPhotos")[0].value;
+					if(FrontPhotos == "") {
+						mui.alert("门脸照片不允许为空");
+						check = false;
+						return false;
+						FrontPhotos == "";
+					} else {
+						FrontPhotos = $("#FrontPhotos")[0].value;
+					}
+					var DoorHeadPhoto = $("#DoorHeadPhoto")[0].value;
+					if(LegalPersonIdCardFace == "") {
+						mui.alert("门头照片不允许为空");
+						check = false;
+						return false;
+						DoorHeadPhoto == "";
+					} else {
+						DoorHeadPhoto = $("#DoorHeadPhoto")[0].value;
+					}
+					var BankCardPositivePhoto = $("#BankCardPositivePhoto")[0].value;
+					if(BankCardPositivePhoto == "") {
+						mui.alert("入账银行卡正面照片不允许为空");
+						check = false;
+						return false;
+						BankCardPositivePhoto == "";
+					} else {
+						BankCardPositivePhoto = $("#BankCardPositivePhoto")[0].value;
+					}
+					var IdCardFront = $("#IdCardFront")[0].value;
+					var IdCardBack = $("#IdCardBack")[0].value;
+					var ThatPhoto = $("#ThatPhoto")[0].value;
+					/* var LicencePhoto = $("#LicencePhoto")[0].value; */
+					var legalbooked = $("#legalbooked")[0].value; //入账类型（法人/非法人）
+					var AccountType = $("#AccountType")[0].value; //商户类型（企业/个人）
+					var Creditcard = $("#Creditcard")[0].value; //入账卡类型(对私/对公)
+					//判断企业必传
+					if(AccountType != "A") { //企业，个体B，个人A
+						if(BusinessPhotograph == "") {
+							mui.alert("营业执照照片不允许为空");
+							check = false;
+							return false;
+							BusinessPhotograph == "";
+						} else {
+							BusinessPhotograph = $("#BusinessPhotograph")[0].value;
+						}
+					}
+					//判定法人必传
+					if(legalbooked == "0") {
+						if(IdCardFront == "") {
+							mui.alert("对私账户身份证正面照片不允许为空");
+							check = false;
+							return false;
+							IdCardFront == "";
+						} else {
+							IdCardFront = $("#IdCardFront")[0].value;
+						}
+						if(IdCardBack == "") {
+							mui.alert("对私账户身份证反面照片不允许为空");
+							check = false;
+							return false;
+							IdCardBack == "";
+						} else {
+							IdCardBack = $("#IdCardBack")[0].value;
+						}
+						if(ThatPhoto == "") {
+							mui.alert("入账非法人证明照片不允许为空");
+							check = false;
+							return false;
+							ThatPhoto == "";
+						} else {
+							ThatPhoto = $("#ThatPhoto")[0].value;
+						}
+					}
+					//判定开户许可证
+					/* if((AccountType!="A"||Creditcard=="1")){
+						if(LicencePhoto == "") {
+							mui.alert("开户许可证照片不允许为空");check = false;return false;
+							LicencePhoto == "";
+						}else{
+							LicencePhoto = $("#LicencePhoto")[0].value;
+						} 
+					} */
+					var HandPhoto = $("#HandPhoto")[0].value;
+					if(HandPhoto == "") {
+						mui.alert("手持证件照片不允许为空");
+						check = false;
+						return false;
+						HandPhoto == "";
+					} else {
+						HandPhoto = $("#HandPhoto")[0].value;
+					}
+					//var BlueDescPhoto = $("#BlueDescPhoto")[0].value;
+					/* if(BlueDescPhoto == "") {
+						mui.alert("蓝海收银台照片不允许为空");check = false;return false;
+						BlueDescPhoto == "";
+					}else{
+						BlueDescPhoto = $("#BlueDescPhoto")[0].value;
+					}  */
+					//var BlueShopPhoto = $("#BlueShopPhoto")[0].value;
+					/* if(BlueShopPhoto == "") {
+						mui.alert("蓝海门店内景照片不允许为空");check = false;return false;
+						BlueShopPhoto == "";
+					}else{
+						BlueShopPhoto = $("#BlueShopPhoto")[0].value;
+					}  */
+					//var BluePlatformPhoto = $("#BluePlatformPhoto")[0].value;
+					/* if(BluePlatformPhoto == "") {
+						mui.alert("蓝海餐饮平台入驻照片不允许为空");check = false;return false;
+						BluePlatformPhoto == "";
+					}else{
+						BluePlatformPhoto = $("#BluePlatformPhoto")[0].value;
+					} */
+					check && mui.ajax('${pageContext.request.contextPath}/salesingup/getregistersalefourth', {
+						data: {
+							UserNumber: $("#UserNumber")[0].value, //商户编号
+							ShopNumber: $("#ShopNumber")[0].value, //店铺编号
+							ShopDoorheadPhoto: "", //企业logo
+							BusinessPhotograph: BusinessPhotograph, //营业执照
+							LegalPersonIdCardFace: LegalPersonIdCardFace, //法人身份证正面照片
+							LegalPersonIdCardReversePhotograph: LegalPersonIdCardReversePhotograph, //法人身份证反面照片
+							FrontPhotos: FrontPhotos, //门脸照片
+							DoorHeadPhoto: DoorHeadPhoto, //门头照片
+							BankCardPositivePhoto: BankCardPositivePhoto, //入账银行卡正面照片
+							IdCardFront: IdCardFront, //对私账户身份证正面照片
+							IdCardBack: IdCardBack, //对私账户身份证反面照片
+							ThatPhoto: ThatPhoto, //入账非法人证明照片
+							HandPhoto: HandPhoto, //手持证件照片
+							/* LicencePhoto:LicencePhoto,//开户许可证照片
+							BlueDescPhoto:BlueDescPhoto,//蓝海收银台照片
+							BlueShopPhoto:BlueShopPhoto,//蓝海门店内景照片
+							BluePlatformPhoto:BluePlatformPhoto,//蓝海餐饮平台入驻照片 */
+							BankCard: $("#BankCard")[0].value, //卡号
+							PicListUrl: $("#urlSite")[0].value, //图片文件地址
+							oldurlSite: $("#oldurlSite")[0].value,
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							if("success" == data.result) {
+								mui.alert('提交成功', function() {
+									var UserNumber = $("#UserNumber")[0].value; //商户编号
+									var ShopNumber = $("#ShopNumber")[0].value; //店铺编号
+									//进件
+									mui.ajax('${pageContext.request.contextPath}/mercRegist', {
+										data: {
+											ShopNumber: ShopNumber,
+											UserNumber: UserNumber
+										},
+										dataType: 'json', //服务器返回json格式数据
+										type: 'post', //HTTP请求类型
+										success: function(data) {
+											mui.alert(data.msg, function() {
+												window.location.href = '${pageContext.request.contextPath}/salesingup/goindexsale?UserNumber=' + UserNumber + '&ShopNumber=' + ShopNumber + '&QRCodeNumber=' + QRCodeNumber;
+											});
+										}
+									})
+								});
+							} else {
+								mui.alert(data.msg);
+								return;
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(type);
+						}
+					});
+				});
+			})
+		})(mui, document);
+	</script>
+
+</html>

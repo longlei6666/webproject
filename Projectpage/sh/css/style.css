@@ -1,0 +1,123 @@
+.homelist {
+	text-align: center;
+}
+
+.homelistitle {
+	font-size: 1.2rem;
+	margin-bottom: 20px;
+	color: #999;
+}
+
+.homelistct {
+	font-size: 1.6rem;
+	font-weight: 600;
+}
+
+.homelistc .layui-btn {
+	margin-left: 20px;
+}
+
+.index-zs .layui-col-md5 {
+	width: 20%;
+}
+
+.layui-elem-quote {
+	font-size: 2rem;
+	font-weight: 300;
+}
+
+.x-so input.layui-input {
+	width: 140px;
+}
+
+form.layui-form {
+	width: auto;
+	/*margin-bottom: 0;*/
+}
+
+.layui-form.layui-col-md12 {
+	width: 100%;
+}
+
+.layui-form.layui-col-md12 .layui-input-inline {
+	width: 40%;
+}
+
+.layui-col-md1 {
+	width: auto;
+	margin-left: 10px;
+}
+
+
+/*主页index*/
+
+.left-nav #nav li .nav_right {
+	line-height: 20px;
+}
+
+
+/*内页*/
+
+.layui-form-label {
+	width: 120px;
+	padding-left: 0;
+}
+
+.layui-upload-img {
+	width: 9.5%;
+	margin-right: 0.5%;
+	margin-bottom: 10px;
+}
+
+.layui-btn-disabled-kd {
+	border-color: #e6e6e6 !important;
+	background-color: #FBFBFB;
+	color: #C9C9C9;
+	opacity: 1;
+	box-sizing: border-box;
+}
+
+.td-status>.layui-btn-xs {
+	border: 1px solid #009688;
+}
+
+.layui-form .layui-input-inline {
+	/*width: 150px;
+	line-height: 38px;*/
+	/*margin-bottom: 20px;*/
+}
+
+.layui-form .layui-input-inline.datelist {
+	width: auto;
+}
+
+.layui-form .layui-input-inline.datelist input {
+	width: 140px;
+}
+
+
+
+/*添加规格*/
+.layui-form.layui-col-md12 .layui-input-inline.guigeadd{width: calc(100% - 150px);box-sizing: border-box;padding: 10px;border: 1px solid #E6E6E6;}
+.guigeadd .layui-table{margin: 0;}
+.guigeadd .layui-table thead th:last-child{width: 50px;}
+.guigeadd .layui-table tbody{height: 150px;}
+.guigeadd .layui-table tbody tr:first-child{background-color:#f2f2f2 ;}
+.guigeadd .layui-table tbody tr td:last-child{width: 50px;}
+.layui-input{box-shadow: none;border-width:1px;/*width: 90%;*/}
+
+/*添加属性标签*/
+.layui-form.layui-col-md12 .layui-input-inline.bqadd{width: calc(100% - 150px);box-sizing: border-box;padding: 10px;border: 1px solid #E6E6E6;}
+.bqadd .layui-table{margin: 0;}
+.bqadd .layui-table thead th:last-child{width: 50px;}
+.bqadd .layui-table tbody{height: 150px;}
+.bqadd .layui-table tbody tr:first-child{background-color:#f2f2f2 ;}
+.bqadd .layui-table tbody tr td:first-child{width: 200px;}
+.bqadd .layui-table tbody tr td:last-child{width: 50px;}
+.layui-input{box-shadow: none;border-width:1px;/*width: 90%;*/}
+
+@media screen and (max-width: 768px) {
+	.x-so input.layui-input {
+		margin: 0;
+	}
+}

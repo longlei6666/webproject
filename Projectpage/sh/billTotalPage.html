@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>金额汇总</title>
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<link rel="stylesheet" href="../../public/lib/layui/css/layui.css" media="all">
+	</head>
+
+	<body>
+		<div class="x-body">
+			<table class="layui-table">
+				<tbody>
+					<tr>
+						<td colspan="2">截止至 ${endTime} :</td>
+					</tr>
+					<tr>
+						<td>交易总笔数</td>
+						<td>${transactionNumber } 笔</td>
+					</tr>
+					<tr>
+						<td>交易总金额</td>
+						<td>${transactionAmount} 元</td>
+					</tr>
+					<tr>
+						<td>交易总手续费</td>
+						<td>${transactionPoundage} 元</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</body>
+
+</html>

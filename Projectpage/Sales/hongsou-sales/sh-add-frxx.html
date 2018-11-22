@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>注册商户</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="./css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="./css/mystyle.css" />
+		<!--App自定义的css-->
+		<link href="./css/mui.picker.css" rel="stylesheet" />
+		<link href="./css/mui.poppicker.css" rel="stylesheet" />
+		<link href="./css/mui.dtpicker.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<input type="hidden" id="QRCodeNumber" name="QRCodeNumber" value="${pd.QRCodeNumber }">
+		<input type="hidden" id="UserNumber" name="UserNumber" value="${pd.UserNumber }">
+		<input type="hidden" id="ShopNumber" name="ShopNumber" value="${pd.ShopNumber }">
+		<input type="hidden" id="License_type" name="License_type" value="${pd.License_type }">
+
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="btngoback"></a>
+			<h1 class="mui-title">法人信息</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-content-padded" style="margin: 5px;">
+				<c:if test="${pd.License_type ne 'A' }">
+					<div class="mui-input-row">
+						<h5>
+						法人入账标识<sub>*</sub><span class="tips"></span>
+					</h5>
+						<div class="mui-input-row mui-radio">
+							<label class="jiesuanlx">非法人入账</label>
+							<c:if test="${empty list[0].Settlement }">
+								<input id="legalbooked" name="legalbooked" type="radio" value="0">
+							</c:if>
+							<c:if test="${not empty list[0].Settlement }">
+								<input id="legalbooked" name="legalbooked" type="radio" value="0" <c:if test="${list[0].Settlement eq '0'}">checked="checked"</c:if>>
+				</c:if>
+				</div>
+				<div class="mui-input-row mui-radio">
+					<label class="jiesuanlx">法人入账</label>
+					<c:if test="${empty list[0].Settlement }">
+						<input id="legalbooked1" name="legalbooked" type="radio" value="1" checked>
+					</c:if>
+					<c:if test="${not empty list[0].Settlement }">
+						<input id="legalbooked1" name="legalbooked" type="radio" value="1" <c:if test="${list[0].Settlement eq '1'}">checked="checked"</c:if>>
+					</c:if>
+				</div>
+				</div>
+				</c:if>
+				<c:if test="${pd.License_type eq 'A' }">
+					<div class="mui-input-row">
+						<h5>
+						法人入账标识<sub>*</sub><span class="tips"></span>
+					</h5>
+						<div class="mui-input-row mui-radio">
+							<label class="jiesuanlx">法人入账</label>
+							<c:if test="${empty list[0].Settlement }">
+								<input id="legalbooked1" name="legalbooked" type="radio" value="1">
+							</c:if>
+							<c:if test="${not empty list[0].Settlement }">
+								<input id="legalbooked1" name="legalbooked" type="radio" value="1" checked <c:if test="${list[0].Settlement eq '1'}">checked="checked"</c:if>>
+				</c:if>
+				</div>
+				</div>
+				</c:if>
+				<div class="mui-input-row">
+					<h5>
+					法人姓名<sub>*</sub><span class="tips">与营业执照上相同</span>
+				</h5>
+					<input type="text" id="legalname" class="mui-input-clear" value="${list[0].LegalPersonName}">
+				</div>
+				<div class="mui-input-row">
+					<h5>
+					入账证件类型<sub>*</sub><span class="tips"></span>
+				</h5>
+					<input type="text" id='catetype' class="mui-input-clear" value="${list[0].LegalPersonType}">
+				</div>
+				<div class="mui-input-row">
+					<h5>
+					<em id="showcate"></em>入账证件号码<sub>*</sub><span class="tips"></span>
+				</h5>
+					<input type="text" id="Entrycardnumber" class="mui-input-clear" value="${list[0].LegalPersonID}">
+				</div>
+				<div class="mui-input-row" id='zzyouxiaoqi'>
+					<h5>
+					入账证件到期日<sub>*</sub><span class="tips">格式YYYYMMDD</span>
+				</h5>
+					<input type="text" id="Entrydate" class="mui-input-clear" placeholder="长期请填20991231 无有效期请填 19000101" value="${list[0].LegalPersonDate}">
+				</div>
+				<a class="mui-btn mui-btn-primary nextstep" id="Submit">下一步</a>
+			</form>
+		</div>
+	</body>
+	<script src="./js/mui.min.js "></script>
+	<script src="./js/mui.view.js "></script>
+	<script src="./js/mui.datepicker.js"></script>
+	<script src="./js/mui.picker.js"></script>
+	<script src="./js/mui.poppicker.js"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.ready(function() {
+				var flag = false;
+				//创建遮罩蒙板
+				var mask = mui.createMask(function() {
+					//设置点击蒙板不会自动消失
+					//但调用close方法关闭mask时，必须返回true
+					return flag;
+				});
+				var result = $('#Entrydate')[0];
+				var btns = $('#zzyouxiaoqi');
+				btns.each(function(i, btn) {
+					btn.addEventListener('tap', function() {
+						var optionsJson = this.getAttribute('data-options') || '{}';
+						var options = JSON.parse(optionsJson);
+
+						//if(options.starttoday === 1) {
+						var endDate = "2099-11-31"
+						var endDateArray = endDate.split('-');
+						end = new Date();
+						options.beginDate = new Date(end.valueOf() + 1 * 24 * 60 * 60 * 1000); //明天
+						options.endDate = new Date(parseInt(endDateArray[0]), parseInt(endDateArray[1]), parseInt(endDateArray[2]));
+						//}
+						var picker = new $.DtPicker(options);
+						picker.show(function(rs) {
+							var youxiaoqi = rs.y.text + rs.m.text + rs.d.text;
+							result.value = youxiaoqi;
+							picker.dispose();
+						});
+
+					}, false);
+				});
+				/**
+				 * 获取对象属性的值
+				 * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+				 * @param {Object} obj 对象
+				 * @param {String} param 属性名
+				 */
+				//导航返回事件
+				document.getElementById("btngoback").addEventListener('click', function() {
+					var QRCodeNumber = $("#QRCodeNumber")[0].value;
+					window.location.href = '${pageContext.request.contextPath}/salesingup/gomerchantAdd?QRCodeNumber=' + QRCodeNumber + '&UserNumber=' + $("#UserNumber")[0].value + '&ShopNumber=' + $("#ShopNumber")[0].value;
+				});
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				//证件类型
+				var catetypePicker = new $.PopPicker();
+				catetypePicker.setData([{
+					value: '0',
+					text: '身份证'
+				}]);
+				var showcatetypeButton = doc.getElementById('catetype');
+				var catetypeResult = doc.getElementById('catetype');
+				showcatetypeButton.addEventListener('tap', function(event) {
+					catetypePicker.show(function(items) {
+						catetypeResult.value = items[0].text;
+					});
+				}, false);
+				//-----------------------------------------
+
+				//提交
+				document.getElementById("Submit").addEventListener('click', function() {
+					var check = true;
+					var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; //身份证验证
+					var legalbooked = $("input[name='legalbooked']:checked")[0].value; //法人入账标识
+					if(legalbooked.trim() == "") {
+						mui.alert("法人入账标识不允许为空");
+						check = false;
+						return false;
+					}
+					var legalname = $("#legalname")[0].value; //法人姓名
+					if(legalname.trim() == "") {
+						mui.alert("法人姓名不允许为空");
+						check = false;
+						return false;
+					} else {
+						var isCo = new RegExp("^([a-z]|[A-Z]|[0-9]|[\\u4e00-\\u9fa5]){0,15}$");
+						if(!isCo.test(legalname)) {
+							mui.alert("法人姓名无效");
+							check = false;
+							return false;
+						}
+					}
+					var catetype = $("#catetype")[0].value; //入账证件类型
+					if(catetype.trim() == "") {
+						mui.alert("入账证件类型不允许为空");
+						check = false;
+						return false;
+					}
+					var Entrycardnumber = $("#Entrycardnumber")[0].value; //入账证件号码
+					if(Entrycardnumber.trim() == "") {
+						mui.alert("入账证件号码不允许为空");
+						check = false;
+						return false;
+					} else {
+						var isEn = new RegExp("^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$");
+						if(!isEn.test(Entrycardnumber)) {
+							mui.alert("入账证件号码输入过长或者有误");
+							check = false;
+							return false;
+						}
+					}
+					var Entrydate = $("#Entrydate")[0].value; //入账证件到期日
+					if(Entrydate.trim() == "") {
+						mui.alert("入账证件到期日不允许为空");
+						check = false;
+						return false;
+					}
+					mui.toast("请稍等...");
+					mask.show(); //显示遮罩
+					check && mui.ajax('${pageContext.request.contextPath}/CorpAdd2', {
+						data: {
+							QRCodeNumber: $("#QRCodeNumber")[0].value,
+							UserNumber: $("#UserNumber")[0].value, //商户id
+							ShopNumber: $("#ShopNumber")[0].value, //店铺id 
+							legalbooked: $("input[name='legalbooked']:checked")[0].value, //法人入账标识
+							legalname: $("#legalname")[0].value, //法人姓名
+							catetype: $("#catetype")[0].value, //入账证件类型
+							Entrycardnumber: $("#Entrycardnumber")[0].value, //入账证件号码
+							Entrydate: $("#Entrydate")[0].value, //入账证件到期日
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							//关闭遮罩蒙板
+							flag = true;
+							mask.close();
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							if("success" == data.result) {
+								window.location.href = '${pageContext.request.contextPath}/salesingup/gobankCardAdd?QRCodeNumber=' + $("#QRCodeNumber")[0].value + '&UserNumber=' + $("#UserNumber")[0].value + '&ShopNumber=' + $("#ShopNumber")[0].value + '&legalbooked=' + legalbooked + '&License_type=${pd.License_type}';
+							} else {
+								mui.alert(data.msg);
+								return false;
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log(type);
+						}
+					});
+				})
+			});
+		})(mui, document);
+	</script>
+
+</html>

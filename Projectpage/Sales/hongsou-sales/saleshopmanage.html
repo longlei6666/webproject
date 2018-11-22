@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>商户添加</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="./css/mui.min.css">
+		<link rel="stylesheet" href="./css/xialashuaxin.css">
+		<link rel="stylesheet" type="text/css" href="./css/mystyle.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" id="btngoback"></a>
+			<h1 class="mui-title">店铺管理</h1>
+		</header>
+		<div class="mui-content">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<input type="hidden" id="QRCodeNumber" name="QRCodeNumber" value="${pd.QRCodeNumber }"> <input type="hidden" id="UserNumber" name="UserNumber" value="${pd.UserNumber }">
+				<input type="hidden" id="ShopNumber" name="ShopNumber" value="${pd.ShopNumber }"> <input type="hidden" id="ClerkNumber" name="ClerkNumber" value="${pd.ClerkNumber }">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#item1mobile"> 已通过(${pd.count0 }) </a>
+					<a class="mui-control-item" href="#item2mobile">未通过(${pd.count1 }) </a>
+					<a class="mui-control-item" href="#item3mobile">审核中(${pd.count2 }) </a>
+					<a class="mui-control-item" href="#item4mobile">未完成(${pd.count3 }) </a>
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-3"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<input type="hidden" id="pageindex0" value="1">
+								<ul class="mui-table-view">
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<input type="hidden" id="pageindex1" value="1">
+								<ul class="mui-table-view">
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<input type="hidden" id="pageindex2" value="1">
+								<ul class="mui-table-view">
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item4mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<input type="hidden" id="pageindex3" value="1">
+								<ul class="mui-table-view">
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="./js/mui.min.js"></script>
+		<script src="./js/mui.pullToRefresh.js"></script>
+		<script src="./js/mui.pullToRefresh.material.js"></script>
+		<script>
+			mui.init();
+			(function($) {
+				document.getElementById("btngoback").addEventListener('click', function() {
+					var QRCodeNumber = $("#QRCodeNumber")[0].value;
+					window.location.href = '${pageContext.request.contextPath}/salesingup/goindexsale?QRCodeNumber=' + QRCodeNumber;
+					/* mui.openWindow({
+					    url: '${pageContext.request.contextPath}/salesingup/goregistersale', 
+					    extras:{
+					    	UserNumber : $("#UserNumber")[0].value,//商户编号
+							ShopNumber : $("#ShopNumber")[0].value,//店铺编号
+					    	ClerkNumber: $("#ClerkNumber")[0].value,
+					    	db_UserNumber : $("#UserNumber")[0].value,//商户编号
+					    	db_ShopNumber : $("#ShopNumber")[0].value,//店铺编号
+					    	db_ClerkNumber: $("#ClerkNumber")[0].value
+					    }//额外扩展参数
+					}); */
+				});
+				//阻尼系数
+				var deceleration = mui.os.ios ? 0.003 : 0.0009;
+				$('.mui-scroll-wrapper').scroll({
+					bounce: false,
+					indicators: true, //是否显示滚动条
+					deceleration: deceleration
+				});
+				$.ready(function() {
+					//循环初始化所有下拉刷新，上拉加载。
+					$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+						$(pullRefreshEl).pullToRefresh({
+							down: {
+								callback: function() {
+									var self = this;
+									setTimeout(function() {
+										var ul = self.element.querySelector('.mui-table-view');
+										ul.insertBefore(createFragment(ul, index, 10), ul.firstChild);
+										self.endPullDownToRefresh();
+									}, 1000);
+								}
+							},
+							up: {
+								auto: true, //可选,默认false.首次加载自动下拉刷新一次
+								callback: function() {
+									var self = this;
+									setTimeout(function() {
+										var ul = self.element.querySelector('.mui-table-view');
+										ul.appendChild(createFragment(ul, index, 5));
+										self.endPullUpToRefresh();
+									}, 1000);
+								}
+							}
+						});
+					});
+					var createFragment = function(ul, index, count) {
+						var fragment = document.createDocumentFragment();
+						var pageindex = $("#pageindex" + index)[0].value;
+						//审核状态 0标识未完成 1标识审核中 -1标识未通过 2标识已通过
+						//index0已通过 index1未通过 index2审核中 index3未完成
+						if(index == 0) {
+							//根据下标实现具体内容
+							muiajax(2, pageindex, ul);
+							pageindex = Number(pageindex) + 1;
+							$("#pageindex0")[0].value = pageindex;
+						} else if(index == 1) {
+							//根据下标实现具体内容
+							muiajax(-1, pageindex, ul);
+							pageindex = Number(pageindex) + 1;
+							$("#pageindex1")[0].value = pageindex;
+						} else if(index == 2) {
+							//根据下标实现具体内容
+							muiajax(1, pageindex, ul);
+							pageindex = Number(pageindex) + 1;
+							$("#pageindex2")[0].value = pageindex;
+						} else if(index == 3) {
+							//根据下标实现具体内容
+							muiajax(0, pageindex, ul);
+							pageindex = Number(pageindex) + 1;
+							$("#pageindex3")[0].value = pageindex;
+						}
+						return fragment;
+					};
+					var muiajax = function(AuditStatus, pageindex, ul) {
+						mui.ajax('${pageContext.request.contextPath}/saleshop/getsaleshopmanage', {
+							data: {
+								QRCodeNumber: $("#QRCodeNumber")[0].value,
+								AuditStatus: AuditStatus,
+								pageindex: pageindex
+							},
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							success: function(data) {
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+								if(data.length > 0) {
+									for(var j = 0; j < data.length; j++) {
+										var UserNumber = data[j].UserNumber;
+										var ShopNumber = data[j].ShopNumber;
+										var ClerkNumber = data[j].ClerkNumber;
+										var QRCodeNumber = data[j].QRCodeNumber;
+										var BB_UserNumber = data[j].BB_UserNumber;
+										var revstatus = data[j].AuthStatus;
+										li = document.createElement('li');
+										li.className = 'mui-table-view-cell';
+										ul.append(li);
+										a = document.createElement('a');
+										if(data[j].AuthStatus == 2) {
+											a.href = '${pageContext.request.contextPath}/saleshop/gosaleshopbaobei?UserNumber=' + UserNumber + '&BB_UserNumber=' + BB_UserNumber + '&ShopNumber=' + ShopNumber + '&QRCodeNumber=' + QRCodeNumber;
+										} else {
+											a.href = '${pageContext.request.contextPath}/salesingup/gomerchantAdd?UserNumber=' + UserNumber + '&ShopNumber=' + ShopNumber + '&QRCodeNumber=' + QRCodeNumber;
+										}
+										a.innerHTML = data[j].ShopName;
+										li.append(a);
+									}
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								//异常处理；
+								console.log(type);
+							}
+						});
+					}
+				});
+			})(mui);
+		</script>
+		<script>
+			mui('body').on('tap', 'ul li a', function() {
+				document.location.href = this.href;
+			});
+		</script>
+	</body>
+
+</html>
