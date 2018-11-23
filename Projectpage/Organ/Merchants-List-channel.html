@@ -40,8 +40,11 @@
 				text-align: center;
 			}
 			
+			.operation_select .layui-form-select {
+				width: 90%;
+			}
 			.operation_table .layui-table {
-				width: 100%;
+				width: 90%;
 				border: 1px solid #e6e6e6;
 				border-width: 1px !important;
 			}
@@ -58,6 +61,7 @@
 				text-align: center;
 				padding-left: 10px;
 				padding-right: 10px;
+				box-sizing: border-box;
 			}
 		</style>
 	</head>
@@ -80,9 +84,6 @@
 		<script type="text/html" id="switchBar">
 			<input type="checkbox" name="consumptionPreferences" lay-skin="switch" lay-filter="consumptionPreferences" lay-text="开|关">
 		</script>
-		<script type="text/html" id="inputBar">
-			<input type="text" name="weight{{d.id}}" autocomplete="off" placeholder="权重(1-9)" class="layui-input">
-		</script>
 		<script type="text/html" id="toolbar">
 			<div class="layui-input-inline" style="width: 100px;margin-bottom: 10px;">
 				<input type="radio" name="operation{{d.id}}" data_pid="{{d.id}}" value="1" title="单独" lay-filter="operation" checked="">
@@ -99,7 +100,7 @@
 				</select>
 			</div>
 			<div class="layui-input-block operation_table" id="operation_table{{d.id}}" style="margin-left: 0;display: none;">
-				<table class="layui-table" lay-skin="line" id="pdtable907" style="">
+				<table class="layui-table" lay-skin="line" id="" style="">
 					<thead>
 						<tr>
 							<th></th>
@@ -138,6 +139,21 @@
 			</div>
 		</script>
 		<script>
+//			var arr = ['7','3','5']
+//			arr.sort(paixu(a))
+//			function paixu(a){
+//				return function(a,b){
+//					var a = a[a]
+//					var b = b[a]
+//					return b-a
+//				}
+//			}
+//			var str = ''
+//			for(var i = 0 ; i < arr.length ; i++){
+//				str += '<tr><td><input type="checkbox" name="" lay-skin="primary"></td><td>'+ arr[i] +'</td><td>'+ arr[i] +'</td><td><input type="number" min="0" max="9" name="" class="layui-input" value="'+ arr[i] +'"></td></tr>'
+//			}
+//			console.log(str)
+//			console.log(arr)
 			var serverUrl = window.parent.serverUrl
 			var userNumber = window.parent.userNumber
 			layui.use(['laytpl', 'laydate', 'table', 'form'], function() {
@@ -181,65 +197,20 @@
 						}]
 					],
 					page: false,
-					done: function(res, curr, count) {
-
-					}
-				});
-
-				//方法级渲染  
-				table.render({
-					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: '../../public/json/dome1.json',
-					elem: '#members0',
-					id: 'vip_cardList',
-					//parseData: function(res) { //res 即为原始返回的数据
-					//	return {
-					//		"code": res.code, //解析接口状态
-					//		"msg": res.msg, //解析提示文本
-					//		"count": res.count, //解析数据长度
-					//		"data": changeRes(res.result, res.count), //解析数据列表
-					//	};
-					//},
-					cols: [
-						[{
-							type: 'checkbox'
-						}, {
-							align: 'center',
-							field: 'id',
-							title: '通道代码',
-							sort: true,
-							width: 200
-						}, {
-							align: 'center',
-							field: 'id',
-							title: '通道名称',
-							sort: true,
-							width: 200
-						}, {
-							align: 'center',
-							toolbar: '#inputBar',
-							title: '权重(1-9)',
-							sort: true,
-							width: 200
-						}]
-					],
-					page: false,
-					done: function(res, curr, count) {
-
-					}
+					done: function(res, curr, count) {}
 				});
 
 				/*---------- 监听开关 ----------*/
-				form.on('radio(operation)', function(data) { //设置会员卡的有效期
-					if(data.value == 1) {
-						console.log(data.value)
-						$('#operation_select{{ d.id }}').show()
-						$('#operation_table{{ d.id }}').hide()
+				form.on('radio(operation)', function(obj) { //设置会员卡的有效期
+					var did = this.name.split("operation")[1]
+					console.log(did)
+					if(this.value == 1) {
+						$(eval('operation_select' + did)).show()
+						$(eval('operation_table' + did)).hide()
 						table.render();
-					} else if(data.value == 2) {
-						console.log(data.value)
-						$('#operation_select{{ d.id }}').hide()
-						$('#operation_table{{ d.id }}').show()
+					} else if(this.value == 2) {
+						$(eval('operation_select' + did)).hide()
+						$(eval('operation_table' + did)).show()
 						form.render();
 					}
 				});

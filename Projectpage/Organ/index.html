@@ -16,6 +16,10 @@
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<script type="text/javascript">
+//			console.log(sessionStorage.getItem("user_key"))
+//			if(!sessionStorage.getItem("user_key")){
+//				window.location.href = 'login.html' 
+//			}
 			var dw = $(window).width(),
 				dh = $(window).height(),
 				ifmbox = $(".layui-iframe"),
@@ -50,7 +54,7 @@
 					<a href="javascript:;">13081058624</a>
 					<dl class="layui-nav-child">
 						<dd>
-							<a href="${pageContext.request.contextPath }/logout">退出</a>
+							<a href="javascript:;" id="logout">退出</a>
 						</dd>
 					</dl>
 				</li>
@@ -304,7 +308,16 @@
 		<!-- 右侧主体结束 -->
 		<!-- 中部结束 -->
 		<!-- 底部开始 -->
-
+		<script type="text/javascript">
+			 
+			$(function(){
+				$('#logout').click(function(){
+					console.log('退出')
+					sessionStorage.clear();
+					window.location.href = 'login.html' 
+				})
+			})
+		</script>
 	</body>
 
 </html>

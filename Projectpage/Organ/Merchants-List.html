@@ -69,6 +69,9 @@
 			</xblock>
 			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
+		<script type="text/html" id="switchBar">
+			<input type="checkbox" name="consumptionPreferences" lay-skin="switch" lay-filter="consumptionPreferences" lay-text="开|关" {{d.type == 1 ? 'checked' : ''}}>
+		</script>
 		<script type="text/html" id="toolbar">
 			<a class="layui-btn layui-btn-xs" id="loginTo" lay-event="loginTo">登录</a>
 			<a class="layui-btn layui-btn-xs" id="channelSet" lay-event="channelSet">通道</a>
@@ -157,7 +160,7 @@
 							title: '所属代理'
 						}, {
 							align: 'center',
-							field: 'typea',
+							toolbar: '#switchBar',
 							width: 100,
 							title: '状态',
 						}, {
