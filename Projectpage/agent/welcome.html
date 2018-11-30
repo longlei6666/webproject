@@ -19,6 +19,30 @@
 		<style type="text/css">
 			.index-zs .layui-col-md5 {
 				width: 20%;
+				text-align: center;
+			}
+			
+			.homelistitle {
+				font-size: 1.2rem;
+				margin-bottom: 10px;
+				color: #999;
+			}
+			.homelistc:last-child{margin-bottom: 20px;}
+			.homelistc {
+				font-size: 1.6rem;
+				font-weight: 600;
+			}
+			
+			.homelistc span{
+				display: block;
+				font-size: 1.6rem;
+				font-weight: 600;
+			}
+			
+			.homelistc span i{
+				font-style: normal;
+				font-size: 1.6rem;
+				font-weight: 600;
 			}
 		</style>
 	</head>
@@ -31,7 +55,7 @@
 					<div class="homelist">
 						<p class="homelistitle">账户余额（元）</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.accountBalance }</span>
+							<span><i id="">1000</i>元</span>
 						</div>
 					</div>
 				</div>
@@ -39,7 +63,7 @@
 					<div class="homelist">
 						<p class="homelistitle">提现中余额（元）</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.withdrawalAmountIng }</span>
+							<span><i id="">1000</i>元</span>
 						</div>
 					</div>
 				</div>
@@ -47,7 +71,7 @@
 					<div class="homelist">
 						<p class="homelistitle">已提现金额（元）</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.withdrawalAmount }</span>
+							<span><i id="">1000</i>元</span>
 						</div>
 					</div>
 				</div>
@@ -55,7 +79,7 @@
 					<div class="homelist">
 						<p class="homelistitle">已结算余额（元）</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.settlementAmount }</span>
+							<span><i id="">1000</i>元</span>
 						</div>
 					</div>
 				</div>
@@ -63,20 +87,18 @@
 					<div class="homelist">
 						<p class="homelistitle">未结算余额（元）</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${accountBalance.outstandingAmount }</span>
+							<span><i id="">1000</i>元</span>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-			
-			
+
 			<div class="layui-row index-zs">
 				<div class="layui-col-md5">
 					<div class="homelist">
 						<p class="homelistitle">商户数</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${list[0].Number }</span>
+							<span><i id="">1000</i>元</span>
 						</div>
 					</div>
 				</div>
@@ -84,10 +106,8 @@
 					<div class="homelist">
 						<p class="homelistitle">交易笔数(总数)</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${list[0].ZTransactionNumber }(支付宝)</span>
-						</div>
-						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${list[0].WTransactionNumber }(微信)</span>
+							<span><i id="">1000</i>(支付宝)</span>
+							<span><i id="">1000</i>(微信)</span>
 						</div>
 					</div>
 				</div>
@@ -95,7 +115,7 @@
 					<div class="homelist">
 						<p class="homelistitle">商家收入(总数)</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${list[0].TransactionNumber }</span>
+							<span><i id="">1000</i></span>
 						</div>
 					</div>
 				</div>
@@ -103,10 +123,8 @@
 					<div class="homelist">
 						<p class="homelistitle">商家退款(总数)</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${list[0].ZRefundNumber }(支付宝)</span>
-						</div>
-						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${list[0].WRefundNumber }(微信)</span>
+							<span><i id="">1000</i>(支付宝)</span>
+							<span><i id="">1000</i>(微信)</span>
 						</div>
 					</div>
 				</div>
@@ -114,14 +132,12 @@
 					<div class="homelist">
 						<p class="homelistitle">佣金</p>
 						<div class="homelistc">
-							<span class="x-left homelistct" style="line-height:40px;">${list[0].TransactionMoney }</span>
+							<span><i id="">1000</i></span>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-			
-			
+
 			<div class="layui-row layui-col-space30">
 				<div class="layui-col-md6">
 					<fieldset class="layui-elem-field layui-field-title">
@@ -138,7 +154,6 @@
 			</div>
 		</div>
 		<script>
-			
 			layui.use('table', function() {
 
 				var table = layui.table;

@@ -3,42 +3,19 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Insert title here</title>
+		<title></title>
 		<meta name="renderer" content="webkit|ie-comp|ie-stand">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
 		<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="./css/font.css">
-		<link rel="stylesheet" href="./css/xadmin.css">
-		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
-		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 	</head>
-	<style type="text/css">
-		.layui-body {
-			overflow-y: scroll;
-		}
-		.text {
-			position: relative;
-		}
-		
-		.layui-input-clear {
-			position: absolute;
-			right: 10px;
-			top: 10px;
-			cursor: pointer;
-			display: none;
-			padding: 1px;
-		}
-		
-		.layui-input-clear:hover {
-			background-color: #FF5722;
-			color: #fff;
-			border-radius: 50%;
-		}
-	</style>
+
 	<body>
 		<div class="x-nav">
 			<span class="layui-breadcrumb"> <a href="">流水</a> <a> <cite>交易数据明细</cite></a>
@@ -48,7 +25,7 @@
 		<div class="x-body">
 			<div class="demoTable">
 				<div class="layui-inline">
-					<form class="layui-form layui-col-md11 x-so">
+					<div class="layui-form x-so">
 						<div class="layui-input-inline text">
 							<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
 							<input name="Assistant" id="Assistant" placeholder="营业员" autocomplete="off" class="layui-input">
@@ -87,11 +64,9 @@
 								<option value="3">已退款</option>
 							</select>
 						</div>
-					</form>
-					<div class=" layui-col-md1">
-						<button class="layui-btn" data-type="reload">
-							<i class="layui-icon">&#xe615;</i>
-						</button>
+						<div class="layui-input-inline">
+							<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -100,8 +75,8 @@
 					<i class="layui-icon"></i>报表
 				</button>
 				<span class="x-left" style="line-height:40px;margin-left: 20px;">
-					交易笔数：<span style="color: red" id="Ocount"> </span> &nbsp; 
-					交易金额：<span style="color: red" id="ACollect"> </span>&nbsp;
+					交易笔数：<span style="color: red" id="Ocount"> </span> &nbsp; 交易金额：
+				<span style="color: red" id="ACollect"> </span>&nbsp;
 				</span>
 			</xblock>
 
@@ -111,53 +86,38 @@
 			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>
 		</script>
 		<script type="text/javascript">
-			$("input").focus(function() {
-				$(this).parent().children(".layui-input-clear").show();
-			});
-			$("input").blur(function() {
-				if($(this).val() == '') {
-					$(this).parent().children(".layui-input-clear").hide();
-				}
-			});
-			$(".layui-input-clear").click(function() {
-				$(this).parent().find('input').val('');
-				$(this).hide();
-			});
-			
-			$("#baobiao").click(function(){
-				var shopName = $('#shopName').val();//门店名称
+			//下载报表
+			$("#baobiao").click(function() {
+				var shopName = $('#shopName').val(); //门店名称
 				var startTime = $("#startTime").val();
 				var endTime = $("#endTime").val();
 				var payment = $("#payment option:selected").text();
-				window.location.href = "${pageContext.request.contextPath }/Bill/getBillReport?shopName=" +encodeURI(encodeURI(shopName)) + "&startTime=" + startTime + "&endTime=" + endTime + "&payment=" + payment;
+				window.location.href = "${pageContext.request.contextPath }/Bill/getBillReport?shopName=" + encodeURI(encodeURI(shopName)) + "&startTime=" + startTime + "&endTime=" + endTime + "&payment=" + payment;
 			})
 		</script>
 
 		<script>
 			var startDate = new Date(new Date().setHours(0, 0, 0, 0));
 			var endDate = new Date();
-			
 			var nowTime = new Date().valueOf();
-			// 选择日期插件  
-			layui.use('laydate', function() {
-				var laydate = layui.laydate;
+			layui.use(['laydate', 'table'], function() {
+				var laydate = layui.laydate,
+					table = layui.table;
+
+				//选择日期插件
 				laydate.render({
 					elem: '#startTime',
 					type: 'datetime',
-				    max: nowTime,
+					max: nowTime,
 					value: startDate
 				});
 				laydate.render({
 					elem: '#endTime',
 					type: 'datetime',
-				    max: nowTime,
+					max: nowTime,
 					value: endDate
 				});
-			});
 
-			layui.use('table', function() {
-
-				var table = layui.table;
 				//方法级渲染
 				table.render({
 					elem: '#LAY_table_bill',
@@ -210,11 +170,12 @@
 							toolbar: "#tool",
 							align: 'center'
 						}]
-					], done : function(res, curr, count){
+					],
+					done: function(res, curr, count) {
 						//如果是异步请求数据方式，res即为你接口返回的信息。
-						$("#ACollect").text(res.transactionAmount+' 元');
-						$("#Ocount").text(res.transactionNumber+' 笔');
-				    }
+						$("#ACollect").text(res.transactionAmount + ' 元');
+						$("#Ocount").text(res.transactionNumber + ' 笔');
+					}
 				});
 
 				// 根據條件重载表格
@@ -251,7 +212,7 @@
 				//监听工具条
 				table.on('tool(bill)', function(obj) {
 					var data = obj.data;
-					var shopName = $('#shopName').val();//门店名称
+					var shopName = $('#shopName').val(); //门店名称
 					var startTime = $("#startTime").val();
 					var endTime = $("#endTime").val();
 					if(obj.event === 'detail') {
@@ -260,7 +221,7 @@
 							type: 2,
 							title: '流水详情',
 							area: ['400px', '400px'], //宽高
-							content: '${pageContext.request.contextPath }/Bill/getBillDetailsPage?orderCode=' + data.dingdanhao+'&startTime='+startTime+'&endTime='+endTime
+							content: '${pageContext.request.contextPath }/Bill/getBillDetailsPage?orderCode=' + data.dingdanhao + '&startTime=' + startTime + '&endTime=' + endTime
 						});
 					}
 				});

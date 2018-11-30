@@ -25,10 +25,10 @@
 			<div class="layui-row">
 				<form class="layui-form" action="" lay-filter="tongdao">
 					<div class="layui-form-item">
-						<label class="layui-form-label">优惠设置</label>
+						<label class="layui-form-label">通道设置</label>
 						<div class="layui-input-inline">
 							<select name="preferentialSetting" lay-filter="youhuiSelect">
-								<option value="">选择优惠设置</option>
+								<option value="">选择通道</option>
 								<option value="0">官方通道-微信</option>
 								<option value="1">官方通道-支付宝</option>
 								<option value="2">富友通道</option>
@@ -265,7 +265,7 @@
 						<div class="layui-input-block">
 							<div class="layui-footer" style="left: 0;text-align: center;">
 								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="quxiao">取消</button>
 							</div>
 							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
 						</div>
@@ -274,6 +274,11 @@
 			</div>
 		</div>
 		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
 			function changeRes(res) {
 				var res = res
 				if(res.length == 0) {

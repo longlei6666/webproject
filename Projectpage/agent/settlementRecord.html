@@ -3,64 +3,42 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>鸿小搜管理中心</title>
-		<meta name="renderer" content="webkit">
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="./css/font.css">
-		<link rel="stylesheet" href="./css/xadmin.css">
-		<link rel="stylesheet" href="./css/style.css">
-		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
-		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-		<script type="text/javascript" src="./js/xadmin.js"></script>
-		<style>
-			.layui-row .layui-form .layui-input-inline {
-				width: 32%;
-			}
-			
-			.layui-row .layui-form .layui-input-inline .layui-input {
-				width: 100%;
-			}
-			
-			.layui-row .hs-o {
-				width: 70px;
-			}
-		</style>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 	</head>
 
 	<body>
 		<div class="x-nav">
 			<span class="layui-breadcrumb">
-        <a href="">首页</a>
-        <a>
-          <cite>结算记录</cite></a>
-      </span>
+				<a href="">首页</a>
+				<a><cite>结算记录</cite></a>
+			</span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
 		</div>
 		<div class="x-body">
-			<div class="layui-row">
-				<form class="layui-form layui-col-md5 layui-col-sm5 x-so">
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" placeholder="开始日" name="startTime" id="startTime">
-					</div>
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" placeholder="截止日" name="endTime" id="endTime">
-					</div>
-					<div class="layui-input-inline">
-						<select name="settlementState" id="settlementState">
-							<option value="">请选择结算状态</option>
-							<option value="1">已结算</option>
-							<option value="0">未结算</option>
-						</select>
-					</div>
-				</form>
-				<div class=" layui-col-md1 layui-col-sm1 hs-o">
-					<button class="layui-btn" data-type="reload">
-							<i class="layui-icon">&#xe615;</i>
-						</button>
+			<div class="layui-form layui-row x-so">
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input" placeholder="开始日" name="startTime" id="startTime">
 				</div>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input" placeholder="截止日" name="endTime" id="endTime">
+				</div>
+				<div class="layui-input-inline">
+					<select name="settlementState" id="settlementState">
+						<option value="">请选择结算状态</option>
+						<option value="1">已结算</option>
+						<option value="0">未结算</option>
+					</select>
+				</div>
+				<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
 			</div>
 			<table class="layui-hide" id="LAY_table_Settlement" lay-filter="Settlement"></table>
 		</div>

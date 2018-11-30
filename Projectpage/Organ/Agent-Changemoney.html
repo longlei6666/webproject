@@ -45,10 +45,10 @@
 						<input type="text" name="" id="" placeholder="订单号" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-input-inline">
-						<input type="text" name="" id="" placeholder="开始时间" autocomplete="off" class="layui-input">
+						<input type="text" name="" id="startTime" placeholder="开始时间" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-input-inline">
-						<input type="text" name="" id="" placeholder="结束时间" autocomplete="off" class="layui-input">
+						<input type="text" name="" id="endTime" placeholder="结束时间" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-input-inline">
 						<select name="" id="">
@@ -80,7 +80,12 @@
 				var laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form;
-
+					laydate.render({
+					elem:"#startTime"
+				})
+				laydate.render({
+					elem:"#endTime"
+				})
 				//方法级渲染  
 				table.render({
 					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,

@@ -115,8 +115,8 @@
                 form.on('submit(login)',function(data){
 					 console.log(data)
                      if(data.field.verificationCode != code1){
-                        alert('验证码输入错误，请重新输入')
-                        return
+                        layer.msg('验证码输入错误，请重新输入')
+                       
                      }
                      var ajaData = new Object()
                      ajaData.login = data.field.username;
@@ -130,19 +130,15 @@
                         CmsConfig.addressUrl.Login.login,
                         ajaData,
                         function(data){
-                            if(data.respCode == '1000'){
-                               layer.alert(JSON.stringify('登录成功'), {
-                                    title: ''
-                                })
-                                sessionStorage.setItem("user_key", data.resp_result.key);
+                            if(data.code == '1000'){
+                               layer.msg('登录成功')
+                                sessionStorage.setItem("user",JSON.stringify(data.data));
                                 setTimeout(function(){
                                    window.location.href = 'index.html' 
                                 },300)
                                 
                             }else{
-                                layer.alert(JSON.stringify(data.msg), {
-                                    title: '登录失败'
-                                })
+                                layer.msg(data.msg)
                             }
                         },
                         function(data){

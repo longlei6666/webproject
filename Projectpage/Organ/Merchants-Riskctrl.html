@@ -8,16 +8,25 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
 		<!--[if lt IE 9]>
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+    	input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"]{
+  -moz-appearance: textfield;
+}
+    </style>
 	</head>
 
 	<body id="iosiframe">
@@ -32,59 +41,122 @@
 		</div>
 		<div class="x-body">
 			<div class="layui-row">
-				<div class="layui-form" lay-filter="basic">
+				<form class="layui-form" action="" lay-filter="tongdao">
+					<div class="layui-form-item x-red">
+						注意:不需要风控的事项请默认0
+					</div>
+					
 					<div class="layui-form-item">
 						<label class="layui-form-label">单笔最小金额</label>
-						<div class="layui-input-block">
-							<input type="text" name="sitename" class="layui-input">
+						<div class="layui-input-inline" style="width:225px">
+							<input type="number" name="singlepenMinMoney" autocomplete="off" placeholder="单笔最小金额" class="layui-input" value="0" lay-verify="title">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">单笔最大金额</label>
-						<div class="layui-input-block">
-							<input type="text" name="domain" lay-verify="url" class="layui-input">
+						<div class="layui-input-inline"  style="width:225px">
+							<input type="number" name="singlepenMaxMoney" autocomplete="off" placeholder="单笔最大金额" class="layui-input" value="0" lay-verify="title">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">当日总金额</label>
-						<div class="layui-input-block" style="width: 180px;">
-							<input type="text" name="email" lay-verify="email" class="layui-input">
+						<div class="layui-input-inline" style="width:225px" >
+							<input type="number" name="dateCountMoney" autocomplete="off" placeholder="当天交易金额" class="layui-input" value="0" lay-verify="title">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">交易时间</label>
-						<div class="layui-input-inline" style="width: 180px;">
-							<input type="text" name="servicetel" lay-verify="number" class="layui-input">
+						<div class="layui-input-inline" style="width: 100px;">
+							<select name="transactionStartTime" lay-filter="">
+								<option value="0:00" selected="">0:00</option>
+								<option value="1:00">1:00</option>
+								<option value="2:00">2:00</option>
+								<option value="3:00">3:00</option>
+								<option value="4:00">4:00</option>
+								<option value="5:00">5:00</option>
+								<option value="6:00">6:00</option>
+								<option value="7:00">7:00</option>
+								<option value="8:00">8:00</option>
+								<option value="9:00">9:00</option>
+								<option value="10:00">10:00</option>
+								<option value="11:00">11:00</option>
+								<option value="12:00">12:00</option>
+								<option value="13:00">13:00</option>
+								<option value="14:00">14:00</option>
+								<option value="15:00">15:00</option>
+								<option value="16:00">16:00</option>
+								<option value="17:00">17:00</option>
+								<option value="18:00">18:00</option>
+								<option value="19:00">19:00</option>
+								<option value="20:00">20:00</option>
+								<option value="21:00">21:00</option>
+								<option value="22:00">22:00</option>
+								<option value="23:00">23:00</option>
+							</select>
+						</div>
+						<div class="layui-form-mid">-</div>
+						<div class="layui-input-inline" style="width: 100px;">
+							<select name="transactionEndTime" lay-filter="">
+								<option value="0:00" selected="">0:00</option>
+								<option value="1:00">1:00</option>
+								<option value="2:00">2:00</option>
+								<option value="3:00">3:00</option>
+								<option value="4:00">4:00</option>
+								<option value="5:00">5:00</option>
+								<option value="6:00">6:00</option>
+								<option value="7:00">7:00</option>
+								<option value="8:00">8:00</option>
+								<option value="9:00">9:00</option>
+								<option value="10:00">10:00</option>
+								<option value="11:00">11:00</option>
+								<option value="12:00">12:00</option>
+								<option value="13:00">13:00</option>
+								<option value="14:00">14:00</option>
+								<option value="15:00">15:00</option>
+								<option value="16:00">16:00</option>
+								<option value="17:00">17:00</option>
+								<option value="18:00">18:00</option>
+								<option value="19:00">19:00</option>
+								<option value="20:00">20:00</option>
+								<option value="21:00">21:00</option>
+								<option value="22:00">22:00</option>
+								<option value="23:00">23:00</option>
+							</select>
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">单位时间限制</label>
-						<div class="layui-input-inline" style="width: 180px;">
-							<input type="text" name="serviceqq" lay-verify="number" class="layui-input">
+						<label class="layui-form-label">时间限制</label>
+						<div class="layui-input-inline" style="width:100px">
+							<input type="number" name="unitTimeConstraint" autocomplete="off" placeholder="单位时间限制" class="layui-input" value="0" lay-verify="title">
 						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">限制时间单位</label>
-						<div class="layui-input-block" style="width: 360px;">
-							<input type="text" name="totalUrl" class="layui-input">
+						<div class="layui-form-mid">/</div>
+						<div class="layui-input-inline" style="width:100px">
+							<select name="limitedTimeUnit" lay-filter="" lay-verify="title">
+								<option value="3" selected="">秒</option>
+								<option value="2">分</option>
+								<option value="1">时</option>
+								<option value="0">天</option>
+							</select>
 						</div>
+						<div class="layui-form-mid layui-word-aux">显示时间设置 例：10 / 秒</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">单位时间次数</label>
-						<div class="layui-input-block" style="width: 360px;">
-							<input type="text" name="agentUrl" class="layui-input">
+						<div class="layui-input-inline" style="width:225px">
+							<input type="number" name="unitTimeCount" autocomplete="off" placeholder="单位时间次数" class="layui-input" value="0" lay-verify="title">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">单位时间金额</label>
-						<div class="layui-input-block" style="width: 360px;">
-							<input type="text" name="merchantsUrl" class="layui-input">
+						<div class="layui-input-inline" style="width:225px">
+							<input type="number" name="unitTimeMoney" autocomplete="off" placeholder="单位时间金额" class="layui-input" value="0" lay-verify="title">
 						</div>
 					</div>
-					<div class="layui-form-item layui-form-text">
+					<div class="layui-form-item">
 						<label class="layui-form-label">风控状态</label>
 						<div class="layui-input-block">
-							<input type="checkbox" name="merchantca" lay-filter="switchTest" lay-skin="switch" lay-text="开启|关闭">
+							<input type="radio" name="riskSwitch" value="0" title="开启">
+							<input type="radio" name="riskSwitch" value="1" title="关闭" checked="">
 						</div>
 					</div>
 
@@ -97,72 +169,133 @@
 							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
 						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
-			var serverUrl = 'http://192.168.1.190:5002/'
-			var userNumber = window.parent.userNumber
-			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
-				layui.$.support.cors = true; //允许ajax跨域
+			var serverUrl = window.parent.serverUrl
+			var userNumber = JSON.parse(sessionStorage.getItem('user')).Number;
+			var type;
+			var jgData;
+			CmsUtility.postAjaxCall(
+				//系统设置
+				CmsConfig.addressUrl.Mechanism.getRiskSetUp,
+				{
+				'InstitutionNumber':userNumber,
+				},
+				function(data){
+					console.log(data)
+					if(data.code == 1000){
+
+						if(data.data != null){
+							type = 0 ;
+							jgData = data.data[0]
+						}else{
+							type = 1 ;
+						}
+						
+					}else{
+						alert(data.msg)
+					}
+				},
+				function(data){
+					console.log('222')
+				}
+			)
+			layui.use(['laydate', 'table', 'upload', 'form'], function() {
 				var $ = layui.jquery,
 					upload = layui.upload,
 					laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form,
-					laytpl = layui.laytpl;
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer;
+				var tableSelect = layui.tableSelect;
 
 				//表单初始赋值
-				form.val('basic', {
-					"sitename": "河北鸿搜网络",
-					"domain": "http://www.hongsou.com.cn",
-					"email": "kf@qq.com",
-					"servicetel": "13088889999",
-					"serviceqq": "88889999",
-					"totalUrl": "/zonghoutai/",
-					"agentUrl": "/dailishang/",
-					"merchantsUrl": "/dailishang/",
-					"title": "通用后台管理模板系统",
-					"merchantca": true,
-				})
+				//				form.val('tongdao', {
+				//					"preferentialSetting": 1
+				//				})
 
-				//普通图片上传
-				var uploadInst = upload.render({
-					elem: '#test1',
-					url: '/upload/',
-					before: function(obj) {
-						//预读本地文件示例，不支持ie8
-						obj.preview(function(index, file, result) {
-							$('#demo1').attr('src', result); //图片链接（base64）
-						});
-					},
-					done: function(res) {
-						//如果上传失败
-						if(res.code > 0) {
-							return layer.msg('上传失败');
-						}
-						//上传成功
-					},
-					error: function() {
-						//演示失败状态，并实现重传
-						var demoText = $('#demoText');
-						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-						demoText.find('.demo-reload').on('click', function() {
-							uploadInst.upload();
-						});
+				/*---------- 监听开关 ----------*/
+				form.on('radio(riskctrl)', function(data) { //设置会员卡的有效期
+					if(data.value == 0) {
+						$('#riskctrlDiv').hide()
+					} else if(data.value == 1) {
+						$('#riskctrlDiv').show()
 					}
 				});
 
-				//监听指定开关
-				form.on('switch(switchTest)', function(data) {
-					layer.tips('商户认证：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-				});
+				/*---------- 自定义验证规则 ----------*/
+				form.verify({
+					title: function(value) {
+						if(value.length == "") {
+							return '不能为空！';
+						}
+					},
 
-				//监听提交
-				form.on('submit(add)', function(data) {
-					layer.alert(JSON.stringify(data.field), {
-						title: '最终的提交信息'
+					pass: [/(.+){6,12}$/, '密码必须6到12位'],
+					content: function(value) {
+						layedit.sync(editIndex);
+					}
+				});
+				if(type == 0){
+					form.val('tongdao', {
+						//单笔最小金额
+						"singlepenMinMoney":jgData.singlepenMinMoney,
+						//单笔最大金额
+						"singlepenMaxMoney":jgData.singlepenMaxMoney,
+						//当日总金额
+						"dateCountMoney":jgData.dateCountMoney,
+						//交易开始时间
+						"transactionStartTime": '16:00' || jgData.transactionStartTime,
+						//交易结束时间
+						"transactionEndTime":'16:00' || jgData.transactionEndTime,
+						//单位时间限制
+						"unitTimeConstraint":jgData.unitTimeConstraint,
+						//限制单位时间
+						"limitedTimeUnit":jgData.limitedTimeUnit,
+						//单位时间次数
+						"unitTimeCount":jgData.unitTimeCount,
+						//单位时间金额
+						"unitTimeMoney":jgData.unitTimeMoney,
+						"riskSwitch":jgData.riskSwitch,
 					})
+				}
+				console.log(type)
+				var server;
+
+				/*---------- 监听提交 ----------*/
+				form.on('submit(add)', function(data, index) {
+					var addData = data.field
+					if(type == 1){
+						//新增
+						server = CmsConfig.addressUrl.Mechanism.insterRiskSetUp
+
+					}else{
+						//更新
+						server = CmsConfig.addressUrl.Mechanism.updateRiskSetUp
+					}
+					addData.institutionNumber = userNumber
+					console.log(addData)
+					CmsUtility.postAjaxCall(
+						//系统设置
+						server,
+						addData,
+						function(data){
+							if(data.code == 1000){
+								layer.msg('保存成功')
+							}else{
+								layer.msg(data.msg)
+							}
+						},
+						function(data){
+							console.log('222')
+						}
+					)
 					return false;
 				});
 

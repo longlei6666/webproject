@@ -39,7 +39,7 @@
 			<div class="layui-row">
 				<div class="layui-form layui-col-md4 layui-col-sm4 layui-col-xs4 x-so">
 					<div class="layui-input-inline">
-						<input type="text" name="couponName" id="couponName" placeholder="商户号" autocomplete="off" class="layui-input">
+						<input type="text" name="couponName" id="shopNumber" placeholder="商户号" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-input-inline">
 						<input type="text" name="couponName" id="couponName" placeholder="日期" autocomplete="off" class="layui-input">
@@ -50,7 +50,7 @@
 				</div>
 			</div>
 			<xblock>
-				<button class="layui-btn" onclick="x_admin_show('添加商户','./Merchants-add.html')"><i class="layui-icon"></i>添加商户</button>
+				<!-- <button class="layui-btn" onclick="x_admin_show('添加商户','./Merchants-add.html')"><i class="layui-icon"></i>添加商户</button> -->
 			</xblock>
 			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
@@ -90,7 +90,9 @@
 				var laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form;
-
+					laydate.render({
+						elem:"#couponName"
+					})
 				//方法级渲染  
 				table.render({
 					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,

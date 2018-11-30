@@ -3,34 +3,17 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>鸿小搜管理平台</title>
-		<link rel="stylesheet" href="./css/font.css">
-		<link rel="stylesheet" href="./css/xadmin.css">
-		<link rel="stylesheet" href="./css/style-qd.css">
-		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
-		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-		<script type="text/javascript" src="./js/xadmin.js"></script>
-
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<link rel="stylesheet" href="../../public/css/style-baobiao.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<style>
-			.text {
-				position: relative;
-			}
-			
-			.layui-input-clear {
-				position: absolute;
-				right: 10px;
-				top: 10px;
-				cursor: pointer;
-				display: none;
-				padding: 1px;
-			}
-			
-			.layui-input-clear:hover {
-				background-color: #FF5722;
-				color: #fff;
-				border-radius: 50%;
-			}
-			
 			.shaixuan-qd .layui-input-inline {
 				width: 13.9%;
 			}
@@ -39,44 +22,28 @@
 
 	<body>
 		<div class="x-nav">
-			<span class="layui-breadcrumb">                                                                                                                          
-        <a href="">首页</a>                                                                                                                                            
-        <a>                                                                                                                                                          
-          <cite>查询销售业绩</cite></a>                                                                                                                                       
-      </span>
+			<span class="layui-breadcrumb">
+				<a href="">首页</a>
+				<a><cite>查询销售业绩</cite></a>
+			</span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
 		</div>
 		<div class="x-body">
-			<div class="layui-row">
-				<form class="layui-form layui-col-md11 layui-col-sm11">
-					<div class="layui-col-md12 x-so">
-						<div class="layui-row">
-							<div class="layui-col-md12 shaixuan-qd">
-								<div class="layui-input-inline" style="width: 60px;">
-									开始时间:
-								</div>
-								<div class="layui-input-inline">
-									<input type="text" class="layui-input" placeholder="开始日期" name="startTime" id="startTime">
-								</div>
-								<div class="layui-input-inline" style="width: 60px;margin-left: 30px;">
-									截止时间:
-								</div>
-								<div class="layui-input-inline">
-									<input type="text" class="layui-input" placeholder="截止日期" name="endTime" id="endTime">
-								</div>
-							</div>
-						</div>
-					</div>
-				</form>
-				<div class="layui-col-md1">
-						<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
+			<div class="layui-row layui-form layui-form-pane x-so">
+				<div class="layui-input-inline">
+					<label class="layui-form-label">开始日期 :</label>
+					<input type="text" class="layui-input" placeholder="开始日期" name="startTime" id="startTime">
 				</div>
-				<button class="layui-btn" id="btnexport" style="margin-right: 50px;width: 125px;">
-					<i class="layui-icon"></i>下载报表
-				</button>
+				<div class="layui-input-inline">
+					<label class="layui-form-label">截止日期 :</label>
+					<input type="text" class="layui-input" placeholder="截止日期" name="endTime" id="endTime">
+				</div>
+				<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
 			</div>
-
+			<xblock>
+				<button class="layui-btn" id="btnexport" style="margin-right: 50px;width: 125px;"><i class="layui-icon"></i>下载报表</button>
+			</xblock>
 			<table class="layui-hide" id="LAY_table_billsale" lay-filter="bill"></table>
 		</div>
 
@@ -88,13 +55,13 @@
 			} else {
 				beginDate.setMonth(beginDate.getMonth() - 1);
 			}
-			
+
 			var endDate = new Date();
 			//导出报表
-			$("#btnexport").click(function(){
+			$("#btnexport").click(function() {
 				var startTime = $("#startTime").val();
 				var endTime = $("#endTime").val();
-				window.location.href = ".Sale/eport?startTime=" +startTime +"&endTime=" + endTime;
+				window.location.href = ".Sale/eport?startTime=" + startTime + "&endTime=" + endTime;
 			})
 			// 选择日期插件  
 			layui.use('laydate', function() {

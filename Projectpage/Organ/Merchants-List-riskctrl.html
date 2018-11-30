@@ -31,73 +31,124 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">风控模式</label>
 						<div class="layui-input-block">
-							<input type="radio" name="sex1" value="继承通道" title="继承通道" checked="">
-							<input type="radio" name="sex1" value="自定义" title="自定义">
+							<input type="radio" name="sex1" value="0" lay-filter="riskctrl" title="继承通道" checked="">
+							<input type="radio" name="sex1" value="1" lay-filter="riskctrl" title="自定义">
 						</div>
 					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">当天交易金额</label>
-						<div class="layui-input-inline">
-							<input type="text" name="disCount" autocomplete="off" placeholder="当天交易金额" class="layui-input">
+					<div id="riskctrlDiv" style="display: none;">
+						<div class="layui-form-item">
+							<label class="layui-form-label">当天交易金额</label>
+							<div class="layui-input-inline">
+								<input type="number" name="jiaoyie" autocomplete="off" placeholder="当天交易金额" class="layui-input" value="0">
+							</div>
 						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">单笔最小金额</label>
-						<div class="layui-input-inline">
-							<input type="text" name="disCount" autocomplete="off" placeholder="单笔最小金额" class="layui-input">
+						<div class="layui-form-item">
+							<label class="layui-form-label">单笔最小金额</label>
+							<div class="layui-input-inline">
+								<input type="number" name="zuixiaojine" autocomplete="off" placeholder="单笔最小金额" class="layui-input" value="0">
+							</div>
 						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">单笔最大金额</label>
-						<div class="layui-input-inline">
-							<input type="text" name="disCount" autocomplete="off" placeholder="单笔最大金额" class="layui-input">
+						<div class="layui-form-item">
+							<label class="layui-form-label">单笔最大金额</label>
+							<div class="layui-input-inline">
+								<input type="number" name="zuidajine" autocomplete="off" placeholder="单笔最大金额" class="layui-input" value="0">
+							</div>
 						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">交易时间</label>
-						<div class="layui-input-inline" style="width: 100px;">
-							<input type="text" name="price_min" placeholder="开始时间" autocomplete="off" class="layui-input">
+						<div class="layui-form-item">
+							<label class="layui-form-label">交易时间</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<select name="jiaoyishijiank" lay-filter="">
+									<option value="0:00" selected="">0:00</option>
+									<option value="1:00">1:00</option>
+									<option value="2:00">2:00</option>
+									<option value="3:00">3:00</option>
+									<option value="4:00">4:00</option>
+									<option value="5:00">5:00</option>
+									<option value="6:00">6:00</option>
+									<option value="7:00">7:00</option>
+									<option value="8:00">8:00</option>
+									<option value="9:00">9:00</option>
+									<option value="10:00">10:00</option>
+									<option value="11:00">11:00</option>
+									<option value="12:00">12:00</option>
+									<option value="13:00">13:00</option>
+									<option value="14:00">14:00</option>
+									<option value="15:00">15:00</option>
+									<option value="16:00">16:00</option>
+									<option value="17:00">17:00</option>
+									<option value="18:00">18:00</option>
+									<option value="19:00">19:00</option>
+									<option value="20:00">20:00</option>
+									<option value="21:00">21:00</option>
+									<option value="22:00">22:00</option>
+									<option value="23:00">23:00</option>
+								</select>
+							</div>
+							<div class="layui-form-mid">-</div>
+							<div class="layui-input-inline" style="width: 100px;">
+								<select name="jiaoyishijianj" lay-filter="">
+									<option value="0:00" selected="">0:00</option>
+									<option value="1:00">1:00</option>
+									<option value="2:00">2:00</option>
+									<option value="3:00">3:00</option>
+									<option value="4:00">4:00</option>
+									<option value="5:00">5:00</option>
+									<option value="6:00">6:00</option>
+									<option value="7:00">7:00</option>
+									<option value="8:00">8:00</option>
+									<option value="9:00">9:00</option>
+									<option value="10:00">10:00</option>
+									<option value="11:00">11:00</option>
+									<option value="12:00">12:00</option>
+									<option value="13:00">13:00</option>
+									<option value="14:00">14:00</option>
+									<option value="15:00">15:00</option>
+									<option value="16:00">16:00</option>
+									<option value="17:00">17:00</option>
+									<option value="18:00">18:00</option>
+									<option value="19:00">19:00</option>
+									<option value="20:00">20:00</option>
+									<option value="21:00">21:00</option>
+									<option value="22:00">22:00</option>
+									<option value="23:00">23:00</option>
+								</select>
+							</div>
 						</div>
-						<div class="layui-form-mid">-</div>
-						<div class="layui-input-inline" style="width: 100px;">
-							<input type="text" name="price_max" placeholder="结束时间" autocomplete="off" class="layui-input">
+						<div class="layui-form-item">
+							<label class="layui-form-label">单位时间限制</label>
+							<div class="layui-input-inline">
+								<input type="number" name="shijianxianzhi" autocomplete="off" placeholder="单位时间限制" class="layui-input" value="0">
+							</div>
 						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">单位时间限制</label>
-						<div class="layui-input-inline">
-							<input type="text" name="disCount" autocomplete="off" placeholder="单位时间限制" class="layui-input">
+						<div class="layui-form-item">
+							<label class="layui-form-label">限制时间单位</label>
+							<div class="layui-input-inline">
+								<select name="shijiandanwei" lay-filter="">
+									<option value="3" selected="">秒</option>
+									<option value="2">分</option>
+									<option value="1">时</option>
+									<option value="0">天</option>
+								</select>
+							</div>
 						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">限制时间单位</label>
-						<div class="layui-input-inline">
-							<select name="" lay-filter="">
-								<option value=""></option>
-								<option value="0">天</option>
-								<option value="1">时</option>
-								<option value="2">分</option>
-								<option value="3">秒</option>
-							</select>
+						<div class="layui-form-item">
+							<label class="layui-form-label">单位时间次数</label>
+							<div class="layui-input-inline">
+								<input type="number" name="shijiancishu" autocomplete="off" placeholder="单位时间次数" class="layui-input" value="0">
+							</div>
 						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">单位时间次数</label>
-						<div class="layui-input-inline">
-							<input type="text" name="disCount" autocomplete="off" placeholder="单位时间次数" class="layui-input">
+						<div class="layui-form-item">
+							<label class="layui-form-label">单位时间金额</label>
+							<div class="layui-input-inline">
+								<input type="number" name="shijianjine" autocomplete="off" placeholder="单位时间金额" class="layui-input" value="0">
+							</div>
 						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">单位时间金额</label>
-						<div class="layui-input-inline">
-							<input type="text" name="disCount" autocomplete="off" placeholder="单位时间金额" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">风控状态</label>
-						<div class="layui-input-block">
-							<input type="radio" name="sex" value="开启" title="开启">
-							<input type="radio" name="sex" value="关闭" title="关闭" checked="">
+						<div class="layui-form-item">
+							<label class="layui-form-label">风控状态</label>
+							<div class="layui-input-block">
+								<input type="radio" name="sex" value="开启" title="开启">
+								<input type="radio" name="sex" value="关闭" title="关闭" checked="">
+							</div>
 						</div>
 					</div>
 
@@ -105,7 +156,7 @@
 						<div class="layui-input-block">
 							<div class="layui-footer" style="left: 0;text-align: center;">
 								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="quxiao">取消</button>
 							</div>
 							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
 						</div>
@@ -114,36 +165,11 @@
 			</div>
 		</div>
 		<script>
-			function changeRes(res) {
-				var res = res
-				if(res.length == 0) {
-					return
-				}
-				for(var i = 0; i < res.length; i++) {
-					if(res[i].type == 0) {
-						res[i].typea = '可用'
-					} else {
-						res[i].typea = '不可用'
-					}
-					if(res[i].startTime && res[i].endTime != "") {
-						res[i].startTime = res[i].startTime.split(' ')[0]
-						res[i].endTime = res[i].endTime.split(' ')[0]
-					}
-					if(res[i].couponMoney != "") {
-						res[i].couponMoneya = parseFloat(res[i].couponMoney).toFixed(2)
-					}
-					if(res[i].couponMoney == 0) {
-						res[i].couponMoneya = res[i].discount + ' 折'
-					}
-					if(res[i].useTimePeriod == 0) {
-						res[i].useTimePeriod = "长期"
-					} else if(res[i].useTimePeriod == 1) {
-						res[i].useTimePeriod = res[i].startTime + ' ~ ' + res[i].endTime
-					}
-
-				}
-				return res
-			}
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
 			var serverUrl = window.parent.serverUrl
 			var userNumber = window.parent.userNumber
 			layui.use(['laydate', 'table', 'upload', 'form'], function() {
@@ -162,81 +188,12 @@
 				//					"preferentialSetting": 1
 				//				})
 
-				/*---------- 下拉表格选择器 ----------*/
-				tableSelect.render({
-					elem: '#couponsSelect',
-					searchKey: 'couponName',
-					checkedKey: 'couponNumber',
-					searchPlaceholder: '搜索优惠券',
-					table: {
-						url: serverUrl + 'coupon/selectCoupon?type=0&pageAll=0&userNumber=' + userNumber,
-						parseData: function(res) { //res 即为原始返回的数据
-							return {
-								"code": res.code, //解析接口状态
-								"msg": res.msg, //解析提示文本
-								"count": res.count, //解析数据长度
-								"data": changeRes(res.result), //解析数据列表
-							};
-						},
-						cols: [
-							[{
-								align: 'center',
-								//fixed: 'left',
-								type: 'checkbox'
-							}, {
-								align: 'center',
-								field: 'couponName',
-								title: '卷名称',
-								sort: true,
-								width: 150
-							}, {
-								align: 'center',
-								field: 'couponMoneya',
-								title: '卷金额(元)/券折扣(折)',
-								sort: true,
-								width: 150
-							}, {
-								align: 'center',
-								field: 'cardVoucherName',
-								title: '卷类型',
-								sort: true,
-								width: 80
-							}, {
-								align: 'center',
-								field: 'useTimePeriod',
-								title: '有效期',
-								sort: true,
-								width: 200
-							}]
-						]
-					},
-					done: function(elem, data) {
-						var newjson = []
-						layui.each(data.data, function(index, item) {
-							newjson.push(item.couponNumber)
-						})
-						elem.val(newjson.join("|"))
-					}
-				})
-
-				/*---------- 优惠设置 ----------*/
-				form.on('select(youhuiSelect)', function(data) {
-					if(data.value == "") {
-						$('#GF_wx').hide()
-						$('#GF_zfb').hide()
-						$('#FY').hide()
-					} else if(data.value == 0) {
-						$('#GF_wx').show()
-						$('#GF_zfb').hide()
-						$('#FY').hide()
+				/*---------- 监听开关 ----------*/
+				form.on('radio(riskctrl)', function(data) { //设置会员卡的有效期
+					if(data.value == 0) {
+						$('#riskctrlDiv').hide()
 					} else if(data.value == 1) {
-						$('#GF_wx').hide()
-						$('#GF_zfb').show()
-						$('#FY').hide()
-					} else if(data.value == 2) {
-						$('#GF_wx').hide()
-						$('#GF_zfb').hide()
-						$('#FY').show()
+						$('#riskctrlDiv').show()
 					}
 				});
 
@@ -247,102 +204,16 @@
 							return '不能为空！';
 						}
 					},
-					rechargeJe: function(value) {
-						if($('#giveJe').val() != "" && $('#rechargeJe').val() == "") {
-							return '充值金额不能为空！';
-						}
-					},
-					giveJe: function(value) {
-						if($('#rechargeJe').val() != "" && $('#giveJe').val() == "") {
-							return '赠送金额不能为空！';
-						}
-					},
-					rechargeJf: function(value) {
-						if($('#giveJf').val() != "" && $('#rechargeJf').val() == "") {
-							return '充值金额不能为空！';
-						}
-					},
-					giveJf: function(value) {
-						if($('#rechargeJf').val() != "" && $('#giveJf').val() == "") {
-							return '赠送积分不能为空！';
-						}
-					},
 					pass: [/(.+){6,12}$/, '密码必须6到12位'],
 					content: function(value) {
 						layedit.sync(editIndex);
 					}
 				});
 
-				form.on('switch(GF_wxswitch)', function(data) { //充值优惠开关
-					layer.tips('微信官方通道：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-				});
-				form.on('switch(GF_zfbswitch)', function(data) { //计次开关
-					layer.tips('支付宝官方通道：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-				});
-				form.on('switch(fyswitch)', function(data) { //计时开关
-					layer.tips('富友通道：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-				});
-
 				/*---------- 监听提交 ----------*/
 				form.on('submit(add)', function(data, index) {
-					if(!data.field.consumptionPreferences) { //消费优惠开关
-						data.field.consumptionPreferences = '1'
-					}
-					if(!data.field.rechargePreferences) { //充值优惠开关
-						data.field.rechargePreferences = '1'
-					}
-					if(!data.field.timesCountPreferences) { //计次开关
-						data.field.timesCountPreferences = '1'
-					}
-					if(!data.field.timePreferences) { //计时开关
-						data.field.timePreferences = '1'
-					}
-					if(data.field.invalid == 0) {
-						data.field.endTime = "9999-12-31"
-					}
-
-					var rechargeJe = $('#rechargeJe').val()
-					var rechargeJf = $('#rechargeJf').val()
-					var giveJe = $('#giveJe').val()
-					var giveJf = $('#giveJf').val()
-					var Integral = $('#Integral').val()
-					var paymentreturn = $('#paymentreturn').val()
-					var fullSubtraction_j = $('#fullSubtraction_j').val()
-					var fullSubtraction_m = $('#fullSubtraction_m').val()
-
-					if(!data.field.giveMoneyR) {
-						data.field.giveMoneyR = rechargeJe + ":" + giveJe
-					}
-					if(data.field.giveMoneyR == ":") {
-						data.field.giveMoneyR = ""
-					}
-					if(!data.field.giveIntegralR) {
-						data.field.giveIntegralR = rechargeJf + ":" + giveJf
-					}
-					if(data.field.giveIntegralR == ":") {
-						data.field.giveIntegralR = ""
-					}
-					if(Integral != "") {
-						data.field.offsetProportions = Integral + ":1"
-					}
-					if(Integral == "") {
-						data.field.offsetProportions = ""
-					}
-					if(paymentreturn != "") {
-						data.field.returnIntegralRatio = "1:" + paymentreturn
-					}
-					if(paymentreturn == "") {
-						data.field.returnIntegralRatio = ""
-					}
-					if(!data.field.fullSubtraction) {
-						data.field.fullSubtraction = fullSubtraction_m + ":" + fullSubtraction_j
-					}
-					if(data.field.fullSubtraction == ":") {
-						data.field.fullSubtraction = ""
-					}
-
 					var addData = JSON.stringify(data.field)
-
+					console.log(addData)
 					// 发送请求
 					$.ajax({
 						type: "post",

@@ -44,13 +44,18 @@
 						<label class="layui-form-label"></label>
 						<div class="layui-input-inline">
 							<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							<button type="reset" class="layui-btn layui-btn-primary" id="quxiao">取消</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
 		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
 			var serverUrl = 'http://192.168.1.190:5002/'
 			var userNumber = window.parent.userNumber
 			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {

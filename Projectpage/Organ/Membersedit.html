@@ -44,7 +44,7 @@
 						<div class="layui-input-block">
 							<div class="layui-footer" style="left: 0;text-align: center;">
 								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="quxiao">取消</button>
 							</div>
 							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
 						</div>
@@ -55,6 +55,11 @@
 		<script src="../../common/config.js"></script>
 		<script src="../../common/utility.js"></script>
 		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
 			var serverUrl = 'http://192.168.1.190:5002/'
 			var userNumber = window.parent.userNumber;
 

@@ -92,50 +92,50 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">营业执照号</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入营业执照号" class="layui-input">
+							<input type="text" name="yingyezhizhaohao" lay-verify="title" autocomplete="off" placeholder="请输入营业执照号" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">营业执照有效期</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请选择营业执照有效期" class="layui-input">
+							<input type="text" name="yingyezhizhaohaoyouxiaoqi" lay-verify="title" autocomplete="off" placeholder="请选择营业执照有效期" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">法人姓名</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入法人姓名" class="layui-input">
+							<input type="text" name="farenxingming" lay-verify="title" autocomplete="off" placeholder="请输入法人姓名" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">法人身份证号</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入法人身份证号" class="layui-input">
+							<input type="text" name="farenshenfenzheng" lay-verify="title" autocomplete="off" placeholder="请输入法人身份证号" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">法人身份证有效期</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请选择法人身份证有效期" class="layui-input">
+							<input type="text" name="shenfenzhengyouxiaoqi" lay-verify="title" autocomplete="off" placeholder="请选择法人身份证有效期" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">联系电话</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
+							<input type="text" name="lianxidianhua" lay-verify="title" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">经营范围</label>
 						<div class="layui-input-inline">
-							<select name="quiz1">
+							<select name="jingyingfanwei1">
 								<option value="">一级类目</option>
 								<option value="1">互联网</option>
 								<option value="2">科技</option>
 							</select>
 						</div>
 						<div class="layui-input-inline">
-							<select name="quiz2">
+							<select name="jingyingfanwei2">
 								<option value="">二级类目</option>
 								<option value="1">信息科技</option>
 								<option value="2">生物</option>
@@ -143,7 +143,7 @@
 							</select>
 						</div>
 						<div class="layui-input-inline">
-							<select name="quiz3">
+							<select name="jingyingfanwei3">
 								<option value="">三级类目</option>
 								<option value="1">开发</option>
 								<option value="2">前段</option>
@@ -172,31 +172,39 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">商户详细地址</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入商户详细地址" class="layui-input">
+							<input type="text" name="xiangxidizhi" lay-verify="title" autocomplete="off" placeholder="请输入商户详细地址" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">开户行</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请选择开户行" class="layui-input">
+							<input type="text" name="kaihuhang" lay-verify="title" autocomplete="off" placeholder="请选择开户行" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">开户支行</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请选择开户支行" class="layui-input">
+							<input type="text" name="kaihuzhihang" lay-verify="title" autocomplete="off" placeholder="请选择开户支行" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">银行卡号</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入银行卡号" class="layui-input">
+							<input type="text" name="yinghangkahao" lay-verify="title" autocomplete="off" placeholder="请输入银行卡号" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">结算标识</label>
+						<div class="layui-input-inline widthauto">
+							<input type="radio" name="settlement" value="0" title="D+0 结算" lay-filter="settlement">
+							<input type="radio" name="settlement" value="1" title="D+1 结算" lay-filter="settlement">
+							<input type="radio" name="settlement" value="2" title="T+1 结算" lay-filter="settlement">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">费率</label>
 						<div class="layui-input-inline">
-							<select name="" id="">
+							<select name="feilv" id="">
 								<option value="">认证</option>
 								<option value="0.006">0.6%</option>
 								<option value="0.005">0.5%</option>
@@ -317,7 +325,7 @@
 						<div class="layui-input-block">
 							<div class="layui-footer" style="left: 0;text-align: center;">
 								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-								<button class="layui-btn layui-btn-primary">取消</button>
+								<button class="layui-btn layui-btn-primary" id="quxiao">取消</button>
 							</div>
 							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
 						</div>
@@ -327,6 +335,11 @@
 		</div>
 
 		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
 			var serverUrl = window.parent.serverUrl
 			var userNumber = window.parent.userNumber
 			layui.use(['laydate', 'table', 'upload', 'form'], function() {

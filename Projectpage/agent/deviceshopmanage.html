@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="./css/font.css">
-	<link rel="stylesheet" href="./css/xadmin.css">
-	<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-	<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-	<script type="text/javascript" src="./js/xadmin.js"></script>
-	<style>
-		.layui-form.x-so{width:auto;margin-right:5px;}
-		.layui-col-md1{width:auto;}
-	</style>
-</head>
-<body>
-	<div class="x-nav">
-		<span class="layui-breadcrumb">
-	        <a href="">首页</a>
-	        <a href="">门店管理</a>
-	    </span>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+				<a href="">首页</a>
+				<a href="">门店管理</a>
+			</span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
-	</div>
+		</div>
 		<div class="x-body">
-			<div class="layui-row">
-				<div class="layui-form layui-col-md12 x-so">
-					<div class="layui-input-inline">
-						<input type="text" id="shopname" name="shopname" placeholder="店铺名称" autocomplete="off" class="layui-input">
-					</div>
+			<div class="layui-row layui-form x-so">
+				<div class="layui-input-inline">
+					<input type="text" id="shopname" name="shopname" placeholder="店铺名称" autocomplete="off" class="layui-input">
 				</div>
-				<div class="layui-col-md1 layui-col-sm1 layui-col-xs1">
-					<button class="layui-btn" lay-submit="" lay-filter="sreach" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
-				</div>
+				<button class="layui-btn" lay-submit="" lay-filter="sreach" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
 			</div>
 			<table class="layui-hide" id="table1" lay-filter="useruv"></table>
 		</div>
@@ -44,7 +41,7 @@
 				$ = layui.jquery;
 				var layer = layui.layer;
 				var table = layui.table;
-	
+
 				//方法级渲染
 				table.render({
 					elem: '#table1',
@@ -65,11 +62,11 @@
 							field: 'ShopName',
 							title: '店铺名称',
 							align: 'center'
-						},{
+						}, {
 							field: 'UseraName',
 							title: '管理员名称',
 							align: 'center'
-						},{
+						}, {
 							field: 'Cell',
 							title: '管理员电话',
 							align: 'center'
@@ -88,44 +85,45 @@
 						}]
 					]
 				})
-				
+
 				// 根據條件重载表格
-			var url = '';	
-			var code = '';
-			var $ = layui.$, 
-			active = {
-				reload : function() {
-					// 获取上面查询框的值
-					var shopname = $("#shopname").val();
-					//执行重载
-					table.reload('deviceInfo', {
-						page : {
-							curr : 1//重新从第 1 页开始
-						},
-						where : {
-							ShopName : shopname
+				var url = '';
+				var code = '';
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							// 获取上面查询框的值
+							var shopname = $("#shopname").val();
+							//执行重载
+							table.reload('deviceInfo', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									ShopName: shopname
+								}
+							});
 						}
-					});
-				}
-			};
-			table.on('tool(useruv)', function(obj) {
-				var data = obj.data;
-				if(obj.event === 'bandqrcode') {
-					// 跳转商户详情页面
-					layer.open({
-						type: 2,
-						title: '绑定二维码',
-						area: ['40%', '40%'], //宽高
-						content: '.deviceshop/goshopbandqrcode?ShopNumber=' + data.ShopNumber
-					});
-				}
+					};
+				table.on('tool(useruv)', function(obj) {
+					var data = obj.data;
+					if(obj.event === 'bandqrcode') {
+						// 跳转商户详情页面
+						layer.open({
+							type: 2,
+							title: '绑定二维码',
+							area: ['40%', '40%'], //宽高
+							content: '.deviceshop/goshopbandqrcode?ShopNumber=' + data.ShopNumber
+						});
+					}
+				});
+				$('.layui-row .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
 			});
-			$('.layui-row .layui-btn').on('click', function() {
-				var type = $(this).data('type');
-				active[type] ? active[type].call(this) : '';
-			});
-		});
-	</script>
-	
-</body>
+		</script>
+
+	</body>
+
 </html>

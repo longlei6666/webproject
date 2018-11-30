@@ -19,31 +19,23 @@
 		<div class="x-body">
 			<form class="layui-form">
 				<div class="layui-form-item">
-					<label for="name" class="layui-form-label">
-                  	姓名
-              </label>
+					<label class="layui-form-label">姓名</label>
 					<div class="layui-input-inline">
 						<input type="text" id="name" name="name" lay-verify="required" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label for="phone" class="layui-form-label">
-                  	手机号
-              </label>
+					<label class="layui-form-label">手机号</label>
 					<div class="layui-input-inline">
-						<input type="text" id="mphone" name="mphone" lay-verify="required|mphone" autocomplete="off" class="layui-input">
+						<input type="text" id="mphone" name="mphone" lay-verify="phone" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label for="L_email" class="layui-form-label">
-                  	所属门店
-              </label>
+					<label class="layui-form-label">所属门店</label>
 					<div class="layui-input-inline">
 						<select name="shop" id="shop" lay-verify="required" lay-search="">
 							<option value="">所属门店</option>
-							<c:forEach items="${shops }" var="shop">
-								<option value="${shop.ShopName }">${shop.ShopName }</option>
-							</c:forEach>
+							<option value="${shop.ShopName }">${shop.ShopName }</option>
 						</select>
 					</div>
 					<div class="layui-form-mid layui-word-aux">
@@ -58,32 +50,25 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label for="L_pass" class="layui-form-label">
-                  	密码
-              </label>
+					<label class="layui-form-label">密码</label>
 					<div class="layui-input-inline">
-						<input type="password" id="L_pass" name="pass" required="" lay-verify="required" autocomplete="off" class="layui-input">
+						<input type="password" id="L_pass" name="pass" lay-verify="pass" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-form-mid layui-word-aux">
 						6到16个字符
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label for="L_repass" class="layui-form-label">
-                  	确认密码
-              </label>
+					<label class="layui-form-label">确认密码</label>
 					<div class="layui-input-inline">
-						<input type="password" id="L_repass" name="password" required="" lay-verify="required" autocomplete="off" class="layui-input">
+						<input type="password" id="L_repass" name="password" lay-verify="repass" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label for="L_repass" class="layui-form-label"></label>
-					<button class="layui-btn" lay-filter="add" lay-submit="">
-                  	增加
-              		</button>
+					<label class="layui-form-label"></label>
+					<button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
 				</div>
 			</form>
-			
 		</div>
 		<script>
 			layui.use(['form', 'layer'], function() {
@@ -93,14 +78,14 @@
 
 				//自定义验证规则
 				form.verify({
-					name:function(value){
-			            if(!value){
-			                return '昵称不能为空';
-			            }
-			        },
+					name: function(value) {
+						if(!value) {
+							return '昵称不能为空';
+						}
+					},
 					pass: [/(.+){6,12}$/, '密码必须6到12位'],
 					repass: function(value) {
-						if($('#L_repass').val() != $('#L_repass').val()) {
+						if($('#L_pass').val() != $('#L_repass').val()) {
 							return '两次密码不一致';
 						}
 					}
@@ -109,13 +94,6 @@
 				//监听提交
 				form.on('submit(add)', function(data) {
 					console.log(data.field);
-					//验证密码是否一样
-					var pd1=document.getElementById("L_pass").value;
-					var pd2=document.getElementById("L_repass").value;
-					if (pd1!=pd2){
-						layer.alert("两次密码不一致，请重新输入！");
-						return false;
-					}
 					//发异步，把数据提交
 					$.ajax({
 						type: "post",

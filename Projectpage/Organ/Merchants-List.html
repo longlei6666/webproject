@@ -22,6 +22,18 @@
 			.layui-btn+.layui-btn {
 				margin-left: -2px;
 			}
+			.laytable-cell-1-0-4{
+				overflow: visible;
+				padding: 0;
+			}
+			.laytable-cell-1-0-6{
+				overflow: visible;
+				padding: 0;
+			}
+			.layui-table .layui-form-select .layui-input{
+				height: 28px;
+				border: none;
+			}
 		</style>
 	</head>
 
@@ -70,7 +82,20 @@
 			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
 		<script type="text/html" id="switchBar">
-			<input type="checkbox" name="consumptionPreferences" lay-skin="switch" lay-filter="consumptionPreferences" lay-text="开|关" {{d.type == 1 ? 'checked' : ''}}>
+			<input type="checkbox" name="consumptionPreferences" lay-skin="switch" lay-filter="consumptionPreferences" lay-text="开|关" {{d.type==1 ? 'checked' : ''}} value="{{d.merchants}}">
+		</script>
+		<script type="text/html" id="selectBar_lx">
+			<select name="type" lay-filter="shopSel" shopNumber="{{d.merchants}}" >
+				<option value="0" {{d.merchantstype==0 ? 'selected' : ''}}>普通商户</option>
+				<option value="1" {{d.merchantstype==1 ? 'selected' : ''}}>补贴商户</option>
+			</select>
+		</script>
+		<script type="text/html" id="selectBar_rz">
+			<select name="cardVoucherName" lay-filter="cardVoucherName"  shopNumber="{{d.merchants}}" >
+				<option value="0" {{d.audittype==0 ? 'selected' : ''}}>未认证</option>
+				<option value="1" {{d.audittype==1 ? 'selected' : ''}}>待审核</option>
+				<option value="2" {{d.audittype==2 ? 'selected' : ''}}>已认证</option>
+			</select>
 		</script>
 		<script type="text/html" id="toolbar">
 			<a class="layui-btn layui-btn-xs" id="loginTo" lay-event="loginTo">登录</a>
@@ -83,6 +108,8 @@
 			<a class="layui-btn layui-btn-xs" id="secretkey" lay-event="secretkey">秘钥</a>
 			<a class="layui-btn layui-btn-danger layui-btn-xs" id="logout" lay-event="logout">删除</a>
 		</script>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
 			function changeRes(res) {
 				var res = res
@@ -90,28 +117,11 @@
 					return
 				}
 				for(var i = 0; i < res.length; i++) {
-					if(res[i].merchantstype == 0) {
-						res[i].merchantstypea = '普通商户'
-					} else if(res[i].merchantstype == 1) {
-						res[i].merchantstypea = '补贴商户'
-					}
-					if(res[i].type == 0) {
-						res[i].typea = '禁用'
-					} else if(res[i].type == 1) {
-						res[i].typea = '启用'
-					}
-					if(res[i].audittype == 1) {
-						res[i].audittypea = '未审核'
-					} else if(res[i].audittype == 2) {
-						res[i].audittypea = '审核中'
-					} else if(res[i].audittype == 3) {
-						res[i].audittypea = '已审核'
-					}
 				}
 				return res
 			}
 			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
+			var userNumber = JSON.parse(sessionStorage.getItem('user')).Number;
 			layui.use(['laydate', 'table', 'form'], function() {
 				var laydate = layui.laydate,
 					table = layui.table,
@@ -149,15 +159,15 @@
 							title: '商户名'
 						}, {
 							align: 'center',
-							field: 'merchantstypea',
-							width: 100,
-							title: '商户类型',
-							sort: true
-						}, {
-							align: 'center',
 							field: 'belongagent',
 							width: 300,
 							title: '所属代理'
+						}, {
+							align: 'center',
+							toolbar: '#selectBar_lx',
+							width: 100,
+							title: '商户类型',
+							sort: true
 						}, {
 							align: 'center',
 							toolbar: '#switchBar',
@@ -165,7 +175,7 @@
 							title: '状态',
 						}, {
 							align: 'center',
-							field: 'audittypea',
+							toolbar: '#selectBar_rz',
 							width: 100,
 							title: '认证',
 							sort: true
@@ -187,7 +197,93 @@
 						console.log(res)
 					}
 				});
-
+				
+				//监听状态操作
+				form.on('switch(consumptionPreferences)', function(data) {
+					// layer.tips('广告状态：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					console.log(this.checked)
+					console.log(data)
+					return
+					var tjData = new Object();
+					tjData.institutionNumber = userNumber;
+					tjData.number = data.value;
+					tjData.state = this.checked?'0':'1';
+					// CmsUtility.postAjaxCall(
+					// 	//系统设置
+					// 	CmsConfig.addressUrl.Mechanism.updateInstitutionAdvertisementState,
+					// 	tjData,
+					// 	function(data){
+					// 		if(data.code == 1000){
+								 
+					// 			parent.layer.msg('更改成功')
+								
+					// 		}else{
+					// 			layer.msg(data.msg)
+								
+					// 		}
+					// 	},
+					// 	function(data){
+					// 		console.log('222')
+					// 	}
+					// )
+				});
+				//监听状态操作
+				form.on('select(shopSel)', function(data) {
+					// layer.tips('广告状态：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					console.log(data.elem.getAttribute("shopNumber"))
+					console.log(data)
+					return
+					var tjData = new Object();
+					tjData.institutionNumber = userNumber;
+					tjData.number = data.value;
+					tjData.state = this.checked?'0':'1';
+					// CmsUtility.postAjaxCall(
+					// 	//系统设置
+					// 	CmsConfig.addressUrl.Mechanism.updateInstitutionAdvertisementState,
+					// 	tjData,
+					// 	function(data){
+					// 		if(data.code == 1000){
+								 
+					// 			parent.layer.msg('更改成功')
+								
+					// 		}else{
+					// 			layer.msg(data.msg)
+								
+					// 		}
+					// 	},
+					// 	function(data){
+					// 		console.log('222')
+					// 	}
+					// )
+				});
+				form.on('select(cardVoucherName)', function(data) {
+					// layer.tips('广告状态：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					console.log(data.elem.getAttribute("shopNumber"))
+					console.log(data)
+					return
+					var tjData = new Object();
+					tjData.institutionNumber = userNumber;
+					tjData.number = data.value;
+					tjData.state = this.checked?'0':'1';
+					// CmsUtility.postAjaxCall(
+					// 	//系统设置
+					// 	CmsConfig.addressUrl.Mechanism.updateInstitutionAdvertisementState,
+					// 	tjData,
+					// 	function(data){
+					// 		if(data.code == 1000){
+								 
+					// 			parent.layer.msg('更改成功')
+								
+					// 		}else{
+					// 			layer.msg(data.msg)
+								
+					// 		}
+					// 	},
+					// 	function(data){
+					// 		console.log('222')
+					// 	}
+					// )
+				});
 				//监听工具条
 				table.on('tool(members)', function(obj) {
 					var data = obj.data;
@@ -214,7 +310,7 @@
 							type: 2,
 							title: '选择子账号',
 							shade: 0.5,
-							area: ['700px', '90%'],
+							area: ['800px', '90%'],
 							maxmin: false,
 							resize: false,
 							content: ['Merchants-List-childaccount.html'],

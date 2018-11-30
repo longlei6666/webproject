@@ -1,80 +1,181 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>代理商管理平台</title>
+		<title>豆果收银代理商后台管理系统</title>
 		<meta name="renderer" content="webkit|ie-comp|ie-stand">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
 		<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="./css/font.css">
-		<link rel="stylesheet" href="./css/xadmin.css">
-		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
-		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<link rel="stylesheet" href="../../public/css/style_Forgot.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+        <script type="text/javascript" src="../../public/js/data.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+        <style type="text/css">
+    .codeT {
+        font-size: 30px;
+        line-height: 40px;
+        text-align: center;
+        width: 25px;
+        display: inline-block;
+        -webkit-user-select:none;user-select:none; 
+    }
+    </style>
 	</head>
 
-	<body>
+<body>
 
-		<body class="login-bg">
-
-			<div class="login">
-				<div class="message">代理商管理平台</div>
-				<div id="darkbannerwrap"></div>
-
-				<!--
-        	作者：offline
-        	时间：2017-11-22
-        	描述：用户登录
+    <body class="login-bg">
+        <div class="login">
+            <div class="message" id="code1">豆果收银代理商后台登录</div>
+            <div id="darkbannerwrap"></div>
+            <!--
+        	
         -->
-				<form method="post" class="layui-form" action=".login">
-					<input name="username" placeholder="用户名" type="text" lay-verify="required" class="layui-input" value="${username}">
-					<hr class="hr15">
-					<input name="password" lay-verify="required" placeholder="密码" type="password" class="layui-input" value="${password}">
-					<hr class="hr15">
-					<div class="layui-form-item">
-						<div class="layui-row">
-							<div class="layui-col-md7 layui-col-lg7 layui-col-xs5">
-								<input id="verificationCode" name="verificationCode" placeholder="验证码" type="text" lay-verify="required" class="layui-input">
-							</div>
-							<div class="layui-col-md5 layui-col-lg5 layui-col-xs7">
-								<div class="yanzhengimg">
-									<img id="codeImg" src=".login/getVerificationCode" style="height: 50px;float:right;" />
-								</div>
-							</div>
-						</div>
-						<hr class="hr15">
-					</div>
-					<input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
-					<hr class="hr20">
-				</form>
-			</div>
-			<script type="text/javascript">
-				var msg = '${ msg } ';
-				var code = '${status }';
+            <form method="post" class="layui-form" action="${pageContext.request.contextPath }/login">
+                <input name="username" placeholder="用户名" type="text" lay-verify="username" class="layui-input" value="16630375315" id="username" >
+                <hr class="hr15">
+                <input name="password" lay-verify="password" placeholder="密码" type="password" class="layui-input" value="123456" id="password">
+                <hr class="hr15">
+                <div class="layui-form-item">
+                    <div class="layui-row">
+                        <div class="layui-col-md7 layui-col-lg7 layui-col-xs5">
+                            <input id="verificationCode" name="verificationCode" placeholder="验证码" type="text" lay-verify="required" class="layui-input">
+                        </div>
+                        <div class="layui-col-md5 layui-col-lg5 layui-col-xs7">
+                            <div class="yanzhengimg">
+                                <div id="codeImg" style="height: 40px;float:right;border:1px solid black;width:115px;-webkit-user-select:none;user-select:none; ">
+                                    <span class="codeT">1</span>
+                                    <span class="codeT">2</span>
+                                    <span class="codeT">3</span>
+                                    <span class="codeT">4</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hr15">
+                </div>
+                <input class="layui-btn" value="登录" lay-submit lay-filter="login" style="width:100%;" type="" id="sub">
+                <hr class="hr20">
+                <a href="" class="Forgot_p"><< 忘记密码 >></a>
+            </form>
+        </div>
+       
+       <script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
+        <script type="text/javascript">
+        	
+        var code1 = ''
+        var cname = ''
+        var cip = ''
+        var code
+		$.getScript('http://pv.sohu.com/cityjson?ie=utf-8',function(){
+				   console.log(returnCitySN)
+				   cname = returnCitySN.cname
+				   cip = returnCitySN.cip
+				   console.log(cname,cip)
+			});
 
-				$(function() {
-					layui.use('form', function() {
-						var form = layui.form;
+         
+        $(function() {
+        	
+        	
+            layui.use('form', function() {
+                var form = layui.form;
 
-						if(code == 1) {
-							layer.msg(msg, {
-								icon: 5
-							});
-						}
-					});
-				})
-				
-				$(function() {
-					$("#codeImg").click(function() {
-						$(this).prop("src", ".login/getVerificationCode?time=" + new Date().getTime());
-					});
+                if (code == 1) {
+                    layer.msg(msg, {
+                        icon: 5
+                    });
+                }
+                form.verify({
+                    username:function(value){
+                        if($('#username').val() == ''){
+                            return "请输入账号"
+                        }
+                    },
+                    password:function(value){
+                        if($('#password').val() == ''){
+                            return "请输入密码"
+                        }
+                    },
+                    required: function(value) {
+                        if($('#verificationCode').val() != code1) {
+                            return '验证码错误';
+                        }
+                    }
+                });
+                
+                form.on('submit(login)',function(data){
+					 console.log(data)
+                     if(data.field.verificationCode != code1){
+                        alert('验证码输入错误，请重新输入')
+                        return
+                     }
+                     var ajaData = new Object()
+                     ajaData.login = data.field.username;
+                     ajaData.loginPass = data.field.password;
+                     ajaData.IP = cip;
+                     ajaData.address = cname;
+                     ajaData.loginClass  = '1';
+                     console.log(ajaData)
+                     CmsUtility.postAjaxCall(
+                        //系统设置
+                        CmsConfig.addressUrl.Login.login,
+                        ajaData,
+                        function(data){
+                            if(data.respCode == '1000'){
+                               layer.alert(JSON.stringify('登录成功'), {
+                                    title: ''
+                                })
+                                sessionStorage.setItem("user_key", data.resp_result.key);
+                                setTimeout(function(){
+                                   window.location.href = 'index.html' 
+                                },300)
+                                
+                            }else{
+                                layer.alert(JSON.stringify(data.msg), {
+                                    title: '登录失败'
+                                })
+                            }
+                        },
+                        function(data){
+                            console.log('222')
+                        }
+                    )
+				    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 				});
-			</script>
+            });
+        })
+        //生成验证码
+        function createCode(){
+        	code1 = ''
+        	for(var i=0;i<4;i++){
+				code1+=Math.floor(Math.random()*10)
+			}
+			var codeL = code1.split('')
+			console.log($('.codeT')[0].innerHTML = 1)
+			$('.codeT')[0].innerHTML = 3
+			for(var j = 0 ; j < $('.codeT').length;j++){
+				$('.codeT')[j].innerHTML = codeL[j]
+			}
+        }
+        createCode()
 
-		</body>
+        $(function() {
+            $("#codeImg").click(function() {
+              createCode()
+            });
+        });
+        
+        
+        </script>
+    </body>
 
 </html>

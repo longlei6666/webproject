@@ -36,37 +36,37 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">短信通道</label>
 						<div class="layui-input-inline">
-							<input type="text" name="email" lay-verify="email" class="layui-input">
+							<input type="text" name="smsChannel" lay-verify="title" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">阿里云App Key</label>
 						<div class="layui-input-inline">
-							<input type="text" name="servicetel" lay-verify="number" class="layui-input">
+							<input type="text" name="alicloudAppkey" lay-verify="title" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">阿里云App Secret</label>
 						<div class="layui-input-inline">
-							<input type="text" name="serviceqq" lay-verify="number" class="layui-input">
+							<input type="text" name="alicloudAppsecret" lay-verify="title" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">短信签名</label>
 						<div class="layui-input-inline">
-							<input type="text" name="totalUrl" class="layui-input">
+							<input type="text" name="smsScratch" class="layui-input" lay-verify='title'>
 						</div>
 					</div>
 					<div class="layui-form-item layui-form-text">
 						<label class="layui-form-label">短信设置</label>
 						<div class="layui-input-inline">
-							<input type="checkbox" name="merchantca" lay-filter="switchTest" lay-skin="switch" lay-text="开启|关闭">
+							<input type="checkbox" name="merchantCa" lay-filter="switchTest" lay-skin="switch" lay-text="开启|关闭">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">测试接收手机</label>
 						<div class="layui-input-inline">
-							<input type="text" name="totalUrl" class="layui-input">
+							<input type="text" name="" class="layui-input">
 						</div>
 						<div class="layui-form-mid">
 							<button class="layui-btn layui-btn-xs">测试发送</button>
@@ -86,7 +86,40 @@
 		<script src="../../common/utility.js"></script>
 		<script>
 			var serverUrl = 'http://192.168.1.190:5002/'
-			var userNumber = window.parent.userNumber
+			var userNumber = JSON.parse(sessionStorage.getItem('user')).Number;
+			var jgData;
+			var type;
+			var merchantCa = false;
+			CmsUtility.postAjaxCall(
+				//系统设置
+				CmsConfig.addressUrl.Mechanism.getInstitutionSMSSetting,
+				{
+				'institutionNumber':userNumber,
+				},
+				function(data){
+					console.log(data)
+					if(data.code == 1000 ){
+						
+						if(data.data.length > 0){
+							type = 1
+							jgData = data.data[0]
+							merchantCa = jgData.deletionFlag == 0 ? true:false;
+							jgData.merchantCa = merchantCa
+
+						}else{
+							type = 0
+						}
+					}else{
+						// layer.alert(JSON.stringify('查询失败'), {
+      //                       title: data.msg
+      //                   })
+					}
+				},
+				function(data){
+					console.log('222')
+				}
+			)
+
 			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
 				layui.$.support.cors = true; //允许ajax跨域
 				var $ = layui.jquery,
@@ -97,19 +130,23 @@
 					laytpl = layui.laytpl;
 
 				//表单初始赋值
-				form.val('basic', {
-					"sitename": "河北鸿搜网络",
-					"domain": "http://www.hongsou.com.cn",
-					"email": "kf@qq.com",
-					"servicetel": "13088889999",
-					"serviceqq": "88889999",
-					"totalUrl": "/zonghoutai/",
-					"agentUrl": "/dailishang/",
-					"merchantsUrl": "/dailishang/",
-					"title": "通用后台管理模板系统",
-					"merchantca": true,
-				})
-
+				if(type == 1){
+					form.val('basic', {
+						"smsChannel": jgData.smsChannel,
+						"alicloudAppkey": jgData.alicloudAppkey,
+						"alicloudAppsecret": jgData.alicloudAppsecret,
+						"smsScratch": jgData.smsScratch,
+						"merchantCa":jgData.merchantCa,
+					})
+				}
+				
+				form.verify({
+					title: function(value) {
+						if(!value.length) {
+							return '不能为空！';
+						}
+					}
+				});	
 				//普通图片上传
 				var uploadInst = upload.render({
 					elem: '#test1',
@@ -139,33 +176,38 @@
 
 				//监听指定开关
 				form.on('switch(switchTest)', function(data) {
-					layer.tips('商户认证：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					layer.tips('短信设置：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					merchantCa = this.checked
 				});
 
 				//监听提交
 				form.on('submit(add)', function(data) {
 					
-					console.log(data.field)
 					var data = data.field;
-					if(data.merchantca){
-						data.merchantca = 'on'
+					if(merchantCa == true){
+						data.deletionFlag = 0
 					}else{
-						data.merchantca = 'off'
+						data.deletionFlag = 1
 					}
-					layer.alert(JSON.stringify(data), {
-						title: '最终的提交信息'
-					})
-					
+					data.institutionNumber = userNumber
+					if(type == 1){
+						data.id = jgData.id
+						serverSub = CmsConfig.addressUrl.Mechanism.updateSMSSetting
+					}else{
+						data.ban = '0'	
+						serverSub = CmsConfig.addressUrl.Mechanism.insertSMSS
+					}
 					CmsUtility.postAjaxCall(
 						//系统设置
-						CmsConfig.Mechanism,
-						{
-						'shopNumber':1000181007300324376,
-						'tabletableNumber':'ZT635DD6',
-						'paymentType':'2'
-						},
+						serverSub,
+						data,
 						function(data){
-							console.log(data)
+							if(data.code == 1000){
+								layer.msg('保存成功')
+                                //form.render()
+							}else{
+								layer.msg(data.msg)
+							}
 						},
 						function(data){
 							console.log('222')

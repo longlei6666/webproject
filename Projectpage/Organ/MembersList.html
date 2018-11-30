@@ -45,7 +45,10 @@
 			<a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">修改密码</a>
 			<a class="layui-btn layui-btn-danger layui-btn-xs" id="logout" lay-event="logout">删除</a>
 		</script>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
+			var userNumber = JSON.parse(sessionStorage.getItem('user')).Number;
 			function changeRes(res) {
 				var res = res
 				if(res.length == 0){
@@ -78,7 +81,6 @@
 			}
 
 			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
 			layui.use(['laydate', 'table', 'form'], function() {
 				var laydate = layui.laydate,
 					table = layui.table,
@@ -87,7 +89,8 @@
 				//方法级渲染  
 				table.render({
 					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: 'https://easy-mock.com/mock/5be8d89ba5f5e073df414199/example/guanliyuan',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getInstitutionStaff + '?institutionNumber=' + userNumber ,
+					// url: 'https://easy-mock.com/mock/5be8d89ba5f5e073df414199/example/guanliyuan',
 					elem: '#members',
 					height: 'full-210',
 					id: 'vip_cardList',
@@ -135,7 +138,9 @@
 
 				//监听工具条
 				table.on('tool(members)', function(obj) {
+					console.log(obj)
 					var data = obj.data;
+
 					if(obj.event === 'edit') { //编辑
 						layer.open({
 							type: 2,

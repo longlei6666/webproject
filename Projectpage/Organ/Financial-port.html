@@ -100,7 +100,11 @@
 		<div class="x-body">
 			<div class="layui-form x-so">
 				<div class="layui-input-inline">
-					<input type="text" name="couponName" id="couponName" placeholder="日期" autocomplete="off" class="layui-input">
+					<input type="text" name="couponName" id="startTime" placeholder="日期" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-input-inline">--</div>
+				<div class="layui-input-inline">
+					<input type="text" name="couponName" id="endTime" placeholder="日期" autocomplete="off" class="layui-input">
 				</div>
 				<div class="layui-input-inline coupons_screen">
 					<button class="layui-btn" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
@@ -209,7 +213,12 @@
 				var laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form;
-
+					laydate.render({
+						elem:"#startTime"
+					})
+					laydate.render({
+						elem:"#endTime"
+					})
 				//方法级渲染  
 				table.render({
 					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,

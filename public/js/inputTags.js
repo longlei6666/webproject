@@ -61,11 +61,7 @@ layui.define(['jquery','layer'],function(exports){
     var that = this
     ,spans = ''
     ,options = that.config
-    ,span = document.createElement("span"),
-    spantext = $(span).text("获取全部数据").addClass('albtn');
-    if(options.aldaBtn){
-      $('body').append(spantext)
-    }
+    ,span = document.createElement("span")
     
     $.each(options.content,function(index,item){
       spans +='<span><em>'+item+'</em><button type="button" class="close">×</button></span>';
@@ -112,7 +108,7 @@ layui.define(['jquery','layer'],function(exports){
     $('.albtn').on('click',function(){
       console.log(options.content)
     })
-    $('#tags').on('click','.close',function(){
+    $('.tags').on('click','.close',function(){
       var Thisremov = $(this).parent('span').remove(),
       ThisText = $(Thisremov).find('em').text();
       options.content.splice($.inArray(ThisText,options.content),1)
@@ -126,4 +122,4 @@ layui.define(['jquery','layer'],function(exports){
     return thisinputTags.call(inst);
   };
   exports('inputTags',inputTags);
-}).link('./css/inputTags.css')
+})

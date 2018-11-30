@@ -50,7 +50,7 @@
 					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
 					url: './json/vip-card.json',
 					elem: '#members',
-					height: 'full-210',
+					height: 'full-120',
 					id: 'vip_cardList',
 					//					parseData: function(res) { //res 即为原始返回的数据
 					//						return {
@@ -63,41 +63,29 @@
 					cols: [
 						[{
 							align: 'center',
-							type: 'checkbox'
-						}, {
-							align: 'center',
 							field: 'id',
 							width: 150,
-							title: '编号',
-							sort: true
+							title: '编号'
 						}, {
 							align: 'center',
 							field: 'username',
-							width: 350,
+							width: 150,
 							title: '账户名称'
 						}, {
 							align: 'center',
 							field: 'sex',
-							width: 350,
-							title: '账户状态',
-							sort: true
+							width: 150,
+							title: '账户状态'
 						}, {
 							align: 'center',
 							field: 'sex',
-							width: 350,
-							title: '轮询权重',
-							sort: true
-						}, {
-							align: 'center',
-							field: 'sex',
-							width: 350,
-							title: '成本费率模式',
-							sort: true
+							width: 300,
+							title: '成本费率模式'
 						}, {
 							align: 'center',
 							title: '操作',
 							toolbar: '#toolbar',
-							minWidth: 400
+							minWidth: 200
 						}]
 					],
 					page: true,

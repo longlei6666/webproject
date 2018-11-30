@@ -1,76 +1,70 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="./css/font.css">
-	<link rel="stylesheet" href="./css/xadmin.css">
-	<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-	<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-	<script type="text/javascript" src="./js/xadmin.js"></script>
-</head>
-<body>
-	<script type="text/html" id="tool">
-		<a class="layui-btn layui-btn-xs" lay-event="eQRcode">单二维码</a>
-		<a class="layui-btn layui-btn-xs" lay-event="QRcode">带背景二维码</a>
-	{{# if(d.StatusC == 1){ }}
-		<a class="layui-btn layui-btn-xs" lay-event="UNcode">解绑二维码</a>
-	{{# } }}
-	</script>
-	<style>
-		.layui-form.x-so{width:auto;margin-right:5px;}
-		.layui-col-md1{width:auto;}
-	</style>
-	<div class="x-nav">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+	</head>
+
+	<body>
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-xs" lay-event="eQRcode">单二维码</a>
+			<a class="layui-btn layui-btn-xs" lay-event="QRcode">带背景二维码</a>
+			{{# if(d.StatusC == 1){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="UNcode">解绑二维码</a>
+			{{# } }}
+		</script>
+		<div class="x-nav">
 			<span class="layui-breadcrumb">
-        <a href="">首页</a>
-        <a href="">业务运营</a>
-        <a>
-          <cite>设备管理</cite></a>
-      </span>
+				<a href="">首页</a>
+				<a><cite>设备管理</cite></a>
+			</span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
 		</div>
 		<div class="x-body">
-			<div class="layui-row">
-				<div class="layui-form layui-col-md12 x-so">
-					<div class="layui-input-inline">
-						<select name="status" id="status">
-							<option value="">全部</option>
-							<option value="1">已绑定</option>
-							<option value="0">未绑定</option>
-						</select>
-					</div>
-					<div class="layui-input-inline">
-						<input type="text" id="shopname" name="shopname" placeholder="店铺名称" autocomplete="off" class="layui-input">
-					</div>
-					
+			<div class="layui-row layui-form x-so">
+				<div class="layui-input-inline">
+					<select name="status" id="status">
+						<option value="">全部</option>
+						<option value="1">已绑定</option>
+						<option value="0">未绑定</option>
+					</select>
 				</div>
-				<div class="layui-col-md1 layui-col-sm1 layui-col-xs1">
-					<button class="layui-btn" lay-submit="" lay-filter="sreach" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+				<div class="layui-input-inline">
+					<input type="text" id="shopname" name="shopname" placeholder="店铺名称" autocomplete="off" class="layui-input">
 				</div>
+				<button class="layui-btn" lay-submit="" lay-filter="sreach" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
 			</div>
 			<xblock>
 				<button class="layui-btn" onclick="generateCode()"><i class="layui-icon"></i>生成二维码</button>
 			</xblock>
 			<table class="layui-hide" id="table1" lay-filter="useruv"></table>
-			 <xblock class="layui-row">
+			<xblock class="layui-row">
 				<button class="layui-btn layui-btn-xs" data-type="getCheckDataall"><i class="layui-icon">&#xe601;</i>批量下载二维码（有背景）</button>
 				<button class="layui-btn layui-btn-xs" data-type="getCheckDatano"><i class="layui-icon">&#xe601;</i>批量下载二维码（无背景）</button>
 				<!-- <button class="layui-btn layui-btn-xs" data-type="getCheckDatayes"><i class="layui-icon">&#xe601;</i>批量下载二维码（有背景）</button> -->
 				<button class="layui-btn layui-btn-xs" data-type="getAllCheckDataall"><i class="layui-icon">&#xe601;</i>下载未绑定二维码（全部未绑定）</button>
 				<input type="hidden" id="getAllcount" name="getAllcount">
-			</xblock>  
+			</xblock>
 		</div>
-		
+
 		<script>
 			//列表
 			layui.use(['table', 'layer'], function() {
-	
+
 				$ = layui.jquery;
 				var layer = layui.layer;
 				var table = layui.table;
-	
+
 				//方法级渲染
 				table.render({
 					elem: '#table1',
@@ -79,8 +73,9 @@
 					method: "post",
 					id: 'deviceInfo',
 					cols: [
-						[{type:'checkbox'
-						},{
+						[{
+							type: 'checkbox'
+						}, {
 							field: 'QRCode',
 							title: '二维码编号'
 						}, {
@@ -91,11 +86,11 @@
 							field: 'ShopName',
 							title: '店铺名称',
 							align: 'center'
-						},{
+						}, {
 							field: 'Htype',
 							title: '店铺类型',
 							align: 'center'
-						},{
+						}, {
 							field: 'Status',
 							title: '状态',
 							align: 'center'
@@ -104,136 +99,143 @@
 							align: 'center',
 							toolbar: "#tool"
 						}]
-					],done: function(res, curr, count){
-					    //得到数据总量
-					    console.log(count);
+					],
+					done: function(res, curr, count) {
+						//得到数据总量
+						console.log(count);
 						$("#getAllcount").val(res.nobandRows);
-					  }
+					}
 				})
-				
+
 				// 根據條件重载表格
-			var $ = layui.$, 
-			active = {
-				reload : function() {
-					// 获取上面查询框的值
-					var status = $("#status option:selected").val();
-					var shopname = $("#shopname").val();
-					//执行重载
-					table.reload('deviceInfo', {
-						page : {
-							curr : 1//重新从第 1 页开始
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							// 获取上面查询框的值
+							var status = $("#status option:selected").val();
+							var shopname = $("#shopname").val();
+							//执行重载
+							table.reload('deviceInfo', {
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									status: status,
+									shopname: shopname
+								}
+							});
 						},
-						where : {
-							status : status,
-							shopname : shopname
+						getCheckDataall: function() {
+							var b = table.checkStatus('deviceInfo').data;
+							var a1 = b.length;
+							var kuai = 350; //600 -> 800 小400+120
+							var kuai2 = 664;
+							var kuai3 = 180; //600->500 左移230
+							var kuai4 = 370; //570->950 下280
+							var url = '';
+							var code = '';
+							for(var i = 0; i < b.length; i++) {
+								if(url == '' && code == '') {
+									code += b[i].QRCode;
+								} else {
+									code += "|" + b[i].QRCode;
+								}
+							}
+							var id = encodeURI(code);
+							window.location.href = ".todownmyziliao?qrcodeId=" + id + "&shu=" + a1 + "&kuan=" + kuai + "&kuan2=" + kuai2 + "&kuan3=" + kuai3 + "&kuan4=" + kuai4 + "&logo1=" + 200 + "&logo2=" + 780 + "&backtype=allback";
+						},
+						getCheckDatano: function() {
+							var b = table.checkStatus('deviceInfo').data;
+							var a1 = b.length;
+							var kuai = 350; //600 -> 800 小400+120
+							var kuai2 = 664;
+							var kuai3 = 180; //600->500 左移230
+							var kuai4 = 370; //570->950 下280
+							var url = '';
+							var code = '';
+							for(var i = 0; i < b.length; i++) {
+								if(url == '' && code == '') {
+									code += b[i].QRCode;
+								} else {
+									code += "|" + b[i].QRCode;
+								}
+							}
+							var id = encodeURI(code);
+							window.location.href = ".todownmyziliao?qrcodeId=" + id + "&shu=" + a1 + "&kuan=" + kuai + "&kuan2=" + kuai2 + "&kuan3=" + kuai3 + "&kuan4=" + kuai4 + "&logo1=" + 200 + "&logo2=" + 780 + "&backtype=noback";
+						},
+						getCheckDatayes: function() {
+							var b = table.checkStatus('deviceInfo').data;
+							var a1 = b.length;
+							var kuai = 350; //600 -> 800 小400+120
+							var kuai2 = 664;
+							var kuai3 = 180; //600->500 左移230
+							var kuai4 = 370; //570->950 下280
+							var url = '';
+							var code = '';
+							for(var i = 0; i < b.length; i++) {
+								if(url == '' && code == '') {
+									code += b[i].QRCode;
+								} else {
+									code += "|" + b[i].QRCode;
+								}
+							}
+							var id = encodeURI(code);
+							window.location.href = ".todownmyziliao?qrcodeId=" + id + "&shu=" + a1 + "&kuan=" + kuai + "&kuan2=" + kuai2 + "&kuan3=" + kuai3 + "&kuan4=" + kuai4 + "&logo1=" + 200 + "&logo2=" + 780 + "&backtype=yesback";
+						},
+						getAllCheckDataall: function() {
+							var shopName = $("#shopname").val();
+							var getAllcount = $("#getAllcount").val();
+							var kuai = 350; //600 -> 800 小400+120
+							var kuai2 = 664;
+							var kuai3 = 180; //600->500 左移230
+							var kuai4 = 370; //570->950 下280
+							window.location.href = ".todownziliao?kuan=" + kuai + "&kuan2=" + kuai2 + "&kuan3=" + kuai3 + "&kuan4=" + kuai4 + "&logo1=" + 200 + "&logo2=" + 780 + "&backtype=allback" + "&status=0&Limit=" + getAllcount + "&shopName=" + encodeURI(encodeURI(shopName));
 						}
-					});
-				},getCheckDataall:function(){
-					var b = table.checkStatus('deviceInfo').data;
-					var a1 = b.length;
-					var kuai =  350;//600 -> 800 小400+120
-					var kuai2 =664;
-					var kuai3 = 180;//600->500 左移230
-					var kuai4 = 370;//570->950 下280
-					var url = '';	
-					var code = '';
-					for(var i=0;i<b.length;i++){
-						if(url == ''&& code == ''){
-							code += b[i].QRCode;
-						}else{
-							code +="|"+b[i].QRCode;
-						} 
-					}
-					var id = encodeURI(code);
-					window.location.href=".todownmyziliao?qrcodeId="+id+"&shu="+a1+"&kuan="+kuai+"&kuan2="+kuai2+"&kuan3="+kuai3+"&kuan4="+kuai4+"&logo1="+200+"&logo2="+780+"&backtype=allback";
-				},getCheckDatano:function(){
-					var b = table.checkStatus('deviceInfo').data;
-					var a1 = b.length;
-					var kuai =  350;//600 -> 800 小400+120
-					var kuai2 =664;
-					var kuai3 = 180;//600->500 左移230
-					var kuai4 = 370;//570->950 下280
-					var url = '';	
-					var code = '';
-					for(var i=0;i<b.length;i++){
-						if(url == ''&& code == ''){
-							code += b[i].QRCode;
-						}else{
-							code +="|"+b[i].QRCode;
-						} 
-					}
-					var id = encodeURI(code);
-					window.location.href=".todownmyziliao?qrcodeId="+id+"&shu="+a1+"&kuan="+kuai+"&kuan2="+kuai2+"&kuan3="+kuai3+"&kuan4="+kuai4+"&logo1="+200+"&logo2="+780+"&backtype=noback";
-				},getCheckDatayes:function(){
-					var b = table.checkStatus('deviceInfo').data;
-					var a1 = b.length;
-					var kuai =  350;//600 -> 800 小400+120
-					var kuai2 =664;
-					var kuai3 = 180;//600->500 左移230
-					var kuai4 = 370;//570->950 下280
-					var url = '';	
-					var code = '';
-					for(var i=0;i<b.length;i++){
-						if(url == ''&& code == ''){
-							code += b[i].QRCode;
-						}else{
-							code +="|"+b[i].QRCode;
-						} 
-					}
-					var id = encodeURI(code);
-					window.location.href=".todownmyziliao?qrcodeId="+id+"&shu="+a1+"&kuan="+kuai+"&kuan2="+kuai2+"&kuan3="+kuai3+"&kuan4="+kuai4+"&logo1="+200+"&logo2="+780+"&backtype=yesback";
-				},getAllCheckDataall:function(){
-					var shopName = $("#shopname").val();
-					var getAllcount = $("#getAllcount").val();
-					var kuai =  350;//600 -> 800 小400+120
-					var kuai2 =664;
-					var kuai3 = 180;//600->500 左移230
-					var kuai4 = 370;//570->950 下280
-					window.location.href=".todownziliao?kuan="+kuai+"&kuan2="+kuai2+"&kuan3="+kuai3+"&kuan4="+kuai4+"&logo1="+200+"&logo2="+780+"&backtype=allback"+"&status=0&Limit="+getAllcount+"&shopName=" +encodeURI(encodeURI(shopName)) ;
-				}
-			};
-				
-				
-				table.on('tool(useruv)', function(obj){
+					};
+
+				table.on('tool(useruv)', function(obj) {
 					var data = obj.data;
 					var url = data.QRAdress;
 					var id = data.QRCode;
-				if (obj.event === 'eQRcode') {
-						window.location.href=".setcode?qrcodeurl="+url+"&qrcodeId="+id;
-				}else if (obj.event === 'QRcode') {
-					var kuai =  350;//600 -> 800 小400+120
-					var kuai2 =664;
-					var kuai3 = 180;//600->500 左移230
-					var kuai4 = 370;//570->950 下280
-					window.location.href=".downservletImages?qrcodeurl="+url+"&qrcodeId="+id+"&kuan="+kuai+"&kuan2="+kuai2+"&kuan3="+kuai3+"&kuan4="+kuai4+"&logo1="+560+"&logo2="+250;
-				}else if(obj.event == 'UNcode'){
-					$.ajax({
-						type: "post",
-						url: ".Uncode",
-						async: true,
-						dataType:'json',//服务器返回json格式数据
-						data: {
-							qrcodeId : id,
-						},
-						success: function(data) {
-							if(data.result == "success") {
-								layer.msg("操作成功", {icon: 1,time:1000},function(){
-									window.location.reload();
-								});
-							}else  {
-								layer.alert(data.msg, {
-									icon: 6
-								},function(){	
-									layer.close(index)
-								});
+					if(obj.event === 'eQRcode') {
+						window.location.href = ".setcode?qrcodeurl=" + url + "&qrcodeId=" + id;
+					} else if(obj.event === 'QRcode') {
+						var kuai = 350; //600 -> 800 小400+120
+						var kuai2 = 664;
+						var kuai3 = 180; //600->500 左移230
+						var kuai4 = 370; //570->950 下280
+						window.location.href = ".downservletImages?qrcodeurl=" + url + "&qrcodeId=" + id + "&kuan=" + kuai + "&kuan2=" + kuai2 + "&kuan3=" + kuai3 + "&kuan4=" + kuai4 + "&logo1=" + 560 + "&logo2=" + 250;
+					} else if(obj.event == 'UNcode') {
+						$.ajax({
+							type: "post",
+							url: ".Uncode",
+							async: true,
+							dataType: 'json', //服务器返回json格式数据
+							data: {
+								qrcodeId: id,
+							},
+							success: function(data) {
+								if(data.result == "success") {
+									layer.msg("操作成功", {
+										icon: 1,
+										time: 1000
+									}, function() {
+										window.location.reload();
+									});
+								} else {
+									layer.alert(data.msg, {
+										icon: 6
+									}, function() {
+										layer.close(index)
+									});
+								}
 							}
-						}
-					});
-				}else if(obj.event == 'zhuangtaidisable') {
+						});
+					} else if(obj.event == 'zhuangtaidisable') {
 						var mydata = {
-								"shangnumber": data.UserNumber,
-								"Enable": 0
-							}
+							"shangnumber": data.UserNumber,
+							"Enable": 0
+						}
 						// 禁用分类
 						layer.confirm('真的要启用吗?', function(index) {
 							// 发送请求
@@ -244,14 +246,17 @@
 								data: mydata,
 								success: function(data) {
 									if(data.result == "success") {
-										layer.msg("操作成功", {icon: 1,time:1000},function(){
+										layer.msg("操作成功", {
+											icon: 1,
+											time: 1000
+										}, function() {
 											window.location.reload();
 										});
-									}else  {
+									} else {
 										layer.alert(data.msg, {
 											icon: 6
-										},function(){	
-											return 
+										}, function() {
+											return
 										});
 									}
 								}
@@ -260,9 +265,9 @@
 					}
 					if(obj.event == 'zhuangtaiopen') {
 						var mydata = {
-								"shangnumber": data.UserNumber,
-								"Enable": 1
-							}
+							"shangnumber": data.UserNumber,
+							"Enable": 1
+						}
 						// 禁用分类
 						layer.confirm('真的要禁用吗?', function(index) {
 							// 发送请求
@@ -273,14 +278,17 @@
 								data: mydata,
 								success: function(data) {
 									if(data.result == "success") {
-										layer.msg("操作成功", {icon: 1,time:1000},function(){
+										layer.msg("操作成功", {
+											icon: 1,
+											time: 1000
+										}, function() {
 											window.location.reload();
 										});
-										
-									}else {
+
+									} else {
 										layer.alert(data.msg, {
 											icon: 6
-										},function(){
+										}, function() {
 											return
 										});
 									}
@@ -288,38 +296,42 @@
 							});
 						});
 					}
-		        });
+				});
 				$('.layui-row .layui-btn').on('click', function() {
 					var type = $(this).data('type');
 					active[type] ? active[type].call(this) : '';
 				});
 			});
-			
-			function generateCode(){
+
+			function generateCode() {
 				var num = 100;
 				$.ajax({
 					type: "post",
 					url: ".generateCode",
-					data:{
-						"num" :num
+					data: {
+						"num": num
 					},
 					async: true,
 					success: function(data) {
 						if(data.result == "success") {
-							layer.msg("生成成功", {icon: 1,time:1000},function(){
+							layer.msg("生成成功", {
+								icon: 1,
+								time: 1000
+							}, function() {
 								window.location.reload();
 							});
-						}else  {
+						} else {
 							layer.alert(data.msg, {
 								icon: 6
-							},function(){	
-								return 
+							}, function() {
+								return
 							});
 						}
 					}
 				});
 			}
 		</script>
-	
-</body>
+
+	</body>
+
 </html>

@@ -31,31 +31,81 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">当天交易金额</label>
 						<div class="layui-input-inline">
-							<input type="text" name="disCount" autocomplete="off" placeholder="当天交易金额" class="layui-input">
+							<input type="text" name="disCount" autocomplete="off" placeholder="当天交易金额" class="layui-input" lay-verify="number" value="0">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">单笔最小金额</label>
 						<div class="layui-input-inline">
-							<input type="text" name="disCount" autocomplete="off" placeholder="单笔最小金额" class="layui-input">
+							<input type="text" name="disCount" autocomplete="off" placeholder="单笔最小金额" class="layui-input"  lay-verify="number" value="0">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">单笔最大金额</label>
 						<div class="layui-input-inline">
-							<input type="text" name="disCount" autocomplete="off" placeholder="单笔最大金额" class="layui-input">
+							<input type="text" name="disCount" autocomplete="off" placeholder="单笔最大金额" class="layui-input"  lay-verify="number" value="0">
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">交易时间</label>
-						<div class="layui-input-inline" style="width: 100px;">
-							<input type="text" name="price_min" placeholder="开始时间" autocomplete="off" class="layui-input">
+							<label class="layui-form-label">交易时间</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<select name="jiaoyishijiank" lay-filter="">
+									<option value="0:00" selected="">0:00</option>
+									<option value="1:00">1:00</option>
+									<option value="2:00">2:00</option>
+									<option value="3:00">3:00</option>
+									<option value="4:00">4:00</option>
+									<option value="5:00">5:00</option>
+									<option value="6:00">6:00</option>
+									<option value="7:00">7:00</option>
+									<option value="8:00">8:00</option>
+									<option value="9:00">9:00</option>
+									<option value="10:00">10:00</option>
+									<option value="11:00">11:00</option>
+									<option value="12:00">12:00</option>
+									<option value="13:00">13:00</option>
+									<option value="14:00">14:00</option>
+									<option value="15:00">15:00</option>
+									<option value="16:00">16:00</option>
+									<option value="17:00">17:00</option>
+									<option value="18:00">18:00</option>
+									<option value="19:00">19:00</option>
+									<option value="20:00">20:00</option>
+									<option value="21:00">21:00</option>
+									<option value="22:00">22:00</option>
+									<option value="23:00">23:00</option>
+								</select>
+							</div>
+							<div class="layui-form-mid">-</div>
+							<div class="layui-input-inline" style="width: 100px;">
+								<select name="jiaoyishijianj" lay-filter="">
+									<option value="0:00" selected="">0:00</option>
+									<option value="1:00">1:00</option>
+									<option value="2:00">2:00</option>
+									<option value="3:00">3:00</option>
+									<option value="4:00">4:00</option>
+									<option value="5:00">5:00</option>
+									<option value="6:00">6:00</option>
+									<option value="7:00">7:00</option>
+									<option value="8:00">8:00</option>
+									<option value="9:00">9:00</option>
+									<option value="10:00">10:00</option>
+									<option value="11:00">11:00</option>
+									<option value="12:00">12:00</option>
+									<option value="13:00">13:00</option>
+									<option value="14:00">14:00</option>
+									<option value="15:00">15:00</option>
+									<option value="16:00">16:00</option>
+									<option value="17:00">17:00</option>
+									<option value="18:00">18:00</option>
+									<option value="19:00">19:00</option>
+									<option value="20:00">20:00</option>
+									<option value="21:00">21:00</option>
+									<option value="22:00">22:00</option>
+									<option value="23:00">23:00</option>
+								</select>
+							</div>
 						</div>
-						<div class="layui-form-mid">-</div>
-						<div class="layui-input-inline" style="width: 100px;">
-							<input type="text" name="price_max" placeholder="结束时间" autocomplete="off" class="layui-input">
-						</div>
-					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">风控状态</label>
 						<div class="layui-input-block">
@@ -68,7 +118,7 @@
 						<div class="layui-input-block">
 							<div class="layui-footer" style="left: 0;text-align: center;">
 								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="quxiao">取消</button>
 							</div>
 							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
 						</div>
@@ -77,6 +127,11 @@
 			</div>
 		</div>
 		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
 			function changeRes(res) {
 				var res = res
 				if(res.length == 0) {
@@ -119,7 +174,19 @@
 					element = layui.element,
 					layer = layui.layer;
 				var tableSelect = layui.tableSelect;
-
+				laydate.render({
+					elem:"#startTime"
+				})
+				laydate.render({
+					elem:"#endTime"
+				})
+				form.verify({
+					title:function(value){
+						if(value.length == 0 ){
+							return "不得为空"
+						}
+					}
+				})
 				//表单初始赋值
 				//				form.val('tongdao', {
 				//					"preferentialSetting": 1

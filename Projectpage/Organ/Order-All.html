@@ -48,10 +48,10 @@
 						<input type="text" name="couponName" id="couponName" placeholder="下游订单号" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-input-inline">
-						<input type="text" name="couponName" id="couponName" placeholder="创建时间" autocomplete="off" class="layui-input">
+						<input type="text" name="couponName" id="newTime" placeholder="创建时间" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-input-inline">
-						<input type="text" name="couponName" id="couponName" placeholder="成功时间" autocomplete="off" class="layui-input">
+						<input type="text" name="couponName" id="successTime" placeholder="成功时间" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-input-inline">
 						<select name="cardVoucherName" id="cardVoucherName">
@@ -183,7 +183,12 @@
 						console.log(res)
 					}
 				});
-
+				laydate.render({
+					elem:"#newTime"
+				})
+				laydate.render({
+					elem:"#successTime"
+				})
 				//监听工具条
 				table.on('tool(members)', function(obj) {
 					var data = obj.data;

@@ -81,31 +81,31 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">代理名称</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入代理名称" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">用户名</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入用户名" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">联系电话</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">密码</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入密码" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">确认密码</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请确认密码" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -141,7 +141,7 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">详细地址</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入详细地址" class="layui-input">
 						</div>
 					</div>
 
@@ -149,7 +149,7 @@
 						<div class="layui-input-block">
 							<div class="layui-footer" style="left: 0;text-align: center;">
 								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="quxiao">取消</button>
 							</div>
 							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
 						</div>
@@ -158,6 +158,11 @@
 			</div>
 		</div>
 		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
 			var serverUrl = window.parent.serverUrl
 			var userNumber = window.parent.userNumber
 			layui.use(['laydate', 'table', 'upload', 'form'], function() {

@@ -1,13 +1,13 @@
-.demoTable{background: #fff;margin-bottom: 20px;}
-form.layui-form{margin-top: 20px;}
-.baobiaolist{background: #fff;text-align: center;padding: 10px;border-bottom: 1px solid #e5e5e5;}
-.baobiaolist p{margin: 5px 0;}
+.baobiao{width: 100%;text-align: center;}
+.baobiao .baobiao-col-1{width:12.5%;float: left;box-sizing: border-box;padding: 10px 15px;}
+.baobiao .baobiao-col-2{width:25%;float: left;box-sizing: border-box;padding: 10px 15px;}
+.baobiaoK{height: 123px;box-shadow: 0 0 30px rgba(0,0,0,.1);}
 .baobiaolistitle{font-size: 1.4rem;color: #666;}
 .baobiaolistct{font-size:1.6rem;font-weight: 600;}
+.baobiaolist{background: #fff;text-align: center;padding: 10px;border-bottom: 1px solid #e5e5e5;}
 .baobiaod{background: #fff;border-right: 1px solid #e5e5e5;text-align: center;padding: 10px 0;}
 .baobiaod:last-child{border: none;}
 .baobiaod .baobiaodc{display: inline-block;}
 .baobiaod .baobiaodc div{background:url(../images/icons-hongsou.png) no-repeat;width: 29px;height: 29px;float: left;}
 .baobiaod .baobiaodc p{font-size: 1.4rem;color: #666;line-height: 29px;float: right;margin-left: 10px;}
 .dnsj div{background-position: -29px 0 !important;}
-.baobiaotu{background: #fff;margin-bottom: 20px;}

@@ -10,9 +10,20 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
 		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
-		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
-		<script type="text/javascript" src="../../public/js/tableSelect.js"></script>
+		<script type="text/javascript" src="../../public/js/data.js"></script>
+		<script type="text/javascript" src="../../public/js/province.js"></script>
+		<script type="text/javascript">
+			var defaults = {
+				s1: 'provid',
+				s2: 'cityid',
+				s3: 'areaid',
+				v1: null,
+				v2: null,
+				v3: null
+			};
+		</script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
 		<!--[if lt IE 9]>
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -81,83 +92,123 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">营业执照号</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="yingyezhizhaohao" lay-verify="title" autocomplete="off" placeholder="请输入营业执照号" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">营业执照有效期</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="yingyezhizhaohaoyouxiaoqi" lay-verify="title" autocomplete="off" placeholder="请选择营业执照有效期" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">法人姓名</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="farenxingming" lay-verify="title" autocomplete="off" placeholder="请输入法人姓名" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">法人身份证号</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="farenshenfenzheng" lay-verify="title" autocomplete="off" placeholder="请输入法人身份证号" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">法人身份证有效期</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="shenfenzhengyouxiaoqi" lay-verify="title" autocomplete="off" placeholder="请选择法人身份证有效期" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">联系电话</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="lianxidianhua" lay-verify="title" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">经营范围</label>
-						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+						<div class="layui-input-inline">
+							<select name="jingyingfanwei1">
+								<option value="">一级类目</option>
+								<option value="1">互联网</option>
+								<option value="2">科技</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select name="jingyingfanwei2">
+								<option value="">二级类目</option>
+								<option value="1">信息科技</option>
+								<option value="2">生物</option>
+								<option value="3">信息科技</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select name="jingyingfanwei3">
+								<option value="">三级类目</option>
+								<option value="1">开发</option>
+								<option value="2">前段</option>
+								<option value="3">Java</option>
+							</select>
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">商户所在地</label>
-						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+						<div class="layui-input-inline">
+							<select name="provid" id="provid" lay-filter="provid">
+								<option value="">请选择省</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select name="cityid" id="cityid" lay-filter="cityid">
+								<option value="">请选择市</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select name="areaid" id="areaid" lay-filter="areaid">
+								<option value="">请选择县/区</option>
+							</select>
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">商户详细地址</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="xiangxidizhi" lay-verify="title" autocomplete="off" placeholder="请输入商户详细地址" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">开户行</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="kaihuhang" lay-verify="title" autocomplete="off" placeholder="请选择开户行" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">开户支行</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="kaihuzhihang" lay-verify="title" autocomplete="off" placeholder="请选择开户支行" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">银行卡号</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardName" lay-verify="title" autocomplete="off" placeholder="请输入会员卡名称" class="layui-input">
+							<input type="text" name="yinghangkahao" lay-verify="title" autocomplete="off" placeholder="请输入银行卡号" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">结算标识</label>
+						<div class="layui-input-inline widthauto">
+							<input type="radio" name="settlement" value="0" title="D+0 结算" lay-filter="settlement">
+							<input type="radio" name="settlement" value="1" title="D+1 结算" lay-filter="settlement">
+							<input type="radio" name="settlement" value="2" title="T+1 结算" lay-filter="settlement">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">费率</label>
 						<div class="layui-input-inline">
-							<select name="cardVoucherName" id="cardVoucherName">
+							<select name="feilv" id="">
 								<option value="">认证</option>
-								<option value="1">未认证</option>
-								<option value="2">待审核</option>
-								<option value="3">已认证</option>
+								<option value="0.006">0.6%</option>
+								<option value="0.005">0.5%</option>
+								<option value="0.0038">0.38%</option>
 							</select>
 						</div>
 					</div>
@@ -165,6 +216,12 @@
 					<!--认证信息-->
 					<blockquote class="layui-elem-quote">认证信息</blockquote>
 					<style type="text/css">
+						.uploadimgbtn {
+							height: 150px;
+							display: flex;
+							align-items: center;
+						}
+						
 						.layui-upload-img {
 							width: 150px;
 							height: 150px;
@@ -175,82 +232,100 @@
 							align-items: center;
 						}
 						
-						#demoText {
-							width: 150px;
-							height: auto;
-							display: flex;
-							justify-content: space-between;
-							align-items: center;
-						}
-						
-						#demoText span {
-							margin-top: 10px;
-						}
-						
-						#demoText a {
-							margin-top: 10px;
+						.layui-upload-img img {
+							max-height: 100%;
 						}
 					</style>
-					<div class="layui-form-item layui-form-text">
-						<label class="layui-form-label">法人身份证正面照</label>
-						<div class="layui-input-block">
-							<div class="layui-upload-img" id="test1">
+					<div class="layui-form-item layui-form-text" id="yyzz" style="display: none;">
+						<label class="layui-form-label">营业执照</label>
+						<div class="layui-input-inline">
+							<div class="layui-upload-img">
 								<img src="images/zhifubao.png" id="demo1" style="max-width: 100%;height: auto;">
 							</div>
-							<p id="demoText"></p>
+						</div>
+						<div class="layui-input-inline uploadimgbtn">
+							<p id="demoText" class="block"></p>
+							<button type="button" class="layui-btn block" id="test1">上传图片</button>
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">法人身份证正面照</label>
+						<div class="layui-input-inline">
+							<div class="layui-upload-img">
+								<img src="images/zhifubao.png" id="demo1" style="max-width: 100%;height: auto;">
+							</div>
+						</div>
+						<div class="layui-input-inline uploadimgbtn">
+							<p id="demoText" class="block"></p>
+							<button type="button" class="layui-btn block" id="test1">上传图片</button>
 						</div>
 					</div>
 					<div class="layui-form-item layui-form-text">
 						<label class="layui-form-label">法人身份证反面照</label>
-						<div class="layui-input-block">
-							<div class="layui-upload-img" id="test1">
+						<div class="layui-input-inline">
+							<div class="layui-upload-img">
 								<img src="images/zhifubao.png" id="demo1" style="max-width: 100%;height: auto;">
 							</div>
-							<p id="demoText"></p>
+						</div>
+						<div class="layui-input-inline uploadimgbtn">
+							<p id="demoText" class="block"></p>
+							<button type="button" class="layui-btn block" id="test1">上传图片</button>
 						</div>
 					</div>
 					<div class="layui-form-item layui-form-text">
 						<label class="layui-form-label">门脸照片</label>
-						<div class="layui-input-block">
-							<div class="layui-upload-img" id="test1">
+						<div class="layui-input-inline">
+							<div class="layui-upload-img">
 								<img src="images/zhifubao.png" id="demo1" style="max-width: 100%;height: auto;">
 							</div>
-							<p id="demoText"></p>
+						</div>
+						<div class="layui-input-inline uploadimgbtn">
+							<p id="demoText" class="block"></p>
+							<button type="button" class="layui-btn block" id="test1">上传图片</button>
 						</div>
 					</div>
 					<div class="layui-form-item layui-form-text">
 						<label class="layui-form-label">门头照片</label>
-						<div class="layui-input-block">
-							<div class="layui-upload-img" id="test1">
+						<div class="layui-input-inline">
+							<div class="layui-upload-img">
 								<img src="images/zhifubao.png" id="demo1" style="max-width: 100%;height: auto;">
 							</div>
-							<p id="demoText"></p>
+						</div>
+						<div class="layui-input-inline uploadimgbtn">
+							<p id="demoText" class="block"></p>
+							<button type="button" class="layui-btn block" id="test1">上传图片</button>
 						</div>
 					</div>
 					<div class="layui-form-item layui-form-text">
 						<label class="layui-form-label">银行卡正面</label>
-						<div class="layui-input-block">
-							<div class="layui-upload-img" id="test1">
+						<div class="layui-input-inline">
+							<div class="layui-upload-img">
 								<img src="images/zhifubao.png" id="demo1" style="max-width: 100%;height: auto;">
 							</div>
-							<p id="demoText"></p>
+						</div>
+						<div class="layui-input-inline uploadimgbtn">
+							<p id="demoText" class="block"></p>
+							<button type="button" class="layui-btn block" id="test1">上传图片</button>
 						</div>
 					</div>
 					<div class="layui-form-item layui-form-text">
 						<label class="layui-form-label">手持证件照</label>
-						<div class="layui-input-block">
-							<div class="layui-upload-img" id="test1">
+						<div class="layui-input-inline">
+							<div class="layui-upload-img">
 								<img src="images/zhifubao.png" id="demo1" style="max-width: 100%;height: auto;">
 							</div>
-							<p id="demoText"></p>
+						</div>
+						<div class="layui-input-inline uploadimgbtn">
+							<p id="demoText" class="block"></p>
+							<button type="button" class="layui-btn block" id="test1">上传图片</button>
 						</div>
 					</div>
 
 					<div class="layui-form-item layui-layout-admin">
 						<div class="layui-input-block">
 							<div class="layui-footer" style="left: 0;text-align: center;">
-								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button> 
+								<button class="layui-btn layui-btn-primary" id="quxiao">取消</button>
 							</div>
 							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
 						</div>
@@ -258,7 +333,13 @@
 				</div>
 			</div>
 		</div>
+
 		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
 			var serverUrl = window.parent.serverUrl
 			var userNumber = window.parent.userNumber
 			layui.use(['laydate', 'table', 'upload', 'form'], function() {
@@ -276,93 +357,6 @@
 				form.val('cardAdd', {
 					"userNumber": userNumber
 				})
-
-				/*---------- 下拉表格选择器 ----------*/
-				tableSelect.render({
-					elem: '#couponsSelect',
-					searchKey: 'couponName',
-					checkedKey: 'couponNumber',
-					searchPlaceholder: '搜索优惠券',
-					table: {
-						url: serverUrl + 'coupon/selectCoupon',
-						parseData: function(res) { //res 即为原始返回的数据
-							return {
-								"code": res.code, //解析接口状态
-								"msg": res.msg, //解析提示文本
-								"count": res.count, //解析数据长度
-								"data": changeRes(res.result), //解析数据列表
-							};
-						},
-						cols: [
-							[{
-								align: 'center',
-								//fixed: 'left',
-								type: 'checkbox'
-							}, {
-								align: 'center',
-								field: 'couponName',
-								title: '卷名称',
-								sort: true,
-								width: 150
-							}, {
-								align: 'center',
-								field: 'couponMoneya',
-								title: '卷金额(元)/券折扣(折)',
-								sort: true,
-								width: 150
-							}, {
-								align: 'center',
-								field: 'cardVoucherName',
-								title: '卷类型',
-								sort: true,
-								width: 80
-							}, {
-								align: 'center',
-								field: 'useTimePeriod',
-								title: '有效期',
-								sort: true,
-								width: 200
-							}]
-						],
-						page: {
-							layout: ['prev', 'page', 'next', 'count', 'skip'],
-						}
-					},
-					done: function(elem, data) {
-						var newjson = []
-						layui.each(data.data, function(index, item) {
-							newjson.push(item.couponNumber)
-						})
-						elem.val(newjson.join("|"))
-					}
-				})
-
-				/*---------- 优惠设置 ----------*/
-				form.on('select(youhuiSelect)', function(data) {
-					if(data.value == "") {
-						$('#fullsubtraction').hide()
-						$('#discount').hide()
-					} else if(data.value == "0") {
-						$('#fullsubtraction').show()
-						$('#discount').hide()
-					} else if(data.value == "1") {
-						$('#fullsubtraction').hide()
-						$('#discount').show()
-					}
-				});
-
-				/*---------- 生日 ----------*/
-				laydate.render({ //当前卡有效期开始时间
-					elem: '#startTime',
-					value: new Date()
-				});
-				laydate.render({ //当前卡有效期结束时间
-					elem: '#endTime',
-					value: new Date()
-				});
-				laydate.render({ //积分的清零日期
-					elem: '#integralZerotime'
-				});
 
 				/*---------- 普通图片上传 ----------*/
 				var uploadInst = upload.render({
@@ -395,154 +389,34 @@
 				form.verify({
 					title: function(value) {
 						if(value.length == "") {
-							return '不能为空！';
+							return '必填项不能为空！';
 						}
 					},
-					rechargeJe: function(value) {
-						if($('#giveJe').val() != "" && $('#rechargeJe').val() == "") {
-							return '充值金额不能为空！';
+					pass: [/^[0-9A-Za-z]{6,12}$/, '密码必须6到12位'],
+					repass: function(value) {
+						if($('#passWord').val() != $('#repassWord').val()) {
+							return '两次密码不一致';
 						}
-					},
-					giveJe: function(value) {
-						if($('#rechargeJe').val() != "" && $('#giveJe').val() == "") {
-							return '赠送金额不能为空！';
-						}
-					},
-					rechargeJf: function(value) {
-						if($('#giveJf').val() != "" && $('#rechargeJf').val() == "") {
-							return '充值金额不能为空！';
-						}
-					},
-					giveJf: function(value) {
-						if($('#rechargeJf').val() != "" && $('#giveJf').val() == "") {
-							return '赠送积分不能为空！';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
 					}
+
 				});
 
 				/*---------- 监听开关 ----------*/
-				//form.on('switch(level)', function(data) { //等级开关
-				//	layer.tips('等级开关：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-				//});
-				form.on('switch(consumptionPreferences)', function(data) { //消费优惠开关
-					layer.tips('消费优惠：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-					if(data.elem.checked == true) {
-						$('#Consumer').show()
-						data.elem.value = "0"
-						console.log(data.elem.value)
-					} else if(data.elem.checked == false) {
-						data.elem.value = "1"
-						console.log(data.elem.value)
-						$('#Consumer').hide()
-					}
-				});
-				form.on('switch(rechargePreferences)', function(data) { //充值优惠开关
-					layer.tips('充值优惠：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-					if(data.elem.checked == true) {
-						$('#Top_up').show()
-						data.elem.value = "0"
-						console.log(data.elem.value)
-					} else if(data.elem.checked == false) {
-						data.elem.value = "1"
-						console.log(data.elem.value)
-						$('#Top_up').hide()
-					}
-				});
-				form.on('switch(timesCountPreferences)', function(data) { //计次开关
-					layer.tips('计次：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-					if(data.elem.checked == true) {
-						$('#would').show()
-						data.elem.value = "0"
-						console.log(data.elem.value)
-					} else if(data.elem.checked == false) {
-						data.elem.value = "1"
-						console.log(data.elem.value)
-						$('#would').hide()
-					}
-				});
-				form.on('switch(timePreferences)', function(data) { //计时开关
-					layer.tips('计时：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-					if(data.elem.checked == true) {
-						$('#timing').show()
-						data.elem.value = "0"
-						console.log(data.elem.value)
-						$('#timing input').get(0).setAttribute("lay-verify", "title")
-					} else if(data.elem.checked == false) {
-						data.elem.value = "1"
-						console.log(data.elem.value)
-						$('#timing').hide()
-						$('#timing input').get(0).removeAttribute("lay-verify", "title")
-						$('#timingData input').get(0).removeAttribute("lay-verify", "title")
-					}
-				});
 				form.on('radio(cardvalid)', function(data) { //设置会员卡的有效期
-					if(data.value == 1) {
-						$('#Cardvalid').show()
-						$('#startTime').get(0).setAttribute("lay-verify", "title")
-						$('#endTime').get(0).setAttribute("lay-verify", "title")
-					} else {
-						$('#Cardvalid').hide()
-						$('#startTime').get(0).removeAttribute("lay-verify", "title")
-						$('#endTime').get(0).removeAttribute("lay-verify", "title")
-					}
-				});
-				form.on('radio(timing)', function(data) { //设置业务的有效期
-					if(data.value == 1) {
-						$('#timingData').show()
-						$('#timingData input').get(0).setAttribute("lay-verify", "title")
-					} else {
-						$('#timingData').hide()
-						$('#timingData input').get(0).removeAttribute("lay-verify", "title")
-					}
-				});
-				form.on('radio(Resetdate)', function(data) { //积分清零日期开关
-					if(data.value == 1) {
-						$('#ResetdateData').show()
-						$('#ResetdateData input').get(0).setAttribute("lay-verify", "title")
-					} else {
-						$('#ResetdateData').hide()
-						$('#ResetdateData input').get(0).removeAttribute("lay-verify", "title")
+					if(data.value == 0) {
+						$('#yyzz').hide()
+					} else if(data.value == 1) {
+						$('#yyzz').show()
+					} else if(data.value == 2) {
+						$('#yyzz').show()
 					}
 				});
 				/*---------- 监听提交 ----------*/
 				form.on('submit(add)', function(data, index) {
-					if(!data.field.consumptionPreferences) { //消费优惠开关
-						data.field.consumptionPreferences = '1'
-					}
-					if(!data.field.rechargePreferences) { //充值优惠开关
-						data.field.rechargePreferences = '1'
-					}
-					if(!data.field.timesCountPreferences) { //计次开关
-						data.field.timesCountPreferences = '1'
-					}
-					if(!data.field.timePreferences) { //计时开关
-						data.field.timePreferences = '1'
-					}
-					if(data.field.invalid == 0) {
-						data.field.endTime = "9999-12-31"
-					}
-
-					var rechargeJe = $('#rechargeJe').val()
-					var rechargeJf = $('#rechargeJf').val()
-					var giveJe = $('#giveJe').val()
-					var giveJf = $('#giveJf').val()
-
-					if(!data.field.giveMoneyR) {
-						data.field.giveMoneyR = rechargeJe + ":" + giveJe
-					}
-					if(data.field.giveMoneyR == ":") {
-						data.field.giveMoneyR = ""
-					}
-					if(!data.field.giveIntegralR) {
-						data.field.giveIntegralR = rechargeJf + ":" + giveJf
-					}
-					if(data.field.giveIntegralR == ":") {
-						data.field.giveIntegralR = ""
-					}
+					layer.alert(JSON.stringify(data.field), {
+						title: '最终的提交信息'
+					})
+					return false;
 
 					var addData = JSON.stringify(data.field)
 

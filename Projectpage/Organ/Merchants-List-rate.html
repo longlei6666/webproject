@@ -26,7 +26,8 @@
 			.layui-table-cell {
 				height: auto;
 			}
-			.layui-table-box{
+			
+			.layui-table-box {
 				border-bottom: 1px solid #e6e6e6;
 			}
 		</style>
@@ -34,32 +35,67 @@
 
 	<body id="iosiframe">
 		<div class="x-body">
-			<div class="layui-form-item">
-				<div class="layui-form-mid x-red">注：费率为千分位，例如：千分之三则填0.003</div>
+			<div class="layui-form">
+				<div class="layui-form-item">
+					<div class="layui-form-mid x-red">注：费率为千分位，例如：千分之三则填0.003</div>
+				</div>
+				<table class="layui-hide" id="members" lay-filter="members"></table>
+				<div class="layui-form-item layui-layout-admin">
+					<div class="layui-input-block">
+						<div class="layui-footer" style="left: 0;text-align: center;">
+							<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+							<a class="layui-btn layui-btn-primary" id="quxiao">取消</a>
+						</div>
+						<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+					</div>
+				</div>
 			</div>
-			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
-		<script type="text/html" id="toolbar_t0">
+		<script type="text/html" id="toolbar_cb">
 			<div class="layui-input-inline">
-				<input type="number" name="toolbar_t0_{{d.id}}" class="layui-input">
+				<input type="number" name="toolbar_cb_{{d.id}}" class="layui-input">
 			</div>
 		</script>
-		<script type="text/html" id="toolbar_t0top">
+		<script type="text/html" id="toolbar_yy">
 			<div class="layui-input-inline">
-				<input type="number" name="toolbar_t0top_{{d.id}}" class="layui-input">
+				<input type="number" name="toolbar_yy_{{d.id}}" class="layui-input">
 			</div>
 		</script>
-		<script type="text/html" id="toolbar_t1">
+		<script type="text/html" id="toolbar_tx">
 			<div class="layui-input-inline">
-				<input type="number" name="toolbar_t1_{{d.id}}" class="layui-input">
-			</div>
-		</script>
-		<script type="text/html" id="toolbar_t1top">
-			<div class="layui-input-inline">
-				<input type="number" name="toolbar_t1top_{{d.id}}" class="layui-input">
+				<input type="number" name="toolbar_tx_{{d.id}}" class="layui-input">
 			</div>
 		</script>
 		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function() {
+				setTimeout(function() {
+					parent.layer.close(index)
+				}, 16);
+			})
+			function changeRes(res) {
+				var res = res
+				if(res.length == 0) {
+					return
+				}
+				for(var i = 0; i < res.length; i++) {
+					if(res[i].jiesuanlx == 1) {
+						res[i].jiesuanlxa = 'D+0'
+					} else if(res[i].jiesuanlx == 2) {
+						res[i].jiesuanlxa = 'D+1'
+					} else if(res[i].jiesuanlx == 3) {
+						res[i].jiesuanlxa = 'T+1'
+					}
+					if(res[i].feilvlx == 1) {
+						res[i].feilvlxa = '成本费率'
+					} else if(res[i].feilvlx == 2) {
+						res[i].feilvlxa = '运营费率'
+					} else if(res[i].feilvlx == 3) {
+						res[i].feilvlxa = '提现费率'
+					}
+				}
+				return res
+			}
 			var serverUrl = window.parent.serverUrl
 			var userNumber = window.parent.userNumber
 			layui.use(['laytpl', 'laydate', 'table', 'form'], function() {
@@ -71,18 +107,18 @@
 				//方法级渲染  
 				table.render({
 					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: './json/vip-card.json',
+					url: './json/vip-card1.json',
 					elem: '#members',
-					height: 'full-120',
+					height: 'full-160',
 					id: 'vip_cardList',
-					//					parseData: function(res) { //res 即为原始返回的数据
-					//						return {
-					//							"code": res.code, //解析接口状态
-					//							"msg": res.msg, //解析提示文本
-					//							"count": res.count, //解析数据长度
-					//							"data": changeRes(res.result,res.count), //解析数据列表
-					//						};
-					//					},
+					parseData: function(res) { //res 即为原始返回的数据
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.count, //解析数据长度
+							"data": changeRes(res.data), //解析数据列表
+						};
+					},
 					cols: [
 						[{
 							align: 'center',
@@ -92,55 +128,29 @@
 							width: 150
 						}, {
 							align: 'center',
-							title: 'T+0运营费率',
-							toolbar: '#toolbar_t0',
+							title: '费率类型',
+							field: 'jiesuanlxa',
+							sort: true,
+							width: 150
+						}, {
+							align: 'center',
+							title: '运营费率',
+							toolbar: '#toolbar_yy',
 							minWidth: 100
 
 						}, {
 							align: 'center',
-							title: 'T+0封顶费率',
-							toolbar: '#toolbar_t0top',
-							minWidth: 100
-
-						}, {
-							align: 'center',
-							title: 'T+1运营费率',
-							toolbar: '#toolbar_t1',
-							minWidth: 100
-
-						}, {
-							align: 'center',
-							title: 'T+1封顶费率',
-							toolbar: '#toolbar_t1top',
+							title: '提现费率',
+							toolbar: '#toolbar_tx',
 							minWidth: 100
 
 						}]
 					],
 					page: false,
 					done: function(res, curr, count) {
-						//						console.log(res)
-						//						var operation_alone = document.getElementsByClassName('operation_alone')
-						//						var operation_pull = document.getElementsByClassName('operation_pull')
-						//						var operation_select = document.getElementsByClassName('operation_select')
-						//						var operation_table = document.getElementsByClassName('operation_table')
-						//						for(var i = 0; i < operation_alone.length; i++) {
-						//							operation_alone[i].setAttribute('name', 'operation' + '[' + i + ']')
-						//							operation_pull[i].setAttribute('name', 'operation' + '[' + i + ']')
-						//							operation_select[i].setAttribute('id', 'operation_select_' + i)
-						//							operation_table[i].setAttribute('id', 'operation_table_' + i)
-						//						}
-						//						var data = res.data;
-						//						for(var j = 0 ; j<data.length;j++){
-						//							if(data[j].length == 0){
-						//								return
-						//							}
-						//							if(data[j].check == 1){
-						//								operation_alone[j].setAttribute('checked','')
-						//							}if(data[j].check == 2){
-						//								operation_pull[j].setAttribute('checked','')
-						//							}
-						//						}
-						//						form.render();
+						layuiRowspan('province', 1);
+						layuiRowspan(['id'], 1); //支持数组
+						layuiRowspan("8", 1, true);
 					}
 				});
 
@@ -213,7 +223,109 @@
 						});
 					}
 				});
+				
+				/*---------- 监听提交 ----------*/
+				form.on('submit(add)', function(data, index) {
+					var addData = JSON.stringify(data.field)
+					console.log(addData)
+					// 发送请求
+					$.ajax({
+						type: "post",
+						url: serverUrl + "memberCard/addMemberCard",
+						async: true,
+						dataType: "json",
+						contentType: "application/json",
+						data: addData,
+						success: function(data) {
+							if(data.code == "0") {
+								var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+								parent.layer.close(index); //再执行关闭
+								parent.layer.msg(data.msg);
+								parent.layui.table.reload('vip_cardList');
+							} else if(data.code == "1") {
+								layer.msg("添加会员卡失败");
+							}
+						}
+					});
+					return false;
+				});
 			});
+
+			var execRowspan = function(fieldName, index, flag) {
+				// 1为不冻结的情况，左侧列为冻结的情况
+				let fixedNode = index == "1" ? $(".layui-table-body")[index - 1] : (index == "3" ? $(".layui-table-fixed-r") : $(".layui-table-fixed-l"));
+				// 左侧导航栏不冻结的情况
+				let child = $(fixedNode).find("td");
+				let childFilterArr = [];
+				// 获取data-field属性为fieldName的td
+				for(let i = 0; i < child.length; i++) {
+					if(child[i].getAttribute("data-field") == fieldName) {
+						childFilterArr.push(child[i]);
+					}
+				}
+				// 获取td的个数和种类
+				let childFilterTextObj = {};
+				for(let i = 0; i < childFilterArr.length; i++) {
+					let childText = flag ? childFilterArr[i].innerHTML : childFilterArr[i].textContent;
+					if(childFilterTextObj[childText] == undefined) {
+						childFilterTextObj[childText] = 1;
+					} else {
+						let num = childFilterTextObj[childText];
+						childFilterTextObj[childText] = num * 1 + 1;
+					}
+				}
+				let canRowspan = true;
+				let maxNum; //以前列单元格为基础获取的最大合并数
+				let finalNextIndex; //获取其下第一个不合并单元格的index
+				let finalNextKey; //获取其下第一个不合并单元格的值
+				for(let i = 0; i < childFilterArr.length; i++) {
+					(maxNum > 9000 || !maxNum) && (maxNum = $(childFilterArr[i]).prev().attr("rowspan") && fieldName != "8" ? $(childFilterArr[i]).prev().attr("rowspan") : 9999);
+					let key = flag ? childFilterArr[i].innerHTML : childFilterArr[i].textContent; //获取下一个单元格的值
+					let nextIndex = i + 1;
+					let tdNum = childFilterTextObj[key];
+					let curNum = maxNum < tdNum ? maxNum : tdNum;
+					if(canRowspan) {
+						for(let j = 1; j <= curNum && (i + j < childFilterArr.length);) { //循环获取最终合并数及finalNext的index和key
+							finalNextKey = flag ? childFilterArr[i + j].innerHTML : childFilterArr[i + j].textContent;
+							finalNextIndex = i + j;
+							if((key != finalNextKey && curNum > 1) || maxNum == j) {
+								canRowspan = true;
+								curNum = j;
+								break;
+							}
+							j++;
+							if((i + j) == childFilterArr.length) {
+								finalNextKey = undefined;
+								finalNextIndex = i + j;
+								break;
+							}
+						}
+						childFilterArr[i].setAttribute("rowspan", curNum);
+						if($(childFilterArr[i]).find("div.rowspan").length > 0) { //设置td内的div.rowspan高度适应合并后的高度
+							$(childFilterArr[i]).find("div.rowspan").parent("div.layui-table-cell").addClass("rowspanParent");
+							$(childFilterArr[i]).find("div.layui-table-cell")[0].style.height = curNum * 38 - 10 + "px";
+						}
+						canRowspan = false;
+					} else {
+						childFilterArr[i].style.display = "none";
+					}
+					if(--childFilterTextObj[key] == 0 | --maxNum == 0 | --curNum == 0 | (finalNextKey != undefined && nextIndex == finalNextIndex)) { //||(finalNextKey!=undefined&&key!=finalNextKey)
+						canRowspan = true;
+					}
+				}
+			}
+			//合并数据表格行
+			var layuiRowspan = function(fieldNameTmp, index, flag) {
+				let fieldName = [];
+				if(typeof fieldNameTmp == "string") {
+					fieldName.push(fieldNameTmp);
+				} else {
+					fieldName = fieldName.concat(fieldNameTmp);
+				}
+				for(let i = 0; i < fieldName.length; i++) {
+					execRowspan(fieldName[i], index, flag);
+				}
+			}
 		</script>
 	</body>
 

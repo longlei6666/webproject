@@ -10,13 +10,13 @@
 		<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="./css/font.css">
-		<link rel="stylesheet" href="./css/xadmin.css">
-		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
-		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-		<script type="text/javascript" src="./js/xadmin.js"></script>
-		<script src="./js/echarts.min.js" charset="utf-8"></script>
-				<style>
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<script src="../../public/js/echarts.min.js" charset="utf-8"></script>
+		<style>
 			.baobiaotu {
 				position: relative;
 			}
@@ -49,7 +49,7 @@
 					<div id="xiaoshou" style="width: 95%;height:400px;margin: 0 auto;"></div>
 					<div class="baobiaobtn">
 						<a class="layui-btn layui-btn-xs" onclick="selday(0)">今日</a>
-						<a class="layui-btn layui-btn-xs"  onclick="selday(1)">昨日</a>
+						<a class="layui-btn layui-btn-xs" onclick="selday(1)">昨日</a>
 					</div>
 				</div>
 				<div class="layui-col-md12 layui-col-sm12 layui-col-xs12">
@@ -59,368 +59,417 @@
 					<div id="sevenday" style="width: 95%;height:400px;margin: 0 auto;margin-top: 50px;"></div>
 				</div>
 			</div>
-			
+
 		</div>
 	</body>
-<script type="text/javascript">
-//基于准备好的dom，初始化echarts实例
-var myChart = echarts.init(document.getElementById('sevenday'));
-// 指定图表的配置项和数据
-myChart.setOption({
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'cross',
-            crossStyle: {
-                color: '#999'
-            }
-        }
-    },
-    legend: {
-        data:['微信交易金额', '支付宝交易金额', '微信交易笔数', '支付宝交易笔数']
-    },
-    xAxis: [
-        {
-            type: 'category',
-            data: ['1月','2月','3月','4月','5月','6月','7月'],
-            axisPointer: {
-                type: 'shadow'
-            }
-        }
-    ],
-    yAxis: [
-        {
-            type: 'value',
-            name: '交易金额',
-            interval: 75000,
-            axisLabel: {
-                formatter: '¥{value}'
-            }
-        },
-        {
-            type: 'value',
-            name: '交易笔数',
-            interval: 5000,
-            axisLabel: {
-                formatter: '{value}笔'
-            }
-        }
-    ],
-    series: [{
-        name:'微信交易金额',
-        type:'bar',
-        data:[]
-    },{
-        name:'支付宝交易金额',
-        type:'bar',
-        data:[]
-    },{
-        name:'微信交易笔数',
-        type:'line',
-        yAxisIndex: 1,
-        data:[]
-    },{
-        name:'支付宝交易笔数',
-        type:'line',
-        yAxisIndex: 1,
-        data:[]
-    }]
-});
-
-//基于准备好的dom，初始化echarts实例
-var myChartxiaoshou = echarts.init(document.getElementById('xiaoshou'));
-// 指定图表的配置项和数据
-myChartxiaoshou.setOption({
-	tooltip: {
-		trigger: 'axis',
-		axisPointer: { // 坐标轴指示器，坐标轴触发有效
-			type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-		}
-	},
-	legend: {
-		data: ['成功交易金额', '成功交易笔数']
-	},
-	calculable: true,
-	xAxis: [{
-		type: 'category',
-		data: []
-	}],
-	yAxis: [{
-		type: 'value'
-	}],
-	series: [{
-			name: '成功交易金额',
-			type: 'bar',
-			itemStyle:{normal:{color:'rgb(46,143,217)'}},
-			data: []
-		},
-		{
-			name: '成功交易笔数',
-			type: 'bar',
-			itemStyle:{normal:{color:'rgb(91,208,237)'}},
-			data: []
-		}
-	]
-});
-
-//基于准备好的dom，初始化echarts实例
-var myChartdingdan = echarts.init(document.getElementById('dingdan'));
-// 指定图表的配置项和数据
-myChartdingdan.setOption({
-	title: {
-		text: '今日交易笔数'
-	},
-	tooltip: {
-		trigger: 'item',
-		formatter: '{b}: {c} 单'
-	},
-	legend: {
-		orient: 'vertical',
-		x: 'right',
-		data: ['微信', '支付宝']
-	},
-	series: [{
-		name: '交易笔数',
-		type: 'pie',
-		radius: '45%',
-		center: ['50%', '60%'],
-		label: {
-			normal: {
-				show: true,
-				formatter: '{b}: {c} 单'
-			}
-		},
-		data: [],
-		itemStyle: {
-			emphasis: {
-				shadowBlur: 10,
-				shadowOffsetX: 0,
-				shadowColor: 'rgba(0, 0, 0, 0.5)'
-			}
-		}
-	}]
-})
-
-//基于准备好的dom，初始化echarts实例
-var myChartjiucan = echarts.init(document.getElementById('jiucan'));
-// 指定图表的配置项和数据
-myChartjiucan.setOption({
-
-	title: {
-		text: '今日交易金额'
-	},
-	tooltip: {
-		trigger: 'item',
-		formatter: "{b}: {c} 元"
-	},
-	legend: {
-		orient: 'vertical',
-		x: 'right',
-		data: ['微信', '支付宝']
-	},
-	series: [{
-		name: '交易金额',
-		type: 'pie',
-		radius: ['30%', '45%'],
-		center: ['50%', '60%'],
-		label: {
-			normal: {
-				formatter: "{b}: {c} 元",
-				rich: {
-					a: {
-						color: '#999',
-						lineHeight: 22,
-						align: 'center'
-					},
-					hr: {
-						borderColor: '#aaa',
-						width: '100%',
-						borderWidth: 0.5,
-						height: 0
-					},
-					b: {
-						fontSize: 16,
-						lineHeight: 33
-					},
-					per: {
-						color: '#eee',
-						backgroundColor: '#334455',
-						padding: [2, 4],
-						borderRadius: 2
+	<script type="text/javascript">
+		//基于准备好的dom，初始化echarts实例
+		var myChart = echarts.init(document.getElementById('sevenday'));
+		// 指定图表的配置项和数据
+		myChart.setOption({
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'cross',
+					crossStyle: {
+						color: '#999'
 					}
 				}
-			}
-		},
-		data: []
-	}]
-})
-$(function() {
-	doSearch();
-	selday(0);
-})
-
-function doSearch() {
-	// 异步加载数据
-	$.ajax({
-		type: 'post', //传输类型
-		async: true,
-		url: '.welcome/getsevendayData',
-		dataType: 'json', //返回数据形式为json
-		success: function(data) {
-			// 填入数据
-			myChart.setOption({
-				xAxis: {
-					type: 'category',
-					data: data.category
+			},
+			legend: {
+				data: ['微信交易金额', '支付宝交易金额', '微信交易笔数', '支付宝交易笔数']
+			},
+			xAxis: [{
+				type: 'category',
+				data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
+				axisPointer: {
+					type: 'shadow'
+				}
+			}],
+			yAxis: [{
+					type: 'value',
+					name: '交易金额',
+					interval: 75000,
+					axisLabel: {
+						formatter: '¥{value}'
+					}
 				},
-			    series: [{
-	                 name:'微信交易金额',
-	                 type:'bar',
-	                 data:data.weixinAmountData
-	             },{
-	                 name:'支付宝交易金额',
-	                 type:'bar',
-	                 data:data.zhifubaoAmountData
-	             },{
-	                 name:'微信交易笔数',
-	                 type:'line',
-	                 yAxisIndex: 1,
-	                 data:data.weixinAmountCount
-	             },{
-	                 name:'支付宝交易笔数',
-	                 type:'line',
-	                 yAxisIndex: 1,
-	                 data:data.zhifubaoAmountCount
-	             }]
-			});
-		},
-		error: function(errorMsg) {
-			alert("加载数据失败");
-		}
-	});
-}
+				{
+					type: 'value',
+					name: '交易笔数',
+					interval: 5000,
+					axisLabel: {
+						formatter: '{value}笔'
+					}
+				}
+			],
+			series: [{
+				name: '微信交易金额',
+				type: 'bar',
+				data: []
+			}, {
+				name: '支付宝交易金额',
+				type: 'bar',
+				data: []
+			}, {
+				name: '微信交易笔数',
+				type: 'line',
+				yAxisIndex: 1,
+				data: []
+			}, {
+				name: '支付宝交易笔数',
+				type: 'line',
+				yAxisIndex: 1,
+				data: []
+			}]
+		});
 
-function selday(mydate) {
-	if(mydate==1){
-		// 异步加载数据
-		$.ajax({
-			type: 'post', //传输类型
-			async: true,
-			url: '.welcome/getdayData',
-			data : {daytype:mydate},
-			dataType: 'json', //返回数据形式为json
-			success: function(data) {
-				// 填入数据
-				myChartxiaoshou.setOption({
-					xAxis:{
-						type: 'category',
-						data: data.category
-					},
-					series: [{
-						name: '成功交易金额',
-						type: 'bar',
-						itemStyle:{normal:{color:'rgb(46,143,217)'}},
-						data: data.transactionAmountData
-					},{
-						name: '成功交易笔数',
-						type: 'bar',
-						itemStyle:{normal:{color:'rgb(91,208,237)'}},
-						data: data.transactionAmountCount
-					}]
-				});
+		//基于准备好的dom，初始化echarts实例
+		var myChartxiaoshou = echarts.init(document.getElementById('xiaoshou'));
+		// 指定图表的配置项和数据
+		myChartxiaoshou.setOption({
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: { // 坐标轴指示器，坐标轴触发有效
+					type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+				}
 			},
-			error: function(errorMsg) {
-				alert("加载数据失败");
-			}
-		});
-	}else{
-		// 异步加载数据
-		$.ajax({
-			type: 'post', //传输类型
-			async: true,
-			url: '.welcome/getdayData',
-			data : {daytype:mydate},
-			dataType: 'json', //返回数据形式为json
-			success: function(data) {
-				var datadingdan = [{value: data.weixinCount,itemStyle:{normal:{color:'rgb(46,143,217)'}},name: '微信'},
-									{value: data.zhifubaoCount,itemStyle:{normal:{color:'rgb(49,188,173)'}},name: '支付宝'}]
-				var datajiucan = [{value: data.weixinMoney,name: '微信'},{value: data.zhifubaoMoney,name: '支付宝'}]
-				// 填入数据
-				myChartxiaoshou.setOption({
-					xAxis:{
-						type: 'category',
-						data: data.category
+			legend: {
+				data: ['成功交易金额', '成功交易笔数']
+			},
+			calculable: true,
+			xAxis: [{
+				type: 'category',
+				data: []
+			}],
+			yAxis: [{
+				type: 'value'
+			}],
+			series: [{
+					name: '成功交易金额',
+					type: 'bar',
+					itemStyle: {
+						normal: {
+							color: 'rgb(46,143,217)'
+						}
 					},
-					series: [{
-						name: '成功交易金额',
-						type: 'bar',
-						itemStyle:{normal:{color:'rgb(46,143,217)'}},
-						data: data.transactionAmountData
-					},{
-						name: '成功交易笔数',
-						type: 'bar',
-						itemStyle:{normal:{color:'rgb(91,208,237)'}},
-						data: data.transactionAmountCount
-					}]
-				});
-				myChartjiucan.setOption({
-					series: [{
-						name: '交易金额',
-						type: 'pie',
-						radius: ['30%', '45%'],
-						center: ['40%', '50%'],
-						label: {
-							normal: {
-								formatter: "{b}: {c} 元",
-								rich: {
-									a: {
-										color: '#999',
-										lineHeight: 22,
-										align: 'center'
-									},
-									hr: {
-										borderColor: '#aaa',
-										width: '100%',
-										borderWidth: 0.5,
-										height: 0
-									},
-									b: {
-										fontSize: 16,
-										lineHeight: 33
-									},
-									per: {
-										color: '#eee',
-										backgroundColor: '#334455',
-										padding: [2, 4],
-										borderRadius: 2
+					data: []
+				},
+				{
+					name: '成功交易笔数',
+					type: 'bar',
+					itemStyle: {
+						normal: {
+							color: 'rgb(91,208,237)'
+						}
+					},
+					data: []
+				}
+			]
+		});
+
+		//基于准备好的dom，初始化echarts实例
+		var myChartdingdan = echarts.init(document.getElementById('dingdan'));
+		// 指定图表的配置项和数据
+		myChartdingdan.setOption({
+			title: {
+				text: '今日交易笔数'
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: '{b}: {c} 单'
+			},
+			legend: {
+				orient: 'vertical',
+				x: 'right',
+				data: ['微信', '支付宝']
+			},
+			series: [{
+				name: '交易笔数',
+				type: 'pie',
+				radius: '45%',
+				center: ['50%', '60%'],
+				label: {
+					normal: {
+						show: true,
+						formatter: '{b}: {c} 单'
+					}
+				},
+				data: [],
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			}]
+		})
+
+		//基于准备好的dom，初始化echarts实例
+		var myChartjiucan = echarts.init(document.getElementById('jiucan'));
+		// 指定图表的配置项和数据
+		myChartjiucan.setOption({
+
+			title: {
+				text: '今日交易金额'
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: "{b}: {c} 元"
+			},
+			legend: {
+				orient: 'vertical',
+				x: 'right',
+				data: ['微信', '支付宝']
+			},
+			series: [{
+				name: '交易金额',
+				type: 'pie',
+				radius: ['30%', '45%'],
+				center: ['50%', '60%'],
+				label: {
+					normal: {
+						formatter: "{b}: {c} 元",
+						rich: {
+							a: {
+								color: '#999',
+								lineHeight: 22,
+								align: 'center'
+							},
+							hr: {
+								borderColor: '#aaa',
+								width: '100%',
+								borderWidth: 0.5,
+								height: 0
+							},
+							b: {
+								fontSize: 16,
+								lineHeight: 33
+							},
+							per: {
+								color: '#eee',
+								backgroundColor: '#334455',
+								padding: [2, 4],
+								borderRadius: 2
+							}
+						}
+					}
+				},
+				data: []
+			}]
+		})
+		$(function() {
+			doSearch();
+			selday(0);
+		})
+
+		function doSearch() {
+			// 异步加载数据
+			$.ajax({
+				type: 'post', //传输类型
+				async: true,
+				url: '.welcome/getsevendayData',
+				dataType: 'json', //返回数据形式为json
+				success: function(data) {
+					// 填入数据
+					myChart.setOption({
+						xAxis: {
+							type: 'category',
+							data: data.category
+						},
+						series: [{
+							name: '微信交易金额',
+							type: 'bar',
+							data: data.weixinAmountData
+						}, {
+							name: '支付宝交易金额',
+							type: 'bar',
+							data: data.zhifubaoAmountData
+						}, {
+							name: '微信交易笔数',
+							type: 'line',
+							yAxisIndex: 1,
+							data: data.weixinAmountCount
+						}, {
+							name: '支付宝交易笔数',
+							type: 'line',
+							yAxisIndex: 1,
+							data: data.zhifubaoAmountCount
+						}]
+					});
+				},
+				error: function(errorMsg) {
+					//alert("加载数据失败");
+				}
+			});
+		}
+
+		function selday(mydate) {
+			if(mydate == 1) {
+				// 异步加载数据
+				$.ajax({
+					type: 'post', //传输类型
+					async: true,
+					url: '.welcome/getdayData',
+					data: {
+						daytype: mydate
+					},
+					dataType: 'json', //返回数据形式为json
+					success: function(data) {
+						// 填入数据
+						myChartxiaoshou.setOption({
+							xAxis: {
+								type: 'category',
+								data: data.category
+							},
+							series: [{
+								name: '成功交易金额',
+								type: 'bar',
+								itemStyle: {
+									normal: {
+										color: 'rgb(46,143,217)'
 									}
-								}
-							}
-						},
-						data: datajiucan
-					}]
+								},
+								data: data.transactionAmountData
+							}, {
+								name: '成功交易笔数',
+								type: 'bar',
+								itemStyle: {
+									normal: {
+										color: 'rgb(91,208,237)'
+									}
+								},
+								data: data.transactionAmountCount
+							}]
+						});
+					},
+					error: function(errorMsg) {
+						//alert("加载数据失败");
+					}
 				});
-				myChartdingdan.setOption({
-					series: [{
-						name: '交易笔数',
-						type: 'pie',
-						radius: '45%',
-						center: ['40%', '50%'],
-						label: {
-							normal: {
-								show: true,
-								formatter: '{b}: {c} 单'
+			} else {
+				// 异步加载数据
+				$.ajax({
+					type: 'post', //传输类型
+					async: true,
+					url: '.welcome/getdayData',
+					data: {
+						daytype: mydate
+					},
+					dataType: 'json', //返回数据形式为json
+					success: function(data) {
+						var datadingdan = [{
+								value: data.weixinCount,
+								itemStyle: {
+									normal: {
+										color: 'rgb(46,143,217)'
+									}
+								},
+								name: '微信'
+							},
+							{
+								value: data.zhifubaoCount,
+								itemStyle: {
+									normal: {
+										color: 'rgb(49,188,173)'
+									}
+								},
+								name: '支付宝'
 							}
-						},
-						data : datadingdan
-					}]
-				})
-			},
-			error: function(errorMsg) {
-				alert("加载数据失败");
+						]
+						var datajiucan = [{
+							value: data.weixinMoney,
+							name: '微信'
+						}, {
+							value: data.zhifubaoMoney,
+							name: '支付宝'
+						}]
+						// 填入数据
+						myChartxiaoshou.setOption({
+							xAxis: {
+								type: 'category',
+								data: data.category
+							},
+							series: [{
+								name: '成功交易金额',
+								type: 'bar',
+								itemStyle: {
+									normal: {
+										color: 'rgb(46,143,217)'
+									}
+								},
+								data: data.transactionAmountData
+							}, {
+								name: '成功交易笔数',
+								type: 'bar',
+								itemStyle: {
+									normal: {
+										color: 'rgb(91,208,237)'
+									}
+								},
+								data: data.transactionAmountCount
+							}]
+						});
+						myChartjiucan.setOption({
+							series: [{
+								name: '交易金额',
+								type: 'pie',
+								radius: ['30%', '45%'],
+								center: ['40%', '50%'],
+								label: {
+									normal: {
+										formatter: "{b}: {c} 元",
+										rich: {
+											a: {
+												color: '#999',
+												lineHeight: 22,
+												align: 'center'
+											},
+											hr: {
+												borderColor: '#aaa',
+												width: '100%',
+												borderWidth: 0.5,
+												height: 0
+											},
+											b: {
+												fontSize: 16,
+												lineHeight: 33
+											},
+											per: {
+												color: '#eee',
+												backgroundColor: '#334455',
+												padding: [2, 4],
+												borderRadius: 2
+											}
+										}
+									}
+								},
+								data: datajiucan
+							}]
+						});
+						myChartdingdan.setOption({
+							series: [{
+								name: '交易笔数',
+								type: 'pie',
+								radius: '45%',
+								center: ['40%', '50%'],
+								label: {
+									normal: {
+										show: true,
+										formatter: '{b}: {c} 单'
+									}
+								},
+								data: datadingdan
+							}]
+						})
+					},
+					error: function(errorMsg) {
+						//alert("加载数据失败");
+					}
+				});
 			}
-		});
-	}
-}
-</script>
+		}
+	</script>
+
 </html>

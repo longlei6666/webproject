@@ -7,18 +7,18 @@
 em{
   font-style: normal;
 }
-#tags
+.tags
 {
-    border: 1px solid #e6e6e6;
-    border-radius: 2px;
-    transition: all .3s;
-    -webkit-transition: all .3s;
-}
-#tags:hover{
-	border-color: #5FB878!important;
+    width: 406px;
+    margin: 40px auto;
+    padding: 10px;
+
+    color: #777;
+    border: 1px solid #d5d5d5;
+    background-color: #fff;
 }
 
-#tags span{
+.tags span{
     font-size: 12px;
     font-weight: normal;
     line-height: 16px;
@@ -36,10 +36,7 @@ em{
     background-color: #009688;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, .15);
 }
-#tags span:first-child{
-		margin-left: 10px;
-}
-#tags .close{
+.tags .close{
     font-size: 12px;
     font-weight: bold;
     line-height: 20px;
@@ -58,14 +55,19 @@ em{
     background: transparent none repeat scroll 0 0;
     text-shadow: none;
 }
-#tags .close:hover{
+.tags .close:hover{
   background: #ffb800;
 }
-#inputTags[type='text'],
-#inputTags[type='text']:focus{
+.inputTags[type='text'],
+.inputTags[type='text']:focus{
+    line-height: 25px;
     display: inline;
-    width: auto;
+    width: 150px;
+    margin: 0;
+    padding: 0 6px;
     border: 0 none;
+    outline: 0 none;
+    box-shadow: none;
 }
 
 .albtn{
