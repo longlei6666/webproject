@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -29,15 +29,22 @@
 				<form class="layui-form" lay-filter="basic">
 					
 					<div class="layui-form-item">
-						<label class="layui-form-label">密码</label>
-						<div class="layui-input-inline">
-							<input type="password" name="servicetel" lay-verify="pass" class="layui-input" id="passWord">
+						<label class="layui-form-label" style="text-align:right;width:50px;padding-left:0">密码</label>
+						<div class="layui-input-inline"  style="margin-left:70px">
+							<input type="password" name="passWord" lay-verify="pass" class="layui-input" id="passWord">
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">重复密码</label>
-						<div class="layui-input-inline">
-							<input type="password" name="serviceqq" lay-verify="repass" class="layui-input"  id="repassWord">
+						<label class="layui-form-label"  style="text-align:right;width:50px;padding-left:0">重复密码</label>
+						<div class="layui-input-inline" style="margin-left:70px">
+							<input type="password" name="" lay-verify="repass" class="layui-input"  id="repassWord">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"  style="text-align:right;width:50px;padding-left:0"></label>
+						<div class="layui-input-inline" style="margin-left:70px">
+							
+							<span style="color:red">*密码必须为6-12位数字和字母组合</span>
 						</div>
 					</div>
 					<div class="layui-form-item layui-layout-admin">
@@ -60,25 +67,27 @@
 				
 				setTimeout(function(){parent.layer.close(index)},16); 
 			})
-			var serverUrl = 'http://192.168.1.190:5002/'
-			var userNumber = window.parent.userNumber;
 
-			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
-				layui.$.support.cors = true; //允许ajax跨域
-				var $ = layui.jquery,
+			function subPage(data,data1){
+				var jgData  = data
+				console.log(jgData)
+				var serverUrl = window.parent.serverUrl
+				var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+				var staffNumber = jgData.staffNumber
+				layui.use(['laydate', 'table', 'upload', 'form'], function() {
+					var $ = layui.jquery,
 					upload = layui.upload,
 					laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form,
-					laytpl = layui.laytpl;
-
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer;
+					var tableSelect = layui.tableSelect;
 				//表单初始赋值
-				form.val('basic', {
-				
 					
-				})
-
-				form.verify({
+				/*---------- 自定义验证规则 ----------*/
+					form.verify({
 					
 					pass: [/^[0-9A-Za-z]{6,12}$/, '密码必须6到12位'],
 					repass: function(value) {
@@ -87,30 +96,38 @@
 						}
 					}
 				});
-				//监听提交
-				form.on('submit(add)', function(data) {
-					layer.alert(JSON.stringify(data.field), {
-						title: '最终的提交信息'
-					})
+				/*---------- 监听提交 ----------*/
+				form.on('submit(add)', function(data, index) {
+					var addData = data.field
+					addData.institutionNumber = userNumber
+					addData.staffNumber = staffNumber
+					addData.deletionFlag = '0'
+					console.log(addData)
+					// 发送请求
 					CmsUtility.postAjaxCall(
 						//系统设置
-						CmsConfig.Mechanism,
-						{
-						'shopNumber':1000181007300324376,
-						'tabletableNumber':'ZT635DD6',
-						'paymentType':'2'
-						},
+						CmsConfig.addressUrl.Mechanism.updateInstitutionStaff,
+						addData,
 						function(data){
-							console.log(data)
+							if(data.code == 1000){
+								setTimeout(function(){
+									$('#quxiao').click()
+								},16);
+								parent.layer.msg('更改成功')
+								parent.layui.table.reload('vip_cardList')
+								
+							}else{
+								layer.msg(data.msg)
+							}
 						},
 						function(data){
 							console.log('222')
 						}
 					)
 					return false;
+					});
 				});
-
-			});
+			}
 		</script>
 	</body>
 

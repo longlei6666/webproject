@@ -13,17 +13,6 @@
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<script type="text/javascript" src="../../public/js/data.js"></script>
-		<script type="text/javascript" src="../../public/js/province.js"></script>
-		<script type="text/javascript">
-			var defaults = {
-				s1: 'provid',
-				s2: 'cityid',
-				s3: 'areaid',
-				v1: null,
-				v2: null,
-				v3: null
-			};
-		</script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
 		<!--[if lt IE 9]>
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -51,8 +40,13 @@
 				font-size: 18px;
 			}
 			
+			.layui-elem-field {
+				margin: 0;
+			}
+			
 			.layui-elem-field legend {
 				font-size: 16px;
+				margin-bottom: 15px;
 			}
 			
 			.layui-upload-img {
@@ -83,67 +77,215 @@
 					<blockquote class="layui-elem-quote">基本信息</blockquote>
 					<div class="layui-form-item">
 						<label class="layui-form-label">代理类型</label>
-						<div class="layui-input-inline widthauto">
-							<input type="radio" name="invalid" value="0" title="普通代理" lay-filter="cardvalid" checked="">
-							<input type="radio" name="invalid" value="1" title="中级代理" lay-filter="cardvalid">
-							<input type="radio" name="invalid" value="2" title="高级代理" lay-filter="cardvalid">
+						<div class="layui-input-block">
+							<input type="radio" name="agentType" value="0" title="全国代理商" lay-filter="cardvalid" checked="">
+							<input type="radio" name="agentType" value="1" title="省级代理商" lay-filter="cardvalid">
+							<input type="radio" name="agentType" value="2" title="市级代理商" lay-filter="cardvalid">
 						</div>
 					</div>
 					<div class="layui-form-item">
+                    <label class="layui-form-label">选择代理</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="agName" lay-verify="agentName" autocomplete="off" placeholder="请搜索并选择代理，如不选，则为一级代理" class="layui-input" id="agName"   onblur="bl()" onfocus="fc()">
+                        <div class="layui-input-block" style="position:absolute;top:34px;left:0;z-index:500;max-height:190px;overflow:auto;background-color:#fff;width:100%;margin-left:0;display:none" id="searchBox">
+                            <!-- <div class="layui-btn layui-btn-primary" style="width:100%;margin-left:0" >121212</div>
+                                <div class="layui-btn layui-btn-primary" style="width:100%;margin-left:0" >121212</div>
+                                <div class="layui-btn layui-btn-primary" style="width:100%;margin-left:0" >121212</div>
+                                <div class="layui-btn layui-btn-primary" style="width:100%;margin-left:0" >121212</div>
+                                <div class="layui-btn layui-btn-primary" style="width:100%;margin-left:0" >121212</div> -->
+                        </div>
+                    </div>
+                </div>
+					<div class="layui-form-item">
 						<label class="layui-form-label">代理名称</label>
 						<div class="layui-input-block">
-							<input type="text" name="daili" lay-verify="title" autocomplete="off" placeholder="请输入代理名称" class="layui-input">
+							<input type="text" name="agentName" lay-verify="title" autocomplete="off" placeholder="请输入代理名称" class="layui-input"
+							 value="">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">用户名</label>
 						<div class="layui-input-block">
-							<input type="text" name="yonghuming" lay-verify="title" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+							<input type="text" name="userName" lay-verify="title" autocomplete="off" placeholder="请输入用户名" class="layui-input"
+							 value="">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">联系电话</label>
 						<div class="layui-input-block">
-							<input type="text" name="lianxidianhua" lay-verify="phone" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
+							<input type="text" name="registerCell" lay-verify="phone" autocomplete="off" placeholder="请输入联系电话" class="layui-input"
+							 value="">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">密码</label>
 						<div class="layui-input-block">
-							<input type="text" name="password" lay-verify="title" autocomplete="off" placeholder="请输入密码" class="layui-input">
+							<input type="password" name="passWord" lay-verify="title" autocomplete="off" placeholder="请输入密码" class="layui-input"
+							 id="pass">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">确认密码</label>
 						<div class="layui-input-block">
-							<input type="text" name="repassword" lay-verify="title" autocomplete="off" placeholder="请确认密码" class="layui-input">
+							<input type="password" name="rePass_Word" lay-verify="repassword" autocomplete="off" placeholder="请确认密码" class="layui-input"
+							 id="repass">
 						</div>
 					</div>
+
 					<div class="layui-form-item">
 						<label class="layui-form-label">商户所在地</label>
-						<div class="layui-input-inline">
-							<select name="provid" id="provid" lay-filter="provid">
-								<option value="">请选择省</option>
-							</select>
-						</div>
-						<div class="layui-input-inline">
-							<select name="cityid" id="cityid" lay-filter="cityid">
-								<option value="">请选择市</option>
-							</select>
-						</div>
-						<div class="layui-input-inline">
-							<select name="areaid" id="areaid" lay-filter="areaid">
-								<option value="">请选择县/区</option>
-							</select>
+						<div class="layui-input-block" style="display: flex;">
+							<div class="layui-input-inline">
+								<select name="province" id="provice" lay-filter="provice" lay-verify="title">
+
+								</select>
+							</div>
+							<div class="layui-input-inline">
+								<select name="city" id="city" lay-filter="city" lay-verify="title">
+
+								</select>
+							</div>
+							<div class="layui-input-inline">
+								<select name="area" id="area" lay-verify="title">
+
+								</select>
+							</div>
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">详细地址</label>
 						<div class="layui-input-block">
-							<input type="text" name="xiangxidizhi" lay-verify="title" autocomplete="off" placeholder="请输入详细地址" class="layui-input">
+							<input type="text" name="Address" lay-verify="title" autocomplete="off" placeholder="请输入详细地址" class="layui-input"
+							 value="">
 						</div>
 					</div>
-
+					<blockquote class="layui-elem-quote">费率设置</blockquote>
+					<fieldset class="layui-elem-field layui-field-title">
+						<legend>官方支付宝</legend>
+						<div class="layui-form-item">
+							<label class="layui-form-label">官方支付宝费率</label>
+							<div class="layui-input-inline">
+								<select name="aliRate" class="rateBox"  lay-filter="aihao">
+									<option value="">请选择费率</option>
+                                        <option value="0.0021">0.21%</option>
+                                        <option value="0.0023">0.23%</option>
+								</select>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="layui-elem-field layui-field-title">
+						<legend>官方微信</legend>
+						<div class="layui-form-item">
+							<label class="layui-form-label">官方微信费率</label>
+							<div class="layui-input-inline">
+								<select name="wecharRate" class="rateBox"  lay-filter="aihao">
+									<option value="">请选择费率</option>
+                                        <option value="0.0021">0.21%</option>
+                                        <option value="0.0023">0.23%</option>
+								</select>
+							</div>
+						</div>
+					</fieldset>
+					
+					<fieldset class="layui-elem-field layui-field-title">
+						<legend>富友通道</legend>
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">D1费率(%)</label>
+								<div class="layui-input-inline">
+									<select name="fuyouRateD1" class="rateBox"  lay-filter="aihao">
+										<option value="">请选择费率</option>
+                                        <option value="0.0021">0.21%</option>
+                                        <option value="0.0023">0.23%</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">D0费率(%)</label>
+								<div class="layui-input-inline">
+									<select name="fuyouRateD0" class="rateBox"  lay-filter="aihao">
+										<option value="">请选择费率</option>
+                                        <option value="0.0021">0.21%</option>
+                                        <option value="0.0023">0.23%</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend>易融码通道</legend>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">D1费率(%)</label>
+                                <div class="layui-input-inline">
+                                    <select name="yrmRateD1" class="rateBox"  lay-filter="aihao">
+                                        <option value="">请选择费率</option>
+                                        <option value="0.0021">0.21%</option>
+                                        <option value="0.0023">0.23%</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">D0费率(%)</label>
+                                <div class="layui-input-inline">
+                                    <select name="yrmRateD0" class="rateBox"  lay-filter="aihao">
+                                        <option value="">请选择费率</option>
+                                        <option value="0.0021">0.21%</option>
+                                        <option value="0.0023">0.23%</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+					<fieldset class="layui-elem-field layui-field-title">
+						<legend>新大陆通道</legend>
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">D1费率(%)</label>
+								<div class="layui-input-inline">
+									<select name="xdlRateD1" class="rateBox xdlD1"  lay-filter="aihao">
+										<option value="">请选择费率</option>
+                                        <option value="0.0021">0.21%</option>
+                                        <option value="0.0023">0.23%</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">D0费率(%)</label>
+								<div class="layui-input-inline">
+									<select name="xdlRateD0" class="rateBox xdlD0" lay-filter="aihao">
+										<option value="">请选择费率</option>
+										<option value="0.0021">0.21%</option>
+                                        <option value="0.0023">0.23%</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					
+					<!-- <div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">T1费率(%)</label>
+							<div class="layui-input-block" style="width:200px">
+								<input type="text" name="T1Rate" lay-verify="title" autocomplete="off" placeholder="T1费率" class="layui-input"
+								 value="">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">D1费率(%)</label>
+							<div class="layui-input-block" style="width:200px">
+								<input type="text" name="D1Rate" lay-verify="title" autocomplete="off" placeholder="D1费率" class="layui-input"
+								 value="">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">D0费率(%)</label>
+							<div class="layui-input-block" style="width:200px">
+								<input type="text" name="D0Rate" lay-verify="title" autocomplete="off" placeholder="D0费率" class="layui-input"
+								 value="">
+							</div>
+						</div>
+					</div> -->
 					<div class="layui-form-item layui-layout-admin">
 						<div class="layui-input-block">
 							<div class="layui-footer" style="left: 0;text-align: center;">
@@ -154,79 +296,326 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
-			var index = parent.layer.getFrameIndex(window.name);
-			$('#quxiao').click(function() {
-				setTimeout(function() {
-					parent.layer.close(index)
-				}, 16);
-			})
-			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
-			layui.use(['laydate', 'table', 'upload', 'form'], function() {
-				var $ = layui.jquery,
-					upload = layui.upload,
-					laydate = layui.laydate,
-					table = layui.table,
-					form = layui.form,
-					admin = layui.admin,
-					element = layui.element,
-					layer = layui.layer;
+		var index = parent.layer.getFrameIndex(window.name);
+    $('#quxiao').click(function() {
+        setTimeout(function() {
+            parent.layer.close(index)
+        }, 16);
+    })
+    function bl() {
+        setTimeout(function() {
+            $('#searchBox').hide()
+        }, 200)
+        //$('#searchBox').hide()
+    }
+    function clickS(e) {
+        $('#agName').val(e.getAttribute('data-name'))
+        $('#agName').attr('agentNumber', e.getAttribute('data-id'))
+        $('#agName').attr('agentType', e.getAttribute('data-level'))
+        $('#searchBox').hide()
+    }
+    function fc() {
+        $('#searchBox').show()
+        console.log($('#agName').val())
+        pageNum =1
+        CmsUtility.postAjaxCall(
+            //系统设置
+            'AgentRegister/getInsAglists', 
+            {
+                
+                "institutionNumber": userNumber,
+                "agentName":$('#agName').val(),
+                "page":pageNum,
+                "limit":'100',
+                "agentType":''
+            },
+            function(data) {
+                console.log(this.value)
+                if (data.code == 1000) {
 
-				/*---------- 自定义验证规则 ----------*/
-				form.verify({
-					title: function(value) {
-						if(value.length == "") {
-							return '不能为空！';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
-				});
+                    var str = ''
+                    for (var i = 0; i < data.data.agentRegisterlist.length; i++) {
+                        str += '<div class="layui-btn layui-btn-primary" data-level="'+data.data.agentRegisterlist[i].agentLevel +'" data-id="' + data.data.agentRegisterlist[i].agentNumber + '" data-name="' + data.data.agentRegisterlist[i].agentName + '" style="width:100%;margin-left:0" onclick="clickS(this)" >' + '[' + data.data.agentRegisterlist[i].agentNumber + ']' + data.data.agentRegisterlist[i].agentName + '</div>'
+                    }
+                    document.getElementById('searchBox').innerHTML = str
 
-				/*---------- 监听开关 ----------*/
-				form.on('radio(cardvalid)', function(data) { //设置会员卡的有效期
-					if(data.value == 1) {
-						$('#Cardvalid').show()
-					} else {
-						$('#Cardvalid').hide()
-					}
-				});
-				
-				/*---------- 监听提交 ----------*/
-				form.on('submit(add)', function(data, index) {
-					layer.alert(JSON.stringify(data.field), {
-						title: '最终的提交信息'
-					})
-					var addData = JSON.stringify(data.field)
+                    // layer.msg('保存成功')
+                    // setTimeout(function(){
+                    //  x_admin_close()
+                    // },500);
 
-					// 发送请求
-					$.ajax({
-						type: "post",
-						url: serverUrl + "memberCard/addMemberCard",
-						async: true,
-						dataType: "json",
-						contentType: "application/json",
-						data: addData,
-						success: function(data) {
-							if(data.code == "0") {
-								var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-								parent.layer.close(index); //再执行关闭
-								parent.layer.msg(data.msg);
-								parent.layui.table.reload('vip_cardList');
-							} else if(data.code == "1") {
-								layer.msg("添加会员卡失败");
-							}
-						}
-					});
-					return false;
-				});
+                } else {
+                    layer.msg(data.msg)
 
-			});
+                }
+            },
+            function(data) {
+                console.log('222')
+            }
+        )
+
+    }
+    var serverUrl = window.parent.serverUrl
+    var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+    layui.use(['laydate', 'table', 'upload', 'form'], function() {
+        var $ = layui.jquery,
+            upload = layui.upload,
+            laydate = layui.laydate,
+            table = layui.table,
+            form = layui.form,
+            admin = layui.admin,
+            element = layui.element,
+            layer = layui.layer;
+        // CmsUtility.choosePro();
+        // setTimeout(function(){
+        //  form.render()
+        // },100)
+        var rateList = ['0.20','0.21','0.22','0.23','0.24','0.25','0.26','0.27','0.28','0.30','0.35','0.38','0.40','0.50','0.60']
+       
+        console.log(rateList)
+        var strate = '<option value="">请选择费率</option>'
+        for(var r = 0 ; r < rateList.length;r++){
+            strate += '<option value="'  +rateList[r]/100  +'">'+ rateList[r]+'%</option>'
+        }
+
+        $('.rateBox').html(strate)
+        var st = strate
+        $('.xdlD1').html(st+= '<option value="0.00235">0.235%</option>')
+        $('.xdlD0').html(st+= '<option value="0.00255">0.255%</option>')
+         $("#agName").bind('input propertychange', function() {
+            console.log(this.value)
+            $('#agName').removeAttr('agentNumber')
+            document.getElementById('searchBox').innerHTML = ''
+            CmsUtility.postAjaxCall(
+                //系统设置
+                'AgentRegister/getInsAglists', 
+            {
+                
+                "institutionNumber": userNumber,
+                "agentName":$('#agName').val(),
+                "page":pageNum,
+                "limit":'100',
+                "agentType":''
+            },
+            function(data) {
+                console.log(this.value)
+                if (data.code == 1000) {
+                    // if(data.data == null){
+                    //     layer.msg(data.msg)
+                    //     return
+                    //    }
+                    var str = ''
+                    for (var i = 0; i < data.data.agentRegisterlist.length; i++) {
+                        str += '<div class="layui-btn layui-btn-primary" data-level="'+data.data.agentRegisterlist[i].agentLevel +'"  data-id="' + data.data.agentRegisterlist[i].agentNumber + '" data-name="' + data.data.agentRegisterlist[i].agentName + '" style="width:100%;margin-left:0" onclick="clickS(this)" >' + '[' + data.data.agentRegisterlist[i].agentNumber + ']' + data.data.agentRegisterlist[i].agentName + '</div>'
+                    }
+                        document.getElementById('searchBox').innerHTML = str
+
+
+                    } else {
+                        layer.msg(data.msg)
+
+                    }
+                },
+                function(data) {
+                    console.log('222')
+                }
+            )
+        })
+        var p = [],
+            c = [],
+            aa = [],
+            cityC = '0'
+        CmsUtility.postAjaxCall(
+            //系统设置
+            CmsConfig.addressUrl.Public.getAreajson, {},
+            function(data) {
+                sessionStorage.setItem("address", data.data);
+                address = JSON.parse(data.data)
+                for (var i = 0; i < address.length; i++) {
+                    var a = new Object()
+                    a.provinceCode = address[i].value
+                    a.provinceName = address[i].text
+                    p.push(a)
+                    var b = new Object()
+                    b.provinceCode = address[i].value
+                    b.children = []
+                    for (var k = 0; k < address[i].children.length; k++) {
+                        var d = new Object()
+                        d.cityCode = address[i].children[k].value
+                        d.cityName = address[i].children[k].text
+                        b.children.push(d)
+                        var e = new Object()
+                        e.cityCode = address[i].children[k].value
+                        e.childeren = []
+                        for (var j = 0; j < address[i].children[k].children.length; j++) {
+                            var t = new Object()
+                            t.areaCode = address[i].children[k].children[j].value
+                            t.areaName = address[i].children[k].children[j].text
+                            e.childeren.push(t)
+                        }
+                        aa.push(e)
+                    }
+                    c.push(b)
+
+                }
+                var str = '<option value="">请选择省</option>'
+                for (var i1 = 0; i1 < p.length; i1++) {
+
+                    str += '<option value="' + p[i1].provinceCode + '">' + p[i1].provinceName + '</option>'
+
+
+                }
+                $('#provice').html(str)
+                var str1 = '<option value="">请选择市</option>'
+                for (var i3 = 0; i3 < c.length; i3++) {
+
+                    if (p[0].provinceCode == c[i3].provinceCode) {
+                        console.log(c[i3])
+                        for (var i2 = 0; i2 < c[i3].children.length; i2++) {
+                            cityC = c[i3].children[0].cityCode
+
+                            str1 += '<option value="' + c[i3].children[i2].cityCode + '">' + c[i3].children[i2].cityName + '</option>'
+                        }
+
+                    }
+                }
+                $('#city').html(str1)
+                var str2 = '<option value="">请选择县区</option>'
+                for (var i4 = 0; i4 < aa.length; i4++) {
+
+                    if (cityC == aa[i4].cityCode) {
+
+                        for (var i5 = 0; i5 < aa[i4].childeren.length; i5++) {
+
+
+                            str2 += '<option value="' + aa[i4].childeren[i5].areaCode + '">' + aa[i4].childeren[i5].areaName + '</option>'
+
+
+                        }
+                    }
+                }
+                $('#area').html(str2)
+
+
+                form.render()
+            },
+            function(data) {
+                console.log(data)
+            }
+        )
+        form.on('select(provice)', function(data) {
+
+           var str1 = '<option value="">请选择市</option>'
+                for (var i3 = 0; i3 < c.length; i3++) {
+
+                    if (data.value == c[i3].provinceCode) {
+                        
+                        for (var i2 = 0; i2 < c[i3].children.length; i2++) {
+
+                           
+                                str1 += '<option value="' + c[i3].children[i2].cityCode + '">' + c[i3].children[i2].cityName + '</option>'
+                         
+
+                        }
+                    }
+                }
+                $('#city').html(str1)
+                var str2 = '<option value="">请选择县区</option>'
+                $('#area').html(str2)
+                form.render()
+
+        })
+        form.on('select(city)', function(data) {
+
+            var str2 = '<option value="">请选择县区</option>'
+                for (var i4 = 0; i4 < aa.length; i4++) {
+                    if (data.value == aa[i4].cityCode) {
+                        console.log(aa[i4])
+                        for (var i5 = 0; i5 < aa[i4].childeren.length; i5++) {
+
+                            
+                                str2 += '<option value="' + aa[i4].childeren[i5].areaCode + '">' + aa[i4].childeren[i5].areaName + '</option>'
+                            
+
+                        }
+                    }
+                }
+                $('#area').html(str2)
+                form.render()
+
+        })
+        /*---------- 自定义验证规则 ----------*/
+        form.verify({
+            title: function(value) {
+            	if(value == null){
+            		 return '不能为空！';
+            	}
+                if (value.length == "") {
+                    return '不能为空！';
+                }
+            },
+            pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            repassword: function(value) {
+                if ($('#pass').val() != $('#repass').val()) {
+                    return '输入密码必须一致'
+                }
+            },
+            content: function(value) {
+                layedit.sync(editIndex);
+            }
+        });
+
+
+
+        /*---------- 监听提交 ----------*/
+        form.on('submit(add)', function(data, index) {
+            // layer.alert(JSON.stringify(data.field), {
+            //  title: '最终的提交信息'
+            // })
+            console.log($('#agName').attr('agentNumber'))
+            
+            var index = layer.load(2, {shade: [0.4, '#393D49']})
+            var addData = data.field
+            addData.institutionNumber = userNumber
+            addData.Deletion_Flag = '0'
+            addData.pAgentNumber = $('#agName').attr('agentNumber')
+            addData.pAgentLevel = $('#agName').attr('agentType')
+            console.log(addData)
+            // 发送请求
+            // addData.D0Rate = 'D0' + '-' + addData.D0Rate
+            // addData.T1Rate = 'T1' + '-' + addData.T1Rate
+            // addData.D1Rate = 'D1' + '-' + addData.D1Rate
+            CmsUtility.postAjaxCall(
+                //系统设置
+                CmsConfig.addressUrl.Mechanism.insertAgentRegister,
+                addData,
+                function(data) {
+                	layer.closeAll()
+                    if (data.code == 1000) {
+                        setTimeout(function() {
+                            $('#quxiao').click()
+                        }, 16);
+                        parent.layer.msg('新增成功')
+                        parent.layui.table.reload('vip_cardList')
+
+                    } else {
+                        layer.msg(data.msg)
+                    }
+                },
+                function(data) {
+                    console.log('222')
+                }
+            )
+            return false;
+        });
+
+    });
 		</script>
 	</body>
 

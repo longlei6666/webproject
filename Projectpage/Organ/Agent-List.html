@@ -10,14 +10,14 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-		<!--[if lt IE 9]>
-      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+			<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
 		<style type="text/css">
 			.layui-btn+.layui-btn {
 				margin-left: -2px;
@@ -39,116 +39,187 @@
 			<div class="layui-row">
 				<div class="layui-form layui-col-md4 layui-col-sm4 layui-col-xs4 x-so">
 					<div class="layui-input-inline">
-						<input type="text" name="couponName" id="couponName" placeholder="商户号或用户名" autocomplete="off" class="layui-input">
+						<input type="text" name="agName" id="userName" placeholder="代理商名称" autocomplete="off" class="layui-input">
 					</div>
-					<div class="layui-input-inline">
+					<!-- <div class="layui-input-inline">
 						<input type="text" name="couponName" id="couponName" placeholder="上级代理号或用户名" autocomplete="off" class="layui-input">
-					</div>
-					<div class="layui-input-inline">
+					</div> -->
+					<!-- <div class="layui-input-inline">
 						<select name="cardVoucherName" id="cardVoucherName">
 							<option value="">认证</option>
 							<option value="1">未认证</option>
 							<option value="2">待审核</option>
 							<option value="3">已认证</option>
 						</select>
-					</div>
+					</div> -->
 					<div class="layui-input-inline">
-						<select name="type" id="type">
-							<option value="">商户类型</option>
-							<option value="0">普通商户</option>
-							<option value="1">补贴商户</option>
+						<select name="type" id="agentType">
+							<option value="">代理商类型</option>
+							<option value="0">全国代理商</option>
+							<option value="1">省级代理商</option>
+							<option value="2">市级代理商</option>
 						</select>
 					</div>
 					<div class="layui-input-inline coupons_screen">
-						<button class="layui-btn" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+						<button class="layui-btn" data-type="reload" title="搜索" id="search"><i class="layui-icon">&#xe615;</i></button>
 					</div>
 				</div>
 			</div>
 			<xblock>
-				<button class="layui-btn" onclick="x_admin_show('添加代理','./Agent-add.html')"><i class="layui-icon"></i>添加代理</button>
+				<button class="layui-btn" id="addA"><i class="layui-icon"></i>添加代理</button>
 			</xblock>
 			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
+		<script type="text/html" id="switchBar">
+			<input type="checkbox" name="consumptionPreferences" lay-skin="switch" lay-filter="consumptionPreferences" lay-text="启用|停用" {{d.state==0 ? 'checked' : ''}} value="{{d.agentNumber}}">
+		</script>
 		<script type="text/html" id="toolbar">
 			<a class="layui-btn layui-btn-xs" id="loginTo" lay-event="loginTo">登录</a>
-			<a class="layui-btn layui-btn-xs" id="rate" lay-event="rate">费率</a>
+			
 			<a class="layui-btn layui-btn-xs" id="pass" lay-event="pass">密码</a>
 			<a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">编辑</a>
-			<a class="layui-btn layui-btn-danger layui-btn-xs" id="logout" lay-event="logout">删除</a>
+			
 		</script>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
+			// <a class="layui-btn layui-btn-xs" id="rate" lay-event="rate">费率</a>
+			// <a class="layui-btn layui-btn-danger layui-btn-xs" id="logout" lay-event="logout">删除</a>
+			function changeRes(res){
+				if(res == null){
+					return
+				}
+				var res = res.agentRegisterlist
+				for(var i = 0 ; i < res.length;i++){
+					if(res[i].agentType == 0){
+						res[i].agentType1 = '全国代理商'
+					}
+					if(res[i].agentType == 1){
+						res[i].agentType1 = '省级代理商'
+					}
+					if(res[i].agentType == 2){
+						res[i].agentType1 = '市级代理商'
+					}
+				}				
+				return res
+			}
 			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
 			layui.use(['laydate', 'table', 'form'], function() {
 				var laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form;
 
 				//方法级渲染  
-				table.render({
+				function tableRender(){
+					table.render({
 					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: './json/vip-card.json',
+					//url: './json/vip-card.json',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getAgentRegisterlist + '?institutionNumber=' + userNumber ,
+					where:{
+						"agName":$('#userName').val().trim(),
+						"agentType":$('#agentType').val().trim()
+					},
 					elem: '#members',
 					height: 'full-210',
 					id: 'vip_cardList',
-					//					parseData: function(res) { //res 即为原始返回的数据
-					//						return {
-					//							"code": res.code, //解析接口状态
-					//							"msg": res.msg, //解析提示文本
-					//							"count": res.count, //解析数据长度
-					//							"data": changeRes(res.result,res.count), //解析数据列表
-					//						};
-					//					},
+					response: { 
+					//res 即为原始返回的数据
+							"statusCode":"1000", //解析接口状态
+							
+					},
+					// request: {
+					//     pageName: ' ' //页码的参数名称，默认：page
+					//     ,limitName: ' ' //每页数据量的参数名，默认：limit
+					//   },
+					parseData: function(res) { //res 即为原始返回的数据
+						if(res.data == null){
+							return
+						}
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": changeRes(res.data), //解析数据列表
+						};
+					},
 					cols: [
 						[{
 							align: 'center',
-							type: 'checkbox'
-						}, {
-							align: 'center',
-							field: 'id',
-							width: 150,
+							field: 'agentNumber',
+							width: 180,
 							title: '代理编号',
-							sort: true
 						}, {
 							align: 'center',
-							field: 'username',
+							field: 'agentName',
+							width: 150,
+							title: '代理名称'
+						}, {
+							align: 'center',
+							field: 'userName',
 							width: 150,
 							title: '用户名'
 						}, {
 							align: 'center',
-							field: 'sex',
+							field: 'agentType1',
 							width: 150,
 							title: '代理类型',
-							sort: true
 						}, {
 							align: 'center',
-							field: 'city',
+							field: 'dbAgentName',
 							width: 150,
-							title: '上级代理'
+							title: '上级代理',
+							
 						}, {
 							align: 'center',
-							field: 'sign',
-							width: 150,
+							toolbar: '#switchBar',
+							width: 100,
 							title: '状态',
 						}, {
 							align: 'center',
-							field: 'experience',
-							width: 150,
-							title: '账号总额',
-							sort: true
+							field: 'agentBalance',
+							width: 180,
+							title: '账号总额/冻结额度',
+							templet:function(data){
+								var agentBalance
+								if(data.agentBalance == undefined){
+									 agentBalance = '0'
+								}else{
+									agentBalance = data.agentBalance
+								}
+								var agentFrozenAmount
+								if(data.agentFrozenAmount == undefined){
+									 agentFrozenAmount = '0'
+								}else{
+									agentFrozenAmount = data.agentFrozenAmount
+								}
+								return agentBalance   + '/' + agentFrozenAmount
+							}
+							
 						}, {
 							align: 'center',
-							field: 'experience',
+							field: 'insertTime',
 							width: 150,
 							title: '注册时间',
-							sort: true
+							templet:function(data){
+								if(data.insertTime){
+									return data.insertTime.split('.')[0]
+								}
+							}
 						}, {
 							align: 'center',
-							field: 'experience',
+							field: 'loginTime',
 							width: 150,
 							title: '最后登录时间',
-							sort: true
-						}, {
+							templet:function(data){
+								if(!!data.loginTime){
+									return data.loginTime.split('.')[0].split('T')[0] + ' ' +  data.loginTime.split('.')[0].split('T')[1] 
+								}else{
+									return ''
+								}
+							}
+							
+						} ,{
 							align: 'center',
 							title: '操作',
 							toolbar: '#toolbar',
@@ -157,29 +228,119 @@
 					],
 					page: true,
 					done: function(res, curr, count) {
-						console.log(res)
+						
+						if(res.data == null){
+							if(!!res.msg){
+								//layer.msg(res.msg)
+							}else{
+								layer.msg('无数据')
+							}
+							
+						}else{
+							//layer.msg(res.msg)
+						}
 					}
 				});
+				}
+				tableRender()
+				$('#search').click(function(){
+					tableRender()
+				})
+				//监听状态操作
+				form.on('switch(consumptionPreferences)', function(data) {
+					// layer.tips('广告状态：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					console.log(data)
+					// var tjData = new Object();
+					// tjData.institutionNumber = userNumber;
+					// tjData.number = data.value;
+					// tjData.state = this.checked?'0':'1';
+					// console.log(data)
+					var addData = new Object()
+					addData.institutionNumber = userNumber
+					addData.state = this.checked?'0':'1';
+					addData.agentNumber = data.value
 
+					console.log(addData)
+					// 发送请求
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Mechanism.updateAgentRegister,
+						addData,
+						function(data){
+							if(data.code == 1000){
+								
+								layer.msg('更改成功')
+								// tableRender()
+							}else{
+								layer.msg(data.msg)
+							}
+						},
+						function(data){
+							console.log('222')
+						}
+					)
+				});
 				//监听工具条
+				
+				$('#addA').click(function(){
+					layer.open({
+						type: 2,
+						title: '添加代理',
+						shade: 0.5,
+						area: [$(window).width() * 0.6+'px', '90%'],
+						maxmin: false,
+						resize: false,
+						content: ['Agent-add.html'],
+						success: function(layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传w参
+							
+						}
+					});
+				})
 				table.on('tool(members)', function(obj) {
 					var data = obj.data;
 					if(obj.event === 'loginTo') { //直接登录商户后台
-						window.open("http://www.baidu.com?useNumber=123456","useNumber=123456")
+					var agHref = ''
+						var aData = data
+						CmsUtility.postAjaxCall(
+								//系统设置
+							 CmsConfig.addressUrl.Mechanism.getInstitutionRegisterInfo, {
+                                'institutionNumber': userNumber,
+                            },
+							function(data){
+								if(data.code == 1000){
+									agHref = data.data[0].agentRoute 
+									if(agHref==''){
+							layer.msg('未获取到服务商路径')
+						}
+			var merHref = agHref + '/index.html?number='+aData.agentNumber + '&ins=' + JSON.parse(sessionStorage.getItem('organUser')).institutionNumber
+						window.open(merHref)
+								}else{
+									layer.msg(data.msg)
+									
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+						
 					} else if(obj.event === 'rate') { //费率
 						layer.open({
 							type: 2,
 							title: '设置费率',
 							shade: 0.5,
-							area: ['650px', '90%'],
+							area: ['60%', '90%'],
 							maxmin: false,
 							resize: false,
-							content: ['Merchants-List-rate.html'],
+							content: ['Agent-List-rate.html'],
 							success: function(layero, index) {
 								// 获取子页面的iframe
-								//var iframe = window['layui-layer-iframe' + index];
-								// 向子页面的全局函数child传参
-								//iframe.subPage(data, userNumber)
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传w参
+								iframe.subPage(data, userNumber)
 							}
 						});
 					} else if(obj.event === 'pass') { //设置密码
@@ -190,12 +351,12 @@
 							area: ['460px', '350px'],
 							maxmin: false,
 							resize: false,
-							content: ['Merchants-List-pass.html'],
+							content: ['Agent-List-pass.html'],
 							success: function(layero, index) {
 								// 获取子页面的iframe
-								//var iframe = window['layui-layer-iframe' + index];
+								var iframe = window['layui-layer-iframe' + index];
 								// 向子页面的全局函数child传参
-								//iframe.subPage(data, userNumber)
+								iframe.subPage(data, userNumber)
 							}
 						});
 					} else if(obj.event === 'edit') { //编辑商户
@@ -203,50 +364,49 @@
 							type: 2,
 							title: '编辑',
 							shade: 0.5,
-							area: ['90%', '90%'],
+							area: ['60%', '90%'],
 							maxmin: false,
 							resize: false,
 							content: ['Agent-List-edit.html'],
 							success: function(layero, index) {
 								// 获取子页面的iframe
-								//var iframe = window['layui-layer-iframe' + index];
+								var iframe = window['layui-layer-iframe' + index];
 								// 向子页面的全局函数child传参
-								//iframe.subPage(data, userNumber)
+								iframe.subPage(data, userNumber)
 							}
 						});
 					} else if(obj.event === 'logout') { //注销
-						var zhuxiaoData = {
-							card: data.card,
-							cardType: 5
-						}
-						layer.confirm('真的删除此会员卡么', {
+						
+						layer.confirm('真的删除此代理商么', {
 							icon: 3,
 							title: '提示'
 						}, function(index) {
 							// 发送请求
-							$.ajax({
-								type: "post",
-								url: serverUrl + "memberCard/updateAssociatorCard",
-								async: true,
-								dataType: "json",
-								contentType: "application/json",
-								data: JSON.stringify(zhuxiaoData),
-								success: function(data) {
-									if(data.code == 0) {
-										layer.close(index);
-										layer.msg("会员卡已注销");
-										// 刷新页面
-										var curr = $("#curr").val();
-										layui.table.reload('vip_cardList', {
-											page: {
-												curr: curr
-											}
-										});
-									} else if(data.code == 1) {
-										layer.msg("会员卡注销失败");
+							console.log(data)
+							var addData = new Object()
+							addData.institutionNumber = userNumber
+							addData.deletionFlag = '1'
+							addData.agentNumber = data.agentNumber
+
+							console.log(addData)
+							// 发送请求
+							CmsUtility.postAjaxCall(
+								//系统设置
+								CmsConfig.addressUrl.Mechanism.updateAgentRegister,
+								addData,
+								function(data){
+									if(data.code == 1000){
+										
+										layer.msg('删除成功')
+										tableRender()
+									}else{
+										layer.msg(data.msg)
 									}
+								},
+								function(data){
+									console.log('222')
 								}
-							});
+							)
 						});
 					}
 				});

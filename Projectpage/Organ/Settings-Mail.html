@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -23,10 +23,10 @@
 	<body id="iosiframe">
 		<div class="x-nav">
 			<span class="layui-breadcrumb">
-		        <a href="">首页</a>
-		        <a href="">系统设置</a>
-		        <a><cite>邮件设置</cite></a>
-		      </span>
+				<a href="">首页</a>
+				<a href="">系统设置</a>
+				<a><cite>邮件设置</cite></a>
+			</span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
 		</div>
@@ -34,53 +34,59 @@
 			<div class="layui-row">
 				<form class="layui-form" lay-filter="basic" autocomplete="off">
 					<div class="layui-form-item">
-						<label class="layui-form-label">smtp服务器</label>
-						<div class="layui-input-block">
-							<input type="text" name="smtpServer" lay-verify="title" class="layui-input">
+						<div class="layui-inline">
+							<label class="layui-form-label">smtp服务器</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpServer" lay-verify="title" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">smtp端口</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpPort" lay-verify="title" class="layui-input">
+							</div>
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">smtp端口</label>
-						<div class="layui-input-block">
-							<input type="text" name="smtpPort" lay-verify="title" class="layui-input">
+						<div class="layui-inline">
+							<label class="layui-form-label">smtp用户名</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpUser" lay-verify="title" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">smtp密码</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpPassWord" lay-verify="title" class="layui-input">
+							</div>
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">smtp用户名</label>
-						<div class="layui-input-block" style="width: 180px;">
-							<input type="text" name="smtpUser" lay-verify="title" class="layui-input">
+						<div class="layui-inline">
+							<label class="layui-form-label">发件人Email</label>
+							<div class="layui-input-inline">
+								<input type="text" name="addresserEmail" lay-verify="email" class="layui-input">
+							</div>
 						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">smtp密码</label>
-						<div class="layui-input-inline" style="width: 180px;">
-							<input type="text" name="smtpPassWord" lay-verify="title" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">发件人Email</label>
-						<div class="layui-input-inline" style="width: 180px;">
-							<input type="text" name="addresserEmail" lay-verify="email" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">发件人姓名</label>
-						<div class="layui-input-block" style="width: 360px;">
-							<input type="text" name="addresserName" lay-verify="title" class="layui-input">
+						<div class="layui-inline">
+							<label class="layui-form-label">发件人姓名</label>
+							<div class="layui-input-inline">
+								<input type="text" name="addresserName" lay-verify="title" class="layui-input">
+							</div>
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">测试收件箱</label>
-						<div class="layui-input-inline" style="width: 360px;">
-							<input type="text" name="" lay-verify="" class="layui-input">
+						<div class="layui-input-inline">
+							<input type="text" name="" lay-verify="" class="layui-input" id="email1">
 						</div>
-						<div class="layui-form-mid">
-							<button class="layui-btn layui-btn-xs">测试发送</button>
+						<div class="" style="float: left;display: block;line-height: 20px;margin-right: 10px;">
+							<span class="layui-btn" id="send">测试发送</span>
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label"></label>
-						<div class="layui-input-block" style="width: 360px;">
+						<div class="layui-input-inline">
 							<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
 							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 						</div>
@@ -93,34 +99,37 @@
 		<script>
 			var type;
 			var serverUrl = 'http://192.168.1.190:5002/'
-			var userNumber = JSON.parse(sessionStorage.getItem('user')).Number;
-			CmsUtility.postAjaxCall(
-				//系统设置
-				CmsConfig.addressUrl.Mechanism.getInstitutionMailboxSetting,
-				{
-				'institutionNumber':userNumber,
-				},
-				function(data){
-					console.log(data)
-					if(data.code == 1000 ){
-						if(data.data.length >0){
-							jgData = data.data[0]
-							type = 1
-						}else{
-							type = 0
-						}
-						
-					}else{
-						// layer.alert(JSON.stringify('查询失败'), {
-      //                       title: data.msg
-      //                   })
-					}
-				},
-				function(data){
-					console.log('222')
-				}
-			)
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
 			
+			var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+			$('#send').click(function() {
+				if($('#email1').val() == '') {
+					layer.msg('邮件地址不得为空')
+					return
+				}
+				if(!myreg.test($('#email1').val())) {
+					layer.msg('邮件地址格式不正确')
+					return
+				}
+				CmsUtility.postAjaxCall(
+					//系统设置
+					CmsConfig.addressUrl.Mechanism.send, 
+					{
+						"mail": $('#email1').val(),
+						"institutionNumber":userNumber
+					},
+					function(data) {
+						if(data.code == 1000) {
+							layer.msg('发送成功')
+						} else {
+							layer.msg(data.msg)
+						}
+					},
+					function(data) {
+						console.log('222')
+					}
+				)
+			})
 			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
 				layui.$.support.cors = true; //允许ajax跨域
 				var $ = layui.jquery,
@@ -131,18 +140,41 @@
 					laytpl = layui.laytpl;
 
 				//表单初始赋值
-				if(type == 1){
-					form.val('basic', {
-					"smtpServer": jgData.smtpServer || "",
-					"smtpPort": jgData.smtpPort || "",
-					"smtpUser": jgData.smtpUser || "",
-					"smtpPassWord": jgData.smtpPassWord || "",
-					"addresserEmail": jgData.addresserEmail || "",
-					"addresserName": jgData.addresserName || "",
-				})
+				CmsUtility.postAjaxCall(
+				//系统设置
+				CmsConfig.addressUrl.Mechanism.getInstitutionMailboxSetting, {
+					'institutionNumber': userNumber,
+				},
+				function(data) {
+					console.log(data)
+					if(data.data == null){
+						return
+					}
+					if(data.code == 1000) {
+						if(data.data.length > 0) {
+							jgData = data.data[0]
+							type = 1
+							if(type == 1) {
+								form.val('basic', {
+									"smtpServer": jgData.smtpServer || "",
+									"smtpPort": jgData.smtpPort || "",
+									"smtpUser": jgData.smtpUser || "",
+									"smtpPassWord": jgData.smtpPassWord || "",
+									"addresserEmail": jgData.addresserEmail || "",
+									"addresserName": jgData.addresserName || "",
+								})
+							}
+						} else {
+							type = 0
+						}
+					} else {
+						
+					}
+				},
+				function(data) {
+					console.log('222')
 				}
-				
-
+			)
 				//自定义验证规则
 				form.verify({
 					title: function(value) {
@@ -151,26 +183,23 @@
 						}
 					}
 				});
-
 				//监听指定开关
 				form.on('switch(switchTest)', function(data) {
 					layer.tips('商户认证：' + (this.checked ? '已开启' : '已关闭'), data.othis)
 				});
-
 				//监听提交
 				form.on('submit(add)', function(data) {
 					// layer.alert(JSON.stringify(data.field), {
 					// 	title: '最终的提交信息'
 					// })
-
 					var data = data.field
 					var serverSub;
 					data.institutionNumber = userNumber
-					if(type == 1){
+					if(type == 1) {
 						data.id = jgData.id
 						serverSub = CmsConfig.addressUrl.Mechanism.updateInstitutionMailboxSetting
-					}else{
-						data.ban = '0'	
+					} else {
+						data.ban = '0'
 						serverSub = CmsConfig.addressUrl.Mechanism.insertInstitutionMailboxSetting
 					}
 					// if()
@@ -178,22 +207,19 @@
 						//系统设置
 						serverSub,
 						data,
-						function(data){
-							if(data.code == 1000){
+						function(data) {
+							if(data.code == 1000) {
 								layer.msg('保存成功')
-								
-							}else{
+							} else {
 								layer.msg(data.msg)
-								
 							}
 						},
-						function(data){
+						function(data) {
 							console.log('222')
 						}
 					)
 					return false;
 				});
-
 			});
 		</script>
 	</body>

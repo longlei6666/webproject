@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -39,93 +39,148 @@
 			<div class="layui-row">
 				<div class="layui-form layui-col-md4 layui-col-sm4 layui-col-xs4 x-so">
 					<div class="layui-input-inline">
-						<input type="text" name="" placeholder="商户名称" autocomplete="off" class="layui-input">
+						<input type="text" name="" placeholder="商户名称" autocomplete="off" class="layui-input" id="merchantName" 	>
 					</div>
 					<div class="layui-input-inline">
-						<select name="" id="">
-							<option value="">类型</option>
-							<option value="1">查看</option>
-							<option value="2">新增</option>
-							<option value="3">修改</option>
-							<option value="4">删除</option>
-							<option value="5">导出</option>
+						<select name="" id="operationType">
+							<option value="">操作类型</option>
+							<option value="0">查看</option>
+							<option value="1">新增</option>
+							<option value="2">修改</option>
+							<option value="3">删除</option>
+							<option value="4">导出</option>
 						</select>
 					</div>
-					<div class="layui-input-inline coupons_screen">
-						<button class="layui-btn" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+					<div class="layui-input-inline coupons_screen"  id="search"> 
+						<button class="layui-btn" data-type="reload" title="搜索"><i class="layui-icon" >&#xe615;</i></button>
 					</div>
 				</div>
 			</div>
 			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
+			function changeRes(res){
+				console.log(res)
+				if(res == null){
+					return
+				}
+				var res = res.merchantOperationLogMapperlist
+				for(var i = 0;i<res.length;i++){
+					if(res[i].operationType == 0){
+						res[i].operationType1 = '查看'
+					}
+					if(res[i].operationType == 1){
+						res[i].operationType1 = '新增'
+					}
+					if(res[i].operationType == 2){
+						res[i].operationType1 = '修改'
+					}
+					if(res[i].operationType == 3){
+						res[i].operationType1 = '删除'
+					}
+					if(res[i].operationType == 4){
+						res[i].operationType1 = '导出'
+					}
+				}
+				return res
+			}
 			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
 			layui.use(['laydate', 'table', 'form'], function() {
 				var laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form;
 
 				//方法级渲染  
-				table.render({
+				function tableRender(){
+					table.render({
 					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: './json/vip-card.json',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getMerchantOperationLog+ '?institutionNumber=' + userNumber  ,
+					where:{
+						"merchantName":$('#merchantName').val().trim(),
+						"operationType":$('#operationType').val(),
+					},
 					elem: '#members',
 					height: 'full-210',
 					id: 'vip_cardList',
-					//					parseData: function(res) { //res 即为原始返回的数据
-					//						return {
-					//							"code": res.code, //解析接口状态
-					//							"msg": res.msg, //解析提示文本
-					//							"count": res.count, //解析数据长度
-					//							"data": changeRes(res.result,res.count), //解析数据列表
-					//						};
-					//					},
+					response: { 
+					//res 即为原始返回的数据
+							"statusCode":"1000", //解析接口状态
+							
+					},
+					parseData: function(res) { //res 即为原始返回的数据
+						if(res.data == null){
+							return
+						}
+						return {
+							"code": res.code, //解析接口状态
+							"data": changeRes(res.data), //解析数据列表
+							"msg":res.msg,
+							"count":res.data.count
+						};
+					},
 					cols: [
 						[{
 							title: 'ID',
 							type: 'numbers'
 						},{
 							align: 'center',
-							field: 'username',
+							field: 'merchantNumber',
 							width: 200,
 							title: '商户编号'
 						}, {
 							align: 'center',
-							field: 'sex',
+							field: 'merchantName',
 							width: 300,
 							title: '商户名称',
-							sort: true
 						}, {
 							align: 'center',
-							field: 'city',
+							field: 'operationNode',
 							width: 200,
 							title: '操作节点'
 						}, {
 							align: 'center',
-							field: 'sign',
+							field: 'operationType1',
 							width: 200,
 							title: '类型',
 						}, {
 							align: 'center',
-							field: 'experience',
+							field: 'operationContent',
 							width: 350,
 							title: '操作内容描述',
-							sort: true
 						}, {
 							align: 'center',
-							field: 'experience',
+							field: 'insertTime',
 							minWidth: 200,
 							title: '操作时间',
-							sort: true
+							templet:function(data){
+								return data.insertTime.split('.')[0]
+							}
 						}]
 					],
 					page: true,
 					done: function(res, curr, count) {
-						console.log(res)
+						
+						if(res.data == null){
+							if(!!res.msg){
+								//layer.msg(res.msg)
+							}else{
+								layer.msg('无数据')
+							}
+							
+						}else{
+							//layer.msg(res.msg)
+						}
 					}
 				});
-
+				}
+				tableRender()
+				$('#search').click(function(){
+					
+					tableRender()
+				})
 				//监听工具条
 				table.on('tool(members)', function(obj) {
 					var data = obj.data;
@@ -155,29 +210,29 @@
 							title: '提示'
 						}, function(index) {
 							// 发送请求
-							$.ajax({
-								type: "post",
-								url: serverUrl + "memberCard/updateAssociatorCard",
-								async: true,
-								dataType: "json",
-								contentType: "application/json",
-								data: JSON.stringify(zhuxiaoData),
-								success: function(data) {
-									if(data.code == 0) {
-										layer.close(index);
-										layer.msg("会员卡已注销");
-										// 刷新页面
-										var curr = $("#curr").val();
-										layui.table.reload('vip_cardList', {
-											page: {
-												curr: curr
-											}
-										});
-									} else if(data.code == 1) {
-										layer.msg("会员卡注销失败");
-									}
-								}
-							});
+							// $.ajax({
+							// 	type: "post",
+							// 	url: serverUrl + "memberCard/updateAssociatorCard",
+							// 	async: true,
+							// 	dataType: "json",
+							// 	contentType: "application/json",
+							// 	data: JSON.stringify(zhuxiaoData),
+							// 	success: function(data) {
+							// 		if(data.code == 0) {
+							// 			layer.close(index);
+							// 			layer.msg("会员卡已注销");
+							// 			// 刷新页面
+							// 			var curr = $("#curr").val();
+							// 			layui.table.reload('vip_cardList', {
+							// 				page: {
+							// 					curr: curr
+							// 				}
+							// 			});
+							// 		} else if(data.code == 1) {
+							// 			layer.msg("会员卡注销失败");
+							// 		}
+							// 	}
+							// });
 						});
 					}
 				});

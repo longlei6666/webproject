@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -38,9 +38,11 @@
 		<div class="x-body">
 			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
 			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
 			layui.use(['laydate', 'table', 'form'], function() {
 				var laydate = layui.laydate,
 					table = layui.table,
@@ -49,48 +51,59 @@
 				//方法级渲染  
 				table.render({
 					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: './json/vip-card.json',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getSubaccountRiskManagementList + '?institutionNumber=' + userNumber ,
 					elem: '#members',
 					height: 'full-100',
 					id: 'vip_cardList',
-					//					parseData: function(res) { //res 即为原始返回的数据
-					//						return {
-					//							"code": res.code, //解析接口状态
-					//							"msg": res.msg, //解析提示文本
-					//							"count": res.count, //解析数据长度
-					//							"data": changeRes(res.result,res.count), //解析数据列表
-					//						};
-					//					},
+					response: { 
+					//res 即为原始返回的数据
+							"statusCode":"1000", //解析接口状态
+							
+					},
+					parseData: function(res) { //res 即为原始返回的数据
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.subaccountRiskManagementList, //解析数据列表
+						};
+					},
 					cols: [
 						[{
 							align: 'center',
-							type: 'checkbox'
-						}, {
-							align: 'center',
-							field: 'id',
+							field: 'merchantName',
 							width: 300,
-							title: '通道名称/子账号',
-							sort: true
+							title: '商户名称',
 						}, {
 							align: 'center',
-							field: 'experience',
+							field: 'transactionTime',
 							width: 200,
 							title: '交易时间'
 						}, {
 							align: 'center',
-							field: 'sex',
+							field: 'dayTransactionCountMoney',
 							width: 200,
 							title: '今天交易金额/可交易金额',
-							sort: true
 						}, {
 							align: 'center',
-							field: 'city',
-							title: '上线情况'
+							field: 'failureCause',
+							title: '描述'
 						}]
 					],
 					page: true,
 					done: function(res, curr, count) {
 						console.log(res)
+						if(res.data == null){
+								console.log(res)
+								if(!!res.msg){
+									//layer.msg(res.msg)
+								}else{
+									layer.msg('无数据')
+								}
+								
+							}else{
+								//layer.msg(res.msg)
+							}
 					}
 				});
 

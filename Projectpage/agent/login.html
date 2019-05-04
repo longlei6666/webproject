@@ -3,179 +3,321 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>豆果收银代理商后台管理系统</title>
+		<title id="title">服务商后台管理系统</title>
 		<meta name="renderer" content="webkit|ie-comp|ie-stand">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
 		<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> -->
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<link rel="stylesheet" href="../../public/css/style_Forgot.css">
+		<link rel="stylesheet" href="../../public/css/loginbg.css">
 		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
-        <script type="text/javascript" src="../../public/js/data.js"></script>
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.11&key=2a00b8208f148a6f71784ea14529f388&plugin=AMap.CitySearch"></script>
+		<script type="text/javascript" src="../../public/js/data.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
-        <style type="text/css">
-    .codeT {
-        font-size: 30px;
-        line-height: 40px;
-        text-align: center;
-        width: 25px;
-        display: inline-block;
-        -webkit-user-select:none;user-select:none; 
-    }
-    </style>
 	</head>
+	<style type="text/css">
+		.autofill-selected{
+			background-color: #fff;
+		}
+	</style>
+	<body>
 
-<body>
+		<body class="login-bg agent">
+			<div class="message" id="code1">
+				<h2>Hello!</h2>
+				<h6 id="wel">欢迎登陆-服务商管理平台</h6>
+			</div>
+			<form method="post" class="layui-form">
+				<div class="layui-form-item ">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
+					<div class="layui-input-block">
+						<input name="username" placeholder="用户名" type="text" lay-verify="username" class="layui-input" autocomplete="off" value="" id="username">
+					</div>
+				</div>
+				<div class="layui-form-item ">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
+					<div class="layui-input-block">
+						<input name="password" lay-verify="password" placeholder="密码" type="password" class="layui-input" autocomplete="off" value="" id="password">
+					</div>
+				</div>
+				<div class="layui-form-item " style="margin-bottom: 10px;">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-vercode"></i></label>
+					<div class="layui-input-block">
+						<input id="verificationCode" name="verificationCode" placeholder="验证码" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+						<div class="yanzhengimg">
+							<div id="codeImg" style="">
+								<span class="codeT">1</span>
+								<span class="codeT">2</span>
+								<span class="codeT">3</span>
+								<span class="codeT">4</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a href="forget.html" class="Forgot_p">
+					<< 忘记密码>></a>
+				<span class="layui-btn" value="登录" lay-submit lay-filter="login" style="width:100%;" type="button" id="sub" maxlength="0">登录</span>
+			</form>
 
-    <body class="login-bg">
-        <div class="login">
-            <div class="message" id="code1">豆果收银代理商后台登录</div>
-            <div id="darkbannerwrap"></div>
-            <!--
-        	
-        -->
-            <form method="post" class="layui-form" action="${pageContext.request.contextPath }/login">
-                <input name="username" placeholder="用户名" type="text" lay-verify="username" class="layui-input" value="16630375315" id="username" >
-                <hr class="hr15">
-                <input name="password" lay-verify="password" placeholder="密码" type="password" class="layui-input" value="123456" id="password">
-                <hr class="hr15">
-                <div class="layui-form-item">
-                    <div class="layui-row">
-                        <div class="layui-col-md7 layui-col-lg7 layui-col-xs5">
-                            <input id="verificationCode" name="verificationCode" placeholder="验证码" type="text" lay-verify="required" class="layui-input">
-                        </div>
-                        <div class="layui-col-md5 layui-col-lg5 layui-col-xs7">
-                            <div class="yanzhengimg">
-                                <div id="codeImg" style="height: 40px;float:right;border:1px solid black;width:115px;-webkit-user-select:none;user-select:none; ">
-                                    <span class="codeT">1</span>
-                                    <span class="codeT">2</span>
-                                    <span class="codeT">3</span>
-                                    <span class="codeT">4</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="hr15">
-                </div>
-                <input class="layui-btn" value="登录" lay-submit lay-filter="login" style="width:100%;" type="" id="sub">
-                <hr class="hr20">
-                <a href="" class="Forgot_p"><< 忘记密码 >></a>
-            </form>
-        </div>
-       
-       <script src="../../common/config.js"></script>
-        <script src="../../common/utility.js"></script>
-        <script type="text/javascript">
-        	
-        var code1 = ''
-        var cname = ''
-        var cip = ''
-        var code
-		$.getScript('http://pv.sohu.com/cityjson?ie=utf-8',function(){
-				   console.log(returnCitySN)
-				   cname = returnCitySN.cname
-				   cip = returnCitySN.cip
-				   console.log(cname,cip)
-			});
-
-         
-        $(function() {
-        	
-        	
-            layui.use('form', function() {
-                var form = layui.form;
-
-                if (code == 1) {
-                    layer.msg(msg, {
-                        icon: 5
-                    });
-                }
-                form.verify({
-                    username:function(value){
-                        if($('#username').val() == ''){
-                            return "请输入账号"
-                        }
-                    },
-                    password:function(value){
-                        if($('#password').val() == ''){
-                            return "请输入密码"
-                        }
-                    },
-                    required: function(value) {
-                        if($('#verificationCode').val() != code1) {
-                            return '验证码错误';
-                        }
-                    }
-                });
-                
-                form.on('submit(login)',function(data){
-					 console.log(data)
-                     if(data.field.verificationCode != code1){
-                        alert('验证码输入错误，请重新输入')
-                        return
-                     }
-                     var ajaData = new Object()
-                     ajaData.login = data.field.username;
-                     ajaData.loginPass = data.field.password;
-                     ajaData.IP = cip;
-                     ajaData.address = cname;
-                     ajaData.loginClass  = '1';
-                     console.log(ajaData)
-                     CmsUtility.postAjaxCall(
-                        //系统设置
-                        CmsConfig.addressUrl.Login.login,
-                        ajaData,
-                        function(data){
-                            if(data.respCode == '1000'){
-                               layer.alert(JSON.stringify('登录成功'), {
-                                    title: ''
-                                })
-                                sessionStorage.setItem("user_key", data.resp_result.key);
-                                setTimeout(function(){
-                                   window.location.href = 'index.html' 
-                                },300)
-                                
-                            }else{
-                                layer.alert(JSON.stringify(data.msg), {
-                                    title: '登录失败'
-                                })
-                            }
-                        },
-                        function(data){
-                            console.log('222')
-                        }
-                    )
-				    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			<script src="../../common/config.js"></script>
+			<script src="../../common/utility.js"></script>
+			<script type="text/javascript">
+				$('.layui-input').each(function() {
+					$(this).focus(function() {
+						$(this).parent().parent().addClass("active"); /*禁用浏览器自带边框阴影*/
+					});
+					$(this).blur(function() {
+						$(this).parent().parent().removeClass("active");
+					});
 				});
-            });
-        })
-        //生成验证码
-        function createCode(){
-        	code1 = ''
-        	for(var i=0;i<4;i++){
-				code1+=Math.floor(Math.random()*10)
-			}
-			var codeL = code1.split('')
-			console.log($('.codeT')[0].innerHTML = 1)
-			$('.codeT')[0].innerHTML = 3
-			for(var j = 0 ; j < $('.codeT').length;j++){
-				$('.codeT')[j].innerHTML = codeL[j]
-			}
-        }
-        createCode()
+				var code1 = ''
+				var cname = ''
+				var cip = ''
+				var code
+				$.getScript('http://pv.sohu.com/cityjson?ie=utf-8', function() {
+					console.log(returnCitySN)
+					cip = returnCitySN.cip
+					console.log(cname, cip)
+				});
+				//获取用户所在城市信息
+				function showCityInfo() {
+					//实例化城市查询类
+					var citysearch = new AMap.CitySearch();
+					//自动获取用户IP，返回当前城市
+					citysearch.getLocalCity(function(status, result) {
+						console.log(status, result)
+						if(status === 'complete' && result.info === 'OK') {
+							if(result && result.city && result.bounds) {
+								cname = result.province + result.city
+							}
+						} else {
+						}
+					});
+				}
+				showCityInfo();
+				$(function() {
+					var  reg = new RegExp('(?<=[^.]*[.]+).*?(?=[.]+)')
+					var loc = window.location.href
+					console.log(loc)
+					console.log(loc.match(reg))
+					CmsUtility.postAjaxCall(
+								//系统设置
+						CmsConfig.addressUrl.Public.getSitePath,
+						{
+							"sitePath":'51shanhe',
+						},
+						function(data) {
+							console.log(data)
+							if(data.code == '1000') {
+								$('#wel').html('欢迎登陆'+ data.data[0].websiteName +'-服务商管理平台')
+								$('#title').html(data.data[0].websiteName +'服务商管理系统')
+								sessionStorage.setItem("jgInfo", JSON.stringify(data.data[0]));
+								// document.write('<title>机构后台管理系统</title>')
+							} else {
+								layer.msg(data.msg)
+							}
+						},
+						function(data) {
+							console.log('222')
+						}
+					)
+					layui.use('form', function() {
+						var form = layui.form;
 
-        $(function() {
-            $("#codeImg").click(function() {
-              createCode()
-            });
-        });
-        
-        
-        </script>
-    </body>
+						if(code == 1) {
+							layer.msg(msg, {
+								icon: 5
+							});
+						}
+						form.verify({
+							username: function(value) {
+								if($('#username').val() == '') {
+									return "请输入账号"
+								}
+							},
+							password: function(value) {
+								if($('#password').val() == '') {
+									return "请输入密码"
+								}
+							},
+							required: function(value) {
+								if($('#verificationCode').val() != code1) {
+									return '验证码错误';
+								}
+							}
+						});
+						form.on('submit(login)', function(data) {
+							console.log(data)
+							if(data.field.verificationCode != code1) {
+								alert('验证码输入错误，请重新输入')
+								return
+							}
+							var ajaData = new Object()
+							ajaData.login = data.field.username;
+							ajaData.loginPass = data.field.password;
+							ajaData.IP = cip;
+							ajaData.address = cname;
+							ajaData.loginClass = '1';
+							ajaData.institutionNumber = JSON.parse(sessionStorage.getItem("jgInfo")).institutionNumber
+							console.log(ajaData)
+							CmsUtility.postAjaxCall(
+								//系统设置
+								CmsConfig.addressUrl.Login.AgloginInfo,
+								ajaData,
+								function(data) {
+									
+									if(data.code == '1000') {
+										sessionStorage.setItem("agentUser", JSON.stringify(data.data));
+										layer.msg('登录成功')
+										setTimeout(function() {
+											window.location.href = 'index.html'
+										}, 500)
+									} else {
+										layer.msg(data.msg)
+									}
+								},
+								function(data) {
+									console.log('222')
+								}
+							)
+							return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+						});
+					});
+				})
+				$("input").keydown(function(event) {
+					if(event.keyCode == 13) {
+						document.getElementById("sub").click();
+					}
+				})
+				//生成验证码
+				function createCode() {
+					code1 = ''
+					for(var i = 0; i < 4; i++) {
+						code1 += Math.floor(Math.random() * 10)
+					}
+					var codeL = code1.split('')
+					console.log($('.codeT')[0].innerHTML = 1)
+					$('.codeT')[0].innerHTML = 3
+					for(var j = 0; j < $('.codeT').length; j++) {
+						$('.codeT')[j].innerHTML = codeL[j]
+					}
+				}
+				createCode()
+				$(function() {
+					$("#codeImg").click(function() {
+						createCode()
+					});
+				});
+			</script>
+			<canvas id="Mycanvas"></canvas>
+			<script>
+				//定义画布宽高和生成点的个数
+				var WIDTH = window.innerWidth,
+					HEIGHT = window.innerHeight,
+					POINT = 50;
+
+				var canvas = document.getElementById('Mycanvas');
+				canvas.width = WIDTH,
+					canvas.height = HEIGHT;
+				var context = canvas.getContext('2d');
+				context.strokeStyle = 'rgba(255,255,255,0.5)',
+					context.strokeWidth = 1,
+					context.fillStyle = 'rgba(255,255,255,0.2)';
+				var circleArr = [];
+
+				//线条：开始xy坐标，结束xy坐标，线条透明度
+				function Line(x, y, _x, _y, o) {
+					this.beginX = x,
+						this.beginY = y,
+						this.closeX = _x,
+						this.closeY = _y,
+						this.o = o;
+				}
+				//点：圆心xy坐标，半径，每帧移动xy的距离
+				function Circle(x, y, r, moveX, moveY) {
+					this.x = x,
+						this.y = y,
+						this.r = r,
+						this.moveX = moveX,
+						this.moveY = moveY;
+				}
+				//生成max和min之间的随机数
+				function num(max, _min) {
+					var min = arguments[1] || 0;
+					return Math.floor(Math.random() * (max - min + 1) + min);
+				}
+				// 绘制原点
+				function drawCricle(cxt, x, y, r, moveX, moveY) {
+					var circle = new Circle(x, y, r, moveX, moveY)
+					cxt.beginPath()
+					cxt.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI)
+					cxt.closePath()
+					cxt.fill();
+					return circle;
+				}
+				//绘制线条
+				function drawLine(cxt, x, y, _x, _y, o) {
+					var line = new Line(x, y, _x, _y, o)
+					cxt.beginPath()
+					cxt.strokeStyle = 'rgba(255,255,255,' + o + ')'
+					cxt.moveTo(line.beginX, line.beginY)
+					cxt.lineTo(line.closeX, line.closeY)
+					cxt.closePath()
+					cxt.stroke();
+
+				}
+				//初始化生成原点
+				function init() {
+					circleArr = [];
+					for(var i = 0; i < POINT; i++) {
+						circleArr.push(drawCricle(context, num(WIDTH), num(HEIGHT), num(15, 2), num(10, -10) / 40, num(10, -10) / 40));
+					}
+					draw();
+				}
+
+				//每帧绘制
+				function draw() {
+					context.clearRect(0, 0, canvas.width, canvas.height);
+					for(var i = 0; i < POINT; i++) {
+						drawCricle(context, circleArr[i].x, circleArr[i].y, circleArr[i].r);
+					}
+					for(var i = 0; i < POINT; i++) {
+						for(var j = 0; j < POINT; j++) {
+							if(i + j < POINT) {
+								var A = Math.abs(circleArr[i + j].x - circleArr[i].x),
+									B = Math.abs(circleArr[i + j].y - circleArr[i].y);
+								var lineLength = Math.sqrt(A * A + B * B);
+								var C = 1 / lineLength * 10 - 0.009;
+								var lineOpacity = C > 0.8 ? 0.8 : C;
+								if(lineOpacity > 0) {
+									drawLine(context, circleArr[i].x, circleArr[i].y, circleArr[i + j].x, circleArr[i + j].y, lineOpacity);
+								}
+							}
+						}
+					}
+				}
+
+				//调用执行
+				window.onload = function() {
+					init();
+					setInterval(function() {
+						for(var i = 0; i < POINT; i++) {
+							var cir = circleArr[i];
+							cir.x += cir.moveX;
+							cir.y += cir.moveY;
+							if(cir.x > WIDTH) cir.x = 0;
+							else if(cir.x < 0) cir.x = WIDTH;
+							if(cir.y > HEIGHT) cir.y = 0;
+							else if(cir.y < 0) cir.y = HEIGHT;
+						}
+						draw();
+					}, 100);
+				}
+			</script>
+		</body>
 
 </html>

@@ -2,15 +2,13 @@
 <html>
 
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>鸿小搜管理中心</title>
+		<meta charset="UTF-8">
+		<title></title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
 		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
-		<script type="text/javascript" src="../../public/js/echarts.min.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<style>
@@ -49,30 +47,48 @@
 				padding: 20px;
 				background-color: #f2f2f2;
 			}
+			
+			.layui-btn+.layui-btn {
+				margin-left: -2px;
+			}
+			
+			.border {
+				box-shadow: 0 0 30px rgba(0, 0, 0, .1);
+				padding: 15px;
+			}
+			
+			.huizongTit {
+				font-size: 20px;
+				margin-bottom: 20px;
+			}
+			
+			.huizongCon {
+				font-size: 20px;
+			}
+			
+			.huizongCon span {
+				font-size: 20px;
+			}
 		</style>
 	</head>
 
-	<body>
+	<body id="iosiframe">
 		<div class="x-nav">
 			<span class="layui-breadcrumb">
-	        <a href="">数据</a>
-	        <a>
-	          <cite>数据统计</cite></a>
-	      	</span>
+				<a href="">首页</a>
+				<a href="">财务分析</a>
+				<a><cite>交易统计分析</cite></a>
+			</span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
-				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
 		</div>
-
 		<div class="x-body">
 			<div class="layui-row">
-				<form class="layui-form x-so">
+				<div class="layui-form x-so">
 					<div class="layui-input-inline">
 						<!-- 需要数据对接(完成) -->
 						<select name="shopName" id="shopName" lay-search>
 							<option value="">--请选择门店--</option>
-							<c:forEach items="${shops }" var="shop">
-								<option value="${shop.ShopName }">${shop.ShopName }</option>
-							</c:forEach>
 						</select>
 					</div>
 					<div class="layui-input-inline">
@@ -83,15 +99,15 @@
 						</select>
 					</div>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" placeholder="开始日" name="startTime" id="startTime">
+						<input type="text" class="layui-input" placeholder="开始日" autocomplete="off" name="startTime" id="startTime">
 					</div>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" placeholder="截止日" name="endTime" id="endTime">
+						<input type="text" class="layui-input" placeholder="截止日" autocomplete="off" name="endTime" id="endTime">
 					</div>
 					<div class="layui-input-inline">
-						<button class="layui-btn" lay-submit="" lay-filter="sreach" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+						<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
 					</div>
-				</form>
+				</div>
 			</div>
 			<div class="layui-row Trad">
 				<div class="layui-col-md3">
@@ -127,149 +143,96 @@
 					</div>
 				</div>
 			</div>
-
 			<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-			<div id="main" style="width: 100%;height:400px;margin-top: 50px;"></div>
-
+				<div class="grid-demo border">
+					<div id="main" style="height: 500px"></div>
+				</div>
 		</div>
-		<script type="text/javascript">
-			var beginDate = new Date();
-			beginDate.setDate(beginDate.getDate() - 7); //获取7天前的日期 
-			var endDate = new Date();
-			// 选择日期插件  
-			layui.use('laydate', function() {
-				var laydate = layui.laydate;
-				laydate.render({
-					elem: '#startTime', //指定元素
-					type: 'date',
-					value: beginDate
-				});
-				laydate.render({
-					elem: '#endTime',
-					type: 'date',
-					value: endDate
-				});
-			});
-
-			layui.use(['form', 'layer'], function() {
-
-				$ = layui.jquery;
-				var form = layui.form,
-					layer = layui.layer;
-
-				//监听提交 ,
-				form.on('submit(sreach)', function(data) {
-					//发异步，把数据提交给后台
-					doSearch(data.field);
-					return false;
-				});
-			});
-		</script>
-
-		<script type="text/javascript">
-			// 基于准备好的dom，初始化echarts实例
-			var myChart = echarts.init(document.getElementById('main'));
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
+		<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+		<script>
 
 			var myChart = echarts.init(document.getElementById('main'));
-
-			myChart.setOption({
+			var option = {
+				grid: {
+					x: 70,
+					x2: 20,
+					y: 70,
+					y2: 40,
+					borderWidth: 1
+				},
 				title: {
-					text: '历史交易记录'
+					text: '30天交易订单概况',
+					subtext: '按天统计'
 				},
 				tooltip: {
-					trigger: 'axis'
+					trigger: 'axis',
+					axisPointer: {
+						type: 'cross'
+					}
 				},
 				legend: {
-					data: ['交易金额', '退款金额', '交易笔数']
+					data: ['金额']
 				},
-				grid: {
-					left: '3%',
-					right: '4%',
-					bottom: '3%',
-					containLabel: true
-				},
-				toolbox: {
-					feature: {
-						saveAsImage: {}
-					}
-				},
-				xAxis: {
+				calculable: true,
+				xAxis: [{
 					type: 'category',
-					boundaryGap: false,
-					data: []
-				},
-				yAxis: {
-					type: 'value'
-				},
-				series: [{
-					name: '交易金额',
-					type: 'line',
-					stack: '总量',
-					data: []
-				}, {
-					name: '退款金额',
-					type: 'line',
-					stack: '总量',
-					data: []
-				}, {
-					name: '交易笔数',
-					type: 'line',
-					stack: '总量',
-					data: []
-				}]
-			});
-
-			$(function() {
-				doSearch();
-			})
-
-			function doSearch(serchData) {
-				// 异步加载数据
-				$.ajax({
-					type: 'post', //传输类型
-					async: true,
-					url: '.Data/getFigureData',
-					data: serchData,
-					dataType: 'json', //返回数据形式为json
-					success: function(data) {
-						// 填入数据
-						myChart.setOption({
-							xAxis: {
-								type: 'category',
-								boundaryGap: false,
-								data: data.category
-							},
-							series: [{
-								// 根据名字对应到相应的系列
-								name: '交易金额',
-								type: 'line',
-								data: data.transactionAmountData
-							}, {
-								// 根据名字对应到相应的系列
-								name: '退款额',
-								type: 'line',
-								data: data.refundAmountsData
-							}, {
-								// 根据名字对应到相应的系列
-								name: '交易量',
-								type: 'line',
-								data: data.tradingVolumeData
-							}]
-						});
-
-						$("#paidinAmount").html(data.totalData[0].totalshishoujine);
-						$("#poundage").html(data.totalData[0].totalshouxufei);
-						$("#refundAmounts").html(data.totalData[0].totaltuikuanjine);
-						$("#tradingVolume").html(data.totalData[0].totalshishoubishu);
-						$("#theRefundAmount").html(data.totalData[0].totaltuikuanbishu);
+					axisTick: {
+						alignWithLabel: true
 					},
-					error: function(errorMsg) {
-						//alert("加载数据失败");
-					}
-				});
-			}
+					axisLine: {
+						onZero: false
+					},
+					data: [2018-12-12,2018-12-13,2018-12-14]
+				}],
+				yAxis: [{
+					splitLine: {
+						show: true,
+						lineStyle: {
+							type: "dashed",
+							color: "#dfdfdf"
+						}
+					},
+					axisLabel: {
+						textStyle: {
+							fontSize: 14,
+							color: '#5b6e89'
+						}
+					},
+					type: 'value'
+				}],
+				series: [{
+					name: '金额',
+					type: 'line',
+					smooth: true,
+					itemStyle: {
+						normal: {
+							areaStyle: {
+								type: 'default',
+								color: {
+									type: 'linear',
+									x: 0,
+									y: 0,
+									x2: 0,
+									y2: 1,
+									colorStops: [{
+										offset: 0,
+										color: '#6e94ff'
+									}, {
+										offset: 1,
+										color: '#ffffff'
+									}],
+									globalCoord: false
+								}
+							},
+							color: '#6e94ff'
+						}
+					},
+					data: [123,154,111]
+				}]
+			};
 		</script>
-
 	</body>
 
 </html>

@@ -1,4 +1,6 @@
-var CmsUtility = (function() {
+
+
+  var CmsUtility = (function() {
 
     /**
      * postAjaxCall封装
@@ -14,10 +16,12 @@ var CmsUtility = (function() {
     function postAjaxCall(subApiUrl, postData, succCallback, errorCallback, type, isAsync, dataType) {
         var type = type || "post";
         var dataType = dataType || "json";
-        var isAsync = isAsync || false;
+        var isAsync = isAsync || true;
         var fullUrl = CmsConfig.ServiceUrl.ApiRootUrl + subApiUrl;
        //var fullUrl =  'http://192.168.1.111:5003/hs-app-server/table/getScanTableInf'
-        console.log(CmsConfig.ServiceUrl.ApiRootUrl)
+        console.log(typeof postData)
+        postData = JSON.parse(JSON.stringify(postData).replace(/ /g,''))
+        console.log(postData)
         $.ajax({
             type: type,
             url: fullUrl, 
@@ -25,7 +29,7 @@ var CmsUtility = (function() {
             async: isAsync,
             dataType: dataType,
             // headers:{
-            //     'Access-Control-Allow-Origin': '*'
+            //     contentType:"application/json"
             // },
             beforeSend: function() {
                 
@@ -45,8 +49,25 @@ var CmsUtility = (function() {
             complete: function() {
                 
             },
-            error:function(data){
-
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                // 状态码
+                    console.log(XMLHttpRequest.status);
+                    // 状态
+                    console.log(XMLHttpRequest.readyState);
+                    // 错误信息   
+                    console.log(textStatus);
+                    // if(textStatus == 'timeout'){
+                    //     alert('接口访问超时，请稍后再试')
+                    // }
+                    // if(textStatus == 'error'){
+                    //     alert('接口访问错误，请稍后再试')
+                    // }
+                    // if(textStatus == 'abort'){
+                    //     alert('接口访问中止，请稍后再试')
+                    // }
+                    // if(textStatus == 'parsererror'){
+                    //     alert('接口访问解析错误，请稍后再试')
+                    // }
             }
         });
     }
@@ -292,7 +313,181 @@ var CmsUtility = (function() {
     }
 
    
+    //选择省
+    function choosePro(p) {
+        console.log(p)
+        var  p = p || ''
+        var pro = provice
+        var str = '<option value="">请选择省</option>'
+        $.ajax({
+            type: 'post',
+            url:CmsConfig.ServiceUrl.ApiRootUrl +  CmsConfig.addressUrl.Public.getAddress, 
+            data: {
+                "provinceCode":'',
+                "cityCode":'',
+                "areaCode":''
+            },
+            async: 'false',
+            dataType: 'json',
+            // headers:{
+            //     contentType:"application/json"
+            // },
+           
+            success: function(data) {
+                for(var i = 0 ; i < data.data.length;i++){
+                    if(p == data.data[i].provinceCode){
+                        str += '<option value="'+data.data[i].provinceCode +'" selected="">'+ data.data[i].provinceName+'</option>'
+                    }else{
+                        str += '<option value="'+data.data[i].provinceCode +'">'+ data.data[i].provinceName+'</option>'
+                    }
+                }
+                $('#provice').html(str)
+            }
+        })
+        
+    }
+    function chooseCity(data,data1){
+         if(!data){
+            $('#city').html('<option value="">请选择市</option>')
+            $('#area').html('<option value="">请选择县/区</option>')
+            return
+        }
+        var str = '<option value="">请选择市</option>'
+        var data2 = data
+        var data1 = data1 || ''
+        $.ajax({
+            type: 'post',
+            url:CmsConfig.ServiceUrl.ApiRootUrl +  CmsConfig.addressUrl.Public.getAddress, 
+            data: {
+                "provinceCode":data2,
+                "cityCode":'',
+                "areaCode":''
+            },
+            async: 'false',
+            dataType: 'json',
+            // headers:{
+            //     contentType:"application/json"
+            // },
+           
+            success: function(data) {
+                 for(var i = 0 ; i < data.data.length;i++){
+                    if(data1 == data.data[i].cityCode){
+                        str += '<option value="'+data.data[i].cityCode +'" selected="">'+ data.data[i].cityName+'</option>'
+                    }else{
+                        str += '<option value="'+data.data[i].cityCode +'">'+ data.data[i].cityName+'</option>'
+                    }
+                    
+                }
+                 $('#city').html(str)
+                 $('#area').html('<option value="">请选择县/区</option>')
+            }
+        })
+       
+        
+        
+    }
+    function chooseArea(data,data1){
+        console.log(data)
+        if(!data){
+            $('#area').html('<option value="">请选择县/区</option>')
+            return
+        }
+        
+        var str = '<option value="">请选择县/区</option>'
+        var data2 = data
+        var data1 = data1 || ''
+        $.ajax({
+            type: 'post',
+            url:CmsConfig.ServiceUrl.ApiRootUrl +  CmsConfig.addressUrl.Public.getAddress, 
+            data: {
+                "provinceCode":'',
+                "cityCode":data2,
+                "areaCode":''
+            },
+            async: 'false',
+            dataType: 'json',
+            // headers:{
+            //     contentType:"application/json"
+            // },
+           
+            success: function(data) {
+                console.log(data)
+                for(var k = 0 ; k < data.data.length;k++){
+                    if(data1 == data.data[k].areaCode){
+                        str += '<option value="'+data.data[k].areaCode +'" selected="">'+ data.data[k].areaName+'</option>'
+                    }else{
+                        str += '<option value="'+data.data[k].areaCode +'">'+ data.data[k].areaName+'</option>'
+                    }
+                    
+                }
+                $('#area').html(str)
+            }
+        })
+        
+    }
+    function chooseOne(){
+        console.log(hangyeData3)
+        var str = '<option value="">一级类目</option>'
+        for(var i = 0 ; i < hangyeData3.length;i++){
+            str += '<option value="'+hangyeData3[i].value+'">'+hangyeData3[i].text+'</option>'
+        }
+        $('#chOne').html(str)
+    }
+    function chooseTwo(data){
+        // console.log(hangyeData3)
+        var str = '<option value="">二级类目</option>'
+        for(var i = 0 ; i < hangyeData3.length;i++){
+            if(data == hangyeData3[i].value){
+                for(var j = 0 ; j < hangyeData3[i].children.length;j++){
+                    str += '<option value="'+hangyeData3[i].children[j].value+'">'+hangyeData3[i].children[j].text+'</option>'
+                }
+            }
+        }
+        $('#chTwo').html(str)
+    }
+    function chooseThr(data,data1){
+        // console.log(hangyeData3)
+        var str = '<option value="">三级类目</option>'
+        for(var i = 0 ; i < hangyeData3.length;i++){
+            if(data == hangyeData3[i].value){
+                for(var j = 0 ; j < hangyeData3[i].children.length;j++){
+                    if(data1 == hangyeData3[i].children[j].value){
+                        for(var m = 0; m < hangyeData3[i].children[j].children.length;m++){
+                    str += '<option value="'+hangyeData3[i].children[j].children[m].value+'">'+hangyeData3[i].children[j].children[m].text+'</option>'
 
+                        }
+
+                    }
+                }
+            }
+        }
+        $('#chThr').html(str)
+    }
+    function getOfficial1(userNumber){
+        CmsUtility.postAjaxCall(
+                //系统设置
+        CmsConfig.addressUrl.Mechanism.getOfficial,
+        {
+          "institutionNumber" :userNumber,
+          "page":"1",
+          "limit":"1000"
+        },
+        function(data){
+            if(data.code == 1000){
+                var str = ''
+                for(var i = 0;i<data.data.PaymentChannellist.length;i++){
+                    str += '<option value="'+data.data.PaymentChannellist[i].id+'">'+data.data.PaymentChannellist[i].paymentchannelname+'</option>'
+                }
+                $('#paymentNo').html(str)
+            }
+        },
+        function(data){
+
+        },
+        'post',
+        'false'
+       )
+    }
     return {
         postAjaxCall: postAjaxCall,
         getArrFromJson: getArrFromJson,
@@ -313,6 +508,13 @@ var CmsUtility = (function() {
         getOSSShortUrl: getOSSShortUrl,
         uploadImage: uploadImage,
         uploadVideo: uploadVideo,
-        replace:replace
+        replace:replace,
+        choosePro:choosePro,
+        chooseCity:chooseCity,
+        chooseArea:chooseArea,
+        chooseOne:chooseOne,
+        chooseTwo:chooseTwo,
+        chooseThr:chooseThr,
+        getOfficial1:getOfficial1
     }
 })();

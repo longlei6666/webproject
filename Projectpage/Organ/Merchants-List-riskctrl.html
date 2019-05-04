@@ -31,33 +31,33 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">风控模式</label>
 						<div class="layui-input-block">
-							<input type="radio" name="sex1" value="0" lay-filter="riskctrl" title="继承通道" checked="">
-							<input type="radio" name="sex1" value="1" lay-filter="riskctrl" title="自定义">
+							<input type="radio" name="riskMode" value="0" lay-filter="riskctrl" title="继承风控" checked="">
+							<input type="radio" name="riskMode" value="1" lay-filter="riskctrl" title="自定义">
 						</div>
 					</div>
 					<div id="riskctrlDiv" style="display: none;">
 						<div class="layui-form-item">
 							<label class="layui-form-label">当天交易金额</label>
 							<div class="layui-input-inline">
-								<input type="number" name="jiaoyie" autocomplete="off" placeholder="当天交易金额" class="layui-input" value="0">
+								<input type="number" name="dateCountMoney" autocomplete="off" placeholder="当天交易金额" class="layui-input" value="0" lay-verify="title">
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label class="layui-form-label">单笔最小金额</label>
 							<div class="layui-input-inline">
-								<input type="number" name="zuixiaojine" autocomplete="off" placeholder="单笔最小金额" class="layui-input" value="0">
+								<input type="number" name="singlepenMinMoney" autocomplete="off" placeholder="单笔最小金额" class="layui-input" value="0"  lay-verify="title">
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label class="layui-form-label">单笔最大金额</label>
 							<div class="layui-input-inline">
-								<input type="number" name="zuidajine" autocomplete="off" placeholder="单笔最大金额" class="layui-input" value="0">
+								<input type="number" name="singlepenMaxMoney" autocomplete="off" placeholder="单笔最大金额" class="layui-input" value="0"  lay-verify="title">
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label class="layui-form-label">交易时间</label>
 							<div class="layui-input-inline" style="width: 100px;">
-								<select name="jiaoyishijiank" lay-filter="">
+								<select name="transactionStartTime" lay-filter=""  lay-verify="title">
 									<option value="0:00" selected="">0:00</option>
 									<option value="1:00">1:00</option>
 									<option value="2:00">2:00</option>
@@ -86,7 +86,7 @@
 							</div>
 							<div class="layui-form-mid">-</div>
 							<div class="layui-input-inline" style="width: 100px;">
-								<select name="jiaoyishijianj" lay-filter="">
+								<select name="transactionEndTime" lay-filter=""  lay-verify="title">
 									<option value="0:00" selected="">0:00</option>
 									<option value="1:00">1:00</option>
 									<option value="2:00">2:00</option>
@@ -117,13 +117,13 @@
 						<div class="layui-form-item">
 							<label class="layui-form-label">单位时间限制</label>
 							<div class="layui-input-inline">
-								<input type="number" name="shijianxianzhi" autocomplete="off" placeholder="单位时间限制" class="layui-input" value="0">
+								<input type="number" name="unitTimeConstraint" autocomplete="off" placeholder="单位时间限制" class="layui-input" value="0"  lay-verify="title">
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label class="layui-form-label">限制时间单位</label>
 							<div class="layui-input-inline">
-								<select name="shijiandanwei" lay-filter="">
+								<select name="limitedTimeUnit" lay-filter=""  lay-verify="title">
 									<option value="3" selected="">秒</option>
 									<option value="2">分</option>
 									<option value="1">时</option>
@@ -134,20 +134,20 @@
 						<div class="layui-form-item">
 							<label class="layui-form-label">单位时间次数</label>
 							<div class="layui-input-inline">
-								<input type="number" name="shijiancishu" autocomplete="off" placeholder="单位时间次数" class="layui-input" value="0">
+								<input type="number" name="unitTimeCount" autocomplete="off" placeholder="单位时间次数" class="layui-input" value="0"  lay-verify="title">
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label class="layui-form-label">单位时间金额</label>
 							<div class="layui-input-inline">
-								<input type="number" name="shijianjine" autocomplete="off" placeholder="单位时间金额" class="layui-input" value="0">
+								<input type="number" name="unitTimeMoney" autocomplete="off" placeholder="单位时间金额" class="layui-input" value="0"  lay-verify="title">
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label class="layui-form-label">风控状态</label>
 							<div class="layui-input-block">
-								<input type="radio" name="sex" value="开启" title="开启">
-								<input type="radio" name="sex" value="关闭" title="关闭" checked="">
+								<input type="radio" name="riskSwitch" value="0" title="开启">
+								<input type="radio" name="riskSwitch" value="1" title="关闭" checked="">
 							</div>
 						</div>
 					</div>
@@ -164,79 +164,133 @@
 				</form>
 			</div>
 		</div>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
 			var index = parent.layer.getFrameIndex(window.name);
 			$('#quxiao').click(function(){
 				
 				setTimeout(function(){parent.layer.close(index)},16); 
 			})
-			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
-			layui.use(['laydate', 'table', 'upload', 'form'], function() {
-				var $ = layui.jquery,
-					upload = layui.upload,
-					laydate = layui.laydate,
-					table = layui.table,
-					form = layui.form,
-					admin = layui.admin,
-					element = layui.element,
-					layer = layui.layer;
-				var tableSelect = layui.tableSelect;
+			function subPage(data,data1){
+				var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+				console.log(data)
+				var merchantNumber = data.merchantNumber
+				layui.use(['laydate', 'table', 'upload', 'form'], function() {
+					var $ = layui.jquery,
+						upload = layui.upload,
+						laydate = layui.laydate,
+						table = layui.table,
+						form = layui.form,
+						admin = layui.admin,
+						element = layui.element,
+						layer = layui.layer;
+					var tableSelect = layui.tableSelect;
 
-				//表单初始赋值
-				//				form.val('tongdao', {
-				//					"preferentialSetting": 1
-				//				})
+					//表单初始赋值
+					//				form.val('tongdao', {
+					//					"preferentialSetting": 1
+					//				})
 
-				/*---------- 监听开关 ----------*/
-				form.on('radio(riskctrl)', function(data) { //设置会员卡的有效期
-					if(data.value == 0) {
-						$('#riskctrlDiv').hide()
-					} else if(data.value == 1) {
-						$('#riskctrlDiv').show()
-					}
-				});
-
-				/*---------- 自定义验证规则 ----------*/
-				form.verify({
-					title: function(value) {
-						if(value.length == "") {
-							return '不能为空！';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
-				});
-
-				/*---------- 监听提交 ----------*/
-				form.on('submit(add)', function(data, index) {
-					var addData = JSON.stringify(data.field)
-					console.log(addData)
-					// 发送请求
-					$.ajax({
-						type: "post",
-						url: serverUrl + "memberCard/addMemberCard",
-						async: true,
-						dataType: "json",
-						contentType: "application/json",
-						data: addData,
-						success: function(data) {
-							if(data.code == "0") {
-								var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-								parent.layer.close(index); //再执行关闭
-								parent.layer.msg(data.msg);
-								parent.layui.table.reload('vip_cardList');
-							} else if(data.code == "1") {
-								layer.msg("添加会员卡失败");
-							}
+					/*---------- 监听开关 ----------*/
+					form.on('radio(riskctrl)', function(data) { //设置会员卡的有效期
+						if(data.value == 0) {
+							$('#riskctrlDiv').hide()
+						} else if(data.value == 1) {
+							$('#riskctrlDiv').show()
 						}
 					});
-					return false;
-				});
+					CmsUtility.postAjaxCall(
+							//系统设置
+						CmsConfig.addressUrl.Mechanism.getMerRiskSetUp,
+							{
+								"institutionNumber":userNumber,
+								"merchantNumber":merchantNumber
+							},
+							function(data1){
+								console.log(data1.code)
+								if(data1.code == 1000){
 
-			});
+									if(data1.data[0].riskMode == 1){
+										$('#riskctrlDiv').show()
+										console.log(data1.data[0].riskMode)
+											form.val('tongdao', {
+											"riskMode": data1.data[0].riskMode,
+											"dateCountMoney": data1.data[0].dateCountMoney,
+											"singlepenMinMoney":data1.data[0].singlepenMinMoney,
+											"singlepenMaxMoney":data1.data[0].singlepenMaxMoney,
+											"transactionStartTime":data1.data[0].transactionStartTime,
+											"transactionEndTime":data1.data[0].transactionEndTime,
+											"unitTimeConstraint":data1.data[0].unitTimeConstraint,
+											"limitedTimeUnit":data1.data[0].limitedTimeUnit,
+											"unitTimeCount":data1.data[0].unitTimeCount,
+											"unitTimeMoney":data1.data[0].unitTimeMoney,
+											"riskSwitch":data1.data[0].riskSwitch.toString(),
+										})
+									}
+									// setTimeout(function(){
+									// 	// parent.layer.close(index)
+									// 	parent.location.reload()
+									// },500); 
+									
+									
+								}else{
+									layer.msg(data.msg)
+									
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)	
+					/*---------- 自定义验证规则 ----------*/
+					form.verify({
+						title: function(value) {
+							if(value.length == "") {
+								return '不能为空！';
+							}
+						},
+						pass: [/(.+){6,12}$/, '密码必须6到12位'],
+						content: function(value) {
+							layedit.sync(editIndex);
+						}
+					});
+
+					/*---------- 监听提交 ----------*/
+					form.on('submit(add)', function(data, index) {
+						var addData = data.field
+						console.log(data.field)
+						addData.institutionNumber=userNumber,
+						addData.merchantNumber=merchantNumber
+						// 发送请求
+						CmsUtility.postAjaxCall(
+							//系统设置
+							CmsConfig.addressUrl.Mechanism.updateMerRiskSetUp,
+							addData,
+							function(data){
+								if(data.code == 1000){
+									
+									parent.layer.msg('更改成功')
+									setTimeout(function(){
+										$('#quxiao').click()
+									},16); 
+									parent.layui.table.reload('vip_cardList')
+									
+								}else{
+									layer.msg(data.msg)
+									
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)	
+						return false;
+					});
+
+				});
+			}
+			
 		</script>
 	</body>
 

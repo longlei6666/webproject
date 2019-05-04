@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -29,191 +29,265 @@
 			.layui-table-box{
 				border-bottom: 1px solid #e6e6e6;
 			}
+			.layui-inline{
+				display: inline-block !important;
+			}
+			.layui-table-edit{text-align:center;}
 		</style>
 	</head>
 
 	<body id="iosiframe">
 		<div class="x-body">
-			<div class="layui-form-item">
-				<div class="layui-form-mid x-red">注：费率为千分位，例如：千分之三则填0.003</div>
-			</div>
-			<table class="layui-hide" id="members" lay-filter="members"></table>
+			<form class="layui-form" lay-filter="cardAdd">
+					<div class="layui-form-item">
+						<div class="layui-form-mid x-red">注：费率为千分位，例如：千分之三则填0.003</div>
+					</div>
+					<table class="layui-hide" id="members" lay-filter="members"></table>
+					<!-- <div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">费率类型</label>
+							<div class="layui-input-inline">
+								<input type="text" name="rate1" lay-verify="title" class="layui-input" id="mima1">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">费率</label>
+							<div class="layui-input-inline">
+								<input type="text" name="rate2" lay-verify="title" class="layui-input" id="mima2">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">提成比例</label>
+							<div class="layui-input-inline">
+								<input type="text" name="rate3" lay-verify="title" class="layui-input" id="mima3">
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">联系邮箱</label>
+							<div class="layui-input-inline">
+								<input type="text" name="contactMailbox" lay-verify="email" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">客服电话</label>
+							<div class="layui-input-inline">
+								<input type="text" name="customServiceTell" lay-verify="number" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">网站客服QQ</label>
+							<div class="layui-input-inline">
+								<input type="text" name="customServiceQq" lay-verify="number" class="layui-input">
+							</div>
+						</div>
+					</div> -->
+					<!-- <div class="layui-form-item">
+						<label class="layui-form-label">抽成比率</label>
+						<div class="layui-input-inline">
+							<input type="text" name="proportion" lay-verify="title" class="layui-input"  id="mima2">
+						</div>
+					</div> -->
+					<div class="layui-form-item layui-layout-admin">
+					<div class="layui-input-block">
+						<div class="layui-footer" style="left: 0;text-align: center;">
+							<button class="layui-btn" lay-submit="add" lay-filter="add">立即提交</button>
+							<a class="layui-btn layui-btn-primary" id="quxiao">关闭</a>
+						</div>
+						
+					</div>
+				</div>
+					
+				</form>
 		</div>
-		<script type="text/html" id="toolbar_t0">
-			<div class="layui-input-inline">
-				<input type="number" name="toolbar_t0_{{d.id}}" class="layui-input">
-			</div>
-		</script>
-		<script type="text/html" id="toolbar_t0top">
-			<div class="layui-input-inline">
-				<input type="number" name="toolbar_t0top_{{d.id}}" class="layui-input">
-			</div>
-		</script>
-		<script type="text/html" id="toolbar_t1">
-			<div class="layui-input-inline">
-				<input type="number" name="toolbar_t1_{{d.id}}" class="layui-input">
-			</div>
-		</script>
-		<script type="text/html" id="toolbar_t1top">
-			<div class="layui-input-inline">
-				<input type="number" name="toolbar_t1top_{{d.id}}" class="layui-input">
-			</div>
-		</script>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
-			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
-			layui.use(['laytpl', 'laydate', 'table', 'form'], function() {
-				var laytpl = layui.laytpl,
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
+			function subPage(data,data1){
+				var jgData  = data
+				console.log(jgData)
+				var serverUrl = window.parent.serverUrl
+				var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+				var agentNumber = jgData.agentNumber
+				var tjData;
+				layui.use(['laydate', 'table', 'upload', 'form'], function() {
+					var $ = layui.jquery,
+					upload = layui.upload,
 					laydate = layui.laydate,
 					table = layui.table,
-					form = layui.form;
-
-				//方法级渲染  
-				table.render({
-					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: './json/vip-card.json',
-					elem: '#members',
-					height: 'full-120',
-					id: 'vip_cardList',
-					//					parseData: function(res) { //res 即为原始返回的数据
-					//						return {
-					//							"code": res.code, //解析接口状态
-					//							"msg": res.msg, //解析提示文本
-					//							"count": res.count, //解析数据长度
-					//							"data": changeRes(res.result,res.count), //解析数据列表
-					//						};
-					//					},
-					cols: [
-						[{
-							align: 'center',
-							field: 'id',
-							title: '接口名称',
-							sort: true,
-							width: 150
-						}, {
-							align: 'center',
-							title: 'T+0运营费率',
-							toolbar: '#toolbar_t0',
-							minWidth: 100
-
-						}, {
-							align: 'center',
-							title: 'T+0封顶费率',
-							toolbar: '#toolbar_t0top',
-							minWidth: 100
-
-						}, {
-							align: 'center',
-							title: 'T+1运营费率',
-							toolbar: '#toolbar_t1',
-							minWidth: 100
-
-						}, {
-							align: 'center',
-							title: 'T+1封顶费率',
-							toolbar: '#toolbar_t1top',
-							minWidth: 100
-
-						}]
-					],
-					page: false,
-					done: function(res, curr, count) {
-						//						console.log(res)
-						//						var operation_alone = document.getElementsByClassName('operation_alone')
-						//						var operation_pull = document.getElementsByClassName('operation_pull')
-						//						var operation_select = document.getElementsByClassName('operation_select')
-						//						var operation_table = document.getElementsByClassName('operation_table')
-						//						for(var i = 0; i < operation_alone.length; i++) {
-						//							operation_alone[i].setAttribute('name', 'operation' + '[' + i + ']')
-						//							operation_pull[i].setAttribute('name', 'operation' + '[' + i + ']')
-						//							operation_select[i].setAttribute('id', 'operation_select_' + i)
-						//							operation_table[i].setAttribute('id', 'operation_table_' + i)
-						//						}
-						//						var data = res.data;
-						//						for(var j = 0 ; j<data.length;j++){
-						//							if(data[j].length == 0){
-						//								return
-						//							}
-						//							if(data[j].check == 1){
-						//								operation_alone[j].setAttribute('checked','')
-						//							}if(data[j].check == 2){
-						//								operation_pull[j].setAttribute('checked','')
-						//							}
-						//						}
-						//						form.render();
-					}
-				});
-
-				//单选按钮状态
-				form.on('radio(operation)', function(data) { //设置会员卡的有效期
-					if(data.value == 1) {
-						console.log(data.value)
-						$('#operation_select{{d.id}}').show()
-						$('#operation_table{{d.id}}').hide()
-					}
-					if(data.value == 2) {
-						console.log(data.value)
-						$('#operation_select{{d.id}}').hide()
-						$('#operation_table{{d.id}}').show()
-					}
-				});
-
-				//监听工具条
-				table.on('tool(members)', function(obj) {
-					var data = obj.data;
-					if(obj.event === 'edit') { //编辑
-						layer.open({
-							type: 2,
-							title: '编辑',
-							shade: 0.5,
-							area: ['400px', '300px'],
-							maxmin: false,
-							resize: false,
-							content: ['Membersadd.html'],
-							success: function(layero, index) {
-								// 获取子页面的iframe
-								var iframe = window['layui-layer-iframe' + index];
-								// 向子页面的全局函数child传参
-								iframe.subPage(data, userNumber)
+					form = layui.form,
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer;
+					var tableSelect = layui.tableSelect;
+				//表单初始赋值
+					function tableRender(){
+						table.render({
+							//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+							url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getAgentRate + '?agentNumber=' + jgData.agentNumber ,
+							elem: '#members',
+							height: 'full-220',
+							id: 'vip_cardList',
+							response: { 
+							//res 即为原始返回的数据
+									"statusCode":"1000", //解析接口状态
+									
+							},
+							parseData: function(res) { //res 即为原始返回的数据
+								if(res.data == null){
+									layer.msg(res.msg)
+									return
+								}
+								return {
+									"code": res.code, //解析接口状态
+									"msg": res.msg, //解析提示文本
+									"count": res.count, //解析数据长度
+									"data": res.data, //解析数据列表
+								};
+							},
+							cols: [
+								[{
+									align: 'center',
+									title: '费率类型',
+									field: 'rateType',
+									width: 200,
+									
+								}, {
+									align: 'center',
+									title: '费率',
+									field: 'rate',
+									minWidth: 150,
+									edit: 'edit_yy'
+								}, {
+									align: 'center',
+									title: '提成比例',
+									field: 'proportion',
+									minWidth: 150,
+									edit: 'toolbar_tx'
+								}]
+							],
+							page: false,
+							done: function(res, curr, count) {
+								tjData = res.data
+								console.log(tjData)
 							}
 						});
-					} else if(obj.event === 'logout') { //注销
-						var zhuxiaoData = {
-							card: data.card,
-							cardType: 5
-						}
-						layer.confirm('真的删除此会员卡么', {
-							icon: 3,
-							title: '提示'
-						}, function(index) {
-							// 发送请求
-							$.ajax({
-								type: "post",
-								url: serverUrl + "memberCard/updateAssociatorCard",
-								async: true,
-								dataType: "json",
-								contentType: "application/json",
-								data: JSON.stringify(zhuxiaoData),
-								success: function(data) {
-									if(data.code == 0) {
-										layer.close(index);
-										layer.msg("会员卡已注销");
-										// 刷新页面
-										var curr = $("#curr").val();
-										layui.table.reload('vip_cardList', {
-											page: {
-												curr: curr
-											}
-										});
-									} else if(data.code == 1) {
-										layer.msg("会员卡注销失败");
-									}
-								}
-							});
-						});
 					}
+					tableRender()
+					//监听指定开关
+					form.on('switch(switchbar)', function(data) {
+						console.log(data)
+						for(var i = 0; i < tjData.length;i++){
+							if(tjData[i].id == data.value){
+								tjData[i].switch1 = this.checked?0:1
+							}
+						}
+						console.log(tjData)
+						// layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+						// CmsUtility.postAjaxCall(
+						// 	//系统设置
+						// 	CmsConfig.addressUrl.Mechanism.updateRate,
+						// 	addData,
+						// 	function(data){
+						// 		if(data.code == 1000){
+									
+						// 			parent.layer.msg('更改成功')
+						// 			// setTimeout(function(){
+						// 			// 	parent.layer.close(index)
+						// 			// 	parent.location.reload()
+						// 			// },500); 
+									
+						// 		}else{
+						// 			layer.msg(data.msg)
+									
+						// 		}
+						// 	},
+						// 	function(data){
+						// 		console.log('222')
+						// 	}
+						// )	
+						
+					});
+					table.on('edit(members)', function(obj) {
+						console.log(obj)
+						for(var i = 0 ; i < tjData.length;i++){
+							if(tjData[i].id == obj.data.id){
+								tjData[i][obj.field] = obj.value
+							}
+						}
+						console.log(tjData)
+					// var value = obj.value, //得到修改后的值
+					// 	data = obj.data, //得到所在行所有键值
+					// 	field = obj.field; //得到字段
+					// var addData = new Object()
+					// addData.id = obj.data.id
+					// addData[obj.field] = obj.value
+					// console.log(addData)
+					// // layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+					// CmsUtility.postAjaxCall(
+					// 	//系统设置
+					// 	CmsConfig.addressUrl.Mechanism.updateRate,
+					// 	addData,
+					// 	function(data){
+					// 		if(data.code == 1000){
+								
+					// 			parent.layer.msg('更改成功')
+					// 			// setTimeout(function(){
+					// 			// 	parent.layer.close(index)
+					// 			// 	parent.location.reload()
+					// 			// },500); 
+								
+					// 		}else{
+					// 			layer.msg(data.msg)
+								
+					// 		}
+					// 	},
+					// 	function(data){
+					// 		console.log('222')
+					// 	}
+					// )	
 				});
-			});
+				/*---------- 自定义验证规则 ----------*/
+					form.verify({
+						// title:function(value){
+						// 	if(value.length==0){
+						// 		return '不能为空'
+						// 	}
+						// },
+					});
+				/*---------- 监听提交 ----------*/
+				form.on('submit(add)', function(data, index) {
+					var tjjData = new Object()
+					tjjData.agentNumber = agentNumber
+					tjjData.data = tjData
+					// 发送请求
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Mechanism.updateAgentRate,
+						JSON.stringify(tjjData),
+						function(data){
+							if(data.code == 1000){
+								setTimeout(function(){parent.layer.close(index)},16);
+								parent.layer.msg('更改成功')
+								parent.layui.table.reload('vip_cardList')
+							}else{
+								layer.msg(data.msg)
+							}
+						},
+						function(data){
+							console.log('222')
+						}
+					)
+					return false;
+					});
+				});
+			}
 		</script>
 	</body>
 

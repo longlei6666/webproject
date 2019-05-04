@@ -17,8 +17,8 @@
 	<body>
 		<div class="x-nav">
 			<span class="layui-breadcrumb">
-				<a href="">业务</a>
-				<a><cite>业务员</cite></a>
+				<a href="">首页</a>
+				<a><cite>销售管理</cite></a>
 			</span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
@@ -27,84 +27,139 @@
 			<div class="layui-row layui-form x-so">
 				<div class="layui-input-inline text">
 					<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
-					<input type="text" name="phone" id="phone" placeholder="手机号" autocomplete="off" class="layui-input">
+					<input type="text"  id="phone" placeholder="手机号" autocomplete="off" class="layui-input">
 				</div>
 				<div class="layui-input-inline text">
 					<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
-					<input type="text" name="name" id="name" placeholder="姓名" autocomplete="off" class="layui-input">
+					<input type="text"  id="name" placeholder="姓名" autocomplete="off" class="layui-input">
 				</div>
-				<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
+				<button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i></button>
 			</div>
 			<xblock class="layui-row">
-				<button class="layui-btn" onclick="x_admin_show('添加业务员','SalesmanAdd.html',600,400)"><i class="layui-icon"></i>添加</button>
-				<button class="layui-btn layui-btn_1" data-type="getCheckData"><i class="layui-icon"></i>更换代理商</button>
+				<button class="layui-btn" onclick="x_admin_show('添加销售','salesmanAdd.html',500,520)"><i class="layui-icon"></i>添加销售</button>
 			</xblock>
-
 			<table class="layui-hide" id="LAY_table_Salesman" lay-filter="Salesman"></table>
 		</div>
 		<script type="text/html" id="tool">
 			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 			<a class="layui-btn layui-btn-xs" lay-event="resetPwd">修改密码</a>
-			{{# if(d.SalesType == 0){ }}
-			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="disable">已禁用</a>
-			{{# } }} {{# if(d.SalesType == 1){ }}
-			<a class="layui-btn layui-btn-xs" lay-event="open">已开启</a>
-			{{# } }}
-			<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detele">删除</a>
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="detele">删除</a>
 		</script>
-		<script type="text/html" id="chetool">
-			<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox">
-				<input type="checkbox" name="layTableCheckbox" lay-skin="primary" value="">
-				<div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div>
-			</div>
+		<script type="text/html" id="toolbar_switch">
+			<input type="checkbox" name="switch" value="{{d.saleNumber}}" lay-skin="switch" lay-filter="toolbar_switch" lay-text="启用|禁用" {{ d.state==0 ? 'checked' : '' }}>
 		</script>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
-			layui.use('table', function() {
+			layui.use(['table', 'laytpl'], function() {
 
-				var table = layui.table;
+				var table = layui.table,
+					form = layui.form,
+					laytpl = layui.laytpl,
+					$ = layui.jquery;
+				var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+				var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
 
 				//方法级渲染
-				table.render({
-					elem: '#LAY_table_Salesman',
-					url: '.salesmanManagement/getSalesmanList',
-					method: "post",
-					height: 'full-195',
-					page: true,
-					id: 'salesmanList',
-					cols: [
-						[{
-							type: 'checkbox',
-							Width: 48
-						}, {
-							field: 'SalesNumber',
-							title: '编号',
-							align: 'center'
-						}, {
-							field: 'Name',
-							align: 'center',
-							title: '姓名'
-						}, {
-							field: 'dealerName',
-							align: 'center',
-							title: '所属经销商'
-						}, {
-							field: 'Cell',
-							align: 'center',
-							title: '手机号'
-						}, {
-							field: 'SalesTypeC',
-							align: 'center',
-							title: '状态'
-						}, {
-							field: 'operation',
-							align: 'center',
-							title: '操作',
-							toolbar: "#tool",
-							width: '25%'
-						}]
-					]
-				});
+				function tableRender(){
+					table.render({
+						url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Agent.getSaleInfo + '?agentNumber=' + userNumber ,
+							where:{
+								"registerCell":$('#phone').val().trim(),
+								"saleName":$('#name').val().trim(),
+							},
+							// where:{
+							// 	"merchantName":"",
+							// 	"saleName":"",
+							// 	"merchantStatus":"",
+							// 	"agentLevel":""
+							// },
+							elem: '#LAY_table_Salesman',
+						//method: "post",
+						height: 'full-195',
+						page: true,
+						id: 'salesmanList',
+							response: { 
+							//res 即为原始返回的数据
+									"statusCode":"1000", //解析接口状态
+									
+							},
+							parseData: function(res) {
+								if(res.data == null){
+									return
+								}
+							 //res 即为原始返回的数据
+								return {
+									"code": res.code, //解析接口状态
+									"msg": res.msg, //解析提示文本
+									"count": res.data.count, //解析数据长度
+									"data": res.data.saleRegisterInfoList, //解析数据列表
+								};
+							},
+						
+						cols: [
+							[ {
+								field: 'saleNumber',
+								title: '编号',
+								align: 'center',
+								width: 300
+							}, {
+								field: 'saleName',
+								align: 'center',
+								title: '姓名',
+								width: 300
+							}, {
+								field: 'registerCell',
+								align: 'center',
+								title: '手机号',
+								width: 300
+							}, {
+								field: 'SalesTypeC',
+								align: 'center',
+								title: '状态',
+								toolbar: "#toolbar_switch",
+								width: 200
+							}, {
+								field: 'operation',
+								title: '操作',
+								align: 'center',
+								toolbar: "#tool",
+								minWidth: 300
+							}]
+						]
+					})
+				}
+				tableRender()
+				$('#search').click(function(){
+					tableRender()
+				})
+				form.on('switch(toolbar_switch)', function(data) {
+					// layer.tips('广告状态：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					console.log(data)
+					var addData = new Object()
+					addData.saleNumber = data.value
+					addData.state = this.checked?'0':'1';
 
+					console.log(addData)
+					// 发送请求
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Agent.updateSale,
+						addData,
+						function(data){
+							if(data.code == 1000){
+								
+								layer.msg('更改成功')
+								// tableRender()
+							}else{
+								layer.msg(data.msg)
+							}
+						},
+						function(data){
+							console.log('222')
+						}
+					)
+				});
 				// 根據條件重载表格
 				var $ = layui.$,
 					active = {
@@ -119,91 +174,11 @@
 									curr: 1 //重新从第 1 页开始
 								},
 								where: {
-									phone: phone.val(),
-									name: name.val()
+									phone: phone.val().trim(),
+									name: name.val().trim()
 								}
 							});
 						},
-						getCheckData: function() {
-							$.ajax({
-								type: "post",
-								url: ".dealers/getdealerList",
-								async: true,
-								success: function(data) {
-									//拼接销售列表
-									var html = '<div class="layui-inline"><label class="layui-form-label">搜索选择框</label><div class="layui-input-inline"><select id="SaleList" lay-verify="required" lay-ignore><option value="">请选择代理商</option>';
-									if(data.length > 0) {
-										for(var j = 0; j < data.length; j++) {
-											html += '<option value="' + data[j].OperatorNumber + '">' + data[j].OperatorName + '/' + data[j].Tell + '</option>'
-										}
-									}
-									html += '</select></div></div>';
-
-									layer.open({
-										type: 1,
-										title: '更换代理商',
-										area: ['720px', '500px'], //宽高
-										content: html,
-										btn: ['确认', '取消'],
-										yes: function(layero) {
-											var dealerNumber = $("#SaleList option:selected").val();
-											if(dealerNumber == '') {
-												layer.msg('请选择代理商');
-											} else {
-												var checkStatus = table.checkStatus('salesmanList');
-												var data = checkStatus.data;
-												if(data.length == '0') {
-													layer.msg('请选择你要替换的代理商', {
-														icon: 5
-													});
-													return;
-												}
-												// 弹出是否要删除门店
-												layer.confirm('确定要更换吗?', function(index) {
-													var checkStatus = table.checkStatus('salesmanList');
-													var udata = checkStatus.data;
-													var Total = 0;
-													var checkedstr = '';
-													if(udata.length > 0) {
-														for(var i = 0; i < udata.length; i++) {
-															if(checkedstr == '') {
-																checkedstr = udata[i].SalesNumber;
-															} else {
-																checkedstr += '|' + udata[i].SalesNumber;
-															}
-														}
-													}
-
-													$.ajax({
-														type: "post",
-														url: ".DealersMerchant/putReplacedealer",
-														async: true,
-														data: {
-															checkedstr: checkedstr,
-															olddealerNumber: udata[0].olddealerNumber,
-															newdealerNumber: dealerNumber
-														},
-														success: function(data) {
-															if(data.result == "success") {
-																layer.close(index);
-																// 刷新页面
-																window.location.href = window.location.href
-															} else {
-																layer.close(index);
-																layer.msg(data.msg);
-															}
-														}
-													});
-												})
-											}
-										},
-										btn2: function() {
-											layer.closeAll();
-										}
-									});
-								}
-							});
-						}
 					};
 
 				//监听工具条
@@ -214,10 +189,15 @@
 						// 修改业务员信息
 						layer.open({
 							type: 2,
-							title: '业务员修改',
+							title: '业务员信息修改',
 							area: ['50%', '50%'], //宽高
-							content: '.salesmanManagement/getEditSalesmanPage?salesmanNumber=' + salesmanNumber,
-							end: function() {}
+							content: 'salesmanEdit.html',
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传w参
+								iframe.subPage(data, userNumber)
+							}
 						});
 					} else if(obj.event == 'resetPwd') {
 
@@ -226,106 +206,59 @@
 							type: 2,
 							title: '密码修改',
 							area: ['500px', '270px'], //宽高
-							content: '.salesmanManagement/getEditSalesmanPwdPage?salesmanNumber=' + salesmanNumber,
-							end: function() {}
+							content: 'salesmanPwdEdit.html',
+							success:function(layero, index){
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传w参
+								iframe.subPage(data, userNumber)
+							}
 						});
 					} else if(obj.event == 'open') {
 
-						var myData = {
-							"salesmanNumber": salesmanNumber,
-							"state": 0
-						}
-
-						layer.confirm('确定要启用么?', function(index) {
-
-							// 发送请求,将本店员或店长的功能进行禁用
-							$.ajax({
-								type: "post",
-								url: ".salesmanManagement/putSalesmanStatus",
-								async: true,
-								data: myData,
-								success: function(data) {
-									if(data.code == 0000) {
-										layer.alert('启用成功 ', {
-											icon: 6
-										}, function() {
-											// 刷新页面
-											window.location.href = window.location.href
-										});
-									} else if(data.code == 0001) {
-										layer.msg(data.desc);
-									}
-								}
-							});
-							layer.close(index);
-						});
+						
 
 					} else if(obj.event == 'disable') {
 
-						var myData = {
-							"salesmanNumber": salesmanNumber,
-							"state": 1
-						}
-
-						layer.confirm('确定要禁用么?', function(index) {
-
-							// 发送请求,将本业务员进行禁用
-							$.ajax({
-								type: "post",
-								url: ".salesmanManagement/putSalesmanStatus",
-								async: true,
-								data: myData,
-								success: function(data) {
-									if(data.code == 0000) {
-										layer.alert('禁用成功 ', {
-											icon: 6
-										}, function() {
-											// 刷新页面
-											window.location.href = window.location.href
-										});
-									} else if(data.code == 0001) {
-										layer.msg(data.desc);
-									}
-								}
-							});
-							layer.close(index);
-						});
+						
 
 					} else if(obj.event == 'detele') {
 
-						var myData = {
-							"salesmanNumber": salesmanNumber,
-							"state": "-1"
-						}
+						
 
 						layer.confirm('确定要删除么?', function(index) {
-
+							
 							// 发送请求,将本业务员进行删除
-							$.ajax({
-								type: "post",
-								url: ".salesmanManagement/putSalesmanStatus",
-								async: true,
-								data: myData,
-								success: function(data) {
-									if(data.code == 0000) {
-										layer.alert('删除成功 ', {
-											icon: 6
-										}, function() {
-											// 刷新页面
-											window.location.href = window.location.href
-										});
-									} else if(data.code == 0001) {
-										layer.msg(data.desc);
-									}
-								}
-							});
-							layer.close(index);
+							console.log(data)
+							var addData = new Object()
+							addData.saleNumber = data.saleNumber
+							addData.deletionFlag = '1'
+							console.log(addData)
+							CmsUtility.postAjaxCall(
+		                        //系统设置
+		                        CmsConfig.addressUrl.Agent.updateSale,
+		                        addData,
+		                        function(data) {
+		                            if (data.code == 1000) {
+		                                
+		                                layer.msg('删除成功')
+		                            	layui.table.reload('salesmanList')
+		                                
+		                            } else {
+		                                layer.msg(data.msg)
+
+		                            }
+		                        },
+		                        function(data) {
+		                            console.log('222')
+		                        }
+		                    )
 						});
 
 					}
 				});
 
-				$('.layui-row .layui-btn_1').on('click', function() {
+				$('.layui-row .layui-btn').on('click', function() {
 					var type = $(this).data('type');
 					active[type] ? active[type].call(this) : '';
 				});

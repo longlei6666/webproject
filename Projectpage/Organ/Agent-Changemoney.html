@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -30,7 +30,7 @@
 			<span class="layui-breadcrumb">
 		        <a href="">首页</a>
 		        <a href="">代理管理</a>
-		        <a><cite>资金变动</cite></a>
+		        <a><cite>代理账单</cite></a>
 		      </span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
@@ -39,31 +39,35 @@
 			<div class="layui-row">
 				<div class="layui-form layui-col-md4 layui-col-sm4 layui-col-xs4 x-so">
 					<div class="layui-input-inline">
-						<input type="text" name="" id="" placeholder="代理编号" autocomplete="off" class="layui-input">
+						<input type="text" name="agentName" id="agentName" placeholder="代理名称" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-input-inline">
-						<input type="text" name="" id="" placeholder="订单号" autocomplete="off" class="layui-input">
+						<input type="text" name="" id="orederNumber" placeholder="账单号"  class="layui-input">
 					</div>
 					<div class="layui-input-inline">
-						<input type="text" name="" id="startTime" placeholder="开始时间" autocomplete="off" class="layui-input">
+							<input type="text" name="" id="inserttime" placeholder="结束时间"  class="layui-input">
 					</div>
 					<div class="layui-input-inline">
-						<input type="text" name="" id="endTime" placeholder="结束时间" autocomplete="off" class="layui-input">
+						<input type="text" name="" id="updateTime" placeholder="结束时间" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-input-inline">
-						<select name="" id="">
+						<select name="" id="importExportIdentification">
 							<option value="">类型</option>
 							<option value="1">分润</option>
-							<option value="2">补贴</option>
-							<option value="3">冻结</option>
-							<option value="4">解冻</option>
+							<option value="-2">补贴</option>
+							<option value="0">冻结</option>
+							<option value="2">解冻</option>
+							<option value="-1">提现</option>
 						</select>
 					</div>
 					<div class="layui-input-inline coupons_screen">
-						<button class="layui-btn" data-type="reload" title="搜索"><i class="layui-icon">&#xe615;</i></button>
+						<button class="layui-btn" id="reload1" title="搜索"><i class="layui-icon">&#xe615;</i></button>
 					</div>
 				</div>
 			</div>
+			 <xblock>
+            <button class="layui-btn" id="addzhangdan"><i class="layui-icon"></i>添加账单</button>
+        </xblock>
 			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
 		<script type="text/html" id="toolbar">
@@ -73,103 +77,144 @@
 			<a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">编辑</a>
 			<a class="layui-btn layui-btn-danger layui-btn-xs" id="logout" lay-event="logout">删除</a>
 		</script>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
 			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
 			layui.use(['laydate', 'table', 'form'], function() {
 				var laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form;
+					
 					laydate.render({
-					elem:"#startTime"
+						elem:"#inserttime"
+					})
+					laydate.render({
+						elem:"#updateTime"
+					})
+				//方法级渲染 
+				function tableRender(){
+					table.render({
+						//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+						url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getAgentLocal + '?institutionNumber=' + userNumber ,
+						where:{
+							"importExportIdentification":$('#importExportIdentification').val().trim(),
+							"agentName":$('#agentName').val().trim(),
+							"orederNumber":$('#orederNumber').val().trim(),
+							"inserttime":$('#inserttime').val().trim(),
+							"updateTime":$('#updateTime').val().trim(),
+						},
+						elem: '#members',
+						height: 'full-210',
+						id: 'vip_cardList',
+						response: { 
+						//res 即为原始返回的数据
+								"statusCode":"1000", //解析接口状态
+								
+						},
+						parseData: function(res) { //res 即为原始返回的数据
+							if(res.data == null){
+								return
+							}
+							return {
+								"code": res.code, //解析接口状态
+								"msg": res.msg, //解析提示文本
+								"count": res.data.count, //解析数据长度
+								"data": res.data.agentLocal, //解析数据列表
+							};
+						},
+						cols: [
+							[{
+								align: 'center',
+								type: 'checkbox'
+							}, {
+								align: 'center',
+								field: 'orederNumber',
+								width: 150,
+								title: '账单号',
+							}, {
+								align: 'center',
+								field: 'agentName',
+								width: 200,
+								title: '代理名称'
+							}, {
+								align: 'center',
+								field: 'typesAccountChanges',
+								width: 150,
+								title: '类型',
+								
+							}, {
+								align: 'center',
+								field: 'agentLevel',
+								width: 250,
+								title: '代理类型',
+								templet:function(data){
+									if(data.agentLevel == 0){
+										return '全国代理商'
+									}
+									if(data.agentLevel == 1){
+										return '省级代理商'
+									}
+									
+									if(data.agentLevel == 2){
+										return  '市级代理商'
+									}
+								}
+							}, {
+								align: 'center',
+								field: 'earlyStageBalance',
+								width: 150,
+								title: '原金额',
+							}, {
+								align: 'center',
+								field: 'importExportAmount',
+								width: 150,
+								title: '变动金额',
+							}, {
+								align: 'center',
+								field: 'endTermBalance',
+								width: 150,
+								title: '变动后金额',
+							}, {
+								align: 'center',
+								field: 'inserttime',
+								width: 200,
+								title: '变动时间',
+							},{
+								align: 'center',
+								field: 'remarks',
+								width: 200,
+								title: '备注',
+							}]
+						],
+						page: true,
+						done: function(res, curr, count) {
+							
+						}
+					});
+				} 
+				tableRender()
+				$('#reload1').click(function(){
+					tableRender()
 				})
-				laydate.render({
-					elem:"#endTime"
-				})
-				//方法级渲染  
-				table.render({
-					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: './json/vip-card.json',
-					elem: '#members',
-					height: 'full-210',
-					id: 'vip_cardList',
-					//					parseData: function(res) { //res 即为原始返回的数据
-					//						return {
-					//							"code": res.code, //解析接口状态
-					//							"msg": res.msg, //解析提示文本
-					//							"count": res.count, //解析数据长度
-					//							"data": changeRes(res.result,res.count), //解析数据列表
-					//						};
-					//					},
-					cols: [
-						[{
-							align: 'center',
-							type: 'checkbox'
-						}, {
-							align: 'center',
-							field: 'id',
-							width: 150,
-							title: '订单号',
-							sort: true
-						}, {
-							align: 'center',
-							field: 'username',
-							width: 150,
-							title: '用户名'
-						}, {
-							align: 'center',
-							field: 'sex',
-							width: 150,
-							title: '类型',
-							sort: true
-						}, {
-							align: 'center',
-							field: 'city',
-							width: 150,
-							title: '代理名（级别）'
-						}, {
-							align: 'center',
-							field: 'sign',
-							width: 150,
-							title: '原金额',
-						}, {
-							align: 'center',
-							field: 'experience',
-							width: 150,
-							title: '变动金额',
-							sort: true
-						}, {
-							align: 'center',
-							field: 'experience',
-							width: 150,
-							title: '变动后金额',
-							sort: true
-						}, {
-							align: 'center',
-							field: 'experience',
-							width: 150,
-							title: '变动时间',
-							sort: true
-						}, {
-							align: 'center',
-							field: 'experience',
-							width: 150,
-							title: '通道',
-							sort: true
-						}, {
-							align: 'center',
-							field: 'experience',
-							width: 150,
-							title: '备注',
-							sort: true
-						}]
-					],
-					page: true,
-					done: function(res, curr, count) {
-						console.log(res)
-					}
-				});
-
+				$('#addzhangdan').click(function() {
+		            layer.open({
+		                type: 2,
+		                title: '添加账单',
+		                shade: 0.5,
+		                area: ['30%', '50%'],
+		                maxmin: false,
+		                resize: false,
+		                content: ['Agent-Changemoney-add.html'],
+		                success: function(layero, index) {
+		                    // 获取子页面的iframe
+		                    var iframe = window['layui-layer-iframe' + index];
+		                    // 向子页面的全局函数child传参
+		                    //iframe.subPage(data, userNumber)
+		                }
+		            });
+		        })
 				//监听工具条
 				table.on('tool(members)', function(obj) {
 					var data = obj.data;

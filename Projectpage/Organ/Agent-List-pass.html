@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -31,46 +31,105 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">新密码</label>
 						<div class="layui-input-inline">
-							<input type="password" name="servicetel" lay-verify="number" class="layui-input">
+							<input type="password" name="passWord" lay-verify="title" class="layui-input" id="mima1">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">确认密码</label>
 						<div class="layui-input-inline">
-							<input type="password" name="serviceqq" lay-verify="number" class="layui-input">
+							<input type="password" name="" lay-verify="repassWord" class="layui-input"  id="mima2">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label"></label>
 						<div class="layui-input-inline">
-							<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+							<button class="layui-btn" lay-submit="add" lay-filter="add">立即提交</button>
 							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
-			var serverUrl = 'http://192.168.1.190:5002/'
-			var userNumber = window.parent.userNumber
-			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
-				layui.$.support.cors = true; //允许ajax跨域
-				var $ = layui.jquery,
+			// var index = parent.layer.getFrameIndex(window.name);
+			// $('#quxiao').click(function(){
+				
+			// 	setTimeout(function(){parent.layer.close(index)},16); 
+			// })
+			function subPage(data,data1){
+				var jgData  = data
+				console.log(jgData)
+				var serverUrl = window.parent.serverUrl
+				var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+				var agentNumber = jgData.agentNumber
+				layui.use(['laydate', 'table', 'upload', 'form'], function() {
+					var $ = layui.jquery,
 					upload = layui.upload,
 					laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form,
-					laytpl = layui.laytpl;
-
-				//监听提交
-				form.on('submit(add)', function(data) {
-					layer.alert(JSON.stringify(data.field), {
-						title: '最终的提交信息'
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer;
+					var tableSelect = layui.tableSelect;
+				//表单初始赋值
+					form.val('cardAdd', {
+						"agentType": jgData.userNumber,
+						"agentName":jgData.agentName,
+						"userName":jgData.userName,
+						"registerCell":jgData.registerCell,
+						"province":jgData.province,
+						"city":jgData.city,
+						"area":jgData.area,
+						"address":jgData.address,
 					})
-					return false;
-				});
+				/*---------- 自定义验证规则 ----------*/
+					form.verify({
+						title:function(value){
+							if(value.length < 6 || value.length >12){
+								return '密码必须为6-12位'
+							}
+						},
+						repassWord: function(value) {
+							if($('#mima1').val() != $('#mima2').val()) {
+								return '两次输入的密码不一致';
+						}
+						},
+					});
+				/*---------- 监听提交 ----------*/
+				form.on('submit(add)', function(data, index) {
+					var addData = data.field
+					addData.institutionNumber = userNumber
+					//addData.Deletion_Flag = '0'
+					addData.agentNumber = agentNumber
 
-			});
+					console.log(addData)
+					// 发送请求
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Mechanism.updateAgentRegister,
+						addData,
+						function(data){
+							if(data.code == 1000){
+								x_admin_close()
+								parent.layer.msg('更改成功')
+								parent.layui.table.reload('vip_cardList')
+							}else{
+								layer.msg(data.msg)
+							}
+						},
+						function(data){
+							console.log('222')
+						}
+					)
+					return false;
+					});
+				});
+			}
+
+		</script>
 		</script>
 	</body>
 

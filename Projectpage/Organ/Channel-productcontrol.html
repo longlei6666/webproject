@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -22,7 +22,7 @@
 			.layui-btn+.layui-btn {
 				margin-left: -2px;
 			}
-			
+			.layui-table-edit{text-align:center;}
 			.layui-table-cell {
 				height: auto;
 			}
@@ -30,23 +30,27 @@
 			.layui-table-box {
 				border-bottom: 1px solid #e6e6e6;
 			}
+			th{
+				cursor: pointer;
+			}
 		</style>
+
 	</head>
 
 	<body id="iosiframe">
 		<div class="x-body">
 			<div class="layui-form">
 				<div class="layui-form-item">
-					<div class="layui-form-mid x-red">注：费率为千分位，例如：千分之三则填0.003</div>
+					<div class="layui-form-mid x-red">注：费率为百分位，例如：千分之三则填0.3</div>
 				</div>
 				<table class="layui-hide" id="members" lay-filter="members"></table>
 				<div class="layui-form-item layui-layout-admin">
 					<div class="layui-input-block">
 						<div class="layui-footer" style="left: 0;text-align: center;">
 							<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-							<a class="layui-btn layui-btn-primary" id="quxiao">取消</a>
+							<a class="layui-btn layui-btn-primary" id="quxiao">关闭</a>
 						</div>
-						<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+						
 					</div>
 				</div>
 			</div>
@@ -68,286 +72,456 @@
 		</script>
 		<script type="text/html" id="switchbar">
 			<div class="layui-input-inline">
-				<input type="checkbox" name="switch" value="{{d.id}}" lay-skin="switch" lay-filter="switchbar" lay-text="开|关" {{ d.type==0 ? 'checked' : '' }}>
+				<input type="checkbox" name="switch" value="{{d.paymentTypeName}}" lay-skin="switch" lay-filter="switchbar" lay-text="开|关" {{ d.switch1==0 ? 'checked' : '' }}>
 			</div>
 		</script>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
-			function changeRes(res) {
-				var res = res
-				if(res.length == 0) {
-					return
-				}
-				for(var i = 0; i < res.length; i++) {
-					if(res[i].jiesuanlx == 1) {
-						res[i].jiesuanlxa = 'D+0'
-					} else if(res[i].jiesuanlx == 2) {
-						res[i].jiesuanlxa = 'D+1'
-					} else if(res[i].jiesuanlx == 3) {
-						res[i].jiesuanlxa = 'T+1'
-					}
-					if(res[i].feilvlx == 1) {
-						res[i].feilvlxa = '成本费率'
-					} else if(res[i].feilvlx == 2) {
-						res[i].feilvlxa = '运营费率'
-					} else if(res[i].feilvlx == 3) {
-						res[i].feilvlxa = '提现费率'
-					}
-				}
-				return res
-			}
+			var tjData;
 			var index = parent.layer.getFrameIndex(window.name);
 			$('#quxiao').click(function() {
 				setTimeout(function() {
 					parent.layer.close(index)
 				}, 16);
 			})
-			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
-			layui.use(['laytpl', 'laydate', 'table', 'form'], function() {
-				var laytpl = layui.laytpl,
-					laydate = layui.laydate,
-					table = layui.table,
-					form = layui.form;
-
-				//方法级渲染  
-				table.render({
-					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: './json/vip-card1.json',
-					elem: '#members',
-					height: 'full-120',
-					id: 'vip_cardList',
-					parseData: function(res) { //res 即为原始返回的数据
-						return {
-							"code": res.code, //解析接口状态
-							"msg": res.msg, //解析提示文本
-							"count": res.count, //解析数据长度
-							"data": changeRes(res.data, res.count), //解析数据列表
-						};
-					},
-					cols: [
-						[{
-							align: 'center',
-							field: 'id',
-							title: '接口名称',
-							sort: true,
-							width: 150
-						}, {
-							align: 'center',
-							title: '费率类型',
-							field: 'jiesuanlxa',
-							sort: true,
-							width: 150
-						}, {
-							align: 'center',
-							title: '成本费率',
-							toolbar: '#toolbar_cb',
-							minWidth: 100
-
-						}, {
-							align: 'center',
-							title: '运营费率',
-							toolbar: '#toolbar_yy',
-							minWidth: 100
-
-						}, {
-							align: 'center',
-							title: '提现费率',
-							toolbar: '#toolbar_tx',
-							minWidth: 100
-
-						}, {
-							align: 'center',
-							title: '状态',
-							toolbar: '#switchbar',
-							minWidth: 100
-						}]
-					],
-					page: false,
-					done: function(res, curr, count) {
-						layuiRowspan('province', 1);
-						layuiRowspan(['id'], 1); //支持数组
-						layuiRowspan("8", 1, true);
+			function uniq(array){
+			    var temp = []; //一个新的临时数组
+			    for(var i = 0; i < array.length; i++){
+			        if(temp.indexOf(array[i]) == -1){
+			            temp.push(array[i]);
+			        }
+			    }
+			    return temp;
+			}
+			function sort111(data){
+				// var data = data.sort(function(a,b){
+				// 	console.log(a,b)
+				// 	return a.switch1 - b.switch1
+				// })
+				// console.log(data)
+				var arr = new Array()
+				for(var i = 0 ; i < data.length;i++){
+					var ad = new Object()
+					ad.name = data[i].paymentTypeName
+					ad.id = data[i].switch1
+					arr.push(ad)
+				}
+				var a = arr.sort(function(a,b){
+					return a.id - b.id
+				})
+				var arrd = new Array()
+				for(var h =0;h<a.length;h++){
+					arrd.push(a[h].name)
+				}
+				var b = uniq(arrd)
+				var newD = new Array()
+				for(var j =0 ; j < b.length;j++){
+					for(var m = 0 ; m < data.length;m++){
+						if(b[j] == data[m].paymentTypeName){
+							newD.push(data[m])
+						}
 					}
-				});
-
-				//监听指定开关
-				form.on('switch(switchbar)', function(data) {
-					console.log(data)
-					layer.tips('通道：已' + (this.checked ? '开启' : '关闭'), data.othis)
-				});
-
-				//单选按钮状态
-				form.on('radio(operation)', function(data) { //设置会员卡的有效期
-					if(data.value == 1) {
-						console.log(data.value)
-						$('#operation_select{{d.id}}').show()
-						$('#operation_table{{d.id}}').hide()
+				}
+				return newD
+			}
+			function cost(data){
+				console.log(document.getElementsByTagName("td").length)
+					var td1 = document.getElementsByTagName("td")
+					for(var i = 0 ; i < td1.length;i++){
+						console.log('i')
+						if(td1[i].getAttribute('data-field') == 'costRate'){
+							//td1[i].childNodes()[0].innerHTML('222')
+							td1[i].childNodes[0].innerHTML = data
+							// console.log(td1[i].childNodes[0])
+						}
 					}
-					if(data.value == 2) {
-						console.log(data.value)
-						$('#operation_select{{d.id}}').hide()
-						$('#operation_table{{d.id}}').show()
+					for(var j = 0;  j < tjData.length;j++){
+						tjData[j].costRate = data
 					}
-				});
+					
+			}
+			function operating(data){
+				console.log(document.getElementsByTagName("td").length)
+					var td1 = document.getElementsByTagName("td")
+					for(var i = 0 ; i < td1.length;i++){
+						console.log('i')
+						if(td1[i].getAttribute('data-field') == 'operatingRate'){
+							//td1[i].childNodes()[0].innerHTML('222')
+							td1[i].childNodes[0].innerHTML = data
+							// console.log(td1[i].childNodes[0])
+						}
+					}
+					for(var j = 0;  j < tjData.length;j++){
+						tjData[j].operatingRate = data
+					}
+					
+			}
+			
+			function cash(data){
+				console.log(document.getElementsByTagName("td").length)
+					var td1 = document.getElementsByTagName("td")
+					for(var i = 0 ; i < td1.length;i++){
+						console.log('i')
+						if(td1[i].getAttribute('data-field') == 'cashRate'){
+							//td1[i].childNodes()[0].innerHTML('222')
+							td1[i].childNodes[0].innerHTML = data
+							// console.log(td1[i].childNodes[0])
+						}
+					}
+					for(var j = 0;  j < tjData.length;j++){
+						tjData[j].cashRate = data
+					}
+					
+			}
+			function subPage(data,data1){
+				var serverUrl = window.parent.serverUrl
+				var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+				var jgData = data
+				console.log(jgData)
+				layui.use(['laytpl', 'laydate', 'table', 'form'], function() {
+					var laytpl = layui.laytpl,
+						laydate = layui.laydate,
+						table = layui.table,
+						form = layui.form;
 
-				//监听工具条
-				table.on('tool(members)', function(obj) {
-					var data = obj.data;
-					if(obj.event === 'edit') { //编辑
+					//方法级渲染  
+					function tableRender(){
+						table.render({
+							//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+							url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getRate + '?institutionNumber=' + userNumber ,
+							where:{
+								"id":jgData.id
+							},
+							elem: '#members',
+							height: 'full-250',
+							id: 'vip_cardList',
+							response: { 
+							//res 即为原始返回的数据
+									"statusCode":"1000", //解析接口状态
+									
+							},
+							parseData: function(res) { //res 即为原始返回的数据
+								return {
+									"code": res.code, //解析接口状态
+									"msg": res.msg, //解析提示文本
+									"count": res.count, //解析数据长度
+									"data": sort111(res.data), //解析数据列表
+								};
+							},
+							cols: [
+								[{
+									align: 'center',
+									field: 'paymentTypeName',
+									title: '支付产品',
+									width: 200
+								},{
+									align: 'center',
+									title: '状态',
+									toolbar: '#switchbar',
+									field:'whichType',
+									width: 150
+								},{
+									align: 'center',
+									title: '费率类型',
+									field: 'rateType',
+									width: 200
+								}, {
+									align: 'center',
+									title: '成本费率(点击标题可选择费率)(单位:%)',
+									field:'costRate',
+									width: 280,
+									minWidth: 100,
+									edit:'costRate',
+									sort:false,
+
+								}
+								// , {
+								// 	align: 'center',
+								// 	title: '运营费率(点击标题可选择费率)(单位:%)',
+								// 	field:'operatingRate',
+								// 	id:'yunying',
+								// 	width: 250,
+								// 	minWidth: 100,
+								// 	edit:'operatingRate'
+
+								// }
+								, {
+									align: 'center',
+									title: '提现费率(点击标题可选择费率)(单位:%)',
+									field:'cashRate',
+									width: 280,
+									minWidth: 100,
+									edit:'cashRate'
+
+								}]
+							],
+							page: false,
+							done: function(res, curr, count) {
+								tjData = res.data
+								layuiRowspan('province', 1);
+								layuiRowspan(['paymentTypeName'], 1);
+								layuiRowspan(['whichType'], 1); //支持数组
+								layuiRowspan("8", 1, true);
+
+							}
+						});
+
+
+					}
+					tableRender()
+					
+					//监听指定开关
+					form.on('switch(switchbar)', function(data) {
+						console.log(data)
+						for(var i = 0; i < tjData.length;i++){
+							if(tjData[i].paymentTypeName == data.value){
+								tjData[i].switch1 = this.checked?0:1
+							}
+						}
+						console.log(tjData)
+						// layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+						// CmsUtility.postAjaxCall(
+						// 	//系统设置
+						// 	CmsConfig.addressUrl.Mechanism.updateRate,
+						// 	addData,
+						// 	function(data){
+						// 		if(data.code == 1000){
+									
+						// 			parent.layer.msg('更改成功')
+						// 			// setTimeout(function(){
+						// 			// 	parent.layer.close(index)
+						// 			// 	parent.location.reload()
+						// 			// },500); 
+									
+						// 		}else{
+						// 			layer.msg(data.msg)
+									
+						// 		}
+						// 	},
+						// 	function(data){
+						// 		console.log('222')
+						// 	}
+						// )	
+						
+					});
+					table.on('edit(members)', function(obj) {
+						console.log(obj)
+						for(var i = 0 ; i < tjData.length;i++){
+							if(tjData[i].id == obj.data.id){
+								tjData[i][obj.field] = obj.value
+							}
+						}
+						console.log(tjData)
+					
+				});
+					table.on('sort(costRate)', function(obj) {
+						console.log(obj)
+						return false
+					
+				});
+					console.log(document.getElementsByTagName('th'))
+					var th4 = document.getElementsByTagName('th')[3]
+					th4.onclick = function(){
 						layer.open({
 							type: 2,
-							title: '编辑',
+							title: '请选择成本费率',
 							shade: 0.5,
-							area: ['400px', '300px'],
+							area: ['400px', '50%'],
 							maxmin: false,
 							resize: false,
-							content: ['Membersadd.html'],
+							content: ['Channel-rate-selcet.html'],
 							success: function(layero, index) {
 								// 获取子页面的iframe
 								var iframe = window['layui-layer-iframe' + index];
-								// 向子页面的全局函数child传参
-								iframe.subPage(data, userNumber)
+								// 向子页面的全局函数child传w参
+								iframe.subPage(1)
 							}
 						});
-					} else if(obj.event === 'logout') { //注销
-						var zhuxiaoData = {
-							card: data.card,
-							cardType: 5
+					}
+					
+					// var th5 = document.getElementsByTagName('th')[4]
+					// th5.onclick = function(){
+					// 	layer.open({
+					// 		type: 2,
+					// 		title: '请选择运营费率',
+					// 		shade: 0.5,
+					// 		area: ['400px', '50%'],
+					// 		maxmin: false,
+					// 		resize: false,
+					// 		content: ['Channel-rate-selcet.html'],
+					// 		success: function(layero, index) {
+					// 			// 获取子页面的iframe
+					// 			var iframe = window['layui-layer-iframe' + index];
+					// 			// 向子页面的全局函数child传w参
+					// 			iframe.subPage(2)
+					// 		}
+					// 	});
+					// }
+					var th6 = document.getElementsByTagName('th')[4]
+					th6.onclick = function(){
+						layer.open({
+							type: 2,
+							title: '请选择提现费率',
+							shade: 0.5,
+							area: ['400px', '50%'],
+							maxmin: false,
+							resize: false,
+							content: ['Channel-rate-selcet.html'],
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传w参
+								iframe.subPage(3)
+							}
+						});
+					}
+					
+					
+
+					/*---------- 监听提交 ----------*/
+					form.on('submit(add)', function(data, index) {
+						console.log(tjData)
+						// 发送请求
+						var strData = new Array;
+						var adddData = new Object()
+						adddData.data = tjData
+						console.log(tjData)
+						
+						for(var i = 0 ; i < tjData.length;i++){
+							strData.push(tjData[i].onePaymentTypeInt  + ',' + tjData[i].switch1)
 						}
-						layer.confirm('真的删除此会员卡么', {
-							icon: 3,
-							title: '提示'
-						}, function(index) {
-							// 发送请求
-							$.ajax({
-								type: "post",
-								url: serverUrl + "memberCard/updateAssociatorCard",
-								async: true,
-								dataType: "json",
-								contentType: "application/json",
-								data: JSON.stringify(zhuxiaoData),
-								success: function(data) {
-									if(data.code == 0) {
-										layer.close(index);
-										layer.msg("会员卡已注销");
-										// 刷新页面
-										var curr = $("#curr").val();
-										layui.table.reload('vip_cardList', {
-											page: {
-												curr: curr
+						console.log(uniq(strData))
+						var aa = uniq(strData)
+						var strr = aa[0]
+						for( j = 1 ; j < aa.length;j++){
+							strr += '|' + aa[j]
+						}
+						var strrData = new Object()
+						strrData.productSwitch = strr;
+						strrData.type = jgData.paymentChannelType;
+						strrData.paymentChannel = jgData.id;
+						console.log(strr)
+						CmsUtility.postAjaxCall(
+							//系统设置
+							CmsConfig.addressUrl.Mechanism.updateRate,
+							JSON.stringify(adddData),
+							function(data){
+								if(data.code == 1000){
+									CmsUtility.postAjaxCall(
+										CmsConfig.addressUrl.Mechanism.insertProduct,
+										strrData,
+										function(data){
+											if(data.code == 1000){
+												$('#quxiao').click()
+												parent.layer.msg('保存成功')
+				                               	parent.layui.table.reload('vip_cardList')
+												
+												
+											}else{
+												layer.msg(data.msg)
+												
 											}
-										});
-									} else if(data.code == 1) {
-										layer.msg("会员卡注销失败");
-									}
+										},
+										function(data){
+											console.log('222')
+										}
+									)	
+									// $('#quxiao').click()
+									// parent.layer.msg('保存成功')
+	        //                        	parent.layui.table.reload('vip_cardList')
+									
+									
+								}else{
+									layer.msg(data.msg)
+									
 								}
-							});
-						});
-					}
-				});
-
-				/*---------- 监听提交 ----------*/
-				form.on('submit(add)', function(data, index) {
-					var addData = JSON.stringify(data.field)
-					console.log(addData)
-					// 发送请求
-					$.ajax({
-						type: "post",
-						url: serverUrl + "memberCard/addMemberCard",
-						async: true,
-						dataType: "json",
-						contentType: "application/json",
-						data: addData,
-						success: function(data) {
-							if(data.code == "0") {
-								var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-								parent.layer.close(index); //再执行关闭
-								parent.layer.msg(data.msg);
-								parent.layui.table.reload('vip_cardList');
-							} else if(data.code == "1") {
-								layer.msg("添加会员卡失败");
+							},
+							function(data){
+								console.log('222')
 							}
-						}
+						)	
+						return false;
 					});
-					return false;
 				});
-			});
 
-			var execRowspan = function(fieldName, index, flag) {
-				// 1为不冻结的情况，左侧列为冻结的情况
-				let fixedNode = index == "1" ? $(".layui-table-body")[index - 1] : (index == "3" ? $(".layui-table-fixed-r") : $(".layui-table-fixed-l"));
-				// 左侧导航栏不冻结的情况
-				let child = $(fixedNode).find("td");
-				let childFilterArr = [];
-				// 获取data-field属性为fieldName的td
-				for(let i = 0; i < child.length; i++) {
-					if(child[i].getAttribute("data-field") == fieldName) {
-						childFilterArr.push(child[i]);
+				var execRowspan = function(fieldName, index, flag) {
+					// 1为不冻结的情况，左侧列为冻结的情况
+					let fixedNode = index == "1" ? $(".layui-table-body")[index - 1] : (index == "3" ? $(".layui-table-fixed-r") : $(".layui-table-fixed-l"));
+					// 左侧导航栏不冻结的情况
+					let child = $(fixedNode).find("td");
+					let childFilterArr = [];
+					// 获取data-field属性为fieldName的td
+					for(let i = 0; i < child.length; i++) {
+						if(child[i].getAttribute("data-field") == fieldName) {
+							childFilterArr.push(child[i]);
+						}
 					}
-				}
-				// 获取td的个数和种类
-				let childFilterTextObj = {};
-				for(let i = 0; i < childFilterArr.length; i++) {
-					let childText = flag ? childFilterArr[i].innerHTML : childFilterArr[i].textContent;
-					if(childFilterTextObj[childText] == undefined) {
-						childFilterTextObj[childText] = 1;
-					} else {
-						let num = childFilterTextObj[childText];
-						childFilterTextObj[childText] = num * 1 + 1;
+					// 获取td的个数和种类
+					let childFilterTextObj = {};
+					for(let i = 0; i < childFilterArr.length; i++) {
+						let childText = flag ? childFilterArr[i].innerHTML : childFilterArr[i].textContent;
+						if(childFilterTextObj[childText] == undefined) {
+							childFilterTextObj[childText] = 1;
+						} else {
+							let num = childFilterTextObj[childText];
+							childFilterTextObj[childText] = num * 1 + 1;
+						}
 					}
-				}
-				let canRowspan = true;
-				let maxNum; //以前列单元格为基础获取的最大合并数
-				let finalNextIndex; //获取其下第一个不合并单元格的index
-				let finalNextKey; //获取其下第一个不合并单元格的值
-				for(let i = 0; i < childFilterArr.length; i++) {
-					(maxNum > 9000 || !maxNum) && (maxNum = $(childFilterArr[i]).prev().attr("rowspan") && fieldName != "8" ? $(childFilterArr[i]).prev().attr("rowspan") : 9999);
-					let key = flag ? childFilterArr[i].innerHTML : childFilterArr[i].textContent; //获取下一个单元格的值
-					let nextIndex = i + 1;
-					let tdNum = childFilterTextObj[key];
-					let curNum = maxNum < tdNum ? maxNum : tdNum;
-					if(canRowspan) {
-						for(let j = 1; j <= curNum && (i + j < childFilterArr.length);) { //循环获取最终合并数及finalNext的index和key
-							finalNextKey = flag ? childFilterArr[i + j].innerHTML : childFilterArr[i + j].textContent;
-							finalNextIndex = i + j;
-							if((key != finalNextKey && curNum > 1) || maxNum == j) {
-								canRowspan = true;
-								curNum = j;
-								break;
-							}
-							j++;
-							if((i + j) == childFilterArr.length) {
-								finalNextKey = undefined;
+					let canRowspan = true;
+					let maxNum; //以前列单元格为基础获取的最大合并数
+					let finalNextIndex; //获取其下第一个不合并单元格的index
+					let finalNextKey; //获取其下第一个不合并单元格的值
+					for(let i = 0; i < childFilterArr.length; i++) {
+						(maxNum > 9000 || !maxNum) && (maxNum = $(childFilterArr[i]).prev().attr("rowspan") && fieldName != "8" ? $(childFilterArr[i]).prev().attr("rowspan") : 9999);
+						let key = flag ? childFilterArr[i].innerHTML : childFilterArr[i].textContent; //获取下一个单元格的值
+						let nextIndex = i + 1;
+						let tdNum = childFilterTextObj[key];
+						let curNum = maxNum < tdNum ? maxNum : tdNum;
+						if(canRowspan) {
+							for(let j = 1; j <= curNum && (i + j < childFilterArr.length);) { //循环获取最终合并数及finalNext的index和key
+								finalNextKey = flag ? childFilterArr[i + j].innerHTML : childFilterArr[i + j].textContent;
 								finalNextIndex = i + j;
-								break;
+								if((key != finalNextKey && curNum > 1) || maxNum == j) {
+									canRowspan = true;
+									curNum = j;
+									break;
+								}
+								j++;
+								if((i + j) == childFilterArr.length) {
+									finalNextKey = undefined;
+									finalNextIndex = i + j;
+									break;
+								}
 							}
+							childFilterArr[i].setAttribute("rowspan", curNum);
+							if($(childFilterArr[i]).find("div.rowspan").length > 0) { //设置td内的div.rowspan高度适应合并后的高度
+								$(childFilterArr[i]).find("div.rowspan").parent("div.layui-table-cell").addClass("rowspanParent");
+								$(childFilterArr[i]).find("div.layui-table-cell")[0].style.height = curNum * 38 - 10 + "px";
+							}
+							canRowspan = false;
+						} else {
+							childFilterArr[i].style.display = "none";
 						}
-						childFilterArr[i].setAttribute("rowspan", curNum);
-						if($(childFilterArr[i]).find("div.rowspan").length > 0) { //设置td内的div.rowspan高度适应合并后的高度
-							$(childFilterArr[i]).find("div.rowspan").parent("div.layui-table-cell").addClass("rowspanParent");
-							$(childFilterArr[i]).find("div.layui-table-cell")[0].style.height = curNum * 38 - 10 + "px";
+						if(--childFilterTextObj[key] == 0 | --maxNum == 0 | --curNum == 0 | (finalNextKey != undefined && nextIndex == finalNextIndex)) { //||(finalNextKey!=undefined&&key!=finalNextKey)
+							canRowspan = true;
 						}
-						canRowspan = false;
+					}
+				}
+				//合并数据表格行
+				var layuiRowspan = function(fieldNameTmp, index, flag) {
+					let fieldName = [];
+					if(typeof fieldNameTmp == "string") {
+						fieldName.push(fieldNameTmp);
 					} else {
-						childFilterArr[i].style.display = "none";
+						fieldName = fieldName.concat(fieldNameTmp);
 					}
-					if(--childFilterTextObj[key] == 0 | --maxNum == 0 | --curNum == 0 | (finalNextKey != undefined && nextIndex == finalNextIndex)) { //||(finalNextKey!=undefined&&key!=finalNextKey)
-						canRowspan = true;
+					for(let i = 0; i < fieldName.length; i++) {
+						execRowspan(fieldName[i], index, flag);
 					}
 				}
 			}
-			//合并数据表格行
-			var layuiRowspan = function(fieldNameTmp, index, flag) {
-				let fieldName = [];
-				if(typeof fieldNameTmp == "string") {
-					fieldName.push(fieldNameTmp);
-				} else {
-					fieldName = fieldName.concat(fieldNameTmp);
-				}
-				for(let i = 0; i < fieldName.length; i++) {
-					execRowspan(fieldName[i], index, flag);
-				}
-			}
+			
 		</script>
 	</body>
 

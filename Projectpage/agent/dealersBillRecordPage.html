@@ -14,27 +14,15 @@
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 
 		<style>
-			.text {
-				position: relative;
-			}
-			
-			.layui-input-clear {
-				position: absolute;
-				right: 10px;
-				top: 10px;
-				cursor: pointer;
-				display: none;
-				padding: 1px;
-			}
-			
-			.layui-input-clear:hover {
-				background-color: #FF5722;
-				color: #fff;
-				border-radius: 50%;
-			}
-			
-			.shaixuan-qd .layui-input-inline {
-				width: 13.9%;
+			/* *{
+				font-size: 14px;
+			} */
+			/* .layui-table-cell {
+				height: auto;
+				line-height: initial;
+			} */
+			.layui-table-cell{
+				height: auto;
 			}
 		</style>
 	</head>
@@ -43,7 +31,7 @@
 		<div class="x-nav">
 			<span class="layui-breadcrumb">
 				<a href="">首页</a>
-				<a><cite>查流水</cite></a>
+				<a><cite>订单管理</cite></a>
 			</span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
@@ -52,125 +40,188 @@
 			<div class="layui-form layui-row">
 				<div class="layui-input-inline text">
 					<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
-					<input id="orderId" type="text" name="orderId" placeholder="订单编号" autocomplete="off" class="layui-input">
-				</div>
-				<div class="layui-input-inline">
-					<select id="operatorNumber" name="channel">
-						<option value="">经销商名称</option>
-						<c:forEach items="${dealerName }" var="data">
-							<option value="${data.OperatorNumber }">${data.OperatorName }</option>
-						</c:forEach>
-					</select>
+					<input id="shopName" type="text" name="userName" placeholder="商户名称" autocomplete="off" class="layui-input">
 				</div>
 				<div class="layui-input-inline text">
 					<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
-					<input id="userName" type="text" name="userName" placeholder="所属商户" autocomplete="off" class="layui-input">
+					<input id="orderNumber" type="text" name="orderId" placeholder="系统订单编号" autocomplete="off" class="layui-input">
 				</div>
-
 				<div class="layui-input-inline">
-					<select id="transactionType" name="transactionType">
-						<option value="">请选择支付方式</option>
-						<option value="zhifubaopay">支付宝支付</option>
-						<option value="weixinpay">微信支付</option>
-						<option value="yinlianka">银行卡支付</option>
+					<input type="text" class="layui-input" placeholder="创建时间" name="startTime" id="startTime">
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input" placeholder="成功时间" name="endTime" id="endTime">
+				</div>
+				<div class="layui-input-inline">
+					<select id="oneTransactionType" name="transactionType">
+						<option value="">支付产品</option>
+						<option value="Alipay_Pay">支付宝支付</option>
+						<option value="WeChat_Pay">微信支付</option>
 					</select>
 				</div>
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input" placeholder="开始日期" name="startTime" id="startTime">
-				</div>
-				<div class="layui-input-inline">
-					<input type="text" class="layui-input" placeholder="截止日期" name="endTime" id="endTime">
-				</div>
-				<div class="layui-input-inline liushuilist">
-					<select id="salesNumber" name="clerk">
-						<option value="">业务员</option>
-						<option value="${data.SalesNumber }">${data.Name }</option>
+					<select id="orderState" name="orderState">
+						<option value="">订单类型</option>
+						<option value="1">交易成功</option>
+						<option value="5">部分退款</option>
+						<option value="4">全部退款</option>
 					</select>
 				</div>
-				<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
+				<button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i></button>
 			</div>
-			<table class="layui-hide" id="LAY_table_bill" lay-filter="bill"></table>
+			<table class="layui-hide" id="LAY_table_bill" lay-filter="bill" style="font-size:14px"></table>
 		</div>
 		<script type="text/html" id="tool">
 			<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+			
 		</script>
-
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
-			var beginDate = new Date();
-			if(beginDate.getMonth() == 0) {
-				beginDate.setYear(beginDate.getYear() - 1);
-				beginDate.setMonth(12);
-			} else {
-				beginDate.setMonth(beginDate.getMonth() - 1);
-			}
-			var endDate = new Date();
+			// <a class="layui-btn layui-btn-xs" lay-event="instep" style="margin-left:0">同步</a>
+			function fun_date(aa){
+		       var date1 = new Date(),
+					time1 = date1.getFullYear() + "-" + (date1.getMonth() + 1) + "-" + date1.getDate(); //time1表示当前时间
+				var date2 = new Date(date1);
+				date2.setDate(date1.getDate() + aa);
+				var time2 = date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate();
 
-			// 选择日期插件  
-			layui.use('laydate', function() {
-				var laydate = layui.laydate;
+				var a = time2.split('-')[0],
+					b = time2.split('-')[1],
+					c = time2.split('-')[2]
+				if (b < 10) {
+					b = 0 + b
+				}
+				if (c < 10) {
+					c = 0 + c
+				}
+				return a + '-' + b + '-' + c
+		    }
+			window.onload = function(){
+				var beginDate = fun_date(-6);
+			
+				var endDate =fun_date(0);
+				layui.use(['table', 'laytpl','laydate'], function() {
+
+				var table = layui.table,
+					form = layui.form,
+					laydate =  layui.laydate
+					laytpl = layui.laytpl,
+					$ = layui.jquery;
+					
 				laydate.render({
 					elem: '#startTime', //指定元素
-					type: 'datetime',
-					value: beginDate
+					value:beginDate
 				});
 				laydate.render({
 					elem: '#endTime',
-					type: 'datetime',
-					value: endDate
+					value:endDate
 				});
-			});
+				console.log()
 
-			layui.use('table', function() {
-
-				var table = layui.table;
-
+				var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+				var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
 				//方法级渲染
-				table.render({
-					elem: '#LAY_table_bill',
-					url: '.dealersBill/getDealersBillList',
-					method: "post",
-					page: true,
-					height: 'full-200',
-					id: 'billlist',
-					cols: [
-						[{
-							field: 'OrderId',
-							title: '订单号'
-						}, {
-							field: 'ShopName',
-							title: '门店'
-						}, {
-							field: 'ClerkName',
-							title: '业务员'
-						}, {
-							field: 'jiaoyijine',
-							title: '应收款'
-						}, {
-							field: 'jiesuanjine',
-							title: '实收款'
-						}, {
-							field: 'shopshouxufei',
-							title: '手续费'
-						}, {
-							field: 'TransactionType',
-							title: '支付方式'
-						}, {
-							field: 'OrderIdTypeC',
-							title: '订单状态'
-						}, {
-							field: 'TransactionDate',
-							title: '交易时间'
-						}, {
-							field: 'benjizongfenrun',
-							title: '分润'
-						}, {
-							field: 'operation',
-							title: '操作',
-							toolbar: "#tool"
-						}]
-					]
-				});
+				console.log($('#startTime').val())
+				function tableRender(){
+					table.render({
+						url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Agent.selectOrderList + '?agentNumber=' + userNumber ,
+						where:{
+							"agentLevel":agentLevel,
+							"batch":$('#orderNumber').val().trim(),
+							"shopName":$('#shopName').val().trim(),
+							"startTime":$('#startTime').val() + ' ' +'00:00:00',
+							"endTime":$('#endTime').val()+ ' ' +'23:59:59',
+							"oneTransactionType":$('#oneTransactionType').val(),
+							"orderState":$('#orderState').val(),
+						},
+						elem: '#LAY_table_bill',
+						page: true,
+						height: 'full-200',
+						id: 'billlist',
+						response: {
+							"statusCode": "1000", //解析接口状态
+						},
+						parseData: function(res) {
+							if(res.data == null) {
+								return
+							}
+							return {
+								"msg":res.msg,
+								"code": res.code,
+								"count": res.data.count,
+								"data": res.data.transactionReceiptShareProfitList,
+							}
+						},
+						cols: [
+							[{
+								title: '商户编号/商户名称',
+								align:'center',
+								templet: function(data) {
+									return data.merchantNumber + ' <br /> ' + data.merchantName 
+								},
+								width: 200
+							}, {
+								templet: function(data) {
+									return data.paymentOrderNumber + '<br />'  + data.batch 
+								},
+								title: '上游订单号/系统订单号',
+								align:'center',
+								width: 300
+							}, {
+								field: 'transactionAmount',
+								title: '交易金额',
+								align: 'center',
 
+								width: 100
+							}, {
+								field: 'shopPoundage',
+								title: '手续费',
+								align: 'center',
+								width: 100
+							}, {
+								field: 'settlementAmount',
+								title: '实收金额',
+								align: 'center',
+								width: 100
+							}, {
+								templet: function(data) {
+									return data.transactionTime + '</br>' +  data.transactionTime
+								},
+								title: '提交时间/成功时间',
+								align:'center',
+								width: 200
+							}, {
+								field: 'subaccountNumber',
+								title: '支付方式',
+								align: 'center',
+								width: 200,
+								templet:function(data){
+									return data.onePaymentTypeName + '/' + data.twoPaymentTypeName
+								}
+							}, {
+								field: 'orderState',
+								title: '订单描述',
+								align: 'center',
+
+								width: 200
+							}, {
+								field: 'operation',
+								title: '操作',
+								toolbar: "#tool",
+								align: 'center',
+								minWidth: 120
+							}]
+						]
+					});
+				}
+				setTimeout(function(){
+					tableRender()
+				},500)
+				
+				$('#search').click(function(){
+					tableRender()
+				})
 				// 根據條件重载表格
 				var $ = layui.$,
 					active = {
@@ -190,8 +241,8 @@
 									curr: 1 //重新从第 1 页开始
 								},
 								where: {
-									userName: userName.val(),
-									orderId: orderId.val(),
+									userName: userName.val().trim(),
+									orderId: orderId.val().trim(),
 									operatorNumber: operatorNumber.val(),
 									startTime: startTime.val(),
 									endTime: endTime.val(),
@@ -205,15 +256,28 @@
 				//监听工具条
 				table.on('tool(bill)', function(obj) {
 					var data = obj.data;
-
 					if(obj.event === 'detail') {
+						console.log(data)
 						// 跳转流水详情页面
 						layer.open({
 							type: 2,
-							title: '流水详情',
-							area: ['40%', '60%'], //宽高
-							content: '.DealersBill/getBillDetailsPage?orderCode=' + data.OrderId
+							title: '订单详情',
+							area: ['40%', '80%'], //宽高
+							content: 'dealersBillDetail.html',
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								iframe.subPagebill(data)
+							}
 						});
+					} else if(obj.event === 'instep') {
+						// 同步流水
+						layer.confirm('确定要同步流水吗', {
+				            btn: ['确定', '取消'] //按钮
+				        }, function(){
+				        	console.log(data)
+				        })
 					}
 				});
 
@@ -222,6 +286,9 @@
 					active[type] ? active[type].call(this) : '';
 				});
 			});
+			}
+			// 选择日期插件  
+			
 		</script>
 		<script type="text/javascript">
 			$("input").focus(function() {

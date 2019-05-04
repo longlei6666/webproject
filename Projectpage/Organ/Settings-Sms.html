@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -23,10 +23,10 @@
 	<body id="iosiframe">
 		<div class="x-nav">
 			<span class="layui-breadcrumb">
-		        <a href="">首页</a>
-		        <a href="">系统设置</a>
-		        <a><cite>短信设置</cite></a>
-		      </span>
+				<a href="">首页</a>
+				<a href="">系统设置</a>
+				<a><cite>短信设置</cite></a>
+			</span>
 			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
 		</div>
@@ -36,7 +36,12 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">短信通道</label>
 						<div class="layui-input-inline">
-							<input type="text" name="smsChannel" lay-verify="title" class="layui-input">
+							
+							<select name="smsChannel" lay-verify="title">
+								<option value="0">阿里1</option>
+								<option value="1">阿里2</option>
+								<option value="2">阿里3</option>
+							</select>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -66,10 +71,10 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">测试接收手机</label>
 						<div class="layui-input-inline">
-							<input type="text" name="" class="layui-input">
+							<input type="text" name="" class="layui-input" id="sms">
 						</div>
-						<div class="layui-form-mid">
-							<button class="layui-btn layui-btn-xs">测试发送</button>
+						<div class="" style="float: left;display: block;line-height: 20px;margin-right: 10px;">
+							<span class="layui-btn" id="send">测试发送</span>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -86,40 +91,63 @@
 		<script src="../../common/utility.js"></script>
 		<script>
 			var serverUrl = 'http://192.168.1.190:5002/'
-			var userNumber = JSON.parse(sessionStorage.getItem('user')).Number;
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
 			var jgData;
 			var type;
 			var merchantCa = false;
+			var myreg = /^1[34578]\d{9}$/;
+			$('#send').click(function() {
+				if($('#sms').val() == '') {
+					layer.msg('手机号码不得为空')
+					return
+				}
+				if(!myreg.test($('#sms').val())) {
+					layer.msg('手机号码格式不正确')
+					return
+				}
+				CmsUtility.postAjaxCall(
+					//系统设置
+					CmsConfig.addressUrl.Mechanism.Phone, {
+						"Phone": $('#sms').val()
+					},
+					function(data) {
+						if(data.code == 1000) {
+							layer.msg('发送成功')
+						} else {
+							layer.msg(data.msg)
+						}
+					},
+					function(data) {
+						console.log('222')
+					}
+				)
+			})
 			CmsUtility.postAjaxCall(
 				//系统设置
-				CmsConfig.addressUrl.Mechanism.getInstitutionSMSSetting,
-				{
-				'institutionNumber':userNumber,
+				CmsConfig.addressUrl.Mechanism.getInstitutionSMSSetting, {
+					'institutionNumber': userNumber,
 				},
-				function(data){
+				function(data) {
 					console.log(data)
-					if(data.code == 1000 ){
-						
-						if(data.data.length > 0){
+					if(data.code == 1000) {
+						if(data.data.length > 0) {
 							type = 1
 							jgData = data.data[0]
-							merchantCa = jgData.deletionFlag == 0 ? true:false;
+							merchantCa = jgData.deletionFlag == 0 ? true : false;
 							jgData.merchantCa = merchantCa
-
-						}else{
+						} else {
 							type = 0
 						}
-					}else{
+					} else {
 						// layer.alert(JSON.stringify('查询失败'), {
-      //                       title: data.msg
-      //                   })
+						//                       title: data.msg
+						//                   })
 					}
 				},
-				function(data){
+				function(data) {
 					console.log('222')
 				}
 			)
-
 			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
 				layui.$.support.cors = true; //允许ajax跨域
 				var $ = layui.jquery,
@@ -130,23 +158,22 @@
 					laytpl = layui.laytpl;
 
 				//表单初始赋值
-				if(type == 1){
+				if(type == 1) {
 					form.val('basic', {
 						"smsChannel": jgData.smsChannel,
 						"alicloudAppkey": jgData.alicloudAppkey,
 						"alicloudAppsecret": jgData.alicloudAppsecret,
 						"smsScratch": jgData.smsScratch,
-						"merchantCa":jgData.merchantCa,
+						"merchantCa": jgData.merchantCa,
 					})
 				}
-				
 				form.verify({
 					title: function(value) {
 						if(!value.length) {
 							return '不能为空！';
 						}
 					}
-				});	
+				});
 				//普通图片上传
 				var uploadInst = upload.render({
 					elem: '#test1',
@@ -173,49 +200,45 @@
 						});
 					}
 				});
-
 				//监听指定开关
 				form.on('switch(switchTest)', function(data) {
 					layer.tips('短信设置：' + (this.checked ? '已开启' : '已关闭'), data.othis)
 					merchantCa = this.checked
 				});
-
 				//监听提交
 				form.on('submit(add)', function(data) {
-					
 					var data = data.field;
-					if(merchantCa == true){
+					if(merchantCa == true) {
 						data.deletionFlag = 0
-					}else{
+					} else {
 						data.deletionFlag = 1
 					}
 					data.institutionNumber = userNumber
-					if(type == 1){
+					if(type == 1) {
 						data.id = jgData.id
 						serverSub = CmsConfig.addressUrl.Mechanism.updateSMSSetting
-					}else{
-						data.ban = '0'	
+					} else {
+						data.ban = '0'
 						serverSub = CmsConfig.addressUrl.Mechanism.insertSMSS
 					}
 					CmsUtility.postAjaxCall(
 						//系统设置
 						serverSub,
 						data,
-						function(data){
-							if(data.code == 1000){
+						function(data) {
+							if(data.code == 1000) {
 								layer.msg('保存成功')
-                                //form.render()
-							}else{
+								//form.render()
+							} else {
 								layer.msg(data.msg)
 							}
 						},
-						function(data){
+						function(data) {
 							console.log('222')
 						}
 					)
 					return false;
 				});
-
 			});
 		</script>
 	</body>

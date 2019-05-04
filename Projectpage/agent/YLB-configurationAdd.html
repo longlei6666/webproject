@@ -14,157 +14,263 @@
 		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<style type="text/css">
+			.layui-form-item .layui-input-inline{
+				width:250px
+			}
+		</style>
 	</head>
-		<script type="text/javascript">
-			$(function() {
-				$.ajax({
-					type: 'POST',
-					async: true,
-					url: ".yunlb/getylbunitList",
-					success: function(data) {
-						for(var i = 0; i < data.length; i++) {
-							$("#unittype").append("<option value='" + data[i].token + "'>" + data[i].unitType + "</option>");
-						}
-					}
-				});
-			})
-		</script>
+	<script type="text/javascript">
+		// $(function() {
+		// 	$.ajax({
+		// 		type: 'POST',
+		// 		async: true,
+		// 		url: ".yunlb/getylbunitList",
+		// 		success: function(data) {
+		// 			for(var i = 0; i < data.length; i++) {
+		// 				$("#unittype").append("<option value='" + data[i].token + "'>" + data[i].unitType + "</option>");
+		// 			}
+		// 			form.render()
+		// 		}
+		// 	});
+		// })
+	</script>
+
 	<body>
 		<div class="x-body">
 			<div class="layui-form" id="unitadd">
-				<input type="hidden" id="UserNumber" name="UserNumber" value="${UserNumber }">
-				<input type="hidden" id="ShopNumber" name="ShopNumber" value="${ShopNumber }">
 				<div class="layui-form-item">
-					<label for="Merchants" class="layui-form-label layui-form-label2">
-						设备号: 
-					</label>
-					<div class="layui-input-inline layui-input-inline2">
-						<input type="text" id="shebei" name="shebei" class="layui-input" value="${ merchantsNumber.channelNumber}">
-					</div>
-				</div>
-				
-				 <div class="layui-form-item">
-					<label for="Merchants" class="layui-form-label layui-form-label2">
-						设备型号: 
+					<label class="layui-form-label">
+						店铺名称: 
 					</label>
 					<div class="layui-input-inline">
-						<select id="unittype" name="unittype" lay-ignore style="height: 39px;">
-							<option value="">请选择设备型号</option>
-						</select>
+						<div class="layui-input-inline">
+						<input type="text" name="merchantNumber" autocomplete="off" placeholder="请搜索并选择门店" class="layui-input" lay-verify="required1" id="search" onblur="bl()" onfocus="fc()" autocomplete="off">
+						<div class="layui-input-inline" style="position:absolute;top:34px;left:0;z-index:500;max-height:190px;overflow:auto" id="searchBox" >
+						</div>
+					</div>
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label for="Merchants" class="layui-form-label layui-form-label2">
-						音量: 
+					<label class="layui-form-label">
+						云喇叭编号: 
 					</label>
 					<div class="layui-input-inline layui-input-inline2">
-						<select id=yinliang name="yinliang" lay-ignore style="height: 39px;">
-							<option value="">请选择音量</option>
-							<option value="10">10%</option>
-							<option value="20">20%</option>
-							<option value="30">30%</option>
-							<option value="40">40%</option>
-							<option value="50">50%</option>
-							<option value="60">60%</option>
-							<option value="70">70%</option>
-							<option value="80">80%</option>
-							<option value="90">90%</option>
-							<option value="100">100%</option>
-						</select>
+						<input type="text" id="equipmentNumber" name="shebei" lay-verify="required2" class="layui-input" value="" autocomplete="off">
 					</div>
 				</div>
-				<div class="layui-form-item">
-					<label for="L_repass" class="layui-form-label layui-form-label2"></label>
-					<button id="ss" class="layui-btn layui-btn-danger" lay-submit="" lay-filter="add">提交</button>
+				<div class="layui-form-item layui-layout-admin">
+					<div class="layui-input-block">
+						<div class="layui-footer" style="left: 0;text-align: center;">
+							<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+							<a class="layui-btn layui-btn-primary" onclick="x_admin_close()">取消</a>
+						</div>
+						<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+					</div>
 				</div>
 			</div>
 		</div>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
-			layui.use(['form', 'layer'], function() {
-				var form = layui.form,
-				layer = layui.layer;
-				//监听提交
-				form.on('submit(add)', function(data) {
-					var UserNumber = $("#UserNumber").val();
-					var ShopNumber = $("#ShopNumber").val();
-					var shebei = $("#shebei").val();
-					if (shebei.trim()==""){
-						layer.alert("请输入设备码");
-	        	  		return;
-					}
-					var xinghao = $("#unittype").find("option:selected").text();
-					if (xinghao.trim()==""){
-						layer.alert("请选择型号");
-	        	  		return;
-					}
-					var yinliang = $("#yinliang").val();
-					if (yinliang==""){
-						layer.alert("请设置音量");
-	        	  		return;
-					}
-					var mydata={
-							UserNumber:UserNumber,
-							ShopNumber:ShopNumber,
-							SheBei:shebei,
-							XingHao:xinghao,
-							Token:$("#unittype").val(),
-							YinLiang:yinliang
-					}
-					//发异步，把数据提交给后台
-					$.ajax({
-						type: "post",
-						url: ".yunlb/addylb",
-						async: true,
-						data: mydata,
-						success: function(data) {
-							if(data.result == "success") {
-								// 绑定云喇叭
-								$.ajax({
-									type: "post",
-									url: ".yunlb/addylbdata",
-									async: true,
-									data: mydata,
-									success: function(datas) {
-										if(datas.code == 0) {
-											layer.alert("添加成功!", {
-												icon: 6
-											}, function() {
-												// 刷新父页面
-												window.parent.location.reload();
-												// 获得frame索引
-												var index = parent.layer.getFrameIndex(window.name);
-												//关闭当前frame
-												parent.layer.close(index);
-											});
-										}else if(datas.code == 1){
-											layer.alert("未知错误");
-										}else if(datas.code == 2){
-											layer.alert("绑定失败，设备码不存在");
-										}else if(datas.code == 3){
-											layer.alert("绑定失败，设备码已经被其它用户绑定");
-										}else if(datas.code == 4){
-											layer.alert("绑定失败，设备码已经被同一用户绑定");
-										}else if(datas.code == 5){
-											layer.alert("解绑失败，设备码被任何用户绑定");
-										}else if(datas.code == 6){
-											layer.alert("失败，未提供设备码");
-										}else if(datas.code == 8){
-											layer.alert("失败，此Token无此设备权限");
-										}else if(datas.code == 9){
-											layer.alert("失败，无效的Token");
-										}else if(datas.code == 17){
-											layer.alert("错误，重复的请求");
-										}
-									}
-								});
-							} else {
-								layer.alert(data.desc);
+			var jgData
+			var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+			var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
+			function clickS(e){
+					$('#search').val(e.getAttribute('data-name'))
+					console.log(e)
+					$('#search').attr('shopNumber',e.getAttribute('data-id'))
+					$('#searchBox').hide()
+				}
+				function bl(){
+				setTimeout(function(){
+					$('#searchBox').hide()
+				},300)
+				//$('#searchBox').hide()
+			}
+			function fc(){
+					$('#searchBox').show()
+					CmsUtility.postAjaxCall(
+						//系统设置
+					CmsConfig.addressUrl.Agent.getShoplist,
+					{
+						"merchantNumber":jgData.merchantNumber,
+						"ShopName":$('#search').val()
+					},
+					function(data){
+						console.log(this.value)
+						if(data.code == 1000){
+							if(data.data.length == 0){
+								layer.msg('暂无门店,请登录商户平台添加门店')
 							}
+							 var str = ''
+							 for(var i =0;i<data.data.length;i++){
+							 	str+= '<div class="layui-btn layui-btn-primary" data-id="'+ data.data[i].ShopNumber+'" data-name="'+ data.data[i].shopName+'" style="width:100%;margin-left:0" onclick="clickS(this)" >'+ data.data[i].shopName+'</div>'
+							 }
+							 document.getElementById('searchBox').innerHTML = str
+							// layer.msg('保存成功')
+							// setTimeout(function(){
+							// 	x_admin_close()
+							// },500);
+							
+						}else{
+							layer.msg(data.msg)
+							
 						}
+					},
+					function(data){
+						console.log('222')
+					}
+				)
+				
+			}
+			function subPage(data,data1){
+				jgData = data
+				console.log(data,data1)
+				layui.use(['form', 'layer'], function() {
+					var form = layui.form,
+						layer = layui.layer;
+						$("#search").bind('input propertychange',function(){
+					    console.log(this.value)
+					    $('#search').removeAttr('shopNumber')
+					    document.getElementById('searchBox').innerHTML = ''
+					    console.log(jgData)
+
+					    CmsUtility.postAjaxCall(
+								//系统设置
+							CmsConfig.addressUrl.Agent.getShoplist,
+							{
+								"merchantNumber":jgData.merchantNumber,
+								"ShopName":$('#search').val()
+							},
+							function(data){
+								console.log(this.value)
+								if(data.code == 1000){
+									if(data.data.length == 0){
+										layer.msg('暂无门店,请登录商户平台添加门店')
+									}
+									 var str = ''
+									 for(var i =0;i<data.data.length;i++){
+									 	str+= '<div class="layui-btn layui-btn-primary" data-id="'+ data.data[i].ShopNumber+'" data-name="'+ data.data[i].shopName+'" style="width:100%;margin-left:0" onclick="clickS(this)" >'+ data.data[i].shopName+'</div>'
+									 }
+									 document.getElementById('searchBox').innerHTML = str
+									// layer.msg('保存成功')
+									// setTimeout(function(){
+									// 	x_admin_close()
+									// },500);
+									
+								}else{
+									layer.msg(data.msg)
+									
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+					})
+					form.verify({
+						required1:function(value){
+							if(!$('#search').attr('shopnumber')){
+								return '请搜索并选择门店'
+								
+							}
+						},
+						required2:function(value){
+							if($('#equipmentNumber').val() == ''){
+								return '请输入云喇叭编号'
+							}
+						},
+						
 					});
-					return false;
+					//监听提交
+					form.on('submit(add)', function(data) {
+						var ajData = new Object()
+						ajData.merchantNumber = jgData.merchantNumber
+						ajData.equipmentNumber = $('#equipmentNumber').val()
+						ajData.shopNumber = $('#search').attr('shopnumber')
+						ajData.volume = 100
+						console.log(ajData)
+						
+						CmsUtility.postAjaxCall(
+						//系统设置
+							CmsConfig.addressUrl.Agent.insShopEquipment,
+							ajData,
+							function(data){
+								if(data.code == 1000){
+									console.log(data)
+									setTimeout(function(){
+										x_admin_close()
+										parent.layui.table.reload('YLBlist')
+										parent.layer.msg('绑定成功')
+									},16); 
+									
+								}else{
+									layer.msg(data.msg)
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+						//发异步，把数据提交给后台
+						// $.ajax({
+						// 	type: "post",
+						// 	url: ".yunlb/addylb",
+						// 	async: true,
+						// 	data: mydata,
+						// 	success: function(data) {
+						// 		if(data.result == "success") {
+						// 			// 绑定云喇叭
+						// 			$.ajax({
+						// 				type: "post",
+						// 				url: ".yunlb/addylbdata",
+						// 				async: true,
+						// 				data: mydata,
+						// 				success: function(datas) {
+						// 					if(datas.code == 0) {
+						// 						layer.alert("添加成功!", {
+						// 							icon: 6
+						// 						}, function() {
+						// 							// 刷新父页面
+						// 							window.parent.location.reload();
+						// 							// 获得frame索引
+						// 							var index = parent.layer.getFrameIndex(window.name);
+						// 							//关闭当前frame
+						// 							parent.layer.close(index);
+						// 						});
+						// 					} else if(datas.code == 1) {
+						// 						layer.alert("未知错误");
+						// 					} else if(datas.code == 2) {
+						// 						layer.alert("绑定失败，设备码不存在");
+						// 					} else if(datas.code == 3) {
+						// 						layer.alert("绑定失败，设备码已经被其它用户绑定");
+						// 					} else if(datas.code == 4) {
+						// 						layer.alert("绑定失败，设备码已经被同一用户绑定");
+						// 					} else if(datas.code == 5) {
+						// 						layer.alert("解绑失败，设备码被任何用户绑定");
+						// 					} else if(datas.code == 6) {
+						// 						layer.alert("失败，未提供设备码");
+						// 					} else if(datas.code == 8) {
+						// 						layer.alert("失败，此Token无此设备权限");
+						// 					} else if(datas.code == 9) {
+						// 						layer.alert("失败，无效的Token");
+						// 					} else if(datas.code == 17) {
+						// 						layer.alert("错误，重复的请求");
+						// 					}
+						// 				}
+						// 			});
+						// 		} else {
+						// 			layer.alert(data.desc);
+						// 		}
+						// 	}
+						// });
+						return false;
+					});
 				});
-			});
+			}
+			
 		</script>
 	</body>
+
 </html>

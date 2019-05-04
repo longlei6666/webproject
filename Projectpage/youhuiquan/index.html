@@ -75,7 +75,7 @@
 				res.useMoney = res.useMoney.split('.')[0]
 				res.discount = res.discount.split('.')[0]
 			}
-			if(res.cardVoucherName == "满减券"){
+			if(res.cardVoucherName == "满减券" || res.cardVoucherName == "代金券"){
 				$('.quanJine_F').show()
 				$('.quan_je').show()
 				$('.quanJine_Z').hide()
@@ -92,14 +92,15 @@
 		}
 		var Data = []
 		var shopname
-		var serverUrl = 'http://192.168.1.190:5002/'
+		var serverUrl = 'http://api.zhuanmoney8.com/hy/'
+		// var serverUrl = 'http://192.168.1.66:5002/'
 		var couponDistributionNumber = window.location.href.split('?couponDistributionNumber=')[1].split('&userNumber')[0]
 		var userNumber = window.location.href.split('userNumber=')[1]
 		
 		$.ajax({
 			type:"post",
-			url: serverUrl + "shop/getShopName?userNumber=0011000180427300323966",
-			//url: serverUrl + "shop/getShopName?userNumber=" + userNumber,
+			// url: serverUrl + "shop/getShopName?userNumber=0011000180427300323966",
+			url: serverUrl + "shop/getShopName?userNumber=" + userNumber,
 			async:false,
 			success:function(res){
 				if(res.code == 0){
@@ -123,9 +124,9 @@
 		var quanData = changeRes(Data[0])
 
 		var shopName = shopname //店铺名
-		var quanJine_Num = quanLx //优惠券金额
+		var quanJine_Num = quanLx.split(".")[0] //优惠券金额
 		var quanName = quanData.cardVoucherName //券类型
-		var quanJine_jianNum = quanData.useMoney //券限制金额
+		var quanJine_jianNum = quanData.useMoney.split(".")[0] //券限制金额
 		var startTime = quanData.startTime //起始时间
 		var endTime = quanData.endTime //结束时间
 		$('#shopName').html(shopName)

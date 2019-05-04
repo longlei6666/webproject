@@ -19,40 +19,21 @@
 		<div class="x-body">
 			<form class="layui-form">
 				<div class="layui-form-item">
-					<label class="layui-form-label">姓名</label>
+					<label class="layui-form-label">管理员名称</label>
 					<div class="layui-input-inline">
-						<input type="text" id="name" name="name" lay-verify="required" autocomplete="off" class="layui-input">
+						<input type="text" id="name" name="clerkName" lay-verify="name" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">手机号</label>
+					<label class="layui-form-label">管理员电话</label>
 					<div class="layui-input-inline">
-						<input type="text" id="mphone" name="mphone" lay-verify="phone" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">所属门店</label>
-					<div class="layui-input-inline">
-						<select name="shop" id="shop" lay-verify="required" lay-search="">
-							<option value="">所属门店</option>
-							<option value="${shop.ShopName }">${shop.ShopName }</option>
-						</select>
-					</div>
-					<div class="layui-form-mid layui-word-aux">
-						<span class="x-red">*</span>
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">角色</label>
-					<div class="layui-input-block">
-						<input type="radio" name="role" value="1" title="营业员" checked="checked">
-						<input type="radio" name="role" value="0" title="店长">
+						<input type="text" id="mphone" name="registeredCell" lay-verify="phone" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">密码</label>
 					<div class="layui-input-inline">
-						<input type="password" id="L_pass" name="pass" lay-verify="pass" autocomplete="off" class="layui-input">
+						<input type="password" id="L_pass" name="password" lay-verify="pass" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-form-mid layui-word-aux">
 						6到16个字符
@@ -64,64 +45,72 @@
 						<input type="password" id="L_repass" name="password" lay-verify="repass" autocomplete="off" class="layui-input">
 					</div>
 				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label"></label>
-					<button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+
+				<div class="layui-form-item layui-layout-admin">
+					<div class="layui-input-block">
+						<div class="layui-footer" style="left: 0;text-align: center;">
+							<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+							<a class="layui-btn layui-btn-primary" onclick="x_admin_close()">取消</a>
+						</div>
+						<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+					</div>
 				</div>
 			</form>
 		</div>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
-			layui.use(['form', 'layer'], function() {
-				$ = layui.jquery;
-				var form = layui.form,
-					layer = layui.layer;
+			function subPageClerkadd(data, userNumber) {
+				var data = data,
+					userNumber = userNumber,
+					shopNumber = data.shopNumber;
+				layui.use(['form', 'layer'], function() {
+					$ = layui.jquery;
+					var form = layui.form,
+						layer = layui.layer;
 
-				//自定义验证规则
-				form.verify({
-					name: function(value) {
-						if(!value) {
-							return '昵称不能为空';
-						}
-					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					repass: function(value) {
-						if($('#L_pass').val() != $('#L_repass').val()) {
-							return '两次密码不一致';
-						}
-					}
-				});
-
-				//监听提交
-				form.on('submit(add)', function(data) {
-					console.log(data.field);
-					//发异步，把数据提交
-					$.ajax({
-						type: "post",
-						url: ".Assistant/addAssistant",
-						async: true,
-						data: data.field,
-						success: function(data) {
-							if(data.code == 0000) {
-								layer.alert("添加成功", {
-									icon: 6
-								}, function() {
-									// 刷新父页面
-									window.parent.location.reload();
-									// 获得frame索引
-									var index = parent.layer.getFrameIndex(window.name);
-									//关闭当前frame
-									parent.layer.close(index);
-								});
-							} else {
-								layer.alert(data.desc);
+					//自定义验证规则
+					form.verify({
+						name: function(value) {
+							if(!value) {
+								return '管理员名称';
+							}
+						},
+						pass: [/^[0-9A-Za-z]{6,12}$/, '密码必须6到12位'],
+						repass: function(value) {
+							if($('#L_pass').val() != $('#L_repass').val()) {
+								return '两次密码不一致';
 							}
 						}
 					});
 
-					return false;
+					//监听提交
+					form.on('submit(add)', function(data) {
+						console.log(data.field);
+						var addData = data.field
+						// 发送请求
+						CmsUtility.postAjaxCall(
+							//系统设置
+							CmsConfig.addressUrl.Merchant.addClerk + '?merchantNumber=' + userNumber + '&shopNumber=' + shopNumber,
+							addData,
+							function(data) {
+								if(data.code == 1000) {
+									var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+									parent.layer.close(index); //再执行关闭
+									parent.layer.msg('新增成功')
+									parent.layui.table.reload('assistantlist');
+								} else {
+									layer.msg(data.msg)
+								}
+							},
+							function(data) {
+								console.log('222')
+							}
+						)
+						return false;
+					});
 				});
-
-			});
+			}
 		</script>
 	</body>
 

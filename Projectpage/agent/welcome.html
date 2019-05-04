@@ -12,7 +12,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="./css/font.css">
 		<link rel="stylesheet" href="./css/xadmin.css">
-		<link rel="stylesheet" href="./css/style-qd.css">
+		<link rel="stylesheet" href="../../public/css/style-baobiao.css">
 		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="./js/xadmin.js"></script>
@@ -27,35 +27,45 @@
 				margin-bottom: 10px;
 				color: #999;
 			}
-			.homelistc:last-child{margin-bottom: 20px;}
+			
+			.homelistc:last-child {
+				margin-bottom: 20px;
+			}
+			
 			.homelistc {
 				font-size: 1.6rem;
 				font-weight: 600;
 			}
 			
-			.homelistc span{
+			.homelistc span {
 				display: block;
 				font-size: 1.6rem;
 				font-weight: 600;
 			}
 			
-			.homelistc span i{
+			.homelistc span i {
 				font-style: normal;
 				font-size: 1.6rem;
 				font-weight: 600;
+			}
+			p{
+				font-size: 16px;
 			}
 		</style>
 	</head>
 
 	<body>
-		<div class="x-body">
-			<blockquote class="layui-elem-quote">管理首页</blockquote>
+		<div class="x-body" id="levA1" style="display:none">
+			<blockquote class="layui-elem-quote">欢迎登陆服务商后台管理</blockquote>
+		</div>
+		<div class="x-body" id="levA" style="display:none">
+			<blockquote class="layui-elem-quote">概览数据</blockquote>
 			<div class="layui-row index-zs">
 				<div class="layui-col-md5">
 					<div class="homelist">
 						<p class="homelistitle">账户余额（元）</p>
 						<div class="homelistc">
-							<span><i id="">1000</i>元</span>
+							<span><i id="balance">0</i>元</span>
 						</div>
 					</div>
 				</div>
@@ -63,7 +73,7 @@
 					<div class="homelist">
 						<p class="homelistitle">提现中余额（元）</p>
 						<div class="homelistc">
-							<span><i id="">1000</i>元</span>
+							<span><i id="cashing"></i>元</span>
 						</div>
 					</div>
 				</div>
@@ -71,7 +81,7 @@
 					<div class="homelist">
 						<p class="homelistitle">已提现金额（元）</p>
 						<div class="homelistc">
-							<span><i id="">1000</i>元</span>
+							<span><i id="cashed"></i>元</span>
 						</div>
 					</div>
 				</div>
@@ -79,73 +89,119 @@
 					<div class="homelist">
 						<p class="homelistitle">已结算余额（元）</p>
 						<div class="homelistc">
-							<span><i id="">1000</i>元</span>
+							<span><i id="settlementAmount"></i>元</span>
 						</div>
 					</div>
 				</div>
-				<div class="layui-col-md5">
+				<!-- <div class="layui-col-md5">
 					<div class="homelist">
 						<p class="homelistitle">未结算余额（元）</p>
 						<div class="homelistc">
 							<span><i id="">1000</i>元</span>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 
-			<div class="layui-row index-zs">
-				<div class="layui-col-md5">
-					<div class="homelist">
-						<p class="homelistitle">商户数</p>
-						<div class="homelistc">
-							<span><i id="">1000</i>元</span>
+			<blockquote class="layui-elem-quote">
+				<span style="margin-right: 30px;">商户数据</span>
+				<!-- <button class="layui-btn layui-btn-xs" id="now">今天</button>
+				<button class="layui-btn layui-btn-xs" id="yes">昨天</button> -->
+			</blockquote>
+			<div class="baobiao">
+				<div class="baobiao-col-1" style="padding-left: 0;">
+					<div class="baobiaoK">
+						<div class="baobiaolist" style="line-height:52px;font-size:16px">
+							商户数
+						</div>
+						<div style="line-height:50px;font-size:16px" id="shopCount" 	>
+							0
 						</div>
 					</div>
 				</div>
-				<div class="layui-col-md5">
-					<div class="homelist">
-						<p class="homelistitle">交易笔数(总数)</p>
-						<div class="homelistc">
-							<span><i id="">1000</i>(支付宝)</span>
-							<span><i id="">1000</i>(微信)</span>
+				<div class="baobiao-col-1" style="padding-right: 0;">
+					<div class="baobiaoK">
+						<div class="baobiaolist" style="line-height:52px;font-size:16px">
+							佣金
+						</div>
+						<div style="line-height:50px;font-size:16px"  id="brokerage">
+							0元
 						</div>
 					</div>
 				</div>
-				<div class="layui-col-md5">
-					<div class="homelist">
-						<p class="homelistitle">商家收入(总数)</p>
-						<div class="homelistc">
-							<span><i id="">1000</i></span>
+				<div class="baobiao-col-2">
+					<div class="baobiaoK">
+						<div class="baobiaolist">
+							<p class="baobiaolistitle">交易笔数</p>
+							<p class="baobiaolistct" style="font-size:16px"><span id="transactionNumber">0</span> 笔</p>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc dnsj">
+								<div></div>
+								<p style="font-size:16px"><span id="wTransactionNumber">0</span> 笔</p>
+							</div>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc wmsj">
+								<div></div>
+								<p  style="font-size:16px"><span id="zTransactionNumber">0</span> 笔</p>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="layui-col-md5">
-					<div class="homelist">
-						<p class="homelistitle">商家退款(总数)</p>
-						<div class="homelistc">
-							<span><i id="">1000</i>(支付宝)</span>
-							<span><i id="">1000</i>(微信)</span>
+				<div class="baobiao-col-2">
+					<div class="baobiaoK">
+						<div class="baobiaolist">
+							<p class="baobiaolistitle">商家收入（元）</span>
+							</p>
+							<p class="baobiaolistct"  style="font-size:16px"><span id="incomeMoney">0</span> 元</p>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc dnsj">
+								<div></div>
+								<p><span id="wIncomeMoney">0</span> 元</p>
+							</div>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc wmsj">
+								<div></div>
+								<p><span id="zIncomeMoney">0</span> 元</p>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="layui-col-md5">
-					<div class="homelist">
-						<p class="homelistitle">佣金</p>
-						<div class="homelistc">
-							<span><i id="">1000</i></span>
+				<div class="baobiao-col-2">
+					<div class="baobiaoK">
+						<div class="baobiaolist">
+							<p class="baobiaolistitle">商家退款（元）</span>
+							</p>
+							<p class="baobiaolistct"  style="font-size:16px"><span id="refundMoney">0</span> 元</p>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc dnsj">
+								<div></div>
+								<p  style="font-size:16px"><span id="wRefundMoney">0</span> 元</p>
+							</div>
+						</div>
+						<div class="layui-col-md6 layui-col-sm6 layui-col-xs6 baobiaod">
+							<div class="baobiaodc wmsj">
+								<div></div>
+								<p  style="font-size:16px"><span id="zRefundMoney">0</span> 元</p>
+							</div>
 						</div>
 					</div>
 				</div>
+				
 			</div>
 
 			<div class="layui-row layui-col-space30">
-				<div class="layui-col-md6">
+				<div class="layui-col-md5">
 					<fieldset class="layui-elem-field layui-field-title">
-						<legend>结算记录</legend>
+						<legend>账单列表</legend>
 					</fieldset>
 					<table class="layui-hide" id="LAY_table_SettlementRecords" lay-filter="Records"></table>
 				</div>
-				<div class="layui-col-md6">
+				<div class="layui-col-md7">
 					<fieldset class="layui-elem-field layui-field-title">
 						<legend>提现记录</legend>
 					</fieldset>
@@ -153,30 +209,69 @@
 				</div>
 			</div>
 		</div>
+		<script src="../../common/config.js"></script>
+    <script src="../../common/utility.js"></script>
 		<script>
-			layui.use('table', function() {
-
-				var table = layui.table;
+			var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+        var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
+        if(agentLevel != 'A'){
+        	$('#levA').hide()
+        	$('#levA1').show()
+        }else{
+        	$('#levA1').hide()
+        	$('#levA').show()
+        }
+			layui.use(['table', 'table', 'laytpl', 'laydate'], function() {
+		        var table = layui.table,
+		            form = layui.form,
+		            laydate = layui.laydate,
+		            laytpl = layui.laytpl,
+		            $ = layui.jquery;
 
 				//方法级渲染(结算记录)
 				table.render({
 					elem: '#LAY_table_SettlementRecords',
-					url: '.homePage/getSalesmanList',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Agent.selectAgentBillList + '?agentNumber='+userNumber,
+					where:{
+						"startTime":'',
+						"endTime":'',
+					},
 					method: "post",
 					height: 'full-270',
+					response: {
+		                //res 即为原始返回的数据
+		                "statusCode": "1000", //解析接口状态
+
+		            },
+		            parseData: function(res) {
+		                //res 即为原始返回的数据
+		                return {
+		                    "code": res.code, //解析接口状态
+		                    "msg": res.msg, //解析提示文本
+		                    //"count": res.data.count, //解析数据长度
+		                    "data": res.data.agentBillList, //解析数据列表
+		                };
+		            },
 					cols: [
 						[{
-							field: 'SettlementDate',
+							field: 'inserttime',
 							title: '日期',
-							align: 'center'
-						}, {
-							field: 'jiaoyijine',
 							align: 'center',
-							title: '金额'
+							templet:function(data){
+								if(data.inserttime){
+									return data.inserttime.split('.')[0].split('T')[0] + ' '+ data.inserttime.split('.')[0].split('T')[1] 
+								}else{
+									return ""
+								}
+							}
 						}, {
-							field: 'SettlementTypeC',
+							field: 'importExportAmount',
 							align: 'center',
-							title: '结算状态'
+							title: '分润金额'
+						}, {
+							field: 'endTermBalance',
+		                    title: '变动后金额',
+		                    align: 'center',
 						}]
 					]
 				});
@@ -184,35 +279,119 @@
 				//方法级渲染(提现记录)
 				table.render({
 					elem: '#LAY_table_WithdrawalRecord',
-					url: '.homePage/getWithdrawalList',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Agent.getAgentWithdrawCash + '?agentNumber='+userNumber,
 					method: "post",
 					height: 'full-270',
+					response: {
+		                //res 即为原始返回的数据
+		                "statusCode": "1000", //解析接口状态
+
+		            },
+		            parseData: function(res) {
+		                //res 即为原始返回的数据
+		                return {
+		                    "code": res.code, //解析接口状态
+		                    "msg": res.msg, //解析提示文本
+		                    //"count": res.data.count, //解析数据长度
+		                    "data": res.data.data, //解析数据列表
+		                };
+		            },
 					cols: [
 						[{
-							field: 'SalesNumber',
+							field: 'updatetime',
 							title: '日期',
 							align: 'center'
 						}, {
-							field: 'Name',
+							field: 'withdrawCashAmount',
 							align: 'center',
 							title: '金额'
 						}, {
-							field: 'Cell',
+							field: 'bankCardNo',
 							align: 'center',
-							title: '卡号'
-						}, {
-							field: 'SalesTypeC',
-							align: 'center',
-							title: '姓名'
-						}, {
-							field: 'SalesTypeC',
-							align: 'center',
-							title: '开户行'
+							title: '状态',
+							templet:function(data){
+								if(data.orderType == 0){
+                            return '审核中'
+                        }
+                        if(data.orderType == 1){
+                            return '已审核'
+                        }
+                        if(data.orderType == -1){
+                            return '已拒绝'
+                        }
+							}
 						}]
 					]
 				});
 
 			});
+			function getAll(){
+				CmsUtility.postAjaxCall(
+							//系统设置
+					CmsConfig.addressUrl.Agent.selectAgOverview,
+					{
+						"agentNumber":userNumber,
+					},
+					function(data){
+						console.log(data.data)
+						$('#balance').html(data.data.balance)
+						$('#cashing').html(data.data.cashing)
+						$('#settlementAmount').html(data.data.settlementAmount)
+						$('#cashed').html(data.data.cashed)
+					}
+				)
+			}
+			getAll()
+			var myDate = new Date().toLocaleDateString().split('/')[0] + '-' + new Date().toLocaleDateString().split('/')[1] + '-' + new Date().toLocaleDateString().split('/')[2];
+			console.log(myDate)
+			function getShop(){
+				console.log(myDate)
+				CmsUtility.postAjaxCall(
+							//系统设置
+					CmsConfig.addressUrl.Agent.selectMerchant,
+					{
+						"agentNumber":userNumber,
+						"agentLevel":agentLevel,
+						"startTime":"",
+						"endtime":"",
+					},
+					function(data){
+						if(data.code == 1000){
+							
+							
+							$('#shopCount').html(data.data.agShopStatisticsResult.shopCount)
+						$('#brokerage').html(data.data.agShopStatisticsResult.brokerage + '元')
+						$('#transactionNumber').html(data.data.agShopStatisticsResult.transactionNumber)
+						$('#wTransactionNumber').html(data.data.agShopStatisticsResult.wTransactionNumber)
+						$('#zTransactionNumber').html(data.data.agShopStatisticsResult.zTransactionNumber)
+						$('#incomeMoney').html(data.data.agShopStatisticsResult.incomeMoney)
+						$('#wIncomeMoney').html(data.data.agShopStatisticsResult.wIncomeMoney)
+
+						$('#zIncomeMoney').html(data.data.agShopStatisticsResult.zIncomeMoney)
+						$('#refundMoney').html(data.data.agShopStatisticsResult.refundMoney)
+						$('#wRefundMoney').html(data.data.agShopStatisticsResult.wRefundMoney)
+						$('#zRefundMoney').html(data.data.agShopStatisticsResult.zRefundMoney)
+						}else{
+							layer.msg(data.msg)
+							
+						}
+					},
+					function(data){
+						console.log('222')
+					}
+				)
+		}
+		getShop()
+		$('#now').click(function(){
+			 myDate = new Date().toLocaleDateString().split('/')[0] + '-' + new Date().toLocaleDateString().split('/')[1] + '-' + new Date().toLocaleDateString().split('/')[2];
+			console.log(myDate)
+			getShop()
+		})
+		$('#yes').click(function(){
+			 myDate = new Date(new Date().getTime() - 24*60*60*1000).toLocaleDateString().split('/')[0] + '-' + new Date(new Date().getTime() - 24*60*60*1000).toLocaleDateString().split('/')[1] + '-' + new Date(new Date().getTime() - 24*60*60*1000).toLocaleDateString().split('/')[2];
+			console.log(myDate)
+			getShop()
+		})
 		</script>
 
 	</body>

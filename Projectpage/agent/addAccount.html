@@ -33,7 +33,7 @@
 	<body>
 		<div class="x-body">
 			<div class="layui-row">
-				<form class="layui-form">
+				<form class="layui-form" lay-filter="basic">
 					<div class="grid-demo">
 						<!--提现申请-->
 						<blockquote class="layui-elem-quote"><i class="iconfont icon-wode"></i>提现账户</blockquote>
@@ -42,31 +42,31 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span class="x-red">* </span>银行名称：</label>
 									<div class="layui-input-inline">
-										<input type="text" name="openingBankName" lay-verify="required" autocomplete="off" class="layui-input" value="">
+										<input type="text" name="openingBank" lay-verify="title" autocomplete="off" class="layui-input" value="">
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">支行名称：</label>
+									<label class="layui-form-label"><span class="x-red">* </span>支行名称：</label>
 									<div class="layui-input-inline">
-										<input type="text" name="openingBranchName" lay-verify="required" autocomplete="off" class="layui-input" value="">
+										<input type="text" name="openingBankBranch" lay-verify="title" autocomplete="off" class="layui-input" value="">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span class="x-red">* </span>银行卡号：</label>
 									<div class="layui-input-inline">
-										<input type="text" name="bankCard" lay-verify="required" autocomplete="off" class="layui-input" value="">
+										<input type="text" name="bankCardNo" lay-verify="title" autocomplete="off" class="layui-input" value="">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span class="x-red">* </span>开卡姓名：</label>
 									<div class="layui-input-inline">
-										<input type="text" name="cardHoldingName" lay-verify="required" autocomplete="off" class="layui-input" value="">
+										<input type="text" name="name" lay-verify="title" autocomplete="off" class="layui-input" value="">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span class="x-red">* </span>银行预留手机号：</label>
 									<div class="layui-input-inline">
-										<input type="text" name="mphone" lay-verify="required" autocomplete="off" class="layui-input" value="">
+										<input type="text" name="reserveCell" lay-verify="phone" autocomplete="off" class="layui-input" value="">
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -81,7 +81,7 @@
 								<p>纳税人识别号：911130105590967608J</p>
 								<p>开票内容：技术服务费</p>
 								<p>开户行及账号：工商银行石家庄建华支行 0402022409300450513</p>
-								<p>地址及电话：河北省石家庄市长安区中山东路勒泰中心A座写字楼2215-2216室 0311-89643782</p>
+								<p>地址及电话：河北省石家庄市长安区建设大街44号瀚科大厦5楼510-512室 0311-88368868</p>
 								<p>联系人：周经理</p>
 							</div>
 						</div>
@@ -91,45 +91,82 @@
 				</form>
 			</div>
 		</div>
-
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
-			layui.use(['form', 'layer'], function() {
-				$ = layui.jquery;
-				var form = layui.form,
-					layer = layui.layer;
-
+			layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
+				 //允许ajax跨域
+				var $ = layui.jquery,
+					upload = layui.upload,
+					laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					laytpl = layui.laytpl;
+				var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+				var insNumber = JSON.parse(sessionStorage.getItem('agentUser')).institutionNumber;
+				var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
+				var id = '';
+				CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Agent.getBackCard,
+						{
+							"agentNumber":userNumber
+						},
+						function(data){
+							if(data.code == 1000){
+								console.log(data)
+								console.log(data.data.data)
+								id = data.data.data.id
+								form.val('basic', {
+									"openingBank": data.data.data.openingBank,
+									"openingBankBranch": data.data.data.openingBankBranch,
+									"bankCardNo": data.data.data.bankCardNo,
+									"name": data.data.data.name,
+									"reserveCell": data.data.data.reserveCell,
+								})
+							}else{
+								layer.msg(data.msg)
+							}
+						},
+						function(data){
+							console.log('222')
+						}
+					)
+				form.verify({
+					title:function(value){
+						if(!value.length){
+							return "不得为空"
+						}
+					}
+				})
 				//监听提交
 				form.on('submit(add)', function(data) {
 
 					console.log(data.field);
 					//发异步，把数据提交给php
-					$.ajax({
-						type: "post",
-						url: ".Withdrawal/addAccount",
-						async: true,
-						data: data.field,
-						success: function(data) {
-							if(data.code == 0000) {
-								layer.alert("添加成功", {
-									icon: 6
-								}, function() {
-
-									// 刷新父页面
-									window.parent.location.reload();
-									// 获得frame索引
-									var index = parent.layer.getFrameIndex(window.name);
-									//关闭当前frame
-									parent.layer.close(index);
-								});
-							} else {
-								layer.alert("添加失败,请重新添加!!", {
-									icon: 6
-								}, function() {
-
-								});
+					var addData = data.field
+					addData.agentNumber = userNumber
+					addData.id = id
+					console.log(addData)
+					// 发送请求
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Agent.insertBankCard,
+						addData,
+						function(data){
+							if(data.code == 1000){
+								x_admin_close()
+								parent.layer.msg('保存成功')
+								parent.layui.table.reload('merchantlist')
+								
+							}else{
+								layer.msg(data.msg)
 							}
+						},
+						function(data){
+							console.log('222')
 						}
-					});
+					)
 					return false;
 				});
 

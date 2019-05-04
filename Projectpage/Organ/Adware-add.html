@@ -93,8 +93,17 @@
 			<div class="layui-row">
 				<div class="layui-form" action="" lay-filter="cardAdd">
 					<!--隐藏-->
+					
 					<!--基本信息-->
 					<blockquote class="layui-elem-quote">基本信息</blockquote>
+					<div class="layui-form-item">
+						<label class="layui-form-label">选择位置</label>
+						<div class="layui-input-inline widthauto">
+							<input type="radio" name="selectedPosition" value="0" title="支付后广告" lay-filter="cardvalid" checked="true">
+							<input type="radio" name="selectedPosition" value="1" title="APP加载" lay-filter="cardvalid">
+							<input type="radio" name="selectedPosition" value="2" title="APP首页" lay-filter="cardvalid">
+						</div>
+					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">广告名称</label>
 						<div class="layui-input-block">
@@ -105,10 +114,16 @@
 						<label class="layui-form-label">图片地址</label>
 						<div class="layui-input-block">
 							<div class="layui-upload-img" id="test1">
-								<img src="images/zhifubao.png" id="demo1" name="address" style="max-width: 100%;height: auto;" lay-filter="logo" id="logo">
+								<img src="../../public/images/default.png" id="demo1" name="address" style="max-width: 100%;height: auto;" lay-filter="logo" id="logo">
 							</div>
 							<p id="demoText"></p>
 							<!--<button type="button" class="layui-btn">上传图片</button>-->
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">链接地址</label>
+						<div class="layui-input-block">
+							<input type="text" name="url" lay-verify="url" autocomplete="off" placeholder="请输入链接地址" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -126,7 +141,7 @@
 					<div class="layui-form-item layui-form-text">
 						<label class="layui-form-label">广告状态</label>
 						<div class="layui-input-block">
-							<input type="checkbox" name="state" lay-filter="switchTest" lay-skin="switch" lay-text="开启|关闭">
+							<input type="checkbox" name="state" lay-filter="switchTest" lay-skin="switch" lay-text="开启|关闭" checked>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -159,7 +174,8 @@
 				setTimeout(function(){parent.layer.close(index)},16); 
 			})
 			var serverUrl = window.parent.serverUrl
-			var userNumber = JSON.parse(sessionStorage.getItem('user')).Number;
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+			var logoUrl = ''
 			layui.use(['laydate', 'table', 'upload', 'form'], function() {
 				var $ = layui.jquery,
 					upload = layui.upload,
@@ -195,7 +211,10 @@
 				/*---------- 普通图片上传 ----------*/
 				var uploadInst = upload.render({
 					elem: '#test1',
-					url: '/upload/',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Public.addPic,
+					data:{
+                    "institutionNumber": userNumber, 
+                },
 					before: function(obj) {
 						//预读本地文件示例，不支持ie8
 						obj.preview(function(index, file, result) {
@@ -204,8 +223,11 @@
 					},
 					done: function(res) {
 						//如果上传失败
-						if(res.code > 0) {
+						 console.log(res)
+						if(res.code != 1000) {
 							return layer.msg('上传失败');
+						}else{
+							logoUrl = res.data
 						}
 						//上传成功
 					},
@@ -244,7 +266,12 @@
 					}else {
 						data.state = 0
 					}
-					data.address = 'http://www.baidu.com'
+					console.log(logoUrl)
+					if(logoUrl == ''){
+						layer.msg('请上传图片')
+						return
+					}
+					data.address = logoUrl
 					
 					// if()
 					CmsUtility.postAjaxCall(
@@ -253,9 +280,11 @@
 						data,
 						function(data){
 							if(data.code == 1000){
-								setTimeout(function(){parent.layer.close(index)},16); 
+								setTimeout(function(){
+									$('#quxiao').click()
+								},16); 
 								parent.layer.msg('保存成功')
-								parent.location.reload()
+								parent.layui.table.reload('vip_cardList')
 							}else{
 								layer.msg(data.msg)
 								

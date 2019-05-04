@@ -10,7 +10,7 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -36,7 +36,7 @@
 		</div>
 		<div class="x-body">
 			<xblock>
-				<button class="layui-btn" onclick="x_admin_show('添加广告','./Adware-add.html')"><i class="layui-icon"></i>添加广告</button>
+				<button class="layui-btn" id="addA"><i class="layui-icon"></i>添加广告</button>
 			</xblock>
 			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
@@ -52,6 +52,12 @@
         <script src="../../common/utility.js"></script>
 		<script>
 			function changeRes(data){
+				if(data == null){
+					return
+				}
+				var data = data.institutionAdvertisementList
+				console.log(data)
+				
 				for(var i = 0; i < data.length;i++){
 					if(data[i].launchChannel == 0){
 						data[i].launchChannel1 = "全部"
@@ -62,90 +68,114 @@
 					if(data[i].launchChannel == 2){
 						data[i].launchChannel1 = "支付宝"
 					}
+					if(data[i].selectedPosition == 0){
+						data[i].selectedPosition1 = "支付后广告"
+					}
+					if(data[i].selectedPosition == 1){
+						data[i].selectedPosition1 = "APP加载"
+					}
+					if(data[i].selectedPosition == 2){
+						data[i].selectedPosition1 = "APP首页"
+					}
 					data[i].endTime = data[i].endTime.split(' ')[0]
 					data[i].startTime = data[i].startTime.split(' ')[0]
 				}
 				return data
 			}
 			var serverUrl = window.parent.serverUrl
-			var userNumber = JSON.parse(sessionStorage.getItem('user')).Number;
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
 			layui.use(['laydate', 'table', 'form'], function() {
 				var laydate = layui.laydate,
 					table = layui.table,
 					form = layui.form;
 
 				//方法级渲染  
-				table.render({
-					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					// url: './json/vip-card.json',
-					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getInstitutionAdvertisementList + '?institutionNumber=' + userNumber ,
-					elem: '#members',
-					height: 'full-150',
-					id: 'vip_cardList',
-					async:true,
-					response: { 
-					//res 即为原始返回的数据
-							"statusCode":"1000", //解析接口状态
+				function tableRender(){
+					table.render({
+						//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+						// url: './json/vip-card.json',
+						url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getInstitutionAdvertisementList + '?institutionNumber=' + userNumber ,
+						elem: '#members',
+						height: 'full-150',
+						id: 'vip_cardList',
+						async:true,
+						response: { 
+						//res 即为原始返回的数据
+								"statusCode":"1000", //解析接口状态
+								
+						},
+						parseData:function(res){
+							if(res.data == null){
+								return
+							}
+							return{
+								"code":res.code,
+								"count":res.data.count,
+							 "data": changeRes(res.data)
+							}
+						},
+						cols: [
+							[{
+								align: 'center',
+								field: 'number',
+								width: 200,
+								title: '编号',
+							}, {
+								align: 'center',
+								field: 'name',
+								width: 250,
+								title: '广告名称'
+							}, {
+								align: 'center',
+								field: 'selectedPosition1',
+								width: 200,
+								title: '位置',
+								
+							}, {
+								align: 'center',
+								field: 'startTime',
+								width: 200,
+								title: '开始时间'
+							}, {
+								align: 'center',
+								field: 'endTime',
+								width: 200,
+								title: '到期时间'
+							}, {
+								align: 'center',
+								toolbar:'#toolbar_switch',
+								width: 100,
+								title: '状态',
+							}, {
+								align: 'center',
+								field: 'launchChannel1',
+								width: 200,
+								title: '投放渠道',
+							}, {
+								align: 'center',
+								toolbar:"#toolbar",
+								minWidth: 200,
+								title: '操作',
+							}]
+						],
+						page: true,
+						done: function(res, curr, count) {
 							
-					},
-					parseData:function(res){
-						return{
-							"code":res.code,
-						 "data": changeRes(res.data)
-						}
-					},
-					cols: [
-						[{
-							align: 'center',
-							type: 'checkbox'
-						}, {
-							align: 'center',
-							field: 'number',
-							width: 200,
-							title: '编号',
-							sort: true
-						}, {
-							align: 'center',
-							field: 'name',
-							width: 250,
-							title: '广告名称'
-						}, {
-							align: 'center',
-							field: 'startTime',
-							width: 200,
-							title: '开始时间'
-						}, {
-							align: 'center',
-							field: 'endTime',
-							width: 200,
-							title: '到期时间'
-						}, {
-							align: 'center',
-							toolbar:'#toolbar_switch',
-							width: 100,
-							title: '状态',
-							sort: true
-						}, {
-							align: 'center',
-							field: 'launchChannel1',
-							width: 200,
-							title: '投放渠道',
-							sort: true
-						}, {
-							align: 'center',
-							toolbar:"#toolbar",
-							minWidth: 200,
-							title: '操作',
-							sort: true
-						}]
-					],
-					page: true,
-					done: function(res, curr, count) {
-						
-						console.log(res)
+							console.log(res)
+							if(res.code == 5000){
+								//layer.msg(res.msg)
+							}
+							if(!!res.data){
 
-					}
-				});
+								//layer.msg('查询成功')
+							}else{
+								//layer.msg('未查询到广告数据')
+							}
+
+						}
+					});
+				}
+				tableRender()
 				
 				//监听性别操作
 				form.on('switch(toolbar_switch)', function(data) {
@@ -163,6 +193,7 @@
 							if(data.code == 1000){
 								 
 								parent.layer.msg('更改成功')
+								layui.table.reload('vip_cardList')
 								
 							}else{
 								layer.msg(data.msg)
@@ -174,7 +205,23 @@
 						}
 					)
 				});
-
+				$('#addA').click(function(){
+					layer.open({
+						type: 2,
+						title: '添加广告',
+						shade: 0.5,
+						area: [$(window).width() * 0.9+'px', '90%'],
+						maxmin: false,
+						resize: false,
+						content: ['Adware-add.html'],
+						success: function(layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传w参
+							
+						}
+					});
+				})
 				//监听工具条
 				table.on('tool(members)', function(obj) {
 					var data = obj.data;
@@ -216,7 +263,8 @@
 									if(data.code == 1000){
 										
 										parent.layer.msg('删除成功')
-										location.reload()
+										layer.close(index)
+										tableRender()
 									}else{
 										layer.msg(data.msg)
 										

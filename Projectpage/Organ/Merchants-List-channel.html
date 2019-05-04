@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="../../public/css/font.css">
     <link rel="stylesheet" href="../../public/css/xadmin.css">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
     <script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../../public/js/xadmin.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -19,6 +19,11 @@
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
+    .layui-table-box,.layui-table-body{
+        overflow: inherit;
+    }{
+        overflow: inherit;
+    }
     .layui-btn+.layui-btn {
         margin-left: -2px;
     }
@@ -31,7 +36,16 @@
     .layui-form-select dl {
         text-align: left;
     }
-
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        appearance: none; 
+        margin: 0; 
+    }
+    /* 火狐 */
+    input{
+        -moz-appearance:textfield;
+    }
     .operationList th:nth-child(1) {
         width: 50px;
     }
@@ -64,221 +78,400 @@
         padding-right: 10px;
         box-sizing: border-box;
     }
+    .blo{
+        display: block;
+    }
+    .non{
+        display: none;
+    }
     </style>
 </head>
 
 <body id="iosiframe">
     <div class="x-body">
-        <div class="layui-form">
+        <div class="layui-form " lay-filter="form1">
             <table class="layui-hide" id="members" lay-filter="members"></table>
             <div class="layui-form-item layui-layout-admin">
                 <div class="layui-input-block">
                     <div class="layui-footer" style="left: 0;text-align: center;">
                         <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-                        <button class="layui-btn layui-btn-primary" id="quxiao">取消</button>
+                        <button class="layui-btn layui-btn-primary" id="quxiao">关闭</button>
                     </div>
                     <!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
                 </div>
             </div>
         </div>
     </div>
+     <script type="text/html" id="switchName">
+        <div class="layui-table-cell" > 
+            {{d.paymentTypeName}}
+        </div>
+    </script>
     <script type="text/html" id="switchBar">
-        <input type="checkbox" name="consumptionPreferences" lay-skin="switch" lay-filter="consumptionPreferences" lay-text="开|关">
-		</script>
+        <input type="checkbox" name="consumptionPreferences" lay-skin="switch" lay-filter="consumptionPreferences" lay-text="开|关" {{d.interfaceSwitch==0 ? 'checked' : ''}} value="{{d.paymentTypeID}}">
+	</script>
     <script type="text/html" id="toolbar">
         <div class="layui-input-inline" style="width: 100px;margin-bottom: 10px;">
-				<input type="radio" name="operation{{d.id}}" data_pid="{{d.id}}" value="1" title="单独" lay-filter="operation" checked="">
+				<input type="radio" name="operation{{d.paymentTypeID}}" data_pid="{{d.paymentTypeID}}"  {{d.wheelSearch==0 ? 'checked' : ''}}  value="0" title="单独" lay-filter="operation" checked="">
 			</div>
 			<div class="layui-input-inline" style="width: 100px;margin-bottom: 10px;">
-				<input type="radio" name="operation{{d.id}}" data_pid="{{d.id}}" value="2" title="轮询" lay-filter="operation">
+				<input type="radio" name="operation{{d.paymentTypeID}}" data_pid="{{d.paymentTypeID}}"   {{d.wheelSearch==1 ? 'checked' : ''}}  value="1" title="轮询" lay-filter="operation">
 			</div>
-			<div class="layui-input-block operation_select" id="operation_select{{d.id}}" style="margin-left: 0;">
-				<select name="quiz{{d.id}}">
-					<option value="">请选择县/区</option>
-					<option value="西湖区">西湖区</option>
-					<option value="余杭区">余杭区</option>
-					<option value="拱墅区">临安市</option>
+			<div class="layui-input-block operation_select {{d.wheelSearch==0 ? 'blo' : 'non'}}" id="operation_select{{d.paymentTypeID}}" style="margin-left: 0;">
+				<select name="quiz{{d.paymentTypeID}}" id="only{{d.paymentTypeID}}"
+                value="{{d.dataS}}" >
+					<option value="">没有通道</option>
+                     {{#  layui.each(d.channel, function(index, item){ }}
+                 
+                       <option value={{item.paymentChannel}} {{d.dataS == item.paymentChannel ? 'selected':''}} >{{item.paymentName}}/{{item.paymentChannel}}</option>
+                
+                    {{#  }); }}
 				</select>
+                
 			</div>
-			<div class="layui-input-block operation_table" id="operation_table{{d.id}}" style="margin-left: 0;display: none;">
-				<table class="layui-table" lay-skin="line" id="" style="">
+			<div class="layui-input-block operation_table {{d.wheelSearch==1 ? 'blo' : 'non'}}" id="operation_table{{d.paymentTypeID}}" style="margin-left: 0;"  >
+				<table class="layui-table" lay-skin="line" id="tableeee" style=""  lay-filter="tableeee">
 					<thead>
 						<tr>
-							<th></th>
-							<th>通道代码</th>
-							<th>通道名称</th>
-							<th>权重(1-9)</th>
+                            <th></th>
+							<th >通道代码</th>
+							<th >通道名称</th>
+							<th>权重(0-9)</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<input type="checkbox" name="" lay-skin="primary">
-							</td>
-							<td>209</td>
-							<td>乐支付网银</td>
-							<td><input type="number" min="0" max="9" name="" class="layui-input"></td>
-						</tr>
-						<tr>
-							<td>
-								<input type="checkbox" name="" lay-skin="primary">
-							</td>
-							<td>211</td>
-							<td>银联网关支付</td>
-							<td><input type="number" min="0" max="9" name="" class="layui-input"></td>
-						</tr>
-						<tr>
-							<td>
-								<input type="checkbox" name="" lay-skin="primary">
-							</td>
-							<td>213</td>
-							<td>汇通网关支付</td>
-							<td><input type="number" min="0" max="9" name="" class="layui-input"></td>
-						</tr>
+					<tbody class="lunxun{{d.paymentTypeID}}">
+                        {{#  layui.each(d.channel, function(index, item){ }}
+                          <tr>
+                            <td>
+                                <input type="checkbox" name="text" lay-skin="primary" {{item.sType==0 ? 'checked' : ''}} data-id="{{item.paymentChannel}}"  data-Cname="{{item.paymentName}}" data-sWeight="{{item.weight}}" data-Pid="{{d.paymentTypeID}}"  class="lunxun"  lay-filter="members1111">
+                            </td>
+                            <td>{{ item.paymentChannel }}</td>
+                            <td>{{ item.paymentName }}</td>
+                            <td><input type="number" min="0" max="9" name="" class="layui-input" onkeyup="changeV(this)" value="{{ item.weight  }}"></td>
+                          </tr>
+                        {{#  }); }}
+						
+						
 					</tbody>
 				</table>
 			</div>
 		</script>
+        <script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
     <script>
-    //			var arr = ['7','3','5']
-    //			arr.sort(paixu(a))
-    //			function paixu(a){
-    //				return function(a,b){
-    //					var a = a[a]
-    //					var b = b[a]
-    //					return b-a
-    //				}
-    //			}
-    //			var str = ''
-    //			for(var i = 0 ; i < arr.length ; i++){
-    //				str += '<tr><td><input type="checkbox" name="" lay-skin="primary"></td><td>'+ arr[i] +'</td><td>'+ arr[i] +'</td><td><input type="number" min="0" max="9" name="" class="layui-input" value="'+ arr[i] +'"></td></tr>'
-    //			}
-    //			console.log(str)
-    //			console.log(arr)
+
     var index = parent.layer.getFrameIndex(window.name);
             $('#quxiao').click(function(){
                 
                 setTimeout(function(){parent.layer.close(index)},16); 
             })
-    var serverUrl = window.parent.serverUrl
-    var userNumber = window.parent.userNumber
-    layui.use(['laytpl', 'laydate', 'table', 'form'], function() {
-        var laytpl = layui.laytpl,
-            laydate = layui.laydate,
-            table = layui.table,
-            form = layui.form;
+            function changeV(data){
+                if(data.value >= 0 && data.value <= 9){
+                    console.log($(data).parent().parent().find("td input[name='text']"))
+                    $(data).parent().parent().find("td input[name='text']").attr('data-sWeight',data.value)
+                    console.log($(data).parent().parent().find("td input[name='text']").attr('data-sWeight'))
+                }else{
+                    data.value = data.value.substring(0,1)
+                    alert('只能输入0-9的数字')
 
-        //方法级渲染  
-        table.render({
-            //url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-            url: '../../public/json/dome1.json',
-            elem: '#members',
-            id: 'vip_cardList',
-            //parseData: function(res) { //res 即为原始返回的数据
-            //	return {
-            //		"code": res.code, //解析接口状态
-            //		"msg": res.msg, //解析提示文本
-            //		"count": res.count, //解析数据长度
-            //		"data": changeRes(res.result,res.count), //解析数据列表
-            //	};
-            //},
-            cols: [
-                [{
-                    align: 'center',
-                    field: 'id',
-                    title: '支付产品',
-                    sort: true,
-                    width: 200
-                }, {
-                    align: 'center',
-                    toolbar: '#switchBar',
-                    title: '接口状态',
-                    width: 200
-                }, {
-                    align: 'center',
-                    title: '支付通道',
-                    toolbar: '#toolbar',
-                    event: 'setToolbar',
-                    minWidth: 550
-                }]
-            ],
-            page: false,
-            done: function(res, curr, count) {}
-        });
-
-        /*---------- 监听开关 ----------*/
-        form.on('radio(operation)', function(obj) { //
-            var did = this.name.split("operation")[1]
-            console.log(did)
-            if (this.value == 1) {
-                $(eval('operation_select' + did)).show()
-                $(eval('operation_table' + did)).hide()
-                table.render();
-            } else if (this.value == 2) {
-                $(eval('operation_select' + did)).hide()
-                $(eval('operation_table' + did)).show()
-                form.render();
-            }
-        });
-
-        //监听工具条
-        table.on('tool(members)', function(obj) {
-            var data = obj.data;
-            if (obj.event === 'setToolbar') { //监听单元格
-
-            } else if (obj.event === 'edit') { //编辑
-                layer.open({
-                    type: 2,
-                    title: '编辑',
-                    shade: 0.5,
-                    area: ['400px', '300px'],
-                    maxmin: false,
-                    resize: false,
-                    content: ['Membersadd.html'],
-                    success: function(layero, index) {
-                        // 获取子页面的iframe
-                        var iframe = window['layui-layer-iframe' + index];
-                        // 向子页面的全局函数child传参
-                        iframe.subPage(data, userNumber)
-                    }
-                });
-            } else if (obj.event === 'logout') { //注销
-                var zhuxiaoData = {
-                    card: data.card,
-                    cardType: 5
                 }
-                layer.confirm('真的删除此会员卡么', {
-                    icon: 3,
-                    title: '提示'
-                }, function(index) {
-                    // 发送请求
-                    $.ajax({
-                        type: "post",
-                        url: serverUrl + "memberCard/updateAssociatorCard",
-                        async: true,
-                        dataType: "json",
-                        contentType: "application/json",
-                        data: JSON.stringify(zhuxiaoData),
-                        success: function(data) {
-                            if (data.code == 0) {
-                                layer.close(index);
-                                layer.msg("会员卡已注销");
-                                // 刷新页面
-                                var curr = $("#curr").val();
-                                layui.table.reload('vip_cardList', {
-                                    page: {
-                                        curr: curr
-                                    }
-                                });
-                            } else if (data.code == 1) {
-                                layer.msg("会员卡注销失败");
+            }
+            function changeRes(data,data1){
+                console.log(data1)
+                if(data == null || data1 == null){
+                    return
+                }
+                
+                for(var i = 0 ; i < data.length;i++){
+                    for(var j = 0 ; j < data1.length;j++){
+                        if(data[i].paymentTypeID == data1[j].paymentTypeID){
+                            for(var n = 0; n<data1[j].date.length;n++){
+                                data1[j].date[n].weight = '0'
+                            }
+                           data[i].channel  = data1[j].date
+                        }
+                        // var newO = Object()
+                        // newO.id = data1[j].id
+                        // newO.paymentName = data1[j].paymentchannelname
+                        // newO.paymentChannel = data1[j].id
+                        // newO.weight = '0'
+                        
+                    }
+                    var dl = data[i].date
+                    for(var m = 0 ; m < data[i].channel.length;m++){
+                        for(var n = 0; n < dl.length;n++){
+                            if(data[i].channel[m].paymentChannel == dl[n].paymentChannel){
+                                data[i].channel[m].weight = dl[n].weight
+                                // if(dl[n].weight != 0){
+                                //     data[i].channel[m].sType = '0'
+                                // }
+                                data[i].channel[m].sType = '0'
+                                break
+                            }else{
+
                             }
                         }
-                    });
-                });
+                    }
+                    var dataS
+                    if(data[i].date.length >0){
+                        dataS = data[i].date[0].paymentChannel
+                    }else{
+                        dataS = ''
+                    }
+                    data[i].dataS = dataS
+                }
+                console.log(data)
+                for(var b = 0; b < data.length;b++){
+                    data[b].channel.sort(compare('weight'))
+                }
+                console.log(data)
+                return data
+                table.render()
             }
-        });
-    });
+            function compare(property) {
+                return function(a, b) {
+                    var value1 = a[property];
+                    var value2 = b[property];
+                    return value2 - value1;
+                }
+            }
+        function  subPage(data, data1){
+            var serverUrl = window.parent.serverUrl
+            var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+            var jgData = data
+            var tdData;
+            var addData;
+            console.log(jgData)
+            
+            layui.use(['laytpl', 'laydate', 'table', 'form'], function() {
+                var laytpl = layui.laytpl,
+                    laydate = layui.laydate,
+                    table = layui.table,
+                    form = layui.form;
+                    var index = layer.load(2, {shade: [0.4, '#393D49']})
+                //方法级渲染  
+                CmsUtility.postAjaxCall(
+                //系统设置
+                CmsConfig.addressUrl.Mechanism.getShopOfficial,
+                {
+                  "merchantNumber" :jgData.merchantNumber 
+                },
+                function(data){
+                    if(data.code == 1000){
+                        console.log(data)
+                        // layer.msg('删除成功')
+                        // location.reload()
+                        tdData = data.data
+                        table.render({
+                    //url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+                    url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getMerchantTD + '?merchantNumber=' + jgData.merchantNumber ,
+                    where:{
+                        "institutionNumber":userNumber
+                    },
+                    elem: '#members',
+                    id: 'vip_cardList',
+                    response: { 
+                    //res 即为原始返回的数据
+                            "statusCode":"1000", //解析接口状态
+                            
+                    },
+                    parseData: function(res) { //res 即为原始返回的数据
+                        if(res.data == null){
+                            return 
+                        }
+                     return {
+                         "code": res.code, //解析接口状态
+                         "msg": res.msg, //解析提示文本
+                         //"count": res.count, //解析数据长度
+                         "data": changeRes(res.data,tdData), //解析数据列表
+                     };
+                    },
+                    cols: [
+                        [{
+                            align: 'center',
+                            field: 'paymentTypeName',
+                            title: '支付方式',
+                            width: 200,
+                            toolbar:'#switchName'
+                        }, {
+                            align: 'center',
+                            toolbar: '#switchBar',
+                            title: '状态',
+                            width: 200
+                        }, {
+                            align: 'center',
+                            title: '支付通道',
+                            toolbar: '#toolbar',
+                            event: 'setToolbar',
+                            minWidth: 550
+                        }]
+                    ],
+                    page: false,
+                    done: function(res, curr, count) {
+
+                        addData = res.data
+                        console.log(addData)
+                        layer.closeAll()
+                        
+                     }
+                });
+                        console.log(tdData)
+                    }else{
+                        layer.msg(data.msg)
+                        
+                    }
+                },
+                function(data){
+                    console.log('222')
+                },
+            )
+                
+
+                
+                console.log($('.lunxun'))
+                form.on('checkbox(members1111)', function(data){
+                    if(data.elem.checked){
+                        
+                        if(data.elem.parentNode.parentNode.lastElementChild.childNodes[0].value == 0){
+                            data.elem.parentNode.parentNode.lastElementChild.childNodes[0].value = '1'
+                        }
+                        data.elem.setAttribute('data-sWeight',data.elem.parentNode.parentNode.lastElementChild.childNodes[0].value )
+                        table.render()
+                    }else{
+                        // data.elem.parentNode.parentNode.lastElementChild.childNodes[0].value = '0'
+                        data.elem.setAttribute('data-sWeight','0')
+                        table.render()
+                    }
+                    console.log(data.elem.parentNode.parentNode.lastElementChild.childNodes)
+                  console.log(data.elem); //得到checkbox原始DOM对象
+                  console.log(data.elem.checked); //是否被选中，true或者false
+                  console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+                  console.log(data.othis); //得到美化后的DOM对象
+                }); 
+                /*---------- 监听开关 ----------*/
+                form.on('radio(operation)', function(obj) { //
+                    console.log(obj)
+                    var did = this.name.split("operation")[1]
+                    console.log(did)
+                    var opersel = document.getElementById('operation_select'+did)
+                    var opertable = document.getElementById('operation_table'+did)
+                  
+                    if (this.value == 0) {
+                         opersel.style.display = 'block'
+                         opertable.style.display = 'none'
+                        table.render();
+                    } else if (this.value == 1) {
+                        opersel.style.display = 'none'
+                        opertable.style.display = 'block'
+                        form.render();
+                    }
+                    for(var i = 0;i < addData.length;i++){
+                        if(addData[i].paymentTypeID == did){
+                            console.log(obj.value)
+                            addData[i].wheelSearch = obj.value
+                        }
+                    }
+                    table.render()
+                    console.log(addData)
+                });
+                form.on('switch(consumptionPreferences)', function(obj) { //
+                    var aa = obj.value;
+                    for(var i = 0;i < addData.length;i++){
+                        if(addData[i].paymentTypeID == aa){
+                            addData[i].interfaceSwitch = this.checked?0:1
+                        }
+                    }
+                    console.log(addData)
+                });
+                /*---------- 监听提交 ----------*/
+                form.on('submit(add)', function(data, index) {
+                    var data = data.field
+                    
+                    table.render()
+                    var arr = new Array();
+                    $("input:checkbox[name='text']:checked").each(function(i){
+                        var arrrr = new Object()
+                        arrrr.id = $(this).attr('data-id')
+                        arrrr.Pid = $(this).attr('data-Pid')
+                        arrrr.Ename = $(this).attr('data-Ename')
+                        arrrr.Cname = $(this).attr('data-Cname')
+                        arrrr.sWeight = $(this).attr('data-sWeight')
+                        arr.push(arrrr)
+                    });
+                    console.log(arr)
+                    console.log(addData)
+                    for(var g = 0 ; g < addData.length;g++){
+                        var arL = new Array()
+                        if(addData[g].wheelSearch == 1){
+                            for(var h = 0; h < arr.length;h++){
+                                if(addData[g].paymentTypeID == arr[h].Pid){
+                                    var arJ = new Object()
+                                    arJ.paymentChannel = arr[h].id
+                                    arJ.paymentName = arr[h].Cname
+                                    arJ.weight = arr[h].sWeight
+                                    arL.push(arJ)
+                                }
+                            }
+                            addData[g].date = arL
+                        }else if(addData[g].wheelSearch == 0){
+                            var strd = 'only' + addData[g].paymentTypeID
+                            var only = document.getElementById(strd)
+                            var sss = new Array()
+                            for(var hh = 0; hh < tdData.length;hh++){
+                                
+                                if(addData[g].paymentTypeID == tdData[hh].paymentTypeID){
+                                    for(var dd = 0 ; dd < tdData[hh].date.length;dd++){
+                                        if(only.value == tdData[hh].date[dd].paymentChannel ){
+                                            var arJ = new Object()
+                                            arJ.paymentChannel = tdData[hh].date[dd].paymentChannel
+                                            arJ.paymentName = tdData[hh].date[dd].paymentName
+                                            arJ.weight = '1'
+                                            sss.push(arJ)
+                                        }
+                                    }
+                                    
+                                    
+                                }
+                            }
+                            addData[g].date = sss
+                        }
+
+                    }
+                    console.log(addData)
+                    var adddData = new Object()
+                    adddData.data = addData
+                    adddData.merchantName = jgData.merchantNumber
+                    adddData.institutionNumber = userNumber
+                    console.log(adddData)
+                    CmsUtility.postAjaxCall(
+                        //系统设置
+                        CmsConfig.addressUrl.Mechanism.updateMpType,
+                        JSON.stringify(adddData),
+                        function(data){
+                            console.log(data)
+                            if(data.code == 1000){
+                                setTimeout(function(){
+                                    $('#quxiao').click()
+                                },16); 
+                                parent.layer.msg('保存成功')
+                                parent.layui.table.reload('vip_cardList')
+                            }else{
+                                layer.msg(data.msg)
+                                
+                            }
+                        },
+                        function(data){
+                            console.log('222')
+                        }
+                    )
+                    return false;
+                });
+
+                //监听工具条
+                
+            });
+        }
+  
     </script>
 </body>
 

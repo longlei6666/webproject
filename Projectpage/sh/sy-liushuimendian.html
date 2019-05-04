@@ -17,9 +17,10 @@
 
 	<body>
 		<div class="x-nav">
-			<span class="layui-breadcrumb"> <a href="">流水</a> <a> <cite>门店账单</cite></a>
-		</span>
-			<a class="layui-btn layui-btn-small" style="line-height: 1.6em; margin-top: 3px; float: right" href="javascript:location.replace(location.href);" title="刷新"> <i class="layui-icon" style="line-height: 30px">ဂ</i></a>
+			<span class="layui-breadcrumb"> <a href="">账单</a> <a> <cite>门店账单</cite></a>
+			</span>
+			<a class="layui-btn layui-btn-small" style="line-height: 1.6em; margin-top: 3px; float: right" href="javascript:location.replace(location.href);"
+			 title="刷新"> <i class="layui-icon" style="line-height: 30px">ဂ</i></a>
 		</div>
 		<div class="x-body">
 			<div class="demoTable layui-form x-so">
@@ -27,9 +28,6 @@
 					<!-- 需要数据对接(完成) -->
 					<select name="shopName" id="shopName" lay-search>
 						<option value="">--请选择门店--</option>
-						<c:forEach items="${shops }" var="shop">
-							<option value="${shop.ShopName }">${shop.ShopName }</option>
-						</c:forEach>
 					</select>
 				</div>
 				<div class="layui-input-inline">
@@ -42,89 +40,189 @@
 					<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
 				</div>
 			</div>
-			<xblock>
+			<!-- <xblock>
 				<button class="layui-btn" id="baobiao"><i class="layui-icon"></i>报表</button>
-			</xblock>
+			</xblock> -->
 			<table class="layui-hide" id="LAY_table_bill" lay-filter="bill"></table>
 		</div>
-		<script type="text/javascript">
-			$("#baobiao").click(function() {
-				var shopName = $('#shopName').val(); //门店名称
-				var startTime = $("#startTime").val();
-				var endTime = $("#endTime").val();
-				window.location.href = "${pageContext.request.contextPath }/Bill/getmendianReport?shopName=" + encodeURI(encodeURI(shopName)) + "&startTime=" + startTime + "&endTime=" + endTime;
-			})
-		</script>
-
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
-			var startDate = new Date();
-			var endDate = new Date();
+			function changeRes(data) {
+				if (data == null) {
+					return
+				}
+				for (var i = 0; i < data.length; i++) {
+					if (!data[i].weChatOrderTotalMoney) {
+						data[i].weChatOrderTotalMoneya = "-"
+					} else {
+						data[i].weChatOrderTotalMoneya = data[i].weChatOrderTotalMoney
+					}
+					if (!data[i].weChatTotalOrder) {
+						data[i].weChatTotalOrdera = "-"
+					} else {
+						data[i].weChatTotalOrdera = data[i].weChatTotalOrder
+					}
+					if (!data[i].alipayOrderTotalMoney) {
+						data[i].alipayOrderTotalMoneya = "-"
+					} else {
+						data[i].alipayOrderTotalMoneya = data[i].alipayOrderTotalMoney
+					}
+					if (!data[i].alipayTotalOrder) {
+						data[i].alipayTotalOrdera = "-"
+					} else {
+						data[i].alipayTotalOrdera = data[i].alipayTotalOrder
+					}
+				}
+				return data
+			}
+
+			function fun_date(aa) {
+				var date1 = new Date(),
+					time1 = date1.getFullYear() + "-" + (date1.getMonth() + 1) + "-" + date1.getDate(); //time1表示当前时间
+				var date2 = new Date(date1);
+				date2.setDate(date1.getDate() + aa);
+				var time2 = date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate();
+
+				var a = time2.split('-')[0],
+					b = time2.split('-')[1],
+					c = time2.split('-')[2]
+				if (b < 10) {
+					b = 0 + b
+				}
+				if (c < 10) {
+					c = 0 + c
+				}
+				return a + '-' + b + '-' + c
+			}
+			var userNumber = JSON.parse(sessionStorage.getItem('userSh')).Number;
+			var startDate = fun_date(-6);
+			var endDate = fun_date(0);
 			var nowTime = new Date().valueOf();
-			layui.use(['table', 'laydate'], function() {
+			var dataO = new Object();
+			dataO.merchantNumber = userNumber
+
+			// //获取商户下门店名称
+			// CmsUtility.postAjaxCall(
+			// 	CmsConfig.addressUrl.Merchant.getShopNames,
+			// 	dataO,
+			// 	function(data) {
+			// 		var shopData = data.data
+			// 		for(var i = 0; i < shopData.length; i++) {
+			// 			$("#shopName").append("<option value='" + shopData[i].shopNumber + "'>" + shopData[i].shopName + "</option>");
+			// 		}
+			// 	}
+			// )
+			layui.use(['table', 'laydate', 'form'], function() {
 				var table = layui.table,
 					laydate = layui.laydate;
-
-				//时间插件
-				laydate.render({
-					elem: '#startTime',
-					type: 'date',
-					max: nowTime,
-					value: startDate
-				});
+				form = layui.form
+				$ = layui.jquery,
+					//时间插件
+					laydate.render({
+						elem: '#startTime',
+						type: 'date',
+						value: startDate
+					});
 				laydate.render({
 					elem: '#endTime',
 					type: 'date',
 					max: nowTime,
 					value: endDate
 				});
-
+				CmsUtility.postAjaxCall(
+					CmsConfig.addressUrl.Merchant.getShopNames,
+					dataO,
+					function(data) {
+						var shopData = data.data
+						for (var i = 0; i < shopData.length; i++) {
+							$("#shopName").append("<option value='" + shopData[i].shopNumber + "'>" + shopData[i].shopName + "</option>");
+						}
+						form.render()
+					}
+				)
 				//方法级渲染
-				table.render({
-					elem: '#LAY_table_bill',
-					url: '${pageContext.request.contextPath }/Bill/getBillmendianList',
-					method: "post",
-					page: true,
-					id: 'billlist',
-					cols: [
-						[{
-							field: 'shopname',
-							title: '门店名称',
-							align: 'center'
-						}, {
-							field: 'shopname',
-							title: '账单日期',
-							align: 'center'
-						}, {
-							field: 'bishu',
-							title: '总订单数',
-							align: 'center'
-						}, {
-							field: 'jiaoyijine',
-							title: '订单总额',
-							align: 'center'
-						}, {
-							field: 'Useryouhui',
-							title: '手续费',
-							align: 'center'
-						}, {
-							field: 'Lijian',
-							title: '支付宝笔数',
-							align: 'center'
-						}, {
-							field: 'shishou',
-							title: '支付宝金额',
-							align: 'center'
-						}, {
-							field: 'shopshouxufei',
-							title: '微信笔数',
-							align: 'center'
-						}, {
-							field: 'zhifubaoshouxufei',
-							title: '微信金额',
-							align: 'center'
-						}]
-					]
-				});
+				function tableRender() {
+					table.render({
+						elem: '#LAY_table_bill',
+						url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Merchant.getShopBill + '?merchantNumber=' +
+							userNumber,
+						where: {
+							"startTime": $('#startTime').val(),
+							"endTime": $('#endTime').val(),
+							"shopNumber": $('#shopName').val()
+						},
+						method: "post",
+						height: "full-200",
+						page: true,
+						id: 'billlist',
+						response: {
+							"statusCode": "1000", //解析接口状态
+						},
+						parseData: function(res) {
+							if (res.data == null) {
+								return
+							}
+							return {
+								"code": res.code,
+								"count": res.data.count,
+								"data": changeRes(res.data.result),
+							}
+						},
+						cols: [
+							[{
+								field: 'shopName',
+								title: '门店名称',
+								align: 'center'
+							}, {
+								field: 'statementDate',
+								title: '账单日期',
+								align: 'center'
+							}, {
+								field: 'totalOrder',
+								title: '交易笔数',
+								align: 'center'
+							}, {
+								field: 'orderTotalMoney',
+								title: '交易金额',
+								align: 'center',
+								templet:function(data){
+									return (parseFloat(data.orderTotalMoney)+parseFloat(data.refundOrderTotalMoney)).toFixed(2)
+								}
+							}, {
+								field: 'refundOrderTotalMoney',
+								title: '退款金额',
+								align: 'center'
+							}, {
+								field: 'poundage',
+								title: '手续费',
+								align: 'center'
+							}, {
+								field: 'subsidyNumber',
+								title: '补贴笔数',
+								align: 'center'
+							}, {
+								field: 'subsidyMoney',
+								title: '补贴金额',
+								align: 'center'
+							}, {
+								field: 'shishoujine',
+								title: '实收金额',
+								align: 'center'
+							}]
+						],
+						done: function(res, curr, count) {
+							console.log(res)
+							if (!res.data) {
+								// layer.msg('查询数据为空！')
+							}
+						}
+					});
+				}
+				setTimeout(function() {
+					tableRender()
+				}, 500)
+
 
 				// 根據條件重载表格
 				var $ = layui.$,
@@ -143,7 +241,7 @@
 								where: {
 									startTime: startTime.val(),
 									endTime: endTime.val(),
-									shopName: shopName.val(),
+									shopNumber: shopName.val(),
 								}
 							});
 						}

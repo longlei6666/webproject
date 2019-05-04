@@ -269,7 +269,7 @@
 			$.ajax({
 				type: 'post', //传输类型
 				async: true,
-				url: '.welcome/getsevendayData',
+				url: '.welcome/getsevendayData.json',
 				dataType: 'json', //返回数据形式为json
 				success: function(data) {
 					// 填入数据
@@ -311,7 +311,7 @@
 				$.ajax({
 					type: 'post', //传输类型
 					async: true,
-					url: '.welcome/getdayData',
+					url: '.welcome/getdayData.json',
 					data: {
 						daytype: mydate
 					},

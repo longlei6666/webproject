@@ -27,23 +27,22 @@
 		</div>
 		<div class="x-body">
 			<xblock>
-				<a class="layui-btn" onclick="x_admin_show('新建广告','advertaddedit.html',800,530)"><i class="layui-icon"></i>新建广告</a>
+				<a class="layui-btn" onclick="x_admin_show('新建广告','advertadd.html',800,650)"><i class="layui-icon"></i>新建广告</a>
 			</xblock>
 			<table class="layui-table" id="LAY_table_advert" lay-filter="advert">
 			</table>
 		</div>
 		<script type="text/html" id="tool">
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="delete">删除</a>
+			<a class="layui-btn  layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
 		</script>
-		<script type="text/html" id="zhuangtai">
-			{{# if(d.advertiseOpen == 1){ }}
-			<a class="layui-btn layui-btn-normal layui-btn-xs layui-btn-danger" lay-skin="zhuangtai" lay-filter="zhuangtai" lay-event="zhuangtaidisable">已禁用</a>
-			{{# } }} {{# if(d.advertiseOpen == 0){ }}
-			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-filter="zhuangtai" lay-skin="zhuangtai" lay-event="zhuangtaiopen">已启用</a>
-			{{# } }}
+		<script type="text/html" id="toolbar_switch">
+			<input type="checkbox" name="switch" value="{{d.advertisementNumber}}" lay-skin="switch" lay-filter="toolbar_switch" lay-text="开|关" {{ d.enable==0 ? 'checked' : '' }}>
 		</script>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
+			var userNumber = JSON.parse(sessionStorage.getItem('userSh')).Number;
 			layui.use(['table', 'form'], function() {
 
 				var table = layui.table,
@@ -51,31 +50,51 @@
 				//方法级渲染
 				table.render({
 					elem: '#LAY_table_advert',
-					url: '${pageContext.request.contextPath }/advert/getadvertlist',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Merchant.getadvertlist + '?merchantNumber=' + userNumber,
 					method: "post",
 					height: 'full-220',
 					page: true,
 					id: 'advertlist',
+					response: {
+						"statusCode": "1000", //解析接口状态
+					},
+					parseData: function(res) {
+						if(res.data == null) {
+							return
+						}
+						return {
+							"code": res.code,
+							"count": res.data.count,
+							"data": res.data.result,
+						}
+					},
 					cols: [
 						[{
-							field: 'advertiseName',
+							field: 'advertisementName',
 							title: '广告名称',
-							width: '10%'
+							align: 'center',
+							width: 250
 						}, {
-							field: 'advertiseUrl',
-							title: '广告地址'
+							field: 'advertisementJumpAddress',
+							align: 'center',
+							title: '广告地址',
+							width: 400
 						}, {
-							field: 'OperatorNumber',
-							title: '代理商ID'
+							field: 'agentID',
+							align: 'center',
+							title: '闪拼客分销商ID',
+							width: 250
 						}, {
-							field: 'advertiseOpenC',
 							title: '状态',
-							toolbar: "#zhuangtai"
+							align: 'center',
+							toolbar: "#toolbar_switch",
+							width: 150
 						}, {
 							field: 'operation',
 							title: '操作',
-							toolbar: "#tool"
-						}, ]
+							toolbar: "#tool",
+							minWidth: 120
+						}]
 					]
 				});
 
@@ -92,6 +111,30 @@
 							});
 						}
 					};
+
+				//监听性别操作
+				form.on('switch(toolbar_switch)', function(data) {
+					var addData = new Object()
+					addData.enable = this.checked ? 0 : 1
+					addData.advertisementNumber = data.value
+					// 发送请求
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Merchant.modifyAdvertState,
+						addData,
+						function(data) {
+							if(data.code == 1000) {
+								layer.msg('状态更改成功')
+								layui.table.reload('advertlist')
+							} else {
+								layer.msg(data.msg)
+							}
+						},
+						function(data) {
+							console.log('222')
+						}
+					)
+				});
 				//监听工具条
 				table.on('tool(advert)', function(obj) {
 					var data = obj.data;
@@ -100,112 +143,42 @@
 						layer.open({
 							type: 2,
 							title: '编辑广告',
-							area: ['800px', '520px'],
-							content: '.advert/goadvertaddedit?advertNumber=' + data.advertiseId,
-							end: function() {}
+							area: ['800px', '650px'],
+							content: 'advertedit.html',
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								iframe.subPageadvert(data, userNumber)
+							}
 						});
 					}
 					if(obj.event === 'delete') {
+						console.log(data)
 						// 弹出是否要删除门店
 						layer.confirm('确定要删除广告吗?', function(index) {
-							var mydata = {
-								"advertNumber": data.advertiseId,
+							var addData = {
+								"deletionFlag": 0,
+								"advertisementNumber": data.advertisementNumber
 							}
-							// 发送请求,将分类进行逻辑删除
-							$.ajax({
-								type: "post",
-								url: ".advert/advertdel",
-								async: true,
-								data: mydata,
-								success: function(data) {
-									if(data.result == "success") {
-										layer.msg('删除成功 ', {
-											icon: 1,
-											time: 1000
-										}, function() {
-											// 刷新页面
-											window.location.href = window.location.href
-										});
-									} else if(data.result == "erro") {
-										layer.msg(data.msg);
-									}
-
-								}
-							});
-						});
-					}
-					if(obj.event === 'zhuangtaidisable') {
-						var mydata = {
-							"advertNumber": data.advertiseId,
-							"advertName": data.advertiseName,
-							"advertUrl": data.advertUrl, //跳转地址
-							"advertOpen": 0,
-							"OperatorNumber": data.OperatorNumber,
-							"advertState": data.advertState,
-							"advertQudao": data.advertQudao,
-							"advertiseUrl": data.advertiseUrl, //图片地址
-							"LaunchTime": data.advertiseStarttime,
-							"InvalidTime": data.advertiseEndtime
-						}
-						// 禁用分类
-						layer.confirm('真的要启用吗?', function(index) {
 							// 发送请求
-							$.ajax({
-								type: "post",
-								url: ".advert/advertaddedit",
-								async: true,
-								data: mydata,
-								success: function(data) {
-									if(data.result == "success") {
-										layer.msg('操作成功 ', {
-											icon: 1,
-											time: 1000
-										}, function() {
-											// 刷新页面
-											window.location.href = window.location.href
-										});
-									} else if(data.result == "false") {
-										layer.msg(data.msg);
+							CmsUtility.postAjaxCall(
+								//系统设置
+								CmsConfig.addressUrl.Merchant.deleteAdvert + '?merchantNumber=' + userNumber,
+								addData,
+								function(data) {
+									if(data.code == 1000) {
+										layer.close(index); //再执行关闭
+										layer.msg('删除成功')
+										layui.table.reload('advertlist');
+									} else {
+										layer.msg(data.msg)
 									}
+								},
+								function(data) {
+									console.log('222')
 								}
-							});
-						});
-					}
-					if(obj.event === 'zhuangtaiopen') {
-						var mydata = {
-							"advertNumber": data.advertiseId,
-							"advertName": data.advertiseName,
-							"advertUrl": data.advertiseUrl, //跳转地址
-							"advertOpen": 1,
-							"OperatorNumber": data.OperatorNumber,
-							"advertState": data.advertState,
-							"advertQudao": data.advertQudao,
-							"advertiseUrl": data.advertiseUrl, //图片地址
-							"LaunchTime": data.advertiseStarttime,
-							"InvalidTime": data.advertiseEndtime
-						}
-						// 禁用分类
-						layer.confirm('真的要禁用吗?', function(index) {
-							// 发送请求
-							$.ajax({
-								type: "post",
-								url: ".advert/advertaddedit",
-								async: true,
-								data: mydata,
-								success: function(data) {
-									if(data.result == "success") {
-										layer.msg('操作成功 ', {
-											icon: 1,
-											time: 1000
-										}, function() {
-											// 刷新页面
-											window.location.href = window.location.href
-										});
-									} else if(data.result == "false") {
-										layer.msg(data.msg);
-									}
-								}
-							});
+							)
 						});
 					}
 				})

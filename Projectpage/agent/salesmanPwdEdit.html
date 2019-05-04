@@ -24,7 +24,7 @@
                   	密码
               	</label>
 					<div class="layui-input-inline" style="width: 200px;">
-						<input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off" class="layui-input">
+						<input type="password" id="L_pass" name="" required="" lay-verify="pass" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-form-mid layui-word-aux">
 						6到16个字符
@@ -35,7 +35,7 @@
                   	确认密码
               	</label>
 					<div class="layui-input-inline" style="width: 200px;">
-						<input type="password" id="L_repass" name="repass" required="" lay-verify="repass" autocomplete="off" class="layui-input">
+						<input type="password" id="L_repass" name="passWord" required="" lay-verify="repass" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -47,19 +47,26 @@
 				</div>
 			</form>
 		</div>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
 		<script>
-			layui.use(['form', 'layer'], function() {
-				$ = layui.jquery;
-				var form = layui.form,
-					layer = layui.layer;
-
+			function subPage(data,data1){
+				console.log(data)
+				var jgData = data
+				layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
+				 //允许ajax跨域
+				var $ = layui.jquery,
+					upload = layui.upload,
+					laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					laytpl = layui.laytpl;
+				var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+				var insNumber = JSON.parse(sessionStorage.getItem('agentUser')).institutionNumber;
+				var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
 				//自定义验证规则
 				form.verify({
-					nikename: function(value) {
-						if(value.length < 5) {
-							return '昵称至少得5个字符啊';
-						}
-					},
+					
 					pass: [/(.+){6,12}$/, '密码必须6到12位'],
 					repass: function(value) {
 						if($('#L_pass').val() != $('#L_repass').val()) {
@@ -70,34 +77,36 @@
 
 				//监听提交
 				form.on('submit(add)', function(data) {
-					
-					$.ajax({
-						type: "post",
-						url: ".salesmanManagement/updateSalesmanPwd",
-						async: true,
-						data: data.field,
-						success: function(data) {
-							if(data.code == 0000) {
-								layer.alert("修改成功", {
-									icon: 6
-								}, function() {
-									// 获得frame索引
-									var index = parent.layer.getFrameIndex(window.name);
-									//关闭当前frame
-									parent.layer.close(index);
-								});
-							} else {
-								layer.alert("修改失败,请刷新后重新修改!!", {
-									icon: 6
-								}, function() {
+					console.log(data)
+					var addData = new Object()
+					addData.saleNumber = jgData.saleNumber
+					addData.passWord = $('#L_repass').val()
+					addData.institutionNumber = JSON.parse(sessionStorage.getItem('agentUser')).institutionNumber;
+					console.log(addData)
+					CmsUtility.postAjaxCall(
+                        //系统设置
+                        CmsConfig.addressUrl.Agent.updateSale,
+                        addData,
+                        function(data) {
+                            if (data.code == 1000) {
+                                x_admin_close()
+                                parent.layer.msg('更改成功')
+                            	parent.layui.table.reload('salesmanList')
+                                
+                            } else {
+                                layer.msg(data.msg)
 
-								});
-							}
-						}
-					});
+                            }
+                        },
+                        function(data) {
+                            console.log('222')
+                        }
+                    )
+					
 					return false;
 				});
 			});
+			}
 		</script>
 
 	</body>

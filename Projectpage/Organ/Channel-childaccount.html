@@ -10,167 +10,364 @@
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="../../public/css/font.css">
 		<link rel="stylesheet" href="../../public/css/xadmin.css">
-		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
 		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
 		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
 		<!--[if lt IE 9]>
-      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
 		<style type="text/css">
 			.layui-btn+.layui-btn {
 				margin-left: -2px;
+			}
+			.hiide{
+				display: none;
 			}
 		</style>
 	</head>
 
 	<body id="iosiframe">
-		<div class="x-body">
+		<div class="layui-row" style="margin-left:30px;margin-top:15px">
+				<div class="layui-form layui-col-md4 layui-col-sm4 layui-col-xs4 x-so">
+					<div class="layui-input-inline">
+						<input type="text" name="couponName" id="merchantNumber" placeholder="商户编号" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="couponName" id="subaccountNumber" placeholder="子商户编号" autocomplete="off" class="layui-input">
+					</div>
+					
+					
+					<div class="layui-input-inline coupons_screen">
+						<button class="layui-btn" data-type="reload" title="搜索" id="search"><i class="layui-icon">&#xe615;</i></button>
+					</div>
+				</div>
+			</div>
+		<div class="x-body" >
 			<xblock>
-				<button class="layui-btn" onclick="x_admin_show('添加子帐号','./Channel-childaccount-add.html','600')"><i class="layui-icon"></i>添加子帐号</button>
+				<button class="layui-btn"  id="addChild"><i class="layui-icon"></i>添加子帐号</button>
 			</xblock>
 			<table class="layui-hide" id="members" lay-filter="members"></table>
 		</div>
+		<script type="text/html" id="switchBar">
+			<input type="checkbox" name="consumptionPreferences" lay-skin="switch" lay-filter="switch" lay-text="启用|停用" {{d.disable==0 ? 'checked' : ''}} value="{{d.subaccountNumber}}">
+		</script>
 		<script type="text/html" id="toolbar">
+			<a class="layui-btn layui-btn-xs" id="edit" lay-event="rate">费率</a>
+			<a class="layui-btn layui-btn-xs report " id="report" lay-event="report">报备</a>
 			<a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">编辑</a>
 			<a class="layui-btn layui-btn-xs" id="riskctrl" lay-event="riskctrl">风控</a>
+			<a class="layui-btn layui-btn-xs" id="riskctrl" lay-event="add">补全资料</a>
 			<a class="layui-btn layui-btn-danger layui-btn-xs" id="logout" lay-event="logout">删除</a>
 		</script>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
 		<script>
-			var serverUrl = window.parent.serverUrl
-			var userNumber = window.parent.userNumber
-			layui.use(['laydate', 'table', 'form'], function() {
-				var laydate = layui.laydate,
-					table = layui.table,
-					form = layui.form;
 
-				//方法级渲染  
-				table.render({
-					//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
-					url: './json/vip-card.json',
-					elem: '#members',
-					height: 'full-120',
-					id: 'vip_cardList',
-					//					parseData: function(res) { //res 即为原始返回的数据
-					//						return {
-					//							"code": res.code, //解析接口状态
-					//							"msg": res.msg, //解析提示文本
-					//							"count": res.count, //解析数据长度
-					//							"data": changeRes(res.result,res.count), //解析数据列表
-					//						};
-					//					},
-					cols: [
-						[{
-							align: 'center',
-							field: 'id',
-							width: 150,
-							title: '编号'
-						}, {
-							align: 'center',
-							field: 'username',
-							width: 150,
-							title: '账户名称'
-						}, {
-							align: 'center',
-							field: 'sex',
-							width: 150,
-							title: '账户状态'
-						}, {
-							align: 'center',
-							field: 'sex',
-							width: 300,
-							title: '成本费率模式'
-						}, {
-							align: 'center',
-							title: '操作',
-							toolbar: '#toolbar',
-							minWidth: 200
-						}]
-					],
-					page: true,
-					done: function(res, curr, count) {
-						console.log(res)
+			function subPage(data,data1){
+				var jgData = data
+				console.log(jgData)
+				var payChannelType = jgData.paymentChannelType
+				var serverUrl = window.parent.serverUrl
+				console.log($('.report'))
+				if(jgData.paymentChannelType == 2 || jgData.paymentChannelType == 4){
+					$('.report').show()
+				}else{
+					$('.report').hide()
+				}
+				var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+				var channel = jgData.id
+				layui.use(['laydate', 'table', 'form'], function() {
+					var laydate = layui.laydate,
+						table = layui.table,
+						form = layui.form;
+
+					//方法级渲染  
+					function tableRender(){
+						table.render({
+							//url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+							url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getInstitutionSub + '?institutionNumber=' + userNumber ,
+							where:{
+								"paymentChannel":jgData.id,
+								"merchantNumber":$('#merchantNumber').val(),
+								"subaccountNumber":$('#subaccountNumber').val()
+
+							},
+							elem: '#members',
+							height: 'full-220',
+							id: 'vip_cardList',
+							response: { 
+							//res 即为原始返回的数据
+									"statusCode":"1000", //解析接口状态
+									
+							},
+							parseData: function(res) { //res 即为原始返回的数据
+								if(res.data == null){
+									return
+								}
+								return {
+									"code": res.code, //解析接口状态
+									"msg": res.msg, //解析提示文本
+									"count": res.data.count, //解析数据长度
+									"data": res.data.institutionSubaccountlist, //解析数据列表
+								};
+							},
+							cols: [
+								[{
+									align: 'center',
+									field: 'merchantNumber',
+									width: 150,
+									title: '商户编号'
+								},{
+									align: 'center',
+									field: 'merchantName',
+									width: 250,
+									title: '商户名称'
+								}, {
+									align: 'center',
+									field: 'subaccountNumber',
+									width: 200,
+									title: '子商户编号'
+								}, {
+									align: 'center',
+									field: 'subaccountNumber',
+									width: 150,
+									title: '费率'
+								}, {
+									align: 'center',
+									field: 'rateType',
+									width: 100,
+									title: '费率类型'
+								}, {
+									align: 'center',
+									toolbar: '#switchBar',
+									width: 120,
+									title: '状态'
+								}, {
+									align: 'center',
+									field: 'insertTime',
+									width: 180,
+									title: '添加时间'
+								},  {
+									align: 'center',
+									title: '操作',
+									toolbar: '#toolbar',
+									minWidth: 300
+								}]
+							],
+							page: true,
+							done: function(res, curr, count) {
+								console.log(res)
+								console.log($('.report'))
+								if(payChannelType == 2 || payChannelType == 4){
+									$('.report').show()
+								}else{
+									$('.report').hide()
+								}
+							}
+						});
 					}
-				});
-				
-				//监听性别操作
-				form.on('switch(toolbar_switch)', function(data) {
-					layer.tips('自助核销：' + (this.checked ? '已开启' : '已关闭'), data.othis)
-				});
+					tableRender()
+					$('#search').click(function(){
+						tableRender()
+					})
+					//监听性别操作
+					form.on('switch(switch)', function(data) {
+						// layer.tips('自助核销：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+						var tjData = new Object()
+							
+						tjData.institutionNumber = userNumber
+						tjData.paymentChannel = channel
+						tjData.subaccountNumber = data.value
+						tjData.disable = this.checked?0:1
 
-				//监听工具条
-				table.on('tool(members)', function(obj) {
-					var data = obj.data;
-					if(obj.event === 'edit') { //编辑
+						console.log(tjData)
+						CmsUtility.postAjaxCall(
+							//系统设置
+							CmsConfig.addressUrl.Mechanism.updateInstitutionSub,
+							tjData,
+							function(data){
+								if(data.code == 1000){
+									 
+									layer.msg('更改状态成功')
+									
+									
+								}else{
+									layer.msg(data.msg)
+									
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+					});
+					//新增子账号
+					
+					$('#addChild').click(function(){
+						
 						layer.open({
 							type: 2,
-							title: '编辑',
+							title: '添加子帐号',
 							shade: 0.5,
 							area: ['600px', '90%'],
 							maxmin: false,
 							resize: false,
-							content: ['Channel-childaccount-edit.html'],
+							content: ['Channel-childaccount-add.html?channel='+jgData.id + '&payment='+jgData.paymentChannelType + '&app='+jgData.recommendAPPID],
 							success: function(layero, index) {
 								// 获取子页面的iframe
-								//var iframe = window['layui-layer-iframe' + index];
+								var iframe = window['layui-layer-iframe' + index];
 								// 向子页面的全局函数child传参
-								//iframe.subPage(data, userNumber)
+								// data.channel = channel
+								// iframe.subPage(data, userNumber)
 							}
 						});
-					} else if(obj.event === 'riskctrl') { //风控
-						layer.open({
-							type: 2,
-							title: '风控',
-							shade: 0.5,
-							area: ['600px', '90%'],
-							maxmin: false,
-							resize: false,
-							content: ['Channel-childaccount-riskctrl.html'],
-							success: function(layero, index) {
-								// 获取子页面的iframe
-								//var iframe = window['layui-layer-iframe' + index];
-								// 向子页面的全局函数child传参
-								//iframe.subPage(data, userNumber)
-							}
-						});
-					} else if(obj.event === 'logout') { //注销
-						var zhuxiaoData = {
-							card: data.card,
-							cardType: 5
-						}
-						layer.confirm('真的删除此会员卡么', {
-							icon: 3,
-							title: '提示'
-						}, function(index) {
-							// 发送请求
-							$.ajax({
-								type: "post",
-								url: serverUrl + "memberCard/updateAssociatorCard",
-								async: true,
-								dataType: "json",
-								contentType: "application/json",
-								data: JSON.stringify(zhuxiaoData),
-								success: function(data) {
-									if(data.code == 0) {
-										layer.close(index);
-										layer.msg("会员卡已注销");
-										// 刷新页面
-										var curr = $("#curr").val();
-										layui.table.reload('vip_cardList', {
-											page: {
-												curr: curr
-											}
-										});
-									} else if(data.code == 1) {
-										layer.msg("会员卡注销失败");
-									}
+					})
+					//监听工具条
+					table.on('tool(members)', function(obj) {
+						console.log(obj)
+						var data = obj.data;
+						if(obj.event === 'edit') { //编辑
+							layer.open({
+								type: 2,
+								title: '编辑',
+								shade: 0.5,
+								area: ['600px', '90%'],
+								maxmin: false,
+								resize: false,
+								content: ['Channel-childaccount-edit.html'],
+								success: function(layero, index) {
+									// 获取子页面的iframe
+									var iframe = window['layui-layer-iframe' + index];
+									// 向子页面的全局函数child传参
+									data.channel = channel
+									data.payment = jgData.paymentChannelType
+									iframe.subPage(data, userNumber)
 								}
 							});
-						});
-					}
+						}else if(obj.event === 'rate'){
+								// layer.msg('rate')
+								layer.open({
+									type: 2,
+									title: '子账号费率',
+									shade: 0.5,
+									area: ['600px', '95%'],
+									maxmin: false,
+									resize: false,
+									content: ['Channel-childaccount-rate.html'],
+									success: function(layero, index) {
+										// 获取子页面的iframe
+										var iframe = window['layui-layer-iframe' + index];
+										// 向子页面的全局函数child传参
+										// data.channel = channel
+										data.paymentChannelType = jgData.paymentChannelType
+										data.paymentChannel = jgData.id
+										iframe.subPage(data, userNumber)
+									}
+								});
+						}else if(obj.event === 'report'){
+
+								layer.msg('report')
+								layer.open({
+									type: 2,
+									title: '微信报备',
+									shade: 0.5,
+									area: ['600px', '90%'],
+									maxmin: false,
+									resize: false,
+									content: ['Channel-report.html'],
+									success: function(layero, index) {
+										// 获取子页面的iframe
+										var iframe = window['layui-layer-iframe' + index];
+										// 向子页面的全局函数child传参
+										// data.channel = channel
+										data.paymentChannelType = jgData.paymentChannelType
+										data.paymentChannel = jgData.id
+										iframe.subPage(data, userNumber)
+									}
+								});
+						} else if(obj.event === 'riskctrl') { //风控
+							layer.open({
+								type: 2,
+								title: '风控',
+								shade: 0.5,
+								area: ['600px', '90%'],
+								maxmin: false,
+								resize: false,
+								content: ['Channel-childaccount-riskctrl.html'],
+								success: function(layero, index) {
+									// 获取子页面的iframe
+									var iframe = window['layui-layer-iframe' + index];
+									// 向子页面的全局函数child传参
+									data.channel = channel
+									iframe.subPage(data, userNumber)
+								}
+							});
+						}else if(obj.event === 'add') { //补全资料
+							layer.msg('补全资料')
+							return
+							layer.open({
+								type: 2,
+								title: '风控',
+								shade: 0.5,
+								area: ['600px', '90%'],
+								maxmin: false,
+								resize: false,
+								content: ['Channel-childaccount-riskctrl.html'],
+								success: function(layero, index) {
+									// 获取子页面的iframe
+									var iframe = window['layui-layer-iframe' + index];
+									// 向子页面的全局函数child传参
+									data.channel = channel
+									iframe.subPage(data, userNumber)
+								}
+							});
+						} else if(obj.event === 'logout') { //注销
+							var zhuxiaoData = {
+								card: data.card,
+								cardType: 5
+							}
+							layer.confirm('真的删除此子账号么', {
+								icon: 3,
+								title: '提示'
+							}, function(index) {
+								// 发送请求
+								console.log(data,index)
+								var tjData = new Object()
+							
+								tjData.institutionNumber = userNumber
+								tjData.paymentChannel = channel
+								tjData.subaccountNumber = data.subaccountNumber
+								tjData.deletionFlag = 1
+								console.log(tjData)
+								CmsUtility.postAjaxCall(
+									//系统设置
+									CmsConfig.addressUrl.Mechanism.updateInstitutionSub,
+									tjData,
+									function(data){
+										if(data.code == 1000){
+											 
+											layer.msg('删除成功')
+											setTimeout(function(){
+												tableRender()
+											},500);
+											
+										}else{
+											layer.msg(data.msg)
+											
+										}
+									},
+									function(data){
+										console.log('222')
+									}
+								)
+							});
+						}
+					});
 				});
-			});
+			}
+			
 		</script>
 	</body>
 
