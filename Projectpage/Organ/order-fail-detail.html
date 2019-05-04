@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../../public/css/font.css">
+    <link rel="stylesheet" href="../../public/css/xadmin.css">
+    <script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../public/js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    .layui-table tr td:first-child {
+        width: 150px;
+    }
+    </style>
+</head>
+
+<body id="iosiframe">
+    <div class="x-body">
+        <table class="layui-table" class="layui-form" lay-filter="cardAdd">
+            <tbody>
+                <tr>
+                    <td>商户编号</td>
+                    <td  id="merchantNumber"></td>
+                </tr>
+                <!-- <tr>
+                    <td>收款用户</td>
+                    <td id="shoukuanyonghu"></td>
+                </tr> -->
+                <tr>
+                    <td>商户名称</td>
+                    <td id="merchantName"></td>
+                </tr>
+                 
+                <tr>
+                    <td>退款订单号</td>
+                    <td id="paymentOrderNumber"></td>
+                </tr>
+                 <tr>
+                    <td>上游订单号</td>
+                    <td id="batch"></td>
+                </tr>
+                <tr>
+                    <td>退款金额</td>
+                    <td id="shishou"></td>
+                </tr>
+                <tr>
+                    <td>提交时间</td>
+                    <td id="orderTime"></td>
+                </tr>
+                <tr>
+                    <td>成功时间</td>
+                    <td id="insertTime"></td>
+                </tr>
+                <tr>
+                    <!-- 1+2 -->
+                    <td>支付方式</td>
+                    <td id="zhifuchanpin"></td>
+                </tr>
+                <tr>
+                    <td>提交地址</td>
+                    <td id="tijiaodizhi"></td>
+                </tr>
+                <tr>
+                    <td>回调地址</td>
+                    <td id="tongzhidizhi"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+    function subPage(data, data1) {
+        console.log(data)
+        var jgData;
+        jgData = data
+        //商户编号
+        $("#merchantNumber").html(jgData.merchantNumber)
+        //收款用户
+        $("#merchantName").html(jgData.merchantName)
+        //商户姓名
+        $("#subaccountNumber").html(jgData.subaccountNumber)
+        //第三方订单号
+        $("#paymentOrderNumber").html(jgData.paymentOrderNumber)
+        //系统订单号
+        $("#batch").html(jgData.batch)
+        //下游订单号
+        $("#orderNumber").html(jgData.orderNumber)
+        //交易金额
+        $("#transactionAmount").html(jgData.transactionAmount)
+        //手续费
+        $("#shopPoundage").html(jgData.shopPoundage)
+        //实收金额
+        $("#shishou").html(jgData.tuikuanjine)
+        //提交时间
+        $("#orderTime").html(jgData.orderTime)
+        //成功时间,
+        $("#insertTime").html(jgData.transactionTime)
+        //支付通道
+        $("#transactionPassageway").html(jgData.transactionPassageway)
+        //支付产品
+        $("#zhifuchanpin").html(jgData.onepaymentTypeName)
+        //提交地址
+        //$("#tijiaodizhi").html('提交地址')
+        //页面返还地址
+        //$("#fanhuandizhi").html('页面返还地址')
+        //服务器通知地址
+        //$("#tongzhidizhi").html('通知地址')
+        //状态
+        $("#state").html(jgData.orderState1)
+        //
+        var index = parent.layer.getFrameIndex(window.name);
+        $('#quxiao').click(function() {
+
+            setTimeout(function() { parent.layer.close(index) }, 16);
+        })
+        return
+        var serverUrl = window.parent.serverUrl
+        var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+        layui.use(['laydate', 'table', 'upload', 'form'], function() {
+            var $ = layui.jquery,
+                upload = layui.upload,
+                laydate = layui.laydate,
+                table = layui.table,
+                form = layui.form,
+                admin = layui.admin,
+                element = layui.element,
+                layer = layui.layer;
+            var tableSelect = layui.tableSelect;
+
+
+            //表单初始赋值
+            form.html('cardAdd', {
+                //商户编号
+                "merchantNumber": jgData.merchantNumber,
+                //收款用户
+                "shoukuanyonghu": 'shoukuanyonghu',
+                //商户姓名
+                "clerkNumber": jgData.clerkNumber,
+                //商户订单号
+                "orderNumber": jgData.orderNumber,
+                //交易金额
+                "transactionAmount": jgData.transactionAmount,
+                //手续费
+                "shopPoundage": jgData.shopPoundage,
+                //实收金额
+                "shishou": jgData.transactionAmount - jgData.shopPoundage,
+                //提交时间
+                "orderTime": jgData.orderTime,
+                //成功时间,
+                "insertTime": jgData.insertTime,
+                //支付通道
+                "transactionPassageway": jgData.transactionPassageway,
+                //支付产品
+                "zhifuchanpin": 'zhifuchanpin',
+                //提交地址
+                "tijiaodizhi": '提交地址',
+                //页面返还地址
+                "fanhuandizhi": '页面返还地址',
+                //服务器通知地址
+                "tongzhidizhi": '通知地址',
+                //状态
+                "state": jgData.processingState,
+                //
+            })
+
+
+
+
+
+
+        });
+    }
+    </script>
+</body>
+
+</html>

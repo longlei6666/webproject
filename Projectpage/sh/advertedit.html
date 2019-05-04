@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<link rel="stylesheet" href="../../public/css/style.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<style type="text/css">
+			.layui-upload-img {
+				width: 100px;
+				height: 100px;
+				margin: 0 10px 0 0;
+				float: left;
+			}
+			
+			.uploadbtn,
+			#demoText {
+				margin-top: 30px;
+				margin-right: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md12" lay-filter="advertform">
+					<div class="grid-demo">
+						<!--基本资料-->
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span class="x-red">* </span>广告名称：</label>
+							<div class="layui-input-inline">
+								<input type="text" id="advertName" name="advertisementName" lay-verify="required" autocomplete="off" class="layui-input" value="">
+							</div>
+						</div>
+						<input type="hidden" name="" id="advertisementPicture" value="1" />
+						<div class="layui-form-item">
+							<label class="layui-form-label uploadtitle"><span class="x-red">* </span>广告图片：</label>
+                        <div class="layui-upload">
+                            <div class="layui-upload-img" id="" style="width:150;height:150px">
+                                <img src="" id="demo1" style="width:150px;height:150px" lay-filter="logo">
+							</div>
+                                <p id="demoText"></p>
+                                <!--<button type="button" class="layui-btn">上传图片</button>-->
+                            </div>
+                            <div class="layui-input-inline uploadimgbtn">
+                                <p id="demoText" class="block"></p>
+                                <button type="button" style="margin-left:100px" class="layui-btn block" id="test1">上传图片</button>
+                            </div>
+                        </div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">图片跳转地址：</label>
+							<div class="layui-input-inline">
+								<textarea id="advertUrl" name="advertisementJumpAddress" placeholder="请输入跳转地址" lay-verify="required" class="layui-textarea"></textarea>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span class="x-red">* </span>闪拼客分销商ID：</label>
+							<div class="layui-input-inline">
+								<input type="text" id="OperatorNumber" name="agentID" lay-verify="required" autocomplete="off" class="layui-input" value="">
+							</div>
+						</div>
+						<!-- <div class="layui-form-item">
+							<label class="layui-form-label"><span class="x-red">* </span>状态</label>
+							<div class="layui-input-block">
+								<input type="radio" name="enable" value="0" title="启用">
+								<input type="radio" name="enable" value="1" title="禁用">
+							</div>
+						</div> -->
+						<div class="layui-form-item layui-layout-admin">
+							<div class="layui-input-block">
+								<div class="layui-footer" style="left: 0;text-align: center;">
+									<button class="layui-btn formbtn" lay-filter="add" lay-submit="">保存</button>
+									<button class="layui-btn layui-btn-warm formbtn" onclick="x_admin_close()">取消</button>
+								</div>
+								<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
+		<script>
+			function subPageadvert(data, userNumber) {
+				var data = data
+				var advertisementNumber = data.advertisementNumber
+				var userNumber = window.parent.userNumber;
+				layui.use(['form', 'layedit', 'laydate', 'element', 'layer', 'upload', 'table'], function() {
+					var $ = layui.jquery,
+						upload = layui.upload;
+					var element = layui.element;
+					var layer = layui.layer;
+					var form = layui.form,
+						layedit = layui.layedit,
+						laydate = layui.laydate;
+					var table = layui.table;
+					var logoUrl;
+					//表单初始赋值
+					form.val('advertform', {
+						"advertisementName": data.advertisementName,
+						"advertisementJumpAddress": data.advertisementJumpAddress,
+						"agentID": data.agentID,
+						"enable": data.enable.toString()
+					})
+					$('#demo1').attr('src',data.advertisementPicture)
+					logoUrl = data.advertisementPicture
+					
+				var uploadInst = upload.render({
+	                elem: '#test1',
+	                url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Public.addPic,
+	                data:{
+	                    "institutionNumber": userNumber, 
+	                },
+	                before: function(obj) {
+	                    console.log(obj)
+	                    //预读本地文件示例，不支持ie8
+	                    obj.preview(function(index, file, result) {
+	                        $('#demo1').attr('src', result); //图片链接（base64）
+	                    });
+	                },
+	                done: function(res) {
+	                    //如果上传失败
+	                    if (res.code != 1000) {
+	                        var demoText = $('#demoText');
+	                            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+	                            demoText.find('.demo-reload').on('click', function() {
+	                                uploadInst.upload();
+	                            });
+	                        return layer.msg('上传失败');
+	                        
+	                    }else{
+	                        logoUrl = res.data
+	                        return layer.msg('上传成功');
+	                        
+	                    }
+	                    //上传成功
+	                    console.log(res)
+	                },
+	                error: function() {
+	                    //演示失败状态，并实现重传
+	                    var demoText = $('#demoText');
+	                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+	                    demoText.find('.demo-reload').on('click', function() {
+	                        uploadInst.upload();
+	                    });
+	                }
+	            });
+					/* //餐品图片上传
+					var demoListView = $('#canpinImgList'),
+						uploadListIns = upload.render({
+							elem: '#selectcanpinImg',
+							url: '.advert/addadvertPic',
+							auto: false,
+							multiple: true,
+							bindAction: '#uploadcanpin',
+							choose: function(obj) {
+								var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+								//读取本地文件
+								obj.preview(function(index, file, result) {
+									var tr = $(['<li id="upload-' + index + '">', '<td><img src="' + result + '" alt="' + file.name + '" class="layui-upload-img layui-upload-mdimg"></td>', '<td>', '<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>', '<i class="layui-icon layui-btn-danger demo-delete img-delete mdimg-delete">&#xe640;</i>', '</td>', '</li>'].join(''));
+
+									//删除
+									tr.find('.demo-delete').on('click', function() {
+										delete files[index]; //删除对应的文件
+										tr.remove();
+										uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+									});
+									demoListView.append(tr);
+								});
+							},
+							done: function(res) {
+								if(res.code == 0) {
+									// 上传成功
+									layer.msg('上传成功');
+									// 获取上方的值,将后台传输过来的值进行拼接
+									var url = $("#canpinPicAddress").val();
+									url = url + res.desc + "--";
+									$("#canpinPicAddress").val(url);
+								} else {
+									layer.alert('上传失败,请重新上传!');
+								}
+							},
+							error: function() {
+								//演示失败状态，并实现重传
+								layer.msg('上传失败,请重新上传');
+							}
+						}); */
+					//时间范围
+					laydate.render({
+						elem: '#advertiseStarttime',
+						type: 'datetime'
+					}); //时间范围
+					laydate.render({
+						elem: '#advertiseEndtime',
+						type: 'datetime'
+					});
+
+					//监听提交
+					form.on('submit(add)', function(data) {
+						console.log(data.field);
+						var addData = data.field
+						addData.advertisementPicture = logoUrl
+						addData.enable = 0
+						addData.advertisementNumber = advertisementNumber
+						addData.merchantNumber = userNumber
+						// 发送请求
+						CmsUtility.postAjaxCall(
+							//系统设置
+							CmsConfig.addressUrl.Merchant.modifyAdvert ,
+							addData,
+							function(data) {
+								if(data.code == 1000) {
+									var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+									parent.layer.close(index); //再执行关闭
+									parent.layer.msg('修改成功')
+									parent.layui.table.reload('advertlist');
+								} else {
+									layer.msg(data.msg)
+								}
+							},
+							function(data) {
+								console.log('222')
+							}
+						)
+						return false;
+					});
+				});
+			}
+		</script>
+	</body>
+
+</html>

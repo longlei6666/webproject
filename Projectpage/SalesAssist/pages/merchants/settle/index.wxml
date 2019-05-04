@@ -1,0 +1,56 @@
+<!--pages/merchants/register/index.wxml-->
+<view class="container">
+    <view class="body">
+        <view class="bodyTop">
+            <view class="bodyC">
+                <!-- radio循环 -->
+                <view class="bodyCli activeInput">
+                    <label class="bodyClitit">结算标识：</label>
+                    <radio-group class="bodyCliradio" name="radio">
+                        <label>
+                            <radio value="对公" />对公账户</label>
+                        <label>
+                            <radio value="对私" />对私账户</label>
+                    </radio-group>
+                </view>
+                <view class="bodyCli">
+                    <label class="bodyClitit">银行卡号：</label>
+                    <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="请填写银行卡号" placeholder-class="placeholder" data-current="{{item.id}}" bindfocus="focus" bindblur='blur'></input>
+                </view>
+                <view class="bodyCli">
+                    <label class="bodyClitit">开户行：</label>
+                    <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="请选择开户行" placeholder-class="placeholder" data-current="{{item.id}}" bindfocus="focus" bindblur='blur'></input>
+                </view>
+                <view class="bodyCli">
+                    <label class="bodyClitit">开户支行：</label>
+                    <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="请选择开户支行" placeholder-class="placeholder" data-current="{{item.id}}" bindfocus="focus" bindblur='blur'></input>
+                </view>
+            </view>
+            <view class="bodyC">
+                <!-- radio循环 -->
+                <view class="bodyCli activeInput">
+                    <label class="bodyClitit">结算标识：</label>
+                    <radio-group class="bodyCliradio" name="radio">
+                        <label>
+                            <radio value="radio1" />D1</label>
+                    </radio-group>
+                </view>
+                <view class="bodyCli activeInput">
+                    <radio-group class="bodyCliradio" name="radio">
+                        <label>
+                            <radio value="radio1" />D0</label>
+                    </radio-group>
+                </view>
+                <view class="bodyCli">
+                    <label class="bodyClitit">结算费率：</label>
+                    <picker mode="date" value="{{date}}" start="1199-01-01" end="2200-12-31" bindchange="bindDateChange">
+                        <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="请选择费率" placeholder-class="placeholder" readonly="readonly" bindfocus="focus" bindblur='blur' value="{{date}}"></input>
+                    </picker>
+                </view>
+            </view>
+        </view>
+        <view class="bodyBottom">
+            <view class="bodyBtn">下一步</view>
+        </view>
+    </view>
+</view>

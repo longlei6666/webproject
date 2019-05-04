@@ -1,0 +1,16 @@
+{
+  "pages":[
+    "pages/merchants/manage/index",
+    "pages/merchants/register/index",
+    "pages/shop/shop-list/index",
+    "pages/shop/shop-check/index",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#FFA20A",
+    "navigationBarTitleText": "进件助手",
+    "navigationBarTextStyle":"white"
+  }
+}

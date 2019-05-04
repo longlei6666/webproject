@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<xblock class="demoTable">
+				<button class="layui-btn" data-type="addMP"><i class="layui-icon"></i>添加码牌</button>
+			</xblock>
+			<table class="layui-table" id="LAY_table_product" lay-filter="product"></table>
+		</div>
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="unbind">解绑</a>
+		</script>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
+		<script>
+			function subPageClerkpass(data,data1,data2){
+				console.log(data,data1,data2)
+				var jgData = data
+				layui.use(['table', 'table', 'laytpl'], function() {
+					var table = layui.table,
+						form = layui.form,
+						laytpl = layui.laytpl,
+						$ = layui.jquery;
+					var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+					var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
+					//方法级渲染
+					table.render({
+						url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Agent.getEquipmentlist + '?merchantNumber=' + jgData.merchantNumber,
+						where:{
+							"equipmentType":"0",
+						},
+						elem: '#LAY_table_product',
+						
+						//method: "post",
+						height: 'full-120',
+						id: 'YLBlist',
+						response: {
+							"statusCode": "1000", //解析接口状态
+						},
+						parseData: function(res) {
+							if(res.data == null) {
+								return
+							}
+							return {
+								"msg":res.msg,
+								"code": res.code,
+								//"count": res.data.count,
+								"data": res.data
+							}
+						},
+						cols: [
+							[{
+								type: 'numbers',
+								title: '序号'
+							}, {
+								field: 'shopName',
+								title: '绑定店铺',
+								align:"center",
+								width: 200
+							}, {
+								field: 'equipmentNumber',
+								title: '码牌编号',
+								align:"center",
+								width: 245
+							}, {
+								field: 'operation',
+								title: '操作',
+								toolbar: "#tool",
+								align:"center",
+								minWidth: 100
+							}]
+						]
+					});
+
+					table.on('tool(product)', function(obj) {
+						var data = obj.data;
+						var mydata = {
+							UserNumber: data.UserNumber,
+							ShopNumber: data.ShopNumber,
+							SheBei: data.UnitId,
+							XingHao: data.UnitType,
+							Token: data.token
+						}
+						if(obj.event === 'unbind') {
+							// 发送请求,解绑码牌
+							layer.confirm('是否要解除绑定?', function(index) {
+							// 发送请求
+							console.log(data)
+							CmsUtility.postAjaxCall(
+							//系统设置
+								CmsConfig.addressUrl.Agent.updateShopCode,
+								{
+									"equipmentNumber":data.equipmentNumber,
+									"equipmentType":0
+								},
+								function(data){
+									if(data.code == 1000){
+										console.log(data)
+										setTimeout(function(){
+											layer.closeAll()
+											layui.table.reload('YLBlist')
+											layer.msg('解绑成功')
+											
+										},16); 
+										
+									}else{
+										layer.msg(data.msg)
+									}
+								},
+								function(data){
+									console.log('222')
+								}
+							)
+							
+						});
+						}
+						if(obj.event === 'unbind111') {
+							//发异步，把数据提交给后台
+							$.ajax({
+								type: "post",
+								url: ".yunlb/unbindylb",
+								async: true,
+								data: mydata,
+								success: function(data) {
+									if(data.result == "success") {
+										// 绑定码牌
+										$.ajax({
+											type: "post",
+											url: ".yunlb/unbindylbdata",
+											async: true,
+											data: mydata,
+											success: function(datas) {
+												if(datas.code == 0) {
+													layer.alert("解绑成功!", {
+														icon: 6
+													}, function() {
+														// 刷新父页面
+														window.parent.location.reload();
+														// 获得frame索引
+														var index = parent.layer.getFrameIndex(window.name);
+														//关闭当前frame
+														layer.close(index);
+													});
+												} else if(datas.code == 1) {
+													layer.alert("未知错误");
+												} else if(datas.code == 2) {
+													layer.alert("解绑失败，设备码不存在");
+												} else if(datas.code == 3) {
+													layer.alert("解绑失败，设备码已经被其它用户绑定");
+												} else if(datas.code == 4) {
+													layer.alert("解绑失败，设备码已经被同一用户绑定");
+												} else if(datas.code == 5) {
+													layer.alert("解绑失败，设备码被任何用户绑定");
+												} else if(datas.code == 6) {
+													layer.alert("失败，未提供设备码");
+												} else if(datas.code == 8) {
+													layer.alert("失败，此Token无此设备权限");
+												} else if(datas.code == 9) {
+													layer.alert("失败，无效的Token");
+												} else if(datas.code == 17) {
+													layer.alert("错误，重复的请求");
+												}
+											}
+										});
+									} else {
+										layer.alert(data.desc);
+									}
+								}
+							});
+						}
+					});
+
+					// 根據條件重载表格
+					var $ = layui.$,
+						active = {
+							reload: function() {
+								//执行重载
+								table.reload('productlist', {
+									page: {
+										curr: 1 //重新从第 1 页开始
+									},
+									where: {}
+								});
+							},
+							addMP: function() {
+								layer.open({
+									type: 2,
+									title: '添加码牌',
+									area: ['60%', '350px'],
+									content: 'MP-configurationAdd.html',
+									success: function(layero, index) {
+										// 获取子页面的iframe
+										var iframe = window['layui-layer-iframe' + index];
+										// 向子页面的全局函数child传参
+										iframe.subPage(data, userNumber)
+									}
+								});
+							}
+						};
+					$('.demoTable .layui-btn').on('click', function() {
+						var type = $(this).data('type');
+						active[type] ? active[type].call(this) : '';
+					});
+				});
+			}
+			
+		</script>
+	</body>
+
+</html>

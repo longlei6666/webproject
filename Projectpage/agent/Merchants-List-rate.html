@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../../public/css/font.css">
+    <link rel="stylesheet" href="../../public/css/xadmin.css">
+    <script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../public/js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    .layui-btn+.layui-btn {
+        margin-left: -2px;
+    }
+
+    .layui-table-cell {
+        height: auto;
+    }
+
+    .layui-table-box {
+        border-bottom: 1px solid #e6e6e6;
+    }
+    </style>
+</head>
+
+<body id="iosiframe">
+    <div class="x-body">
+        <div class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-form-mid x-red">注：费率为百分位，例如：千分之三则填0.3%</div>
+            </div>
+            <table class="layui-hide" id="members" lay-filter="members"></table>
+        </div>
+    </div>
+    <!-- <script type="text/html" id="toolbar_cb">
+			<div class="layui-input-inline">
+				<input type="number" name="toolbar_cb_{{d.id}}" class="layui-input">
+			</div>
+		</script> -->
+    <script type="text/html" id="toolbar_yy">
+        <div class="layui-input-inline">
+				<input type="number" name="toolbar_yy_{{d.id}}" class="layui-input">
+			</div>
+		</script>
+    <script type="text/html" id="toolbar_tx">
+        <div class="layui-input-inline">
+				<input type="number" name="toolbar_tx_{{d.id}}" class="layui-input">
+			</div>
+		</script>
+    <script src="../../common/config.js"></script>
+    <script src="../../common/utility.js"></script>
+    <script>
+    function changeRes(res) {
+        var res = res
+        if (res.length == 0) {
+            return
+        }
+        for (var i = 0; i < res.length; i++) {
+            if (res[i].jiesuanlx == 1) {
+                res[i].jiesuanlxa = 'D+0'
+            } else if (res[i].jiesuanlx == 2) {
+                res[i].jiesuanlxa = 'D+1'
+            } else if (res[i].jiesuanlx == 3) {
+                res[i].jiesuanlxa = 'T+1'
+            }
+            if (res[i].feilvlx == 1) {
+                res[i].feilvlxa = '成本费率'
+            } else if (res[i].feilvlx == 2) {
+                res[i].feilvlxa = '运营费率'
+            } else if (res[i].feilvlx == 3) {
+                res[i].feilvlxa = '提现费率'
+            }
+        }
+        return res
+    }
+
+    function subPageClerkpass(data, data1) {
+        var serverUrl = window.parent.serverUrl
+        var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+        var jgData = data
+        console.log(jgData)
+        layui.use(['laytpl', 'laydate', 'table', 'form'], function() {
+            var laytpl = layui.laytpl,
+                laydate = layui.laydate,
+                table = layui.table,
+                form = layui.form;
+
+            //方法级渲染 
+            function tableRender() {
+                var yyRate;
+                CmsUtility.postAjaxCall(
+                    //系统设置
+                    CmsConfig.addressUrl.Mechanism.getMerchantRate + '?merchantNumber=' + jgData.merchantNumber, {},
+                    function(data) {
+                        console.log(data)
+                        if (data.code == '1000') {
+                            CmsUtility.postAjaxCall(
+                                //系统设置
+                                'AgentRegister/getAgentPaymentRate', {
+                                    "agentNumber": userNumber,
+                                    "paymentChannel": data.data[0].paymentChannel,
+                                    "rateType": data.data[0].rateType,
+                                },
+                                function(data) {
+                                    console.log(data)
+                                    if (data.code == '1000') {
+                                        yyRate = (data.data[0].rate*100)+'%'
+                                        table.render({
+                                            //url: serverUrl + 'memberCard/getAssociatorCards?userNumber=' + userNumber,
+                                            url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getMerchantRate + '?merchantNumber=' + jgData.merchantNumber,
+                                            elem: '#members',
+                                            height: 'full-120',
+                                            id: 'vip_cardList',
+                                            response: {
+                                                //res 即为原始返回的数据
+                                                "statusCode": "1000", //解析接口状态
+
+                                            },
+                                            parseData: function(res) { //res 即为原始返回的数据
+                                                if (res.data == null) {
+                                                    layer.msg(res.msg)
+                                                    return
+                                                }
+                                                return {
+                                                    "code": res.code, //解析接口状态
+                                                    "msg": res.msg, //解析提示文本
+                                                    "count": res.count, //解析数据长度
+                                                    "data": res.data, //解析数据列表
+                                                };
+                                            },
+                                            cols: [
+                                                [{
+                                                    align: 'center',
+                                                    title: '子商户号',
+                                                    field: 'subaccountNumber',
+                                                }, {
+                                                    align: 'center',
+                                                    title: '支付方式',
+                                                    field: 'rateType',
+                                                    templet: function(data) {
+                                                        return '微信/支付宝/京东支付/银联卡支付'
+                                                    }
+                                                }, {
+                                                    align: 'center',
+                                                    title: '运营费率',
+                                                    field: 'rate',
+                                                    templet: function(data) {
+                                                        return (data.weChatRate*100) + '%' + '/' + (data.alipayRate*100) + '%'  + '/' + (data.jingdongRate*100) + '%'  + '/' + (data.unionPayRate*100) + '%' 
+                                                    }
+                                                }, {
+                                                    align: 'center',
+                                                    title: '分佣费率',
+                                                    field: 'rate',
+                                                    templet: function(data) {
+                                                        return yyRate + '/' + yyRate + '/' + yyRate + '/' + yyRate
+                                                    }
+                                                }]
+                                            ],
+                                            page: false,
+                                            done: function(res, curr, count) {
+                                                console.log(res)
+
+
+                                            }
+                                        });
+                                    } else {
+                                        layer.msg(data.msg)
+                                    }
+                                },
+                                function(data) {
+                                    console.log('222')
+                                }
+                            )
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    function(data) {
+                        console.log('222')
+                    }
+                )
+
+            }
+            tableRender()
+
+            //单选按钮状态
+            form.on('radio(operation)', function(data) { //设置会员卡的有效期
+                if (data.value == 1) {
+                    console.log(data.value)
+                    $('#operation_select{{d.id}}').show()
+                    $('#operation_table{{d.id}}').hide()
+                }
+                if (data.value == 2) {
+                    console.log(data.value)
+                    $('#operation_select{{d.id}}').hide()
+                    $('#operation_table{{d.id}}').show()
+                }
+            });
+
+            //监听单元格编辑
+            table.on('edit(members)', function(obj) {
+                console.log(obj)
+                var addData = new Object()
+                addData.id = obj.data.id
+                addData[obj.field] = obj.value
+                addData.merchantNumber = obj.data.merchantNumber
+                console.log(addData)
+                // layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+                CmsUtility.postAjaxCall(
+                    //系统设置
+                    CmsConfig.addressUrl.Mechanism.updateMerchantRate,
+                    addData,
+                    function(data) {
+                        if (data.code == 1000) {
+
+                            parent.layer.msg('更改成功')
+                            // setTimeout(function(){
+                            // 	// parent.layer.close(index)
+                            // 	parent.location.reload()
+                            // },500); 
+
+
+                        } else {
+                            layer.msg(data.msg)
+                            tableRender()
+
+                        }
+                    },
+                    function(data) {
+                        console.log('222')
+                    }
+                )
+            });
+        });
+
+        var execRowspan = function(fieldName, index, flag) {
+            // 1为不冻结的情况，左侧列为冻结的情况
+            let fixedNode = index == "1" ? $(".layui-table-body")[index - 1] : (index == "3" ? $(".layui-table-fixed-r") : $(".layui-table-fixed-l"));
+            // 左侧导航栏不冻结的情况
+            let child = $(fixedNode).find("td");
+            let childFilterArr = [];
+            // 获取data-field属性为fieldName的td
+            for (let i = 0; i < child.length; i++) {
+                if (child[i].getAttribute("data-field") == fieldName) {
+                    childFilterArr.push(child[i]);
+                }
+            }
+            // 获取td的个数和种类
+            let childFilterTextObj = {};
+            for (let i = 0; i < childFilterArr.length; i++) {
+                let childText = flag ? childFilterArr[i].innerHTML : childFilterArr[i].textContent;
+                if (childFilterTextObj[childText] == undefined) {
+                    childFilterTextObj[childText] = 1;
+                } else {
+                    let num = childFilterTextObj[childText];
+                    childFilterTextObj[childText] = num * 1 + 1;
+                }
+            }
+            let canRowspan = true;
+            let maxNum; //以前列单元格为基础获取的最大合并数
+            let finalNextIndex; //获取其下第一个不合并单元格的index
+            let finalNextKey; //获取其下第一个不合并单元格的值
+            for (let i = 0; i < childFilterArr.length; i++) {
+                (maxNum > 9000 || !maxNum) && (maxNum = $(childFilterArr[i]).prev().attr("rowspan") && fieldName != "8" ? $(childFilterArr[i]).prev().attr("rowspan") : 9999);
+                let key = flag ? childFilterArr[i].innerHTML : childFilterArr[i].textContent; //获取下一个单元格的值
+                let nextIndex = i + 1;
+                let tdNum = childFilterTextObj[key];
+                let curNum = maxNum < tdNum ? maxNum : tdNum;
+                if (canRowspan) {
+                    for (let j = 1; j <= curNum && (i + j < childFilterArr.length);) { //循环获取最终合并数及finalNext的index和key
+                        finalNextKey = flag ? childFilterArr[i + j].innerHTML : childFilterArr[i + j].textContent;
+                        finalNextIndex = i + j;
+                        if ((key != finalNextKey && curNum > 1) || maxNum == j) {
+                            canRowspan = true;
+                            curNum = j;
+                            break;
+                        }
+                        j++;
+                        if ((i + j) == childFilterArr.length) {
+                            finalNextKey = undefined;
+                            finalNextIndex = i + j;
+                            break;
+                        }
+                    }
+                    childFilterArr[i].setAttribute("rowspan", curNum);
+                    if ($(childFilterArr[i]).find("div.rowspan").length > 0) { //设置td内的div.rowspan高度适应合并后的高度
+                        $(childFilterArr[i]).find("div.rowspan").parent("div.layui-table-cell").addClass("rowspanParent");
+                        $(childFilterArr[i]).find("div.layui-table-cell")[0].style.height = curNum * 38 - 10 + "px";
+                    }
+                    canRowspan = false;
+                } else {
+                    childFilterArr[i].style.display = "none";
+                }
+                if (--childFilterTextObj[key] == 0 | --maxNum == 0 | --curNum == 0 | (finalNextKey != undefined && nextIndex == finalNextIndex)) { //||(finalNextKey!=undefined&&key!=finalNextKey)
+                    canRowspan = true;
+                }
+            }
+        }
+        //合并数据表格行
+        var layuiRowspan = function(fieldNameTmp, index, flag) {
+            let fieldName = [];
+            if (typeof fieldNameTmp == "string") {
+                fieldName.push(fieldNameTmp);
+            } else {
+                fieldName = fieldName.concat(fieldNameTmp);
+            }
+            for (let i = 0; i < fieldName.length; i++) {
+                execRowspan(fieldName[i], index, flag);
+            }
+        }
+    }
+    </script>
+</body>
+
+</html>

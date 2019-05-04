@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../../public/css/font.css">
+    <link rel="stylesheet" href="../../public/css/xadmin.css">
+    <script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../public/js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    #codeInfo{
+    	line-height: 38px;
+    	font-size: 24px;
+    	text-align: center;
+    	letter-spacing:5px
+    }
+    .layui-textarea{
+        height: min-height:80px;
+    }
+    .xdl,.yrm,.fuyou,.guanfang{
+        display: none;
+    }
+    </style>
+</head>
+
+<body id="iosiframe">
+    <div class="x-body">
+        <div class="layui-row">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                        <label class="layui-form-label xdl" style="width: auto;">新大陆费率</label>
+                        <div class="layui-input-item xdl">
+                            <textarea id="keyy" name="secretkey" class="layui-textarea" placeholder="示例：0.25|0.28|0.30|0.35|0.38|0.40|0.50|0.60"></textarea>
+                        </div>
+                        <label class="layui-form-label yrm" style="width: auto;">易融码费率</label>
+                        <div class="layui-input-item yrm">
+                            <textarea id="keyy1" name="secretkey1" class="layui-textarea" placeholder="示例：0.25|0.28|0.30|0.35|0.38|0.40|0.50|0.60"></textarea>
+                        </div>
+                        <label class="layui-form-label fuyou" style="width: auto;">富友费率</label>
+                        <div class="layui-input-item fuyou">
+                            <textarea id="keyy1" name="secretkey1" class="layui-textarea" placeholder="示例：0.25,N888|0.28,N888|0.30,N888|0.35,N888|0.38,N888|0.40,N888"></textarea>
+                        </div>
+                        <label class="layui-form-label guanfang" style="width: auto;">官方费率</label>
+                        <div class="layui-input-item guanfang">
+                            <textarea id="keyy1" name="secretkey1" class="layui-textarea" placeholder="示例：0.25|0.28|0.30|0.35|0.38|0.40|0.50|0.60"></textarea>
+                        </div>
+                        <div class="layui-form-mid x-red">
+                            <button class="layui-btn" lay-submit="" id="sub"    >提交</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+    <script src="../../common/config.js"></script>
+    <script src="../../common/utility.js"></script>
+    <script>
+    var type111 = 0
+    var code1 = ''
+    function subPage(data,data1){
+        var jgData = data
+        console.log(jgData)
+        switch (jgData.paymentChannelType) {
+            case  2:
+            console.log('1312')
+                $('.fuyou').show()
+                break;
+             case  3:
+              console.log('1312')
+                $('.yrm').show()
+                break;
+             case  4:
+                $('.xdl').show()
+                break;
+            default:
+               $('.bufanng').show()
+                break;
+        }
+        var serverUrl = 'http://192.168.1.190:5002/'
+        var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+        layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
+            layui.$.support.cors = true; //允许ajax跨域
+            var $ = layui.jquery,
+                upload = layui.upload,
+                laydate = layui.laydate,
+                table = layui.table,
+                form = layui.form,
+                laytpl = layui.laytpl;
+
+            
+            //表单初始赋值
+            // $('#sub').click(function(){
+            //  console.log(code1)
+            // })
+            form.verify({
+                // number:function(value){
+                //     if(value >5000){
+                //         return "一次生成最多5000条"
+                //     }
+                // },
+                title: function(value) {
+                    console.log(value)
+                    if (value=='') {
+                        return '不能为空';
+                    }
+                },
+            });
+
+            // $('#sub').click(function() {
+                
+            //     var tjData = new Object();
+            //     tjData.institutionNumber = userNumber;
+                
+            //     tjData.number = $('#number').val()
+            //     CmsUtility.postAjaxCall(
+            //         //系统设置
+            //         CmsConfig.addressUrl.Mechanism.insertChannelRate,
+            //         tjData,
+            //         function(data) {
+            //             if (data.code == 1000) {
+            //                 // type111 = 2
+
+
+            //                 x_admin_close()
+            //                 parent.layer.msg('生成成功')
+            //                 parent.layui.table.reload('vip_cardList')
+
+
+            //             } else {
+            //                 layer.msg(data.msg)
+
+            //             }
+            //         },
+            //         function(data) {
+            //             console.log('222')
+            //         }
+            //     )
+            //     return false
+            // })
+
+            // //监听提交
+            form.on('submit(create)', function(data) {
+                return false
+                console.log(data.field)
+                // if(data.field.nuber)
+                var tjData = new Object();
+                tjData.institutionNumber = userNumber;
+                
+                tjData.bbmerchantNumber = jgData.subaccountNumber
+                tjData.paymentChannel = jgData.paymentChannel
+                tjData.jsapiPath = data.field.jsapiPath
+                tjData.subappid = data.field.subappid
+                tjData.subscribeappid = data.field.subscribeappid
+                tjData.paymentType = jgData.paymentChannelType
+                CmsUtility.postAjaxCall(
+                    //系统设置
+                    CmsConfig.addressUrl.Mechanism.weChatPut,
+                    tjData,
+                    function(data) {
+                        if (data.code == 1000) {
+                            // type111 = 2
+
+
+                            // x_admin_close()
+                            // parent.layer.msg('生成成功')
+                            // parent.layui.table.reload('vip_cardList')
+
+
+                        } else {
+                            layer.msg(data.msg)
+
+                        }
+                    },
+                    function(data) {
+                        console.log('222')
+                    }
+                )
+                return false
+            });
+
+        });
+    }
+        
+
+   
+    </script>
+</body>
+
+</html>

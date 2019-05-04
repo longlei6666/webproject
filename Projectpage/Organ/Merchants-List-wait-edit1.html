@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../../public/css/xadmin.css">
+    <script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../public/lib/layui/layui.js"></script>
+    <script type="text/javascript" src="../../public/js/xadmin.js"></script>
+    <script type="text/javascript" src="../../public/js/hangye.js"></script>
+    <script type="text/javascript" src="../../public/js/hangye1.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .widthauto {
+                width: auto !important;
+            }
+            
+            .tips_red {
+                color: red;
+            }
+            
+            .layui-form-label {
+                padding-left: 0;
+                width: 100px;
+            }
+            
+            .layui-input-block {
+                margin-left: 115px;
+            }
+            
+            .layui-elem-quote {
+                font-size: 18px;
+            }
+            
+            .layui-elem-field legend {
+                font-size: 16px;
+            }
+            
+            .layui-upload-img {
+                width: 92px;
+                height: 92px;
+                margin: 0 10px 10px 0;
+            }
+            
+            .Since_inline {
+                display: inline-block;
+                width: auto !important;
+                line-height: 38px;
+            }
+            
+            .layui-elem-quote .layui-form-switch {
+                margin: 0 15px;
+                margin-top: 0;
+            }
+        </style>
+</head>
+
+<body id="iosiframe">
+    <div class="x-body">
+        <div class="layui-row">
+            <div class="layui-form" action="" lay-filter="cardAdd">
+                <!--隐藏-->
+                <!--基本信息-->
+                <blockquote class="layui-elem-quote">基本信息</blockquote>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商户类型</label>
+                    <div class="layui-input-inline widthauto">
+                        <input type="radio" name="merchantType" value="0" title="个人" lay-filter="cardvalid" checked="">
+                        <input type="radio" name="merchantType" value="1" title="个体" lay-filter="cardvalid">
+                        <input type="radio" name="merchantType" value="2" title="企业" lay-filter="cardvalid">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商户名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="merchantName" lay-verify="title" autocomplete="off" placeholder="请输入商户名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item BLcn">
+                    <label class="layui-form-label">营业执照号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="businessLicenseNo" lay-verify="title" autocomplete="off" placeholder="请输入营业执照号" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item BLcn">
+                    <label class="layui-form-label">营业执照有效期</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="businessLicenseTime" lay-verify="title" autocomplete="off" placeholder="请选择营业执照有效期" class="layui-input" id="businessLicenseTime">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">法人姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="juridicalpersonName" lay-verify="title" autocomplete="off" placeholder="请输入法人姓名" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">法人身份证号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="juridicalpersonId" lay-verify="title" autocomplete="off" placeholder="请输入法人身份证号" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">法人身份证有效期开始时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="juridicalpersonIdTime" lay-verify="title" autocomplete="off" placeholder="请选择法人身份证有效期" class="layui-input" id="juridicalpersonIdTime">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证是否长期</label>
+                    <div class="layui-input-inline widthauto">
+                        <input type="radio" name="juridicalPersonIDType" value="1" title="是" lay-filter="jurIsLong" checked=''>
+                        <input type="radio" name="juridicalPersonIDType" value="0" title="否" lay-filter="jurIsLong">
+                    </div>
+                </div>
+                <div class="layui-form-item" id="jurIsLong">
+                    <label class="layui-form-label">法人身份证到期时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="juridicalpersonIdTime" lay-verify="title" autocomplete="off" placeholder="请选择法人身份证有效期" class="layui-input" id="juridicalpersonIdTime">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">注册电话</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="registerCell" lay-verify="title" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item"  id="paymentType3">
+                    <label class="layui-form-label">经营范围</label>
+                    <div class="layui-input-inline">
+                        <select name="oneOperate" id="chOne" lay-filter="chOne" lay-verify="title">
+                            <!-- <option value="">一级类目</option>
+                                <option value="1">互联网</option>
+                                <option value="2">科技</option> -->
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="twoOperate" id="chTwo" lay-filter="chTwo" lay-verify="">
+                            <!-- <option value="">二级类目</option>
+                                <option value="1">信息科技</option>
+                                <option value="2">生物</option>
+                                <option value="3">信息科技</option> -->
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="threeOperate" id="chThr" lay-filter="chThr" lay-verify="">
+                            <!-- <option value="">三级类目</option>
+                                <option value="1">开发</option>
+                                <option value="2">前段</option>
+                                <option value="3">Java</option> -->
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item" id="paymentType3">
+                    <label class="layui-form-label">经营范围</label>
+                    <div class="layui-input-inline" style="width:400px">
+                        <select name="oneOperate1" id="chOne1" lay-filter="chOne" lay-verify="title">
+                            <!-- <option value="">一级类目</option>
+                                <option value="1">互联网</option>
+                                <option value="2">科技</option> -->
+                        </select>
+                    </div>
+                    
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商户所在地</label>
+                    <div class="layui-input-inline">
+                        <select name="province" id="provice" lay-filter="provice">
+                            <option value="">请选择省</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="city" id="city" lay-filter="city" lay-verify="title">
+                            <option value="">请选择市</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="area" id="area" lay-filter="area" lay-verify="title">
+                            ">
+                            <option value="">请选择县/区</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商户详细地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="address" lay-verify="title" autocomplete="off" placeholder="请输入商户详细地址" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户行</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="openingBank" lay-verify="title" autocomplete="off" placeholder="请选择开户行" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户支行</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="openingBankBranch" lay-verify="title" autocomplete="off" placeholder="请选择开户支行" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">银行卡号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="bankCardNo" lay-verify="title" autocomplete="off" placeholder="请输入银行卡号" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">结算标识</label>
+                    
+                    <div class="layui-input-inline widthauto">
+                        <input type="radio" name="rateType1" value="D0" title="D+0 结算" lay-filter="settlement">
+                        <input type="radio" name="rateType1" value="D1" title="D+1 结算" lay-filter="settlement">
+                    </div>
+                </div>
+
+                <!-- <div class="layui-form-item">
+                        <label class="layui-form-label">费率</label>
+                        <div class="layui-input-inline">
+                            <select name="rate" id="">
+                                <option value="">费率</option>
+                                <option value="0.006">0.6%</option>
+                                <option value="0.005">0.5%</option>
+                                <option value="0.0038">0.38%</option>
+                            </select>
+                        </div>
+                    </div> -->
+                <!--认证信息-->
+                <blockquote class="layui-elem-quote">认证信息</blockquote>
+                <style type="text/css">
+                .uploadimgbtn {
+                    height: 150px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .layui-upload-img {
+                    width: 150px;
+                    height: 150px;
+                    border: 1px solid #e6e6e6;
+                    border-radius: 2px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .layui-upload-img img {
+                    max-height: 100%;
+                }
+                </style>
+                <div class="layui-form-item layui-form-text" id="businessLicense1" style="display: none;">
+                    <label class="layui-form-label">营业执照</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="businessLicense" style="max-width: 100%;height: auto;">
+                            </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="juridicalpersonIdPositive1">
+                    <label class="layui-form-label">法人身份证正面照</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="juridicalpersonIdPositive" style="max-width: 100%;height: auto;">
+                            </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="juridicalpersonIdReverseside1">
+                    <label class="layui-form-label">法人身份证反面照</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="juridicalpersonIdReverseside" style="max-width: 100%;height: auto;">
+                            </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="facePhoto1">
+                    <label class="layui-form-label">门脸照片</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="facePhoto" style="max-width: 100%;height: auto;">
+                            </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="doorheadPhoto1">
+                    <label class="layui-form-label">门头照片</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="doorheadPhoto" style="max-width: 100%;height: auto;">
+                            </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="bankCardPositive1">
+                    <label class="layui-form-label">银行卡正面</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="bankCardPositive" style="max-width: 100%;height: auto;">
+                            </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="holdId1">
+                    <label class="layui-form-label">手持身份证照片</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="holdId" style="max-width: 100%;height: auto;">
+                            </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="openingPermit1">
+                    <label class="layui-form-label">开户许可</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="openingPermit" style="max-width: 100%;height: auto;">
+                            </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="cashier1">
+                    <label class="layui-form-label">收银台照</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="cashier" style="max-width: 100%;height: auto;">
+                            </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="placeBusiness1">
+                    <label class="layui-form-label">经营场所照</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="placeBusiness" style="max-width: 100%;height: auto;">
+                                                </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text" id="rests1">
+                    <label class="layui-form-label">其他</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-upload-img">
+                            <img src="images/zhifubao.png" id="rests" style="max-width: 100%;height: auto;">
+                                                </div>
+                        </div>
+                        <div class="layui-input-inline uploadimgbtn">
+                            <p id="demoText" class="block"></p>
+                            <button type="button" class="layui-btn block" id="test1">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <div class="layui-footer" style="left: 0;text-align: center;">
+                            <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+                            <button class="layui-btn layui-btn-primary" id="quxiao">取消</button>
+                        </div>
+                        <!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../common/config.js"></script>
+    <script src="../../common/utility.js"></script>
+    <script>
+    CmsUtility.chooseOne()
+    var index = parent.layer.getFrameIndex(window.name);
+    $('#quxiao').click(function() {
+
+        setTimeout(function() { parent.layer.close(index) }, 16);
+    })
+    var jgData
+
+    function imageShow(data) {
+        if (!!jgData[data]) {
+            $('#' + data + '1').show()
+            $('#' + data).attr('src', jgData[data])
+        }else{
+          $('#' + data + '1').hide()  
+        }
+    }
+
+    function subPage(data, data1) {
+        jgData = data
+        switch (jgData.merchantType) {
+            case "个人":
+                $('.BLcn').hide()
+                break;
+            case "个体":
+                $('.BLcn').show()
+                break;
+            case "企业":
+                $('.BLcn').show()
+                break;
+        }
+        var serverUrl = window.parent.serverUrl
+        var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+        var address
+        var p = [],
+            c = [],
+            aa = []
+        layui.use(['laydate', 'table', 'upload', 'form'], function() {
+            var $ = layui.jquery,
+                upload = layui.upload,
+                laydate = layui.laydate,
+                table = layui.table,
+                form = layui.form,
+                admin = layui.admin,
+                element = layui.element,
+                layer = layui.layer;
+            var tableSelect = layui.tableSelect;
+            CmsUtility.chooseTwo(jgData.oneOperate)
+            CmsUtility.chooseThr(jgData.oneOperate, jgData.twoOperate)
+            CmsUtility.postAjaxCall(
+                //系统设置
+                CmsConfig.addressUrl.Public.getAreajson, {},
+                function(data) {
+                    sessionStorage.setItem("address", data.data);
+                    address = JSON.parse(data.data)
+                    for (var i = 0; i < address.length; i++) {
+                        var a = new Object()
+                        a.provinceCode = address[i].value
+                        a.provinceName = address[i].text
+                        p.push(a)
+                        var b = new Object()
+                        b.provinceCode = address[i].value
+                        b.children = []
+                        for (var k = 0; k < address[i].children.length; k++) {
+                            var d = new Object()
+                            d.cityCode = address[i].children[k].value
+                            d.cityName = address[i].children[k].text
+                            b.children.push(d)
+                            var e = new Object()
+                            e.cityCode = address[i].children[k].value
+                            e.childeren = []
+                            for (var j = 0; j < address[i].children[k].children.length; j++) {
+                                var t = new Object()
+                                t.areaCode = address[i].children[k].children[j].value
+                                t.areaName = address[i].children[k].children[j].text
+                                e.childeren.push(t)
+                            }
+                            aa.push(e)
+                        }
+                        c.push(b)
+
+                    }
+                    if (jgData.provinceID) {
+                        var str = '<option value="">请选择省</option>'
+                        for (var i1 = 0; i1 < p.length; i1++) {
+                            if (jgData.provinceID == p[i1].provinceCode) {
+                                str += '<option value="' + p[i1].provinceCode + '" selected="">' + p[i1].provinceName + '</option>'
+                            } else {
+                                str += '<option value="' + p[i1].provinceCode + '">' + p[i1].provinceName + '</option>'
+                            }
+
+                        }
+                        $('#provice').html(str)
+                    }
+                    if (jgData.cityID) {
+                        var str1 = '<option value="">请选择市</option>'
+                        for (var i3 = 0; i3 < c.length; i3++) {
+
+                            if (jgData.provinceID == c[i3].provinceCode) {
+
+                                for (var i2 = 0; i2 < c[i3].children.length; i2++) {
+
+                                    if (jgData.cityID == c[i3].children[i2].cityCode) {
+                                        console.log(c[i3].children[i2])
+                                        str1 += '<option value="' + c[i3].children[i2].cityCode + '" selected="">' + c[i3].children[i2].cityName + '</option>'
+                                    } else {
+                                        str1 += '<option value="' + c[i3].children[i2].cityCode + '">' + c[i3].children[i2].cityName + '</option>'
+                                    }
+
+                                }
+                            }
+                        }
+                        $('#city').html(str1)
+                    }
+                    if (jgData.areaID) {
+                        var str2 = '<option value="">请选择县区</option>'
+                        for (var i4 = 0; i4 < aa.length; i4++) {
+
+                            if (jgData.cityID == aa[i4].cityCode) {
+
+                                for (var i5 = 0; i5 < aa[i4].childeren.length; i5++) {
+
+                                    if (jgData.areaID == aa[i4].childeren[i5].areaCode) {
+                                        console.log(aa[i4].childeren[i5])
+                                        str2 += '<option value="' + aa[i4].childeren[i5].areaCode + '" selected="">' + aa[i4].childeren[i5].areaName + '</option>'
+                                    } else {
+                                        str2 += '<option value="' + aa[i4].childeren[i5].areaCode + '">' + aa[i4].childeren[i5].areaName + '</option>'
+                                    }
+
+                                }
+                            }
+                        }
+                        $('#area').html(str2)
+                    }
+
+                    form.val('cardAdd', {
+                        "merchantType": jgData.merchantType.toString(),
+                        "merchantName": jgData.merchantName,
+                        "businessLicenseNo": jgData.businessLicenseNo,
+                        "businessLicenseTime": jgData.businessLicenseTime,
+                        "juridicalpersonName": jgData.juridicalpersonName,
+                        "juridicalpersonId": jgData.juridicalpersonId,
+                        "juridicalpersonIdTime": jgData.juridicalpersonIdTime,
+                        "registerCell": jgData.registerCell,
+                        "oneOperate": jgData.oneOperate,
+                        "twoOperate": jgData.twoOperate,
+                        "threeOperate": jgData.threeOperate,
+                        // "province":jgData.province,
+                        // "city":jgData.city,
+                        // "area":jgData.area,
+                        "address": jgData.address,
+                        "openingBank": jgData.openingBank,
+                        "openingBankBranch": jgData.openingBankBranch,
+                        "bankCardNo": jgData.bankCardNo,
+                        "rateType": jgData.rateType,
+                        "rate": jgData.rate,
+                    })
+                    imageShow('juridicalpersonIdPositive')
+                    imageShow('juridicalpersonIdReverseside')
+                    imageShow('businessLicense')
+                    imageShow('facePhoto')
+                    imageShow('doorheadPhoto')
+                    imageShow('bankCardPositive')
+                    imageShow('holdId')
+                    imageShow('openingPermit')
+                    imageShow('cashier')
+                    imageShow('placeBusiness')
+                    imageShow('rests')
+                    form.render()
+                },
+                function(data) {
+                    console.log(data)
+                },
+            )
+      
+            //表单初始赋值
+
+
+            form.render()
+            form.on('select(provice)', function(data) {
+                console.log(data)
+                var str1 = '<option value="">请选择市</option>'
+                for (var i3 = 0; i3 < c.length; i3++) {
+
+                    if (data.value == c[i3].provinceCode) {
+                      
+                        for (var i2 = 0; i2 < c[i3].children.length; i2++) {
+
+                            
+                                str1 += '<option value="' + c[i3].children[i2].cityCode + '">' + c[i3].children[i2].cityName + '</option>'
+                           
+
+                        }
+                    }
+                }
+                $('#city').html(str1)
+                var str2 = '<option value="">请选择县区</option>'
+                $('#area').html(str2)
+                form.render()
+
+            })
+            form.on('select(city)', function(data) {
+
+                var str2 = '<option value="">请选择县区</option>'
+                for (var i4 = 0; i4 < aa.length; i4++) {
+                    console.log(aa[i4].cityCode)
+                    if (data.value == aa[i4].cityCode) {
+                        for (var i5 = 0; i5 < aa[i4].childeren.length; i5++) {
+
+                            
+                                str2 += '<option value="' + aa[i4].childeren[i5].areaCode + '">' + aa[i4].childeren[i5].areaName + '</option>'
+                          
+
+                        }
+                    }
+                }
+                $('#area').html(str2)
+                form.render()
+
+            })
+            form.on('select(chOne)', function(data) {
+                console.log(data)
+                CmsUtility.chooseTwo(data.value)
+                setTimeout(function() {
+                    form.render()
+                }, 500)
+
+            })
+            form.on('select(chTwo)', function(data) {
+                console.log($('#chOne').val(), data.value)
+                CmsUtility.chooseThr($('#chOne').val(), data.value)
+                setTimeout(function() {
+                    form.render()
+                }, 500)
+
+            })
+            laydate.render({
+                elem: '#businessLicenseTime' //指定元素
+            });
+            laydate.render({
+                elem: '#juridicalpersonIdTime' //指定元素
+            });
+            /*---------- 普通图片上传 ----------*/
+            var uploadInst = upload.render({
+                elem: '#test1',
+                url: '/upload/',
+                before: function(obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result) {
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                },
+                done: function(res) {
+                    //如果上传失败
+                    if (res.code > 0) {
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功
+                },
+                error: function() {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function() {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+            /*---------- 自定义验证规则 ----------*/
+            form.verify({
+                title: function(value) {
+                    if (!value) {
+                        return '必填项不能为空！';
+                    }
+                },
+                pass: [/^[0-9A-Za-z]{6,12}$/, '密码必须6到12位'],
+                repass: function(value) {
+                    if ($('#passWord').val() != $('#repassWord').val()) {
+                        return '两次密码不一致';
+                    }
+                }
+
+            });
+
+            /*---------- 监听开关 ----------*/
+            form.on('radio(cardvalid)', function(data) { //设置会员卡的有效期
+                if (data.value == 0) {
+                    $('#yyzz').hide()
+                    $('.BLcn').hide()
+                } else if (data.value == 1) {
+                    $('#yyzz').show()
+                    $('.BLcn').show()
+                } else if (data.value == 2) {
+                    $('#yyzz').show()
+                    $('.BLcn').show()
+                }
+            });
+            form.on('radio(jurIsLong)', function(data) { //设置会员卡的有效期
+                if (data.value == 0) {
+                    $('#jurIsLong').hide()
+                } else if (data.value == 1) {
+                    $('#jurIsLong').show()
+                }
+            });
+            
+            /*---------- 监听提交 ----------*/
+            form.on('submit(add)', function(data, index) {
+
+
+
+                // 发送请求
+                var addData = data.field
+                addData.institutionNumber = userNumber
+                addData.merchantNumber = jgData.merchantNumber
+                console.log(addData)
+                // 发送请求
+                CmsUtility.postAjaxCall(
+                    //系统设置
+                    CmsConfig.addressUrl.Mechanism.updateMerchantInfo,
+                    addData,
+                    function(data) {
+                        if (data.code == 1000) {
+                            setTimeout(function() {
+                                $('#quxiao').click()
+                            }, 16);
+                            parent.layer.msg('编辑成功')
+                            parent.layui.table.reload('vip_cardList')
+
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    function(data) {
+                        console.log('222')
+                    }
+                )
+                return false;
+            });
+
+        });
+
+    }
+    </script>
+</body>
+
+</html>

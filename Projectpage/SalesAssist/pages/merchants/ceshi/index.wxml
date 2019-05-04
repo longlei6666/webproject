@@ -1,0 +1,81 @@
+<!--pages/merchants/register/index.wxml-->
+<view class="container">
+    <view class="body">
+        <view class="bodyTop">
+            <view class="bodyC">
+                <view class="bodyCli {{status==0 ? 'active':''}}">
+                    <label class="bodyClitit" for="name">商户名称：</label>
+                    <input class="bodyCliinput" type="text" id="name" placeholder="请输入商户名称" bindfocus="focus" bindblur='blur'></input>
+                </view>
+                <!-- <view class="bodyCli active">
+                    <view class="bodyClitit">商户类型：</view>
+                    <radio-group class="bodyCliradio" name="radio">
+                        <label>
+                            <radio value="radio1" checked="checked" />个人</label>
+                        <label>
+                            <radio value="radio2" />个体</label>
+                        <label>
+                            <radio value="radio2" />企业</label>
+                    </radio-group>
+                </view> -->
+            </view>
+            <!-- <view class="bodyC">
+                <view class="bodyCli {{currentTab==1?'active':''}}" data-current="1" bindtap="swichNav">
+                    <view class="bodyClitit">姓名：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+                <view class="bodyCli {{currentTab==2?'active':''}}" data-current="2" bindtap="swichNav">
+                    <view class="bodyClitit">身份证号：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+                <view class="bodyCli {{currentTab==3?'active':''}}" data-current="3" bindtap="swichNav">
+                    <view class="bodyClitit">身份证到期时间：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+                <view class="bodyCli {{currentTab==4?'active':''}}" data-current="4" bindtap="swichNav">
+                    <view class="bodyClitit">联系电话：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+            </view>
+            <view class="bodyC">
+                <view class="bodyCli {{currentTab==5?'active':''}}" data-current="5" bindtap="swichNav">
+                    <view class="bodyClitit">营业执照名称：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+                <view class="bodyCli {{currentTab==6?'active':''}}" data-current="6" bindtap="swichNav">
+                    <view class="bodyClitit">营业执照号：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+                <view class="bodyCli {{currentTab==3?'active':''}}" data-current="7" bindtap="swichNav">
+                    <view class="bodyClitit">营业执照地址：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+                <view class="bodyCli {{currentTab==4?'active':''}}" data-current="8" bindtap="swichNav">
+                    <view class="bodyClitit">营业执照有效期：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+            </view>
+            <view class="bodyC">
+                <view class="bodyCli {{currentTab==5?'active':''}}" data-current="9" bindtap="swichNav">
+                    <view class="bodyClitit">经营范围：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+                <view class="bodyCli {{currentTab==6?'active':''}}" data-current="10" bindtap="swichNav">
+                    <view class="bodyClitit">地址：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+                <view class="bodyCli {{currentTab==3?'active':''}}" data-current="11" bindtap="swichNav">
+                    <view class="bodyClitit">详细地址：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+                <view class="bodyCli {{currentTab==4?'active':''}}" data-current="4" bindtap="swichNav">
+                    <view class="bodyClitit">邮箱：</view>
+                    <input class="bodyCliinput" type="text" id=""></input>
+                </view>
+            </view> -->
+        </view>
+        <view class="bodyBottom">
+            <view class="bodyBtn">下一步</view>
+        </view>
+    </view>
+</view>

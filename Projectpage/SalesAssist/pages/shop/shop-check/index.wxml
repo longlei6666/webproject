@@ -1,0 +1,23 @@
+<!--pages/shop-manage/index.wxml-->
+<import src="../../common/seach.wxml" />
+<view class="container">
+    <view class="body">
+        <!-- 搜索框 -->
+        <template is="seach" data="{{placeholder: '请输入要搜索的商户名称'}}" />
+        <!-- 列表 -->
+        <view class="listBodyk">
+            <view class="listBodyTit">
+                <view class="shopnameTit">鸿搜豆果店</view>
+                <view class="numTit">共 30 个桌牌码</view>
+            </view>
+            <scroll-view class="listBody" scroll-y="true">
+                <view class="listBody_li" wx:for="{[0，1, 2, 3, 4, 5, 6, 7, 8, 9]}" wx:key="item" wx:for-index="item" wx:if="{{item < 50}}">
+                    <view class="shopName">NO.ASMZF6659{{item}}</view>
+                    <view class="operation">
+                        <view class="operationBtn unbind" bindtap="unbind">解绑</view>
+                    </view>
+                </view>
+            </scroll-view>
+        </view>
+    </view>
+</view>

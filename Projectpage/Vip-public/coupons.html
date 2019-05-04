@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>优惠券</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" type="text/css" href="./fonts/iconfont.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="./css/reset.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="./css/style-rec.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+			<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+			<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<style type="text/css">
+			.show{display: block;}
+			.hide{display: none;}
+		</style>
+	</head>
+
+	<body>
+		<div class="coupons">
+			<div id="loadstart" class="loadzz">
+				<div class="loading_k">
+					<div class="loading"></div>
+				</div>
+			</div>
+			<ul class="couponsList" id="couponsList">
+				<li v-for="item in items" class="couponsLi">
+					<div class="couponsLei" :class="[item.class]">
+						<div class="couponsLeiC" :class="[item.class3]">
+							<div class="couponsLeixing" id="couponsLeixing">{{item.cardVoucherName}}</div>
+							<div class="couponsJine">¥ <span id="couponsJine">{{item.couponMoney}}</span></div>
+						</div>
+						<div class="couponsLeiC" :class="[item.class4]">
+							<div class="couponsLeixing" id="couponsLeixing">{{item.cardVoucherName}}</div>
+							<div class="couponsJine"><span id="couponsJine">{{item.disCount}}</span> 折</div>
+						</div>
+					</div>
+					<div class="couponsCon">
+						<div class="couponsConC">
+							<div class="couponsConCTit">使用规则:</div>
+							<div class="couponsConCXianzhi">单笔满<span>{{item.useMoney}}</span>元可用</div>
+							<div class="couponsConCTime" :class="[item.class1]">有效期 : <span>{{item.startTime}}</span>至<span>{{item.endTime}}</span></div>
+							<div class="couponsConCTime" :class="[item.class2]">有效期 : 长期</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="./common/config.js"></script>
+	<script src="./common/utility.js"></script>
+	<script src="./js/vue.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			var userNumber, associatorNumber;
+			var couponlist = []
+			//userNumber = window.location.href.split('usernumber=')[1].split('&')[0];
+			//cell = window.location.href.split('associatorNumber=')[1];
+			userNumber = '0031000180713301535396'
+			associatorNumber = 'HY281733'
+			var ajaData = new Object()
+			ajaData.userNumber = userNumber
+			ajaData.associatorNumber = associatorNumber
+			CmsUtility.postAjaxCall(
+				//系统设置
+				CmsConfig.addressUrl.Vip.getCoupon,
+				ajaData,
+				function(data) {
+					if(data.code == '0') {
+						$('#loadstart').hide()
+						var data = data.result
+						for(var i = 0; i < data.length; i++) {
+							if(data[i].cardVoucherName == "代金券"){
+								data[i].class = 'daijin',
+								data[i].class3 = 'show',
+								data[i].class4 = 'hide'
+							}
+							if(data[i].cardVoucherName == "折扣券"){
+								data[i].class = 'zhekou',
+								data[i].class3 = 'hide',
+								data[i].class4 = 'show'
+							}
+							if(data[i].cardVoucherName == "满减券"){
+								data[i].class = 'manjian',
+								data[i].class3 = 'show',
+								data[i].class4 = 'hide'
+							}
+							if(data[i].useTimePeriod == 0){
+								data[i].class1 = 'hide',
+								data[i].class2 = 'show'
+							}
+							if(data[i].useTimePeriod == 1){
+								data[i].class1 = 'show',
+								data[i].class2 = 'hide'
+							}
+							if(!!data[i].disCount){
+								data[i].disCount = data[i].disCount.toString().split('.')[1]
+							}
+							couponlist.push(data[i])
+						}
+					} else if(data.code == '1') {
+						$('#loadstart').hide()
+						alert(data.msg)
+					} else if(data.code == '-1') {
+						$('#loadstart').hide()
+						alert(data.msg)
+					}
+				},
+				function(data) {
+					alert(data)
+				}
+			)
+
+			var trend_ul = new Vue({
+				el: '#couponsList',
+				data: {
+					items: couponlist
+				}
+			})
+		})
+	</script>
+
+</html>

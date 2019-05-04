@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>消费记录</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" type="text/css" href="./fonts/iconfont.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="./css/reset.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="./css/style-rec.css" />
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+			<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+			<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="revenue">
+			<div id="loadstart" class="loadzz">
+				<div class="loading_k">
+					<div class="loading"></div>
+				</div>
+			</div>
+			<!-- 时间选择 -->
+			<div class="Date_div">
+				<div class="Date_btn_line">
+					<ul class="Date_btn">
+						<li id="btn_0" class="active">今天</li>
+						<li id="btn_1">昨天</li>
+						<li id="btn_2">近7天</li>
+					</ul>
+					<div class="Date_choose" id="Date_choose">
+						<span id="Date_showtime_start"></span> -- <span id="Date_showtime_end"></span><i class="iconfont icon-Solid-arrow-down"></i>
+					</div>
+				</div>
+			</div>
+			<!-- 营收趋势 -->
+			<div class="trend">
+				<div class="trend_tit">
+					<p>手机号</p>
+					<p>时间</p>
+					<p>金额</p>
+				</div>
+				<div class="trend_ul">
+					<ul id="trend_ul">
+						<div id="nolist" style="display: none;">暂无数据</div>
+						<li v-for="item in items">
+							<p>{{item.cell}}</p>
+							<p>{{item.insertTime}}</p>
+							<p>¥{{item.paymentMoney}}</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div id="Date_choose_two_mask" class="Date_choose_two_mask"></div>
+			<div id="Date_choose_two_maskc" class="Date_choose_two_maskc">
+				<p class="tongjitime">统计时间</p>
+				<div class="Date_input">
+					<div id="dateSelectorStart">开始日期</div>
+					<span>----</span>
+					<div id="dateSelectorEnd">结束日期</div>
+				</div>
+				<div class="deter" id="deter">确定</div>
+			</div>
+		</div>
+	</body>
+
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="./common/config.js"></script>
+	<script src="./common/utility.js"></script>
+	<script src="./js/vue.min.js"></script>
+	<script src="./js/iScroll.js"></script>
+	<script src="./js/Mdate.js"></script>
+	<script>
+		var isAll = true
+		$(document).ready(function() {
+			var items = []
+			var trendT = []
+			var trend = []
+			var shoplist = []
+			var Today = new Date();
+			var yesterday = Today.getTime() - 1000 * 60 * 60 * 24;
+			var sevendays = Today.getTime() - 1000 * 60 * 60 * 24 * 6;
+			var Newyear = new Date().getFullYear();
+			var Newmonth = new Date().getMonth() + 1;
+			var Newday = new Date().getDate();
+			setdate(Newyear, Newmonth, Newday, Newyear, Newmonth, Newday)
+			var userNumber, cell, page, limit, rechargeType, startTime, endTime;
+			//var userNumber = window.location.href.split('usernumber=')[1].split('&')[0];
+			//var cell = window.location.href.split('cell=')[1];
+			userNumber = '0031000180919311406870'
+			cell = '13081058624'
+			page = '1'
+			limit = '100'
+			rechargeType = '0'
+			startTime = $('#Date_showtime_start').html() + ' 00:00'
+			endTime = $('#Date_showtime_end').html() + ' 23:59'
+			if(isAll) {
+				loadMore(userNumber, cell, page, limit, rechargeType, startTime, endTime);
+			}
+
+			new Mdate("dateSelectorStart");
+			new Mdate("dateSelectorEnd");
+
+			$(function() {
+				// 设置弹窗显示
+				$('#Date_choose').click(function() {
+					$('#Date_choose_two_mask').show();
+					$('#Date_choose_two_maskc').show();
+					$('#Date_choose_two_maskc').animate({
+						'opacity': '1'
+					}, "300");
+				})
+				$('#choose_md_btn').click(function() {
+					$('#Choose_md_mask').show();
+					$('#Choose_md_maskc').show();
+					$('#Choose_md_maskc').animate({
+						'opacity': '1'
+					}, "300");
+				})
+
+				// 设置弹窗隐藏
+				$('#Date_choose_two_mask').click(function() {
+					$('#Date_choose_two_maskc').animate({
+						'opacity': '0'
+					}, "300", function() {
+						$('#Date_choose_two_mask').hide();
+						$('#Date_choose_two_maskc').hide();
+					});
+				})
+				$('#Choose_md_mask').click(function() {
+					$('#Choose_md_maskc').animate({
+						'opacity': '0'
+					}, "300", function() {
+						$('#Choose_md_mask').hide();
+						$('#Choose_md_maskc').hide();
+					});
+				})
+
+				// 今天
+				$('#btn_0').click(function() {
+					$(this).siblings('li').removeClass('active');
+					$(this).addClass('active');
+					$('#loadstart').show()
+					setdate(Newyear, Newmonth, Newday, Newyear, Newmonth, Newday)
+					if(isAll) {
+						startTime = $('#Date_showtime_start').html() + ' 00:00'
+						endTime = $('#Date_showtime_end').html() + ' 23:59'
+						loadMore(userNumber, cell, page, limit, rechargeType, startTime, endTime);
+					}
+
+				})
+
+				// 昨天
+				$('#btn_1').click(function() {
+					$(this).siblings('li').removeClass('active');
+					$(this).addClass('active');
+					$('#loadstart').show()
+					var Newyear = new Date(yesterday).getFullYear();
+					var Newmonth = new Date(yesterday).getMonth() + 1;
+					var Newday = new Date(yesterday).getDate();
+					setdate(Newyear, Newmonth, Newday, Newyear, Newmonth, Newday);
+					if(isAll) {
+						startTime = $('#Date_showtime_start').html() + ' 00:00'
+						endTime = $('#Date_showtime_end').html() + ' 23:59'
+						loadMore(userNumber, cell, page, limit, rechargeType, startTime, endTime);
+					}
+
+				})
+
+				// 近七天
+				$('#btn_2').click(function() {
+					$(this).siblings('li').removeClass('active');
+					$(this).addClass('active');
+					$('#loadstart').show()
+					var Newyear = new Date(sevendays).getFullYear();
+					var Newmonth = new Date(sevendays).getMonth() + 1;
+					var Newday = new Date(sevendays).getDate();
+					var Newyear1 = new Date().getFullYear();
+					var Newmonth1 = new Date().getMonth() + 1;
+					var Newday1 = new Date().getDate();
+					setdate(Newyear, Newmonth, Newday, Newyear1, Newmonth1, Newday1)
+					if(isAll) {
+						startTime = $('#Date_showtime_start').html() + ' 00:00'
+						endTime = $('#Date_showtime_end').html() + ' 23:59'
+						loadMore(userNumber, cell, page, limit, rechargeType, startTime, endTime);
+					}
+				})
+				// 自定义时间查询
+				$('#deter').click(function() {
+					// 获取开始结束时间
+					var startTime, endTime;
+					var start = $('#dateSelectorStart').html()
+					var end = $('#dateSelectorEnd').html()
+					startTime = start.split('-')[0] + '-' + nums(start.split('-')[1]) + '-' + nums(start.split('-')[2]);
+					endTime = end.split('-')[0] + '-' + nums(end.split('-')[1]) + '-' + nums(end.split('-')[2]);
+					startTime_t = Date.parse(new Date(startTime));
+					endTime_t = Date.parse(new Date(endTime));
+					$('#Date_showtime_start').get(0).innerHTML = startTime;
+					$('#Date_showtime_end').get(0).innerHTML = endTime;
+					if(startTime_t > endTime_t) {
+						alert("开始时间不能大于结束时间！！")
+						return
+					} else {
+						// 设置弹窗隐藏
+						$('#Date_choose_two_maskc').animate({
+							'opacity': '0'
+						}, "300", function() {
+							$('#Date_choose_two_mask').hide();
+							$('#Date_choose_two_maskc').hide();
+						});
+						$('#loadstart').show()
+						if(isAll) {
+							startTime = startTime + ' 00:00'
+							endTime = endTime + ' 23:59'
+							loadMore(userNumber, cell, page, limit, rechargeType, startTime, endTime);
+						}
+					}
+				})
+
+			})
+
+			var trend_ul = new Vue({
+				el: '#trend_ul',
+				data: {
+					items: trend
+				}
+			})
+			var choose_md = new Vue({
+				el: '#choose_md',
+				data: {
+					items: shoplist
+				},
+				methods: {
+					getnum: function(num) {
+						userNumber = num;
+						isAll = false
+						$('#btn_0').click()
+						//$('#choose_md li').siblings('li').removeClass('active');
+						//$('#choose_md li').addClass('active');
+						$('#Choose_md_maskc').animate({
+							'opacity': '0'
+						}, "300", function() {
+							$('#Choose_md_mask').hide();
+							$('#Choose_md_maskc').hide();
+						});
+					},
+
+				}
+			})
+
+			function noList(d) {
+				if(d > 0) {
+					$('#nolist').hide()
+				} else {
+					$('#nolist').show()
+				}
+			}
+
+			function nums(num) {
+				if(num < 10) {
+					return "0" + num
+				} else {
+					return num
+				}
+			}
+
+			function getQueryString(name) {
+				var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+				var r = decodeURIComponent(window.location.search).substr(1).match(reg);
+				if(r != null) {
+					return unescape(r[2]);
+				}
+				return null;
+			}
+
+			//日期封装赋值
+			function setdate(Newyear, Newmonth, Newday, Newyear1, Newmonth1, Newday1) {
+				$('#Date_showtime_start').get(0).innerHTML = Newyear + "-" + Newmonth + "-" + Newday;
+				$('#Date_showtime_end').get(0).innerHTML = Newyear1 + "-" + Newmonth1 + "-" + Newday1;
+				$('#dateSelectorStart').get(0).innerHTML = Newyear + "-" + Newmonth + "-" + Newday;
+				$('#dateSelectorStart').get(0).setAttribute("data-year", Newyear);
+				$('#dateSelectorStart').get(0).setAttribute("data-month", Newmonth);
+				$('#dateSelectorStart').get(0).setAttribute("data-day", Newday);
+				$('#dateSelectorEnd').get(0).innerHTML = Newyear1 + "-" + Newmonth1 + "-" + Newday1;
+				$('#dateSelectorEnd').get(0).setAttribute("data-year", Newyear1);
+				$('#dateSelectorEnd').get(0).setAttribute("data-month", Newmonth1);
+				$('#dateSelectorEnd').get(0).setAttribute("data-day", Newday1);
+			}
+			
+			function loadMore(userNumber, cell, page, limit, rechargeType, startTime, endTime) {
+				var ajaData = new Object()
+				ajaData.userNumber = userNumber
+				ajaData.cell = cell
+				ajaData.page = page
+				ajaData.limit = limit
+				ajaData.rechargeType = rechargeType
+				ajaData.startTime = startTime
+				ajaData.endTime = endTime
+				CmsUtility.postAjaxCall(
+					CmsConfig.addressUrl.Vip.selectConsumptionRecord,
+					ajaData,
+					function(data) {
+						if(data.code == '0') {
+							$('#loadstart').hide()
+							noList(data.count)
+							var data = data.result
+							trend.splice(0, trend.length)
+							for(var i = 0; i < data.length; i++) {
+								trend.push(data[i])
+							}
+						} else {
+							alert(data.msg)
+						}
+					},
+					function(data) {
+						console.log('222')
+					}
+				)
+			}
+			//返回事件
+			pushHistory();
+			window.addEventListener("popstate", function(e) {
+				// 点击返回键所触发的逻辑代码
+				window.location.href = 'vip_center.html?time=' + ((new Date()).getTime());
+			}, false);
+			function pushHistory() {
+				var state = {
+					title: "title",
+					url: "#"
+				};
+				window.history.pushState(state, "title", "#");
+			}
+
+		})
+	</script>
+
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-form">
+				<div class="layui-form-item">
+					<div class="layui-form-mid x-red">注：费率为千分位，例如：千分之三则填0.003</div>
+				</div>
+				<table class="layui-hide" id="members" lay-filter="members"></table>
+				<div class="layui-form-item layui-layout-admin">
+					<div class="layui-input-block">
+						<div class="layui-footer" style="left: 0;text-align: center;">
+							<!-- <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button> -->
+							<a class="layui-btn layui-btn-primary" id="quxiao">关闭</a>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/html" id="toolbar_cb">
+			<div class="layui-input-inline">
+				<input type="number" name="toolbar_cb_{{d.id}}" class="layui-input">
+			</div>
+		</script>
+		<script type="text/html" id="toolbar_yy">
+			<div class="layui-input-inline">
+				<input type="number" name="toolbar_yy_{{d.id}}" class="layui-input">
+			</div>
+		</script>
+		<script type="text/html" id="toolbar_tx">
+			<div class="layui-input-inline">
+				<input type="number" name="toolbar_tx_{{d.id}}" class="layui-input">
+			</div>
+		</script>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
+		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function() {
+				setTimeout(function() {
+					parent.layer.close(index)
+				}, 16);
+			})
+
+			function subPageClerkpass(data, data1) {
+				var serverUrl = window.parent.serverUrl
+				var userNumber = window.parent.userNumber;
+				var jgData = data
+				layui.use(['laytpl', 'laydate', 'table', 'form'], function() {
+					var laytpl = layui.laytpl,
+						laydate = layui.laydate,
+						table = layui.table,
+						form = layui.form;
+
+					//方法级渲染  
+					table.render({
+						url: './json/vip-card.json',
+						//url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Mechanism.getRate + '?institutionNumber=' + userNumber ,
+						where: {
+							"paymentChannel": jgData.paymentChannel
+						},
+						elem: '#members',
+						height: 'full-120',
+						id: 'vip_cardList',
+						//						response: { 
+						//						//res 即为原始返回的数据
+						//								"statusCode":"1000", //解析接口状态
+						//								
+						//						},
+						//						parseData: function(res) { //res 即为原始返回的数据
+						//							return {
+						//								"code": res.code, //解析接口状态
+						//								"msg": res.msg, //解析提示文本
+						//								"count": res.count, //解析数据长度
+						//								"data": res.data, //解析数据列表
+						//							};
+						//						},
+						cols: [
+							[{
+								align: 'center',
+								field: 'paymentTypeName',
+								title: '通道名称',
+								width: 150
+							}, {
+								align: 'center',
+								title: '支付方式',
+								field: 'rateType',
+								width: 150
+							}, {
+								align: 'center',
+								title: '运营费率',
+								field: 'costRate',
+								minWidth: 100,
+								edit: 'costRate'
+
+							}, {
+								align: 'center',
+								title: '提现费率',
+								field: 'operatingRate',
+								minWidth: 100,
+								edit: 'operatingRate'
+
+							}]
+						],
+						page: false,
+						done: function(res, curr, count) {}
+					});
+
+					//监听指定开关
+					form.on('switch(switchbar)', function(data) {
+						console.log(data)
+						var addData = new Object()
+						addData.id = data.value
+						addData.switch1 = this.checked ? 0 : 1
+						console.log(addData)
+						// layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+						CmsUtility.postAjaxCall(
+							//系统设置
+							CmsConfig.addressUrl.Mechanism.updateRate,
+							addData,
+							function(data) {
+								if(data.code == 1000) {
+
+									parent.layer.msg('更改成功')
+									// setTimeout(function(){
+									// 	parent.layer.close(index)
+									// 	parent.location.reload()
+									// },500); 
+
+								} else {
+									layer.msg(data.msg)
+
+								}
+							},
+							function(data) {
+								console.log('222')
+							}
+						)
+
+					});
+					table.on('edit(members)', function(obj) {
+						console.log(obj)
+						// var value = obj.value, //得到修改后的值
+						// 	data = obj.data, //得到所在行所有键值
+						// 	field = obj.field; //得到字段
+						var addData = new Object()
+						addData.id = obj.data.id
+						addData[obj.field] = obj.value
+						console.log(addData)
+						// layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+						CmsUtility.postAjaxCall(
+							//系统设置
+							CmsConfig.addressUrl.Mechanism.updateRate,
+							addData,
+							function(data) {
+								if(data.code == 1000) {
+
+									parent.layer.msg('更改成功')
+									// setTimeout(function(){
+									// 	parent.layer.close(index)
+									// 	parent.location.reload()
+									// },500); 
+
+								} else {
+									layer.msg(data.msg)
+
+								}
+							},
+							function(data) {
+								console.log('222')
+							}
+						)
+					});
+
+					/*---------- 监听提交 ----------*/
+					form.on('submit(add)', function(data, index) {
+						var addData = JSON.stringify(data.field)
+						console.log(addData)
+						// 发送请求
+
+						return false;
+					});
+				});
+			}
+		</script>
+	</body>
+
+</html>

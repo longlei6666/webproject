@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+
+		<style>
+			/* *{
+				font-size: 14px;
+			} */
+			/* .layui-table-cell {
+				height: auto;
+				line-height: initial;
+			} */
+			.layui-table-cell{
+				height: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+				<a href="">首页</a>
+				<a><cite>退款订单</cite></a>
+			</span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-form layui-row">
+				<div class="layui-input-inline text">
+					<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+					<input id="shopName" type="text" name="userName" placeholder="商户名称" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-input-inline text">
+					<div class="layui-input-clear"><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></div>
+					<input id="orderNumber" type="text" name="orderId" placeholder="交易订单编号" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input" placeholder="创建时间" name="startTime" id="startTime">
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input" placeholder="成功时间" name="endTime" id="endTime">
+				</div>
+				<div class="layui-input-inline">
+					<select id="oneTransactionType" name="transactionType">
+						<option value="">支付产品</option>
+						<option value="Alipay_Pay">支付宝支付</option>
+						<option value="WeChat_Pay">微信支付</option>
+					</select>
+				</div>
+				<button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i></button>
+			</div>
+			<table class="layui-hide" id="LAY_table_bill" lay-filter="bill" style="font-size:14px"></table>
+		</div>
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+			
+		</script>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
+		<script>
+			// <a class="layui-btn layui-btn-xs" lay-event="instep" style="margin-left:0">同步</a>
+			function fun_date(aa){
+		        var date1 = new Date(),
+		        time1=date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate();//time1表示当前时间
+		        var date2 = new Date(date1);
+		        date2.setDate(date1.getDate()+aa);
+		        var time2 = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
+		        return time2
+		    }
+			window.onload = function(){
+				var beginDate = fun_date(-6);
+			
+				var endDate =fun_date(0);
+				layui.use(['table', 'laytpl','laydate'], function() {
+
+				var table = layui.table,
+					form = layui.form,
+					laydate =  layui.laydate
+					laytpl = layui.laytpl,
+					$ = layui.jquery;
+					
+				laydate.render({
+					elem: '#startTime', //指定元素
+					value:beginDate
+				});
+				laydate.render({
+					elem: '#endTime',
+					value:endDate
+				});
+				console.log()
+
+				var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+				var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
+				//方法级渲染
+				console.log($('#startTime').val())
+				function tableRender(){
+					table.render({
+						url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Agent.selectOrderList + '?agentNumber=' + userNumber ,
+						where:{
+							"agentLevel":agentLevel,
+							"batch":$('#orderNumber').val(),
+							"shopName":$('#shopName').val(),
+							"startTime":$('#startTime').val() + ' ' +'00:00:00',
+							"endTime":$('#endTime').val()+ ' ' +'23:59:59',
+							"oneTransactionType":$('#oneTransactionType').val(),
+							"orderState":'4',
+						},
+						elem: '#LAY_table_bill',
+						page: true,
+						height: 'full-200',
+						id: 'billlist',
+						response: {
+							"statusCode": "1000", //解析接口状态
+						},
+						parseData: function(res) {
+							if(res.data == null) {
+								return
+							}
+							return {
+								"msg":res.msg,
+								"code": res.code,
+								"count": res.data.count,
+								"data": res.data.transactionReceiptShareProfitList,
+							}
+						},
+						cols: [
+							[{
+								title: '商户编号/商户名称',
+								align:'center',
+								templet: function(data) {
+									return data.merchantNumber + ' <br /> ' + data.merchantName 
+								},
+								width: 200
+							},{
+								title: '交易订单号',
+								align:'center',
+								field: 'orderNumber',
+								width: 200
+							}, {
+								templet:function(data){
+									return  data.batch + '</br>' +   data.paymentOrderNumber
+								},
+								title: '退款订单号/上游订单号',
+								align:'center',
+								width: 300
+							}, {
+								field: 'transactionAmount',
+								title: '退单金额',
+								align: 'center',
+
+								width: 100
+							}, {
+								templet: function(data) {
+									return data.transactionTime + '</br>' +  data.transactionTime
+								},
+								title: '提交时间/成功时间',
+								align:'center',
+								width: 150
+							}, {
+								field: 'subaccountNumber',
+								title: '支付方式',
+								align: 'center',
+								width: 150,
+								templet:function(data){
+									return data.onePaymentTypeName + '/' + data.twoPaymentTypeName
+								}
+							}, {
+								field: 'orderRemark',
+								title: '订单描述',
+								align: 'center',
+
+								width: 150
+							}, {
+								field: 'orderState',
+								title: '状态',
+								align: 'center',
+
+								width: 200
+							}, {
+								field: 'operation',
+								title: '操作',
+								toolbar: "#tool",
+								align: 'center',
+								minWidth: 120
+							}]
+						]
+					});
+				}
+				setTimeout(function(){
+					tableRender()
+				},500)
+				
+				$('#search').click(function(){
+					tableRender()
+				})
+				// 根據條件重载表格
+				// var $ = layui.$,
+				// 	active = {
+				// 		reload: function() {
+				// 			// 获取上面查询框的值
+				// 			var userName = $('#userName'); // 所属商户
+				// 			var orderId = $('#orderId'); // 订单编号
+				// 			var operatorNumber = $('#operatorNumber'); // 经销商名称
+				// 			var startTime = $('#startTime');
+				// 			var endTime = $('#endTime');
+				// 			var transactionType = $('#transactionType'); // 支付方式
+				// 			var salesNumber = $('#salesNumber'); // 业务员
+
+				// 			//执行重载
+				// 			table.reload('billlist', {
+				// 				page: {
+				// 					curr: 1 //重新从第 1 页开始
+				// 				},
+				// 				where: {
+				// 					userName: userName.val(),
+				// 					orderId: orderId.val(),
+				// 					operatorNumber: operatorNumber.val(),
+				// 					startTime: startTime.val(),
+				// 					endTime: endTime.val(),
+				// 					transactionType: transactionType.val(),
+				// 					salesNumber: salesNumber.val()
+				// 				}
+				// 			});
+				// 		}
+				// 	};
+
+				//监听工具条
+				table.on('tool(bill)', function(obj) {
+					var data = obj.data;
+					if(obj.event === 'detail') {
+						console.log(data)
+						// 跳转流水详情页面
+						layer.open({
+							type: 2,
+							title: '流水详情',
+							area: ['40%', '80%'], //宽高
+							content: 'dealersBillFailDetail.html',
+							success: function(layero, index) {
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								iframe.subPagebill(data)
+							}
+						});
+					} else if(obj.event === 'instep') {
+						// 同步流水
+						layer.confirm('确定要同步流水吗', {
+				            btn: ['确定', '取消'] //按钮
+				        }, function(){
+				        	console.log(data)
+				        })
+					}
+				});
+
+				$('.layui-row .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+			});
+			}
+			// 选择日期插件  
+			
+		</script>
+		<script type="text/javascript">
+			$("input").focus(function() {
+				$(this).parent().children(".layui-input-clear").show();
+			});
+			$("input").blur(function() {
+				if($(this).val() == '') {
+					$(this).parent().children(".layui-input-clear").hide();
+				}
+			});
+			$(".layui-input-clear").click(function() {
+				$(this).parent().find('input').val('');
+				$(this).hide();
+			});
+		</script>
+
+	</body>
+
+</html>

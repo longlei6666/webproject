@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<link rel="stylesheet" href="../../public/css/style-baobiao.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<script type="text/javascript">
+			// $(function() {
+			// 	$.ajax({
+			// 		type: 'POST',
+			// 		async: true,
+			// 		url: ".getqudao",
+			// 		success: function(data) {
+			// 			for(var i = 0; i < data.length; i++) {
+			// 				$("#payment").append("<option value='" + data[i].Passageway + "'>" + data[i].PassagewayC + "</option>");
+			// 			}
+			// 			form.render();
+			// 		}
+			// 	});
+			// })
+		</script>
+	</head>
+
+	<body>
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+				<a href="">商户</a>
+				<a><cite>账单统计</cite></a>
+			</span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
+		</div>
+		<div class="x-body">
+			<div class="baobiao">
+				<div class="baobiao-col-1" style="padding-left: 0;width:25%">
+					<div class="baobiaoK">
+						<div class="baobiaolist" style="line-height:52px;font-size:16px">
+							交易总金额
+						</div>
+						<div style="line-height:50px;font-size:16px" id="totalTransactionAmount">
+							0
+						</div>
+					</div>
+				</div>
+				<div class="baobiao-col-1" style="padding-right: 0;width:25%">
+					<div class="baobiaoK">
+						<div class="baobiaolist" style="line-height:52px;font-size:16px">
+							手续费
+						</div>
+						<div style="line-height:50px;font-size:16px" id="poundage">
+							0元
+						</div>
+					</div>
+				</div>
+				<div class="baobiao-col-1" style="padding-right: 0;width:25%">
+					<div class="baobiaoK">
+						<div class="baobiaolist" style="line-height:52px;font-size:16px">
+							补贴金额
+						</div>
+						<div style="line-height:50px;font-size:16px" id="subsidyMoney">
+							0元
+						</div>
+					</div>
+				</div>
+				<div class="baobiao-col-1" style="padding-right: 0;width:25%">
+					<div class="baobiaoK">
+						<div class="baobiaolist" style="line-height:52px;font-size:16px">
+							实收金额
+						</div>
+						<div style="line-height:50px;font-size:16px" id="actualAmount">
+							0元
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<br /><br /><br />
+			<!-- <div class="layui-row layui-form x-so">
+				<div class="layui-input-inline">
+					<input type="text" name="shopname" id="shopName" placeholder="商户名称" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-input-inline">
+					<select name="payment" id="transactionPayment">
+						<option value="">所属渠道</option>
+					</select>
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input" placeholder="开始时间" name="" id="startTime">
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input" placeholder="截止时间" name="" id="endTime">
+				</div>
+				<div class="layui-input-inline">
+					<button class="layui-btn" lay-submit="" lay-filter="sreach"  title="搜索" id="btn1"><i class="layui-icon">&#xe615;</i></button>
+				</div>
+			</div> -->
+			<table class="layui-table" id="table1" lay-filter="useruv"></table>
+		</div>
+	</body>
+	<script src="../../common/config.js"></script>
+    <script src="../../common/utility.js"></script>
+	<script>
+		function subPageClerkpass(data,data1){
+			var jgData = data
+			console.log(jgData)
+			var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+			var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
+
+			layui.use(['form', 'table', 'laytpl'], function() {
+				var table = layui.table,
+					form = layui.form,
+					laytpl = layui.laytpl,
+					$ = layui.jquery;
+					CmsUtility.postAjaxCall(
+								//系统设置
+						CmsConfig.addressUrl.Mechanism.getPassageList,
+						{
+							"institutionNumber":JSON.parse(sessionStorage.getItem('agentUser')).institutionNumber
+						},
+						function(data){
+							if(data.data == null){
+								return
+							}
+							var str = '<option value="">所属渠道</option>'
+							for(var i =0 ; i<data.data.length;i++){
+								str += '<option value="'+ data.data[i].paymentChannel+'">'+data.data[i].paymentName+'</option>'
+							}
+							$('#transactionPayment').html(str)
+							form.render()
+						},
+						function(data){
+							console.log('222')
+						}
+					)
+					CmsUtility.postAjaxCall(
+								//系统设置
+						CmsConfig.addressUrl.Agent.getMerBatchInfoCollect,
+						{
+							"merchantNumber":jgData.merchantNumber
+						},
+						function(data){
+							console.log(data)
+							$('#actualAmount').html(data.data[0].actualAmount + '元')
+							$('#poundage').html(data.data[0].poundage + '元')
+							$('#subsidyMoney').html(data.data[0].subsidyMoney + '元')
+							$('#totalTransactionAmount').html(data.data[0].totalTransactionAmount + '元')
+							
+							// $('#brokerage1').html(data.data[0].actualAmount)
+							form.render()
+						},
+						function(data){
+							console.log('222')
+						}
+					)
+			//方法级渲染
+			function tableRender(){
+				table.render({
+					elem: '#table1',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Agent.getMerBatchInfo + '?merchantNumber=' + jgData.merchantNumber ,
+					page: true,
+					limits: [10, 20],
+					method: "post",
+					id: 'tradeInfo',
+					response: { 
+					//res 即为原始返回的数据
+							"statusCode":"1000", //解析接口状态
+							
+					},
+					parseData: function(res) {
+						console.log(res)
+					 //res 即为原始返回的数据
+					 	if(res.data == null){
+					 		return
+					 	}
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.merBatchInfoList, //解析数据列表
+						};
+					},
+					cols: [
+						[{
+							field: 'batch',
+							title: '系统订单号',
+							align: 'center',
+							width:250
+						}, {
+							field: 'transactionAmount',
+							title: '交易金额',
+							align: 'center'
+						}, {
+							field: 'shopPoundage',
+							title: '手续费',
+							align: 'center'
+						}, {
+							field: 'shishoujine',
+							title: '实际金额',
+							align: 'center'
+						}, {
+							field: 'orderTime',
+							title: '提交时间',
+							align: 'center'
+						}, {
+							field: 'transactionTime',
+							title: '成功时间',
+							align: 'center'
+						}, {
+							field: 'orderState',
+							title: '状态',
+							align: 'center',
+						}]
+					]
+				})
+			}
+			tableRender()
+			$('#search').click(function(){
+				tableRender()
+			})
+			$('#btn1').click(function(){
+				console.log('111')
+				tableRender()
+			})
+			// 根據條件重载表格
+			var $ = layui.$,
+				active = {
+					reload: function() {
+						// 获取上面查询框的值
+						var shopname = $("#shopname").val();
+						var startTime = $("#startTime").val();
+						var endTime = $("#endTime").val();
+						var passway = $("#payment option:selected").val();
+						//执行重载
+						table.reload('tradeInfo', {
+							page: {
+								curr: 1 //重新从第 1 页开始
+							},
+							where: {
+								shopname: shopname,
+								passway: passway
+							}
+						});
+					}
+				};
+
+			$('.layui-row .layui-btn').on('click', function() {
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
+			});
+		});
+		}
+			
+			
+		
+		//列表
+		
+	</script>
+	<script>
+		var beginDate = new Date();
+		if(beginDate.getMonth() == 1) {
+			beginDate.setYear(beginDate.getYear() - 1);
+			beginDate.setMonth(12);
+		} else {
+			beginDate.setMonth(beginDate.getMonth() - 1);
+		}
+		var endDate = new Date();
+
+		// 选择日期插件  
+		layui.use('laydate', function() {
+			var laydate = layui.laydate;
+			laydate.render({
+				elem: '#startTime', //指定元素
+				
+				value: new Date()
+			});
+			laydate.render({
+				elem: '#endTime',
+				
+				value: endDate
+			});
+			laydate.render({
+				elem: '#startTime1', //指定元素
+				
+				
+			});
+			laydate.render({
+				elem: '#endTime1',
+				
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		function getShop(){
+			var startTime = $("#startTime1").val();
+			var endTime = $("#endTime1").val();
+			CmsUtility.postAjaxCall(
+						//系统设置
+				CmsConfig.addressUrl.Agent.selectMerchant,
+				{
+					"agentNumber":userNumber,
+					"agentLevel":agentLevel,
+					"startTime":startTime,
+					"endtime":endTime,
+				},
+				function(data){
+					if(data.code == 1000){
+						console.log(data.data.agShopStatisticsResult.shopCount)
+						$('#shopCount').html(data.data.agShopStatisticsResult.shopCount)
+						$('#brokerage').html(data.data.agShopStatisticsResult.brokerage + '元')
+						$('#transactionNumber').html(data.data.agShopStatisticsResult.transactionNumber)
+						$('#wTransactionNumber').html(data.data.agShopStatisticsResult.wTransactionNumber)
+						$('#zTransactionNumber').html(data.data.agShopStatisticsResult.zTransactionNumber)
+						$('#incomeMoney').html(data.data.agShopStatisticsResult.incomeMoney)
+						$('#wIncomeMoney').html(data.data.agShopStatisticsResult.wIncomeMoney)
+
+						$('#zIncomeMoney').html(data.data.agShopStatisticsResult.zIncomeMoney)
+						$('#refundMoney').html(data.data.agShopStatisticsResult.refundMoney)
+						$('#wRefundMoney').html(data.data.agShopStatisticsResult.wRefundMoney)
+						$('#zRefundMoney').html(data.data.agShopStatisticsResult.zRefundMoney)
+					}else{
+						layer.msg(data.msg)
+						
+					}
+				},
+				function(data){
+					console.log('222')
+				}
+			)
+		}
+		getShop()
+		$("#btn").click(function() {
+			getShop()
+		});
+	</script>
+
+</html>

@@ -1,0 +1,60 @@
+/*公共*/
+html,body{height: 100%;width: 100%;position: relative;}
+
+.pay{position: relative;}
+.loadzz{width:100%;height:100%;position:absolute;top:0;left:0;z-index: 9999;}
+.loading_k{width:100%;height:100%;background:rgba(0,0,0,.5);}
+.loading_kz{width:100px;height:100px;margin:-50px 0 0 -50px;}
+.h3{width:300px;text-align:center;color:#fff;position:absolute;top:65%;left:calc(50% - 150px);font-size:18px}
+.loading{position:absolute;top:50%;left:50%;margin:-13px 0 0 -13px;width:26px;height:26px;border:2px solid;border-color:#fff #fff transparent;border-radius:50%;box-sizing:border-box;animation:loading 1s linear infinite}
+.loadingz{top:35%;margin:-15px 0 0 -15px;width:30px;height:30px;}
+@keyframes loading{0%{transform:rotate(0)}
+	100%{transform:rotate(720deg)}
+}
+
+/*底部*/
+.bottom{position: absolute;bottom: 0;width: 100%;height: 50px;}
+.copyright{position: absolute;bottom: 20px;width: 100%;text-align: center;color: #fff;letter-spacing: 5px;font-size: 12px;}
+.loginbg{width: 100%;position: absolute;bottom: 0;}
+
+/*登陆*/
+.logo_k{text-align: center;margin-bottom: 25px;}
+.logo_k img{width: 70px;padding-top: 25px;}
+.login{background: #FFB92B;height: 100%;width: 100%;position: relative;}
+.login-form{width:calc(100% - 30px);max-width:480px;margin:0 auto;overflow: hidden;background: #fff;border-radius: 8px;padding: 35px 24px;}
+.input-block{display: block;width: 100%;border-bottom: 1px solid #FFB92B;line-height: 40px;margin-bottom: 10px;position: relative;}
+.input-block span{width: auto;font-size: 18px;margin-right: 5px;color: #FFB92B;}
+.input-block input{width: 90%;}
+.input-block .verbtn{width: 80px;line-height:30px;background: #FFB92B;color: #fff;text-align: center;font-size: 12px;border-radius: 4px;position: absolute;right: 0;top: 0;}
+.input-block .verbtn.disabled{background: #dadada;}
+.loginbtn{display:block;max-width: 280px;height: 40px;margin:40px auto 0;text-align:center;font-size: 16px;line-height: 40px;background: #FFB92B;color: #fff;border-radius: 8px;}
+
+/*VIP中心*/
+.vipcenter{background:url(../img/menberbg.png) no-repeat;background-size:100% auto;height: 100%;width: 100%;position: relative;padding-top: 60px;}
+.vipbody{width:calc(100% - 30px);max-width:480px;margin:0 auto;overflow: hidden;background: #fff;border-radius: 8px;padding: 20px 20px 12px 20px;box-shadow: 0 4px 15px rgba(0,0,0,.3);position: relative;}
+.vip-img{width: 60px;height: 60px;border-radius: 4px;overflow: hidden;float: left;margin-right: 7px}
+.vip-img img{width: 100%;}
+.vip-msg{font-size: 12px;line-height: 20px;margin-bottom: 30px;}
+.vip-level{position: absolute;right: 14px;top: 22px;width: auto;height: 26px;text-align: center;color: #fff;background: #FFB92B;border-radius: 50px;padding: 0 6px;display: flex;justify-content: center;align-items: center;}
+.vip-level i{font-size: 18px;}
+.vip-level span{font-size: 14px;margin-left: 4px;line-height: 1;}
+.vipjifenyue{text-align: center;position: relative;display: flex;align-items: center;justify-content: center;}
+.vipjifenyuebg{width: 1px;height: 20px;background: #F2F2F2;position: absolute;left: 33%;top: calc(50% - 10px);z-index: 99;}
+.vipjifenyuebg1{width: 1px;height: 20px;background: #F2F2F2;position: absolute;left: 66%;top: calc(50% - 10px);z-index: 99;}
+.vip-integral{width: 33.3%;}
+.vip-coupons{width: 33.3%;}
+.vip-balance{width: 33.3%;}
+.vipfunction{width: calc(100% - 30px);margin:50px auto 0;overflow: hidden;}
+.vipfunctionDiv{width:50%;float: left;text-align: center;}
+.vipfunctionDiv-icon{width: 50px;height: 50px;border-radius: 8px;color: #fff;margin: 0 auto;box-shadow: 0 2px 10px rgba(0,0,0,.2);margin-bottom: 5px;display: block;}
+.vipfunctionDiv-icon i{font-size: 26px;text-align: center;line-height: 50px;}
+.recharge{background: -webkit-linear-gradient(#FFB92B, #FE8C12); /* Safari 5.1 - 6.0 */
+		background: -o-linear-gradient(#FFB92B, #FE8C12); /* Opera 11.1 - 12.0 */
+		background: -moz-linear-gradient(#FFB92B, #FE8C12); /* Firefox 3.6 - 15 */
+		background: linear-gradient(#FFB92B, #FE8C12); /* 标准的语法 */}
+.consume{background: -webkit-linear-gradient(#12E3FE, #2BBEFF); /* Safari 5.1 - 6.0 */
+		background: -o-linear-gradient(#12E3FE, #2BBEFF); /* Opera 11.1 - 12.0 */
+		background: -moz-linear-gradient(#12E3FE, #2BBEFF); /* Firefox 3.6 - 15 */
+		background: linear-gradient(#12E3FE, #2BBEFF); /* 标准的语法 */}
+
+.vipcenter .copyright{color: #999;}

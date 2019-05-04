@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title id="title">商户后台管理系统</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> -->
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet"  href="../../public/lib/layui/font/iconfont.woff">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<link rel="stylesheet" href="../../public/css/loginbg.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.11&key=2a00b8208f148a6f71784ea14529f388&plugin=AMap.CitySearch"></script>
+		<script type="text/javascript" src="../../public/js/data.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<style type="text/css">
+			#codeImg{
+			/* 	line-height: 40px;
+				font-size: 16px;
+				text-align: center;
+				color: #222884; */
+			}
+		</style>
+	</head>
+	<body>
+		<body class="login-bg organ">
+			<div class="message" id="code1">
+				<!-- <h2>Hello!</h2> -->
+				<h6 id="wel">机构管理平台-找回密码</h6>
+			</div>
+			<div method="post" class="layui-form"  style="max-width:500px">
+				<div class="layui-form-item ">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
+					<div class="layui-input-block">
+						<input name="username" placeholder="手机号" type="text" lay-verify="username" class="layui-input" autocomplete="off" value="" id="username" >
+					</div>
+				</div>
+				
+				
+				<div class="layui-form-item ">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
+					<div class="layui-input-block">
+						<input name="password"  lay-verify="password" placeholder="密码" type="password" class="layui-input" autocomplete="off" value="" id="password">
+					</div>
+				</div>
+				<div class="layui-form-item ">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
+					<div class="layui-input-block">
+						<input name="repassword"  lay-verify="repassword" placeholder="请重复密码" type="password" class="layui-input" autocomplete="off" value="" id="repassword">
+					</div>
+				</div>
+				<div class="layui-form-item " style="margin-bottom: 10px;">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-vercode"></i></label>
+					<div class="layui-input-block">
+						<input id="verificationCode" name="verificationCode" placeholder="验证码" type="text" lay-verify="required" autocomplete="off" class="layui-input">
+						<div class="yanzhengimg">
+							<div id="codeImg" style="margin-top:0" class="layui-btn layui-btn-normal" >
+								获取验证码
+							</div>
+						</div>
+					</div>
+				</div>
+				<span class="layui-btn" value="登录" lay-submit lay-filter="login" style="width:100%;" type="" id="sub">提交</span>
+			</div>
+			<script src="../../common/config.js"></script>
+			<script src="../../common/utility.js"></script>
+			<script type="text/javascript">
+				
+				$('.layui-input').each(function() {
+					$(this).focus(function() {
+						$(this).parent().parent().addClass("active"); /*禁用浏览器自带边框阴影*/
+					});
+					$(this).blur(function() {
+						$(this).parent().parent().removeClass("active");
+					});
+				});
+				var code1 = ''
+				var cname = ''
+				var cip = ''
+				var code
+				$.getScript('http://pv.sohu.com/cityjson?ie=utf-8', function() {
+					console.log(returnCitySN)
+					cip = returnCitySN.cip
+					console.log(cname, cip)
+				});
+				//获取用户所在城市信息
+				function showCityInfo() {
+					//实例化城市查询类
+					var citysearch = new AMap.CitySearch();
+					//自动获取用户IP，返回当前城市
+					citysearch.getLocalCity(function(status, result) {
+						console.log(status, result)
+						if(status === 'complete' && result.info === 'OK') {
+							if(result && result.city && result.bounds) {
+								cname = result.province + result.city
+							}
+						} else {
+						}
+					});
+				}
+				showCityInfo();
+				$(function() {
+					var  reg = new RegExp('(?<=[^.]*[.]+).*?(?=[.]+)')
+					var loc = window.location.href
+					console.log(loc)
+					console.log(loc.match(reg))
+					CmsUtility.postAjaxCall(
+								//系统设置
+						CmsConfig.addressUrl.Public.getSitePath,
+						{
+							"sitePath":'hongxiaosou',
+						},
+						function(data) {
+							console.log(data)
+							if(data.code == '1000') {
+								$('#wel').html(data.data[0].websiteName +'商户管理平台-找回密码')
+								$('#title').html(data.data[0].websiteName +'商户后台管理系统')
+								sessionStorage.setItem("jgInfo", JSON.stringify(data.data[0]));
+								// document.write('<title>机构后台管理系统</title>')
+							} else {
+								layer.msg(data.msg)
+							}
+						},
+						function(data) {
+							console.log('222')
+						}
+					)
+					layui.use('form', function() {
+						var form = layui.form;
+						if(code == 1) {
+							layer.msg(msg, {
+								icon: 5
+							});
+						}
+						form.verify({
+							username: function(value) {
+								if($('#username').val() == '') {
+									return "请输入账号"
+								}
+							},
+							password: function(value) {
+								if($('#password').val() == '') {
+									return "请输入密码"
+								}
+								var newReg = new RegExp('^[0-9a-zA-Z]+$')
+				                if(!newReg.test($('#password').val())){
+				                    return '密码只能为英文或数字'
+				                }
+				                if($('#password').val().length <5 || $('#password').val().length >12){
+				                	return '密码只能为6-12位'
+				                }
+							},
+							repassword: function(value) {
+								if($('#password').val() != $('#repassword').val()) {
+									return "两次输入的密码不一致"
+								}
+							},
+							required: function(value) {
+								if($('#verificationCode').val() == '') {
+									return '请输入验证码';
+								}
+								if($('#verificationCode').val() != code1) {
+									return '请输入正确的验证码';
+								}
+							}
+						});
+
+						form.on('submit(login)', function(data) {
+						
+							var ajaData = new Object()
+							ajaData.login = $('#username').val();
+							ajaData.loginPass = $('#repassword').val();
+							ajaData.loginClass = 3;
+							ajaData.code = code1
+							ajaData.institutionNumber = JSON.parse(sessionStorage.getItem("jgInfo")).institutionNumber
+							console.log(ajaData)
+							CmsUtility.postAjaxCall(
+								//系统设置
+								'login/updatePas',
+								ajaData,
+								function(data) {
+									if(data.code == '1000') {
+										layer.msg('修改成功，即将跳转到登录页')
+										
+										setTimeout(function() {
+											window.location.href = 'login.html'
+										}, 1000)
+									} else {
+										layer.msg(data.msg)
+									}
+								},
+								function(data) {
+									console.log('222')
+								}
+							)
+							return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+						});
+
+					});
+				})
+				// $("input").keydown(function(event) {
+				// 	if(event.keyCode == 13) {
+				// 		document.getElementById("sub").click();
+				// 	}
+				// })
+				
+				var codeNum = 59
+				var codeT = true
+				var timer 
+				$(function() {
+					$("#codeImg").click(function() {
+						console.log($('username').val())
+						if($('#username').val() == ''){
+							layer.msg('请输入手机号')
+							return
+						}
+						if(codeT == false){
+							layer.msg('请在一分钟后重试')
+							return
+						}
+						 timer = setInterval(function(){
+							if(codeNum == 0){
+								clearInterval(timer)
+								$('#codeImg').html('获取验证码')
+								codeNum = 59
+								codeT = true
+							}else{
+								console.log('123')
+								getCode()
+								$('#codeImg').html(codeNum)
+								codeNum--
+								
+								codeT = false
+							}
+							
+						},1000)
+					});
+				});
+				function getCode(){
+					if(codeT != true){
+						return
+					}
+					CmsUtility.postAjaxCall(
+								//系统设置
+						'Verify/salePhone',
+						{
+								"phone": $('#username').val()
+						},
+						function(data) {
+							if(data.code == '1000') {
+								code1 = data.data
+								// sessionStorage.setItem("organUser", JSON.stringify(data.data));
+								// setTimeout(function() {
+								// 	window.location.href = 'index.html'
+								// }, 300)
+							} else {
+								layer.msg(data.msg)
+								clearInterval(timer)
+								$('#codeImg').html('获取验证码')
+								codeNum = 59
+								codeT = true
+							}
+						},
+						function(data) {
+							console.log('222')
+						}
+					)
+				}
+			</script><canvas id="Mycanvas"></canvas>
+			<script>
+				//定义画布宽高和生成点的个数
+				var WIDTH = window.innerWidth,
+					HEIGHT = window.innerHeight,
+					POINT = 50;
+				var canvas = document.getElementById('Mycanvas');
+				canvas.width = WIDTH,
+					canvas.height = HEIGHT;
+				var context = canvas.getContext('2d');
+				context.strokeStyle = 'rgba(255,255,255,0.5)',
+					context.strokeWidth = 1,
+					context.fillStyle = 'rgba(255,255,255,0.2)';
+				var circleArr = [];
+				//线条：开始xy坐标，结束xy坐标，线条透明度
+				function Line(x, y, _x, _y, o) {
+					this.beginX = x,
+						this.beginY = y,
+						this.closeX = _x,
+						this.closeY = _y,
+						this.o = o;
+				}
+				//点：圆心xy坐标，半径，每帧移动xy的距离
+				function Circle(x, y, r, moveX, moveY) {
+					this.x = x,
+						this.y = y,
+						this.r = r,
+						this.moveX = moveX,
+						this.moveY = moveY;
+				}
+				//生成max和min之间的随机数
+				function num(max, _min) {
+					var min = arguments[1] || 0;
+					return Math.floor(Math.random() * (max - min + 1) + min);
+				}
+				// 绘制原点
+				function drawCricle(cxt, x, y, r, moveX, moveY) {
+					var circle = new Circle(x, y, r, moveX, moveY)
+					cxt.beginPath()
+					cxt.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI)
+					cxt.closePath()
+					cxt.fill();
+					return circle;
+				}
+				//绘制线条
+				function drawLine(cxt, x, y, _x, _y, o) {
+					var line = new Line(x, y, _x, _y, o)
+					cxt.beginPath()
+					cxt.strokeStyle = 'rgba(255,255,255,' + o + ')'
+					cxt.moveTo(line.beginX, line.beginY)
+					cxt.lineTo(line.closeX, line.closeY)
+					cxt.closePath()
+					cxt.stroke();
+
+				}
+				//初始化生成原点
+				function init() {
+					circleArr = [];
+					for(var i = 0; i < POINT; i++) {
+						circleArr.push(drawCricle(context, num(WIDTH), num(HEIGHT), num(15, 2), num(10, -10) / 40, num(10, -10) / 40));
+					}
+					draw();
+				}
+				//每帧绘制
+				function draw() {
+					context.clearRect(0, 0, canvas.width, canvas.height);
+					for(var i = 0; i < POINT; i++) {
+						drawCricle(context, circleArr[i].x, circleArr[i].y, circleArr[i].r);
+					}
+					for(var i = 0; i < POINT; i++) {
+						for(var j = 0; j < POINT; j++) {
+							if(i + j < POINT) {
+								var A = Math.abs(circleArr[i + j].x - circleArr[i].x),
+									B = Math.abs(circleArr[i + j].y - circleArr[i].y);
+								var lineLength = Math.sqrt(A * A + B * B);
+								var C = 1 / lineLength * 10 - 0.009;
+								var lineOpacity = C > 0.8 ? 0.8 : C;
+								if(lineOpacity > 0) {
+									drawLine(context, circleArr[i].x, circleArr[i].y, circleArr[i + j].x, circleArr[i + j].y, lineOpacity);
+								}
+							}
+						}
+					}
+				}
+				//调用执行
+				window.onload = function() {
+					init();
+					setInterval(function() {
+						for(var i = 0; i < POINT; i++) {
+							var cir = circleArr[i];
+							cir.x += cir.moveX;
+							cir.y += cir.moveY;
+							if(cir.x > WIDTH) cir.x = 0;
+							else if(cir.x < 0) cir.x = WIDTH;
+							if(cir.y > HEIGHT) cir.y = 0;
+							else if(cir.y < 0) cir.y = HEIGHT;
+						}
+						draw();
+					}, 100);
+				}
+			</script>
+		</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<script type="text/javascript" src="../../public/js/tableSelect.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style>
+			.layui-textarea {
+				min-height: initial;
+				letter-spacing: 1px;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form" action="" lay-filter="tongdao">
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">公众号APPID</label>
+						<div class="layui-input-block">
+							<input type="text" name="wechatAppid" autocomplete="off" placeholder="公众号APPID" class="layui-input" lay-verify="wechatAppid">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">公众号APPScrect</label>
+						<div class="layui-input-block">
+							<textarea class="layui-textarea" name="paymentSecretkey" autocomplete="off" placeholder="公众号APPScrect" lay-verify="paymentSecretkey" rows="3"></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">小程序APPID</label>
+						<div class="layui-input-block">
+							<input type="text" name="smallroutineAppid" autocomplete="off" placeholder="小程序APPID" class="layui-input" lay-verify="smallroutineAppid">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">小程序AppSecret</label>
+						<div class="layui-input-block">
+							<input type="text" name="miniAppSecret" autocomplete="off" placeholder="小程序AppSecret" class="layui-input" lay-verify="miniAppSecret">
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">微信服务商ID</label>
+						<div class="layui-input-block">
+							<input type="text" name="facilitatorId" autocomplete="off" placeholder="微信服务商ID" class="layui-input" lay-verify="facilitatorId">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">微信支付key</label>
+						<div class="layui-input-block">
+							<textarea class="layui-textarea" name="wechatKey" autocomplete="off" placeholder="微信支付key" lay-verify="wechatKey" rows="3"></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+							<label class="layui-form-label">支付授权目录</label>
+							<div class="layui-input-block">
+								<input type="text" name="payDasd" autocomplete="off" placeholder="支付授权目录" class="layui-input" lay-verify="appsecret">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">推荐关注APPID</label>
+							<div class="layui-input-block">
+								<input type="text" name="recommendAppid" autocomplete="off" placeholder="推荐关注公众号APPID" class="layui-input" lay-verify="appsecret">
+							</div>
+						</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">回调地址</label>
+						<div class="layui-input-block">
+							<textarea class="layui-textarea" name="tokenUrl" autocomplete="off" placeholder="回调地址" rows="3" lay-verify="tokenUrl"></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">支付网关</label>
+						<div class="layui-input-block">
+							<textarea class="layui-textarea" name="wechatPaymentGateway" autocomplete="off" placeholder="支付网关" rows="3" lay-verify="wechatPaymentGateway"></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">退款证书</label>
+						<div class="layui-input-block">
+							<button type="button" class="layui-btn layui-btn-normal" id="tuikuanchoose">选择证书</button>
+							<button type="button" class="layui-btn" id="tuikuanupload">开始上传</button>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">域名验证文件</label>
+						<div class="layui-input-block">
+							<button type="button" class="layui-btn layui-btn-normal" id="yumingchoose">选择文件</button>
+							<button type="button" class="layui-btn" id="yumingupload">开始上传</button>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">通道状态</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="wechatDisable" lay-skin="switch" lay-filter="GFwxswitch" lay-text="开|关" checked>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">中文名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="wechatName" autocomplete="off" placeholder="请输入通道中文名称" class="layui-input" lay-verify="wechatName">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">英文名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="wechatSpell" autocomplete="off" placeholder="请输入通道英文名称,建议英文首字母" class="layui-input" lay-verify="wechatSpell">
+						</div>
+					</div>
+					<div class="layui-form-item layui-layout-admin">
+						<div class="layui-input-block">
+							<div class="layui-footer" style="left: 0;text-align: center;">
+								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="quxiao" onclick="x_admin_close()">取消</button>
+							</div>
+							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		 <script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
+		<script>
+			function changeRes(res) {
+				var res = res
+				if(res.length == 0) {
+					return
+				}
+				for(var i = 0; i < res.length; i++) {
+
+				}
+				return res
+			}
+			var serverUrl = window.parent.serverUrl
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+			var merchantCa = true;
+			layui.use(['laydate', 'table', 'upload', 'form'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload,
+					laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer;
+
+				/*---------- 自定义验证规则 ----------*/
+				// form.verify({
+				// 	wechatName: function(value) {
+				// 		if(value.length == "") {
+				// 			return '支付通道不能为空！';
+				// 		}
+				// 	},
+				// 	wechatSpell: function(value) {
+				// 		if(value.length == "") {
+				// 			return '支付宝英文名称不能为空！';
+				// 		}
+				// 		var newReg = new RegExp('^[0-9a-zA-Z]+$')
+		  //               if(!newReg.test(value)){
+		  //                   return '通道英文名称只能为英文或数字'
+		  //               }
+				// 	},
+				// 	wechatAppid: function(value) {
+				// 		if(value.length == "") {
+				// 			return '公众号AppID不能为空！';
+				// 		}
+				// 	},
+				// 	smallroutineAppid: function(value) {
+				// 		if(value.length == "") {
+				// 			return '微信小程序AppID不能为空！';
+				// 		}
+				// 	},
+				// 	paymentSecretkey: function(value) {
+				// 		if(value.length == "") {
+				// 			return '微信支付秘钥不能为空！';
+				// 		}
+				// 	},
+				// 	facilitatorId: function(value) {
+				// 		if(value.length == "") {
+				// 			return '微信服务商ID不能为空！';
+				// 		}
+				// 	},
+				// 	wechatKey: function(value) {
+				// 		if(value.length == "") {
+				// 			return '微信支付key不能为空！';
+				// 		}
+				// 	},
+				// 	tokenUrl: function(value) {
+				// 		if(value.length == "") {
+				// 			return '微信回调地址不能为空！';
+				// 		}
+				// 	},
+				// 	wechatPaymentGateway: function(value) {
+				// 		if(value.length == "") {
+				// 			return '微信支付网关不能为空！';
+				// 		}
+				// 	},
+				// 	miniAppSecret:function(value){
+				// 		if(value.length == ""){
+				// 			return '微笑小程序AppSecret不能为空'
+				// 		}
+				// 	}
+				// });
+
+				form.on('switch(GFwxswitch)', function(data) { //计次开关
+					// layer.tips('支付宝官方通道：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+					merchantCa = this.checked
+				});
+
+				/*---------- 监听提交 ----------*/
+				form.on('submit(add)', function(data, index) {
+
+					// layer.alert(JSON.stringify(data.field))
+					var addData = data.field
+					
+					if(merchantCa == false){
+						addData.wechatDisable = 1
+					}else{
+						addData.wechatDisable = 0
+					}
+					addData.institutionNumber = userNumber;
+					addData.refundCertificate = '退款证书';
+					addData.domainValidation = '验证文件';
+					addData.paymentType = 1;
+					// 发送请求
+					console.log(addData)
+					CmsUtility.postAjaxCall(
+                        //系统设置
+                       CmsConfig.addressUrl.Mechanism.insertWXOfficial,
+                        addData,
+                        function(data){
+                            if(data.code == '1000'){
+                               layer.msg('添加成功')
+                               setTimeout(function(){
+                               		x_admin_close()
+                               		parent.layui.table.reload('vip_cardList')
+                               	},500)
+                                
+                            }else{
+                                layer.msg(data.msg)
+                            }
+                        },
+                        function(data){
+                            console.log('222')
+                        }
+                    )
+					return false;
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="../../public/lib/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="../../public/css/inputTags.css">
+		<script type="text/javascript" src="../../public/lib/layui/layui.js"></script>
+		<script type="text/javascript" src="../../public/js/inputTags.js"></script>
+	</head>
+
+	<body>
+		<div class="layui-form">
+			<span class="albtn">获取全部数据</span>
+			<div class="tags">
+				<input type="text" name="" class="inputTags" placeholder="回车生成标签" autocomplete="off">
+			</div>
+			
+			<input type="checkbox" name="like1[read]" lay-skin="primary" title="阅读">
+		</div>
+
+		<script type="text/javascript">
+			layui.use(['form'], function() {
+				var inputTags = layui.inputTags;
+
+				lay('.inputTags').each(function() {
+					inputTags.render({
+						elem: this,
+						content: ['标题1','标题2'],
+						aldaBtn: true,
+						done: function(value) {
+							console.log(value)
+						}
+					})
+				})
+
+			})
+		</script>
+		<script type="text/javascript">
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//同时绑定多个
+				lay('.test-item').each(function() {
+					laydate.render({
+						elem: this,
+						trigger: 'click'
+					});
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

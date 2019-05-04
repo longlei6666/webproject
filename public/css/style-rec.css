@@ -1,0 +1,83 @@
+.nomargin{margin:0 !important;}
+
+.pay{position: relative;}
+.loadzz{width:100%;height:100%;position:absolute;top:0;left:0;z-index: 999;}
+.loading_k{width:100%;height:100%;background:rgba(0,0,0,.5);}
+.loading_kz{width:100px;height:100px;margin:-50px 0 0 -50px;}
+.h3{width:300px;text-align:center;color:#fff;position:absolute;top:65%;left:calc(50% - 150px);font-size:18px}
+.loading{position:absolute;top:50%;left:50%;margin:-13px 0 0 -13px;width:26px;height:26px;border:2px solid;border-color:#fff #fff transparent;border-radius:50%;box-sizing:border-box;animation:loading 1s linear infinite}
+.loadingz{top:35%;margin:-15px 0 0 -15px;width:30px;height:30px;}
+@keyframes loading{0%{transform:rotate(0)}
+	100%{transform:rotate(720deg)}
+}
+
+.revenue{width: 100%;height: 100%;padding: 15px;position: relative;background: #fff;}
+/*日期选择*/
+.Date_div{width: 100%;height: auto;}
+.Date_btn_line{width: 100%;height:auto;overflow: hidden;line-height: 30px;}
+.Date_btn{width: 50%;box-sizing: border-box;float: left;}
+.Date_btn li{width: 33.33%;border: 1px solid #ccc;float: left;text-align: center;font-size: 14px;border-radius: 4px;margin-left: -1px;color: #999;}
+.Date_btn li:first-child{margin: 0;}
+.Date_btn li.active{background:rgb(255,205,0);color: #fff;}
+.Date_choose{float: right;font-size: 12px;text-align: right;}
+.Date_showtime{font-size: 12px;text-align: right;width: 50%;}
+.Date_showtime span{font-size: 12px;}
+.searchinput{margin-bottom: 6px;}
+.searchk{width:calc(100% - 70px);display: block;float: left;position: relative;}
+.searchk i{position: absolute;left: 10px;top: 3px;font-size: 22px;}
+.searchk input{width:100%;line-height: 30px;font-size: 12px;border-radius: 6px;border: 1px solid #CDCDCD;padding: 0 8px 0 30px;box-sizing: border-box;}
+.searchbtn{border-radius: 6px;border: 1px solid #CDCDCD;color:#CDCDCD;height:30px;line-height: 28px;font-size:14px;padding:0 14px;display: block;float: right;box-sizing: initial;}
+
+/*营收趋势*/
+.trend{width: 100%;height:calc(100% - 60px);overflow: hidden;padding-top: 5px;}
+.trend h3{}
+.trend_tit{width: 100%;height: 40px;line-height: 40px;text-align: center;}
+.trend_tit p{color: #666;font-size: 14px;float: left;width: 33.33%;}
+.trend_tit p:nth-child(1){width: 30%;}
+.trend_tit p:nth-child(2){width: 45%;}
+.trend_tit p:nth-child(3){width: 25%;}
+.trend_ul{width: 100%;height:calc(100% - 40px);text-align: center;border-top:  1px solid #ccc;overflow:auto; }
+.trend_ul ul{height: 100%;position: relative;}
+.trend_ul li{height: 40px;line-height: 40px;border-bottom: 1px solid #ccc;}
+.trend_ul p{color: #666;font-size: 14px;float: left;text-align: center;}
+.trend_ul p:nth-child(1){width: 30%;}
+.trend_ul p:nth-child(2){width: 45%;}
+.trend_ul p:nth-child(3){width: 25%;}
+.trend_ul ul #nolist{position:absolute;top: 48%;width: 100%;}
+
+/*弹窗*/
+.Date_choose_two_mask{position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 50;background: transparent;display: none;background: rgba(0,0,0,0.0000001);}
+.Date_choose_two_maskc{position: absolute;top: 45%;left: 5%;z-index:90;background: rgba(0,0,0,.5);width: 90%;margin-top: -75px;border-radius: 8px;padding: 10px 10%;text-align:center;color: #fff;display: none;opacity: 0;}
+.tongjitime{margin-bottom: 10px;}
+.Date_input{display: flex;justify-content: center;margin-bottom: 10px;line-height: 30px;}
+.Date_input div{width:40%;color: #333;font-size: 12px;border-radius: 5px;text-align: center;background: #fff;}
+.Date_input span{width:20%;}
+.deter{width: 100px;line-height: 30px;background: rgb(255,90,95);border-radius: 50px;font-size: 12px;margin: 0 auto;}
+
+
+.Choose_md_mask{position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 50;background: transparent;display: none;background: rgba(0,0,0,0.0000001);}
+.Choose_md_maskc{position: absolute;top: 35%;left: 5%;z-index:90;background: rgba(0,0,0,.5);width: 90%;margin-top: -75px;border-radius: 8px;padding: 10px 10%;text-align:center;color: #fff;display: none;opacity: 0;}
+.choose_md{
+	width: 100%;
+	height: 250px;
+	background: #fff;
+	overflow: auto;
+	margin-bottom: 10px;
+}
+.choose_md li{
+	color: #333;
+	width: 100%;
+	line-height: 38px;
+	border-bottom: 1px solid #eee;
+	padding: 0 10px;
+	box-sizing: border-box;
+}
+.choose_md li.active{
+	background: #5FB878;
+	color: #fff;
+}
+.choose_md li a{display: block;
+}
+.choose_md li:hover{background:#5FB878;color: #fff;}
+.choose_md li:hover a{color: #fff;}
+#choose_md_btn{position:absolute;left:50%;bottom:10px;width: 60%;margin-left:-30%;line-height: 40px;color: #fff;background: rgb(255,205,0);text-align: center;z-index: 10;border-radius: 5px;}

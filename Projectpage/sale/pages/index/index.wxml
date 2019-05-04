@@ -1,0 +1,75 @@
+<!--index.wxml-->
+<view class="container">
+    <view class='top'>
+        <view class='topL'>
+            <view class='topT'>今日佣金(元)</view>
+            <view class='topN'>￥0.00</view>
+        </view>
+        <view class='topL'>
+            <view class='topT'>今日新增店铺</view>
+            <view class='topN'>0</view>
+        </view>
+		<view class='topL aL' bindtap='record'>
+			<view class='topZ'></view>
+            <view class='topC'></view>
+            <view class='topB'>佣金记录</view>
+			<view class='pL'></view>
+        </view>
+		<view class='topL'  bindtap='salekit'>
+			<view class='topZ'></view>
+            <view class='topC'></view>
+            <view class='topB'>销售简报</view>
+        </view>
+    </view>
+	<view class='mid clearfix'>
+		<view class='midA fl'></view>
+		<view class='midB fl'>今日数据</view>
+	</view>
+	<view class='bot'>
+		<view class='boA fl'>
+
+			<view class='boB fl'></view>
+			<view class='boC fl'>
+				<view class='boD'>交易总金额</view>
+				<view class='boE'>23456.50元</view>
+			</view>
+			<view class='boL'></view>
+		</view>
+		<view class='boA fl'>
+			<view class='boB fl'></view>
+			<view class='boC fl'>
+				<view class='boD'>交易总金额</view>
+				<view class='boE'>23456.50元</view>
+			</view>
+		</view>
+	</view>
+	<view class='foot'>
+		<view class='footA fl'>
+			<view class='footB'></view>
+			<view class='footC'>商户注册</view>
+		</view>
+		<view class='footA fl' bindtap='shop'>
+			<view class='footB'></view>
+			<view class='footC'>商户管理(<text style='color:red'>123</text>)</view>
+			
+		</view>
+		<view class='footA fl' style='border-right:0'>
+			<view class='footB'></view>
+			<view class='footC'>商户注册</view>
+		</view>
+	</view>
+	<view class='foot'>
+		<view class='footA fl'>
+			<view class='footB'></view>
+			<view class='footC'>商户注册</view>
+		</view>
+		<view class='footA fl'>
+			<view class='footB'></view>
+			<view class='footC'>商户注册</view>
+		</view>
+		<view class='footA fl' style='border-right:0'>
+			<view class='footB'></view>
+			<view class='footC'>商户注册</view>
+		</view>
+	</view>
+</view>

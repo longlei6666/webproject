@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    	.place{
+    		display:block;margin-bottom:20px;color:red
+    	}
+    </style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-row">
+				<div  class="layui-form-item" id="imgBox" style="position:relative;left:0;top:0;width:722px;height:1036px;display:inline-block">
+					<img src=""  ondragstart="return false;" id="img1" style="width:722px;height:1036px;position:absolute;left:0;top:0;border:1px solid black">
+					<img src="images/code.png" id="code"  ondragstart="return false;" style="width:300px;height:300px;position:absolute;left:215px;top:413px;cursor:pointer;background-color:white;">
+					<div  id="txtBox"  ondragstart="return false;" style="position:absolute;left:206px;top:733px;cursor:pointer;font-size:40px;line-height:50px;font-weight:0.1;letter-spacing:3px">
+						NO010011234567
+					</div>
+					<div style="position:absolute;right:-104px;top:0;width:100px;height:30px;text-align:center;line-height:30px;background-color:white;border:1px solid black" class="layui-upload-img" id="test1">上传图片</div>
+					<p style="position:absolute;right:-104px;top:30px;text-align:center;line-height:30px;background-color:white;width:100px" id="demoText"></p>
+				</div>
+				<div class="layui-form" lay-filter="basic" style="display:inline-block;vertical-align:top;margin-top:50px">
+					<div class="layui-form-item">
+						<div class="layui-inline place">
+							<label class="layui-form-label"></label>
+							<span>*注1:背景图片推荐尺寸为宽度722px,高度为1036px</span>
+						</div>
+						<div class="layui-inline place">
+							<label class="layui-form-label"></label>
+							<span>*注2:所有单位均以像素(px)为单位</span>
+						</div>
+						<div class="layui-inline place">
+							<label class="layui-form-label"></label>
+							<span>*注3:拖动二维码及编号右下角可以改变对应元素大小</span>
+						</div>
+						<div class="layui-inline place">
+							<label class="layui-form-label"></label>
+							<span>*注4:拖动二维码及编号中间位置可以改变对应元素位置</span>
+						</div>
+						<div class="layui-inline place">
+							<label class="layui-form-label"></label>
+							<span>*注5:在下方输入框输入尺寸可以直接调整图片大小及位置</span>
+						</div>
+						<div class="layui-inline place">
+							<label class="layui-form-label"></label>
+							<span>*注6:二维码只能是正方形</span>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">二维码宽度(px)</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpServer" lay-verify="title" class="layui-input" placeholder="二维码宽度" id="kuan" onblur="ob(this.value)">
+							</div>
+						</div>
+						
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">编号字体大小(px)</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpServer" lay-verify="title" class="layui-input" id="kuan1" onblur="ob4(this.value)">
+							</div>
+						</div>
+						
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">二维码坐标X(px)</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpServer" lay-verify="title" class="layui-input" placeholder="二维码坐标X" id="ex" onblur="ob2(this.value)">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">二维码坐标Y(px)</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpPort" lay-verify="title" class="layui-input" placeholder="二维码坐标Y" id="ey" onblur="ob3(this.value)">
+							</div>
+						</div>
+						
+					</div>
+					
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">编号坐标X(px)</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpServer" lay-verify="title" class="layui-input" id="ex1" onblur="ob6(this.value)">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">编号坐标Y(px)</label>
+							<div class="layui-input-inline">
+								<input type="text" name="smtpPort" lay-verify="title" class="layui-input" id="ey1" onblur="ob7(this.value)">
+							</div>
+						</div>
+
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">支付域名</label>
+							<div class="layui-input-inline" style="width:525px">
+								<input type="text" name="payUrl" lay-verify="url" class="layui-input" id="payUrl" >
+							</div>
+						</div>
+
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"></label>
+						<div class="layui-input-inline">
+							<span class="layui-btn"  id="sub">立即提交</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
+		<script>
+			var imgUrl;
+			var imgTrue = false
+			var code = document.getElementById('code')
+			code.onmousedown = function(ev){
+	            var ev = ev||event;
+	 			
+	            var disX = ev.clientX - this.offsetLeft;
+	            var disY = ev.clientY - this.offsetTop;
+	            var dx = ev.clientX
+	            var dy = ev.clientY
+	            var x = $('#code').width()
+	            var y = $('#code').height()
+	            
+	            if(ev.clientX > $('#code').position().left + $('#code').width() -10 &&
+	                ev.clientY > $('#code').position().top + $('#code').height() -10  ){
+	                	document.onmousemove = function(ev){
+			 				console.log($('#code').position().left)
+			                var ev = ev||event;
+
+			                var l,t;
+			                l = x+ev.clientX - dx
+
+			                // if(ev.clientX - disX <= 100){
+			                // 	l = 100
+			                // }
+			                // if(ev.clientX - disX >= 700){
+			                // 	l = 700
+			                // }
+			                t = y+ev.clientY - dy
+
+			                // if(ev.clientY - disY <= 100){
+			                // 	t = 100
+			                // }
+			                // if(ev.clientY - disY >= 1000){
+			                // 	t = 1000
+			                // }
+			                var hei = l > t?l:t;
+			    //             if(l>t){
+							// hei
+			    //              
+			    //             }
+			        		// $('#gao').val(t)
+			        		$('#kuan').val(hei)
+			                code.style.width = hei + 'px';
+			                code.style.height = hei + 'px';
+			                code.onmouseup = function(){
+	            	
+				                document.onmousemove = null;
+				            }
+			 
+			            }
+	                }else{
+	                	document.onmousemove = function(ev){
+			                var ev = ev||event;
+
+			                var l,t;
+			                l = ev.clientX - disX
+
+			                if(ev.clientX - disX <= 0){
+			                	l = 0
+			                }
+			                if(ev.clientX - disX >= $('#img1').width()-$('#code').width()){
+			                	l = $('#img1').width()-$('#code').width()
+			                }
+			                t = ev.clientY - disY
+
+			                if(ev.clientY - disY <= 0){
+			                	t = 0
+			                }
+			                if(ev.clientY - disY >= $('#img1').height()-$('#code').height()){
+			                	t = $('#img1').height()-$('#code').height()
+			                }
+			                 $('#ex').val(l)
+			        		$('#ey').val(t)
+			                code.style.left = l + 'px';
+			                code.style.top = t + 'px';
+			 				code.onmouseup = function(){
+	            	
+				                document.onmousemove = null;
+				            }
+			            }
+	                }
+	            
+	            
+	 
+	        }
+
+	        var txtBox = document.getElementById('txtBox')
+	        txtBox.onmousedown = function(ev){
+	            var ev = ev||event;
+	 			
+	            var disX = ev.clientX - this.offsetLeft;
+	            var disY = ev.clientY - this.offsetTop;
+	            var dx = ev.clientX
+	            var dy = ev.clientY
+	            var x = $('#txtBox').width()
+	            var y = $('#txtBox').height()
+	            if(ev.clientX > $('#txtBox').position().left + $('#txtBox').width() -10 &&
+	                ev.clientY > $('#txtBox').position().top + $('#txtBox').height() -10  ){
+	            //     	document.onmousemove = function(ev){
+			          //       var ev = ev||event;
+
+			          //       var l,t;
+			          //       l = x+ev.clientX - dx
+
+			          //       // if(ev.clientX - disX <= 100){
+			          //       // 	l = 100
+			          //       // }
+			          //       // if(ev.clientX - disX >= 700){
+			          //       // 	l = 700
+			          //       // }
+			          //       t = y+ev.clientY - dy
+
+			          //       // if(ev.clientY - disY <= 100){
+			          //       // 	t = 100
+			          //       // }
+			          //       // if(ev.clientY - disY >= 1000){
+			          //       // 	t = 1000
+			          //       // }
+			          //        $('#kuan1').val(l)
+			        		// $('#gao1').val(t)
+			          //       txtBox.style.width = l + 'px';
+			          //       txtBox.style.height = t + 'px';
+			          //       txtBox.onmouseup = function(){
+	            	
+				         //        document.onmousemove = null;
+				         //    }
+			 
+			          //   }
+	                }else{
+	                	document.onmousemove = function(ev){
+			 				
+			                var ev = ev||event;
+			                // if(ev.clientY > )
+			                var l,t;
+			                l = ev.clientX - disX
+
+			                if(ev.clientX - disX <= 0){
+			                	l = 0
+			                }
+			                if(ev.clientX - disX >= $('#img1').width()-$('#txtBox').width()){
+			                	l = $('#img1').width()-$('#txtBox').width()
+			                }
+			                t = ev.clientY - disY
+
+			                if(ev.clientY - disY <= 0){
+			                	t = 0
+			                }
+			                if(ev.clientY - disY >= $('#img1').height()-$('#txtBox').height()){
+			                	t = $('#img1').height()-$('#txtBox').height()
+			                }
+			                $('#ex1').val(l)
+			       			 $('#ey1').val(t)
+			                txtBox.style.left = l + 'px';
+			                txtBox.style.top = t + 'px';
+			                txtBox.onmouseup = function(){
+	            	
+				                document.onmousemove = null;
+				            }
+			 
+			            }
+	                }
+	            
+	            
+	 
+	        }
+	        $('#kuan').val('315')
+	        //$('#gao').val('315')
+	        $('#ex').val('215')
+	        $('#ey').val('413')
+	        $('#kuan1').val('40')
+	        $('#ex1').val('206')
+	        $('#ey1').val('733')
+	        
+	        function ob(data){
+	        	$('#code').width(data)
+	        	$('#code').height(data)
+	        }
+	        function ob1(data){
+	        	$('#code').height(data)
+	        }
+	        function ob2(data){
+	        	if(data >= $('#img1').width()-$('#code').width()){
+	        		data = $('#img1').width()-$('#code').width()
+	        	}
+	        	if(data <= 0){
+	        		data = 0
+	        	}
+	        	$('#code').css({
+	        		'left':data+'px'
+	        	})
+	        }
+	        function ob3(data){
+	        	if(data >= $('#img1').height()-$('#code').height()){
+	        		data = $('#img1').height()-$('#code').height()
+	        	}
+	        	if(data <= 0){
+	        		data = 0
+	        	}
+	        	$('#code').css({
+	        		'top':data+'px'
+	        	})
+	        }
+	        function ob4(data){
+	        	console.log(data)
+	        	$('#txtBox').css('font-size',data+'px')
+	        	$('#txtBox').css('line-height',data+'px')
+	        	// $('#txtBox').width(data)
+	        }
+	        function ob5(data){
+	        	$('#txtBox').height(data)
+	        }
+	        function ob6(data){
+	        	if(data >= $('#img1').width()-$('#txtBox').width()){
+	        		data = $('#img1').width()-$('#txtBox').width()
+	        	}
+	        	if(data <= 0){
+	        		data = 0
+	        	}
+	        	$('#txtBox').css({
+	        		'left':data+'px'
+	        	})
+	        }
+	        function ob7(data){
+	        	if(data >= $('#img1').height()-$('#txtBox').height()){
+	        		data = $('#img1').height()-$('#txtBox').height()
+	        	}
+	        	if(data <= 0){
+	        		data = 0
+	        	}
+	        	$('#txtBox').css({
+	        		'top':data+'px'
+	        	})
+	        }
+	        var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+	        layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
+	        	var $ = layui.jquery,
+						upload = layui.upload,
+						laydate = layui.laydate,
+						table = layui.table,
+						form = layui.form,
+						laytpl = layui.laytpl;
+						
+	        	var uploadInst = upload.render({
+						elem: '#test1',
+						url: CmsConfig.ServiceUrl.ApiRootUrl +CmsConfig.addressUrl.Public.addPic,
+						data: {
+						  	"institutionNumber":userNumber
+						 },
+						before: function(obj) {
+							console.log(obj)
+							//预读本地文件示例，不支持ie8
+							obj.preview(function(index, file, result) {
+								$('#img1').attr('src', result); //图片链接（base64）
+								
+							});
+						},
+						done: function(res) {
+							//如果上传失败
+							if(res.code != 1000) {
+								return layer.msg('上传失败');
+							}
+							//上传成功
+							console.log(res)
+							imgUrl = res.data
+							imgTrue = true
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#demoText');
+
+							demoText.html('<span style="color: #FF5722;width:100px;height:30px">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});	
+	        })
+			
+				
+				layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
+					layui.$.support.cors = true; //允许ajax跨域
+					var $ = layui.jquery,
+						upload = layui.upload,
+						laydate = layui.laydate,
+						table = layui.table,
+						form = layui.form,
+						laytpl = layui.laytpl;
+					var daaaa = new Object()
+						daaaa.institutionNumber = userNumber
+						CmsUtility.postAjaxCall(
+								//系统设置
+								CmsConfig.addressUrl.Mechanism.getInstitutionQrcade,
+								daaaa,
+								function(data){
+									if(data.code == 1000){
+										var data = data.data
+										$('#ex').val(data.codex)
+										$('#ey').val(data.codey)
+										$('#code').css('left', data.codex+'px');
+										$('#code').css('top', data.codey+'px');
+										$('#kuan').val(data.codesize)
+										$('#ex1').val(data.numberx)
+										$('#ey1').val(data.numbery)
+										$('#kuan1').val(data.numbersize)
+										$('#img1').attr('src', data.qrcodeurl);
+										$('#code').width(data.codesize)
+		        						$('#code').height(data.codesize)
+		        						$('#txtBox').css('left',data.numberx+'px')
+		        						$('#txtBox').css('top',data.numbery+'px')
+		        						$('#payUrl').val(data.payUrl)
+		        						imgUrl = data.qrcodeurl
+		        						imgTrue = true
+		        						console.log(data.numbersize)
+							        	$('#txtBox').css('font-size',data.numbersize+'px')
+							        	$('#txtBox').css('line-height',data.numbersize+'px')
+									}else{
+										layer.msg(data.msg+',请上传图片并设置参数')
+										$('#img1').attr('src', 'images/qrcode.png');
+									}
+									
+								},
+								function(data){
+									console.log('222')
+								}
+							)
+					//表单初始赋值
+					// form.val('secretkey', {
+					// 	"secretkey": jgData.keys
+					// })
+					$('#sub').click(function(){
+						console.log('132132')
+						var aData = new Object()
+
+				        //$('#gao').val('315')
+				       	if($('#ex').val()=='' || 
+				       		$('#ey').val()=='' ||
+				       		$('#kuan').val()=='' ||
+				       		$('#ex1').val()=='' ||
+				       		$('#ey1').val()=='' ||
+				       		$('#kuan1').val()=='' ||
+				       		$('#payUrl').val()=='' || imgTrue == false){
+				       		alert('请补充信息')
+				       		return
+				       	}
+						aData.institutionNumber = userNumber
+						aData.qrcodeurl = imgUrl
+						aData.codex = $('#ex').val()
+						aData.codey = $('#ey').val()
+						aData.codesize = $('#kuan').val()
+						aData.numberx = $('#ex1').val()
+						aData.numbery = $('#ey1').val()
+						aData.numbersize = $('#kuan1').val()
+						aData.payUrl = $('#payUrl').val()
+						CmsUtility.postAjaxCall(
+							//系统设置
+							CmsConfig.addressUrl.Mechanism.updateInfoQrcade,
+							aData,
+							function(data){
+								console.log(data)
+								if(data.code == 1000){
+									layer.msg('保存成功')
+								}else{
+									layer.msg(data.msg)
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+						return
+						
+					})
+
+					// //监听提交
+					// form.on('submit(add)', function(data) {
+					// 	layer.alert(JSON.stringify(data.field), {
+					// 		title: '最终的提交信息'
+					// 	})
+					// 	return false;
+					// });
+
+				});
+			
+			
+		</script>
+	</body>
+
+</html>

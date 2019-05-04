@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>鸿搜管理中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="./lib/layui/css/layui.css">
+		<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/xadmin.js"></script>
+		<style type="text/css">
+			.layui-form-item .layui-input-inline{
+				width:250px
+			}
+			
+		</style>
+	</head>
+	<script type="text/javascript">
+
+	</script>
+
+	<body>
+		<div class="x-body">
+			<div class="layui-form" id="unitadd">
+				<div class="layui-form-item" style="margin-bottom:15px">
+					<label class="layui-form-label">
+						店铺名称: 
+					</label>
+					<div class="layui-input-inline">
+						<input type="text" name="merchantNumber" autocomplete="off" placeholder="请搜索并选择门店" class="layui-input" lay-verify="required1" id="search" onblur="bl()" onfocus="fc()" autocomplete="off">
+						<div class="layui-input-inline" style="position:absolute;top:34px;left:0;z-index:500;max-height:190px;overflow:auto" id="searchBox" >
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						码牌编号: 
+					</label>
+					<div class="layui-input-inline layui-input-inline2">
+						<input type="text"  name="shebei" lay-verify="required2" class="layui-input" placeholder="请选择码牌" value=""  id="search1" onblur="bl1()" onfocus="fc1()" autocomplete="off">
+						<div class="layui-input-inline" style="position:absolute;top:34px;left:0;z-index:500;max-height:190px;overflow:auto" id="searchBox1" >
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item layui-layout-admin">
+					<div class="layui-input-block">
+						<div class="layui-footer" style="left: 0;text-align: center;">
+							<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+							<a class="layui-btn layui-btn-primary" onclick="x_admin_close()">取消</a>
+						</div>
+						<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
+		<script>
+			var jgData
+			var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+			var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
+			function clickS(e){
+					$('#search').val(e.getAttribute('data-name'))
+					console.log(e)
+					$('#search').attr('shopNumber',e.getAttribute('data-id'))
+					$('#searchBox').hide()
+				}
+				function clickS1(e){
+					$('#search1').val(e.getAttribute('data-name'))
+					console.log(e)
+					$('#search1').attr('equipmentLinkAddress',e.getAttribute('data-id'))
+					$('#searchBox1').hide()
+				}
+			function bl(){
+				setTimeout(function(){
+					$('#searchBox').hide()
+				},300)
+				//$('#searchBox').hide()
+			}
+			function bl1(){
+				setTimeout(function(){
+					$('#searchBox1').hide()
+				},500)
+				//$('#searchBox').hide()
+			}
+			function fc(){
+					$('#searchBox').show()
+					CmsUtility.postAjaxCall(
+						//系统设置
+					CmsConfig.addressUrl.Agent.getShoplist,
+					{
+						"merchantNumber":jgData.merchantNumber,
+						"ShopName":$('#search').val()
+					},
+					function(data){
+						console.log(this.value)
+						if(data.code == 1000){
+							if(!data.data){
+								layer.msg('暂无门店,请登录商户平台添加门店')
+							}else{
+								 var str = ''
+								 for(var i =0;i<data.data.length;i++){
+									str+= '<div class="layui-btn layui-btn-primary" data-id="'+ data.data[i].ShopNumber+'" data-name="'+ data.data[i].shopName+'" style="width:100%;margin-left:0" onclick="clickS(this)" >'+ data.data[i].shopName+'</div>'
+								 }
+								 document.getElementById('searchBox').innerHTML = str
+								// layer.msg('保存成功')
+								// setTimeout(function(){
+								// 	x_admin_close()
+								// },500);
+							}
+						}else{
+							layer.msg(data.msg)
+							
+						}
+					},
+					function(data){
+						console.log('222')
+					}
+				)
+				
+			}
+			function fc1(){
+					$('#searchBox1').show()
+					CmsUtility.postAjaxCall(
+						//系统设置
+					CmsConfig.addressUrl.Agent.getCodes,
+					{
+						"institutionNumber":JSON.parse(sessionStorage.getItem('agentUser')).institutionNumber,
+						"agentNumber":userNumber,
+						"equipmentType":"0",
+						"boundState":"0",
+						"page":1,
+						"limit":"50"
+					},
+					function(data){
+						console.log(this.value)
+						if(data.code == 1000){
+							if(data.data == null){
+								layer.msg('暂无未绑定码牌，请去码牌管理生成')
+							}
+							 var str = ''
+							 for(var i =0;i<data.data.aElist.length;i++){
+							 str+= '<div class="layui-btn layui-btn-primary" data-id="'+ data.data.aElist[i].codeAddress+'" data-name="'+ data.data.aElist[i].equipmentNumber+'" style="width:100%;margin-left:0" onclick="clickS1(this)" >'+ data.data.aElist[i].equipmentNumber +'</div>'
+							 }
+							 document.getElementById('searchBox1').innerHTML = str
+							// layer.msg('保存成功')
+							// setTimeout(function(){
+							// 	x_admin_close()
+							// },500);
+							
+						}else{
+							layer.msg(data.msg)
+							
+						}
+					},
+					function(data){
+						console.log('222')
+					}
+				)
+				
+			}
+			function subPage(data,data1){
+				jgData = data
+				console.log(jgData)
+				sessionStorage.setItem("sp", JSON.stringify(jgData));
+				layui.use(['table', 'table', 'laytpl'], function() {
+					var table = layui.table,
+						form = layui.form,
+						laytpl = layui.laytpl,
+						$ = layui.jquery;
+					
+					//监听提交
+					$("#search").bind('input propertychange',function(){
+					    console.log(this.value)
+					    $('#search').removeAttr('shopNumber')
+					    document.getElementById('searchBox').innerHTML = ''
+					    console.log(jgData)
+					    CmsUtility.postAjaxCall(
+								//系统设置
+							CmsConfig.addressUrl.Agent.getShoplist,
+							{
+								"merchantNumber":jgData.merchantNumber,
+								"ShopName":$('#search').val()
+							},
+							function(data){
+								console.log(this.value)
+								if(data.code == 1000){
+									if(data.data.length == 0){
+										layer.msg('暂无门店,请登录商户平台添加门店')
+									}
+									 var str = ''
+									 for(var i =0;i<data.data.length;i++){
+									 	str+= '<div class="layui-btn layui-btn-primary" data-id="'+ data.data[i].ShopNumber+'" data-name="'+ data.data[i].shopName+'" style="width:100%;margin-left:0" onclick="clickS(this)" >'+ data.data[i].shopName+'</div>'
+									 }
+									 document.getElementById('searchBox').innerHTML = str
+									// layer.msg('保存成功')
+									// setTimeout(function(){
+									// 	x_admin_close()
+									// },500);
+									
+								}else{
+									layer.msg(data.msg)
+									
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+					})
+					$("#search1").bind('input propertychange',function(){
+					    console.log(this.value)
+					    $('#search1').removeAttr('equipmentLinkAddress')
+					    document.getElementById('searchBox1').innerHTML = ''
+					    console.log(jgData)
+					    CmsUtility.postAjaxCall(
+						//系统设置
+							CmsConfig.addressUrl.Agent.getCodes,
+							{
+								"institutionNumber":JSON.parse(sessionStorage.getItem('agentUser')).institutionNumber,
+								"agentNumber":userNumber,
+								"equipmentNumber":$('#search1').val(),
+								"equipmentType":"0",
+								"boundState":"0",
+								"page":1,
+								"limit":"50"
+							},
+							function(data){
+								console.log(this.value)
+								if(data.code == 1000){
+									if(data.data == null){
+										//layer.msg('没有搜索到您查找的码牌')
+									}
+									 var str = ''
+									 for(var i =0;i<data.data.aElist.length;i++){
+									 str+= '<div class="layui-btn layui-btn-primary" data-id="'+ data.data.aElist[i].codeAddress+'" data-name="'+ data.data.aElist[i].equipmentNumber+'" style="width:100%;margin-left:0" onclick="clickS1(this)" >'+ data.data.aElist[i].equipmentNumber +'</div>'
+									 }
+									 document.getElementById('searchBox1').innerHTML = str
+									// layer.msg('保存成功')
+									// setTimeout(function(){
+									// 	x_admin_close()
+									// },500);
+									
+								}else{
+									layer.msg(data.msg)
+									
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+					})
+					form.verify({
+						required1:function(value){
+							if(!$('#search').attr('shopnumber')){
+							return '请搜索并选择门店'
+							
+						}
+						},
+						required2:function(value){
+							if(!$('#search1').val() || !$('#search1').attr('equipmentlinkaddress')){
+								return '请选择码牌'
+							}
+						},
+						
+					});
+					form.on('submit(add)', function(data) {
+						//发异步，把数据提交给后台
+						
+
+						console.log($('#search1').attr('data-id'))
+						var ajData = new Object()
+						ajData.merchantNumber = jgData.merchantNumber
+						ajData.agentNumber = userNumber
+						ajData.equipmentNumber = $('#search1').val()
+						ajData.shopNumber = $('#search').attr('shopnumber')
+						ajData.equipmentType = '0'
+						ajData.equipmentLinkAddress = $('#search1').attr('equipmentlinkaddress')
+						console.log(ajData)
+						
+						CmsUtility.postAjaxCall(
+						//系统设置
+							CmsConfig.addressUrl.Agent.insertShopCode,
+							ajData,
+							function(data){
+								if(data.code == 1000){
+									console.log(data)
+									setTimeout(function(){
+										x_admin_close()
+										parent.layui.table.reload('YLBlist')
+										parent.layer.msg('绑定成功')
+									},16); 
+									
+								}else{
+									layer.msg(data.msg)
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+						return false;
+					});
+				});
+			}
+			
+		</script>
+	</body>
+
+</html>

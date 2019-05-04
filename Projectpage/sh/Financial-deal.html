@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<style>
+			.x-so input.layui-input {
+				width: 100%;
+			}
+			
+			.layui-col-md4 .layui-input-inline {
+				width: 32%;
+			}
+			
+			.homelist {
+				text-align: center;
+			}
+			
+			.homelistitle {
+				font-size: 1.2rem;
+				margin-bottom: 20px;
+				color: #999;
+			}
+			
+			.homelistct {
+				font-size: 1.6rem;
+				font-weight: 600;
+			}
+			
+			.homelistc .layui-btn {
+				margin-left: 20px;
+			}
+			
+			.layui-col-md5 {
+				width: 20%;
+			}
+			
+			.Trad {
+				padding: 20px;
+				background-color: #f2f2f2;
+			}
+			
+			.layui-btn+.layui-btn {
+				margin-left: -2px;
+			}
+			
+			.border {
+				box-shadow: 0 0 30px rgba(0, 0, 0, .1);
+				padding: 15px;
+			}
+			
+			.huizongTit {
+				font-size: 20px;
+				margin-bottom: 20px;
+			}
+			
+			.huizongCon {
+				font-size: 20px;
+			}
+			
+			.huizongCon span {
+				font-size: 20px;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-nav">
+			<span class="layui-breadcrumb">
+				<a href="">首页</a>
+				<a href="">财务分析</a>
+				<a><cite>交易统计分析</cite></a>
+			</span>
+			<a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+		</div>
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form x-so">
+					<div class="layui-input-inline">
+						<!-- 需要数据对接(完成) -->
+						<select name="shopName" id="shopNumber" lay-search>
+							<option value="">--请选择门店--</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="source" id="source">
+							<option value="">支付渠道</option>
+							<option value="2">支付宝</option>
+							<option value="1">微信</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" placeholder="开始日" autocomplete="off" name="startTime" id="startTime">
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" placeholder="截止日" autocomplete="off" name="endTime" id="endTime">
+					</div>
+					<div class="layui-input-inline">
+						<button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row Trad">
+				<div class="layui-col-md3">
+					<div class="homelist">
+						<p class="homelistitle">实收额</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;" id="orderTotalMoney"></span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md3">
+					<div class="homelist">
+						<p class="homelistitle">退款额</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;" id="refundOrderTotalMoney"></span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md3">
+					<div class="homelist">
+						<p class="homelistitle">交易笔数</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;" id="totalOrder"></span>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md3">
+					<div class="homelist">
+						<p class="homelistitle">退款笔数</p>
+						<div class="homelistc">
+							<span class="x-left homelistct" style="line-height:40px;" id="refundTotalOrder"></span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+			<div class="grid-demo border">
+				<div id="main" style="height: 500px"></div>
+			</div>
+		</div>
+		<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
+		<script>
+			var Statement_Date = []
+			var orderTotalMoney = []
+			var weChatOrderTotalMoney = []
+			var userNumber = JSON.parse(sessionStorage.getItem('userSh')).Number;
+			//var userNumber = '1000795634';
+			var dataO = new Object();
+			dataO.merchantNumber = userNumber
+			// //获取商户下门店名称
+			// CmsUtility.postAjaxCall(
+			// 	CmsConfig.addressUrl.Merchant.getShopNames,
+			// 	dataO,
+			// 	function(data) {
+			// 		var shopData = data.data
+			// 		for(var i = 0; i < shopData.length; i++) {
+			// 			$("#shopName").append("<option value='" + shopData[i].shopNumber + "'>" + shopData[i].shopName + "</option>");
+			// 		}
+			// 	}
+			// )
+			// 发送请求
+			layui.use(['laydate', 'table', 'form'], function() {
+				var laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					$ = layui.jquery;
+				laydate.render({
+					elem: '#couponName'
+				})
+				laydate.render({
+					elem: '#startTime',
+					value: new Date(new Date() - 1000 * 60 * 60 * 24 * 7)
+				})
+				laydate.render({
+					elem: '#endTime',
+					value: new Date()
+				})
+				var addData = {
+					"startTime": $('#startTime').val(),
+					"endTime": $('#endTime').val(),
+					"shopNumber": $('#shopNumber').val(),
+					"source":$('#source').val(),
+				}
+				reloadres();
+				CmsUtility.postAjaxCall(
+					CmsConfig.addressUrl.Merchant.getShopNames,
+					dataO,
+					function(data) {
+						var shopData = data.data
+						for(var i = 0; i < shopData.length; i++) {
+							$("#shopNumber").append("<option value='" + shopData[i].shopNumber + "'>" + shopData[i].shopName + "</option>");
+						}
+						form.render()
+					}
+				)
+				function reloadres() {
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Merchant.getStatistics + '?merchantNumber=' + userNumber, 
+						{
+							"startTime": $('#startTime').val(),
+							"endTime": $('#endTime').val(),
+							"shopNumber": $('#shopNumber').val(),
+							"source":$('#source').val(),
+						},
+						function(data) {
+							CmsUtility.clearListArr(Statement_Date)
+							CmsUtility.clearListArr(orderTotalMoney)
+							console.log(data)
+							console.log(data.data.map2)
+							console.log(data.data.maps)
+							$('#orderTotalMoney').text(data.data.maps.orderTotalMoney)//实收额
+							$('#refundOrderTotalMoney').text(data.data.maps.refundOrderTotalMoney)//退款额
+							$('#totalOrder').text(data.data.maps.totalOrder)//交易笔数
+							$('#refundTotalOrder').text(data.data.maps.refundTotalOrder)//退款笔数
+							var data = data.data.map2
+							if(!data) {
+								return
+							}
+							for(var j = 0; j < data.length; j++) {
+								Statement_Date.push(data[j].Statement_Date)
+								orderTotalMoney.push(data[j].orderTotalMoney)
+								weChatOrderTotalMoney.push(data[j].weChatOrderTotalMoney)
+							}
+							Statement_Date.sort()
+							// 为echarts对象加载数据
+							myChart.setOption(option);
+						},
+						function(data) {
+							console.log('222')
+						}
+					)
+				}
+
+				//方法级渲染  
+				var $ = layui.$,
+					active = {
+						reload: function() {
+							// 发送请求
+							reloadres();
+						}
+					}
+
+				$('.layui-form .layui-btn').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+			});
+
+			var myChart = echarts.init(document.getElementById('main'));
+			var option = {
+				grid: {
+					x: 70,
+					x2: 20,
+					y: 70,
+					y2: 40,
+					borderWidth: 1
+				},
+				title: {
+					text: '交易订单概况',
+					subtext: '按天统计'
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'cross'
+					}
+				},
+				legend: {
+					data: ['金额']
+				},
+				calculable: true,
+				xAxis: [{
+					type: 'category',
+					axisTick: {
+						alignWithLabel: true
+					},
+					axisLine: {
+						onZero: false
+					},
+					data: Statement_Date
+				}],
+				yAxis: [{
+					splitLine: {
+						show: true,
+						lineStyle: {
+							type: "dashed",
+							color: "#dfdfdf"
+						}
+					},
+					axisLabel: {
+						textStyle: {
+							fontSize: 14,
+							color: '#5b6e89'
+						}
+					},
+					type: 'value'
+				}],
+				series: [{
+					name: '金额',
+					type: 'line',
+					smooth: true,
+					itemStyle: {
+						normal: {
+							areaStyle: {
+								type: 'default',
+								color: {
+									type: 'linear',
+									x: 0,
+									y: 0,
+									x2: 0,
+									y2: 1,
+									colorStops: [{
+										offset: 0,
+										color: '#6e94ff'
+									}, {
+										offset: 1,
+										color: '#ffffff'
+									}],
+									globalCoord: false
+								}
+							},
+							color: '#6e94ff'
+						}
+					},
+					data: orderTotalMoney
+				}]
+			};
+		</script>
+	</body>
+
+</html>

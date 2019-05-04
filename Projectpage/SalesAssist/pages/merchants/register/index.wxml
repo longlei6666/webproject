@@ -1,0 +1,176 @@
+<!--pages/merchants/register/index.wxml-->
+<view class="container">
+    <view class="body">
+        <view class="bodyTop">
+            <!-- 商户信息步骤 -->
+            <view class="bodyCK" wx:for="{{shopData}}" wx:key="{{stepsCon}}" wx:if="{{item.stepsNum == 1}}" data-basic="{{item.stepsNum}}">
+                <view class="bodyC" wx:for="{{item.stepsCon}}" wx:key="{{basic}}" data-basic="{{item.basic}}">
+                    <!-- input循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.type == 0 & item.picker == 0}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" bindfocus="focus" bindblur='blur'></input>
+                    </view>
+                    <!-- radio循环 -->
+                    <view class="bodyCli activeInput" wx:if="{{item.type == 1}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <radio-group class="bodyCliradio" name="radio">
+                            <label wx:for="{{item.radiolist}}" wx:key="checked">
+                                <radio value="radio1" checked="{{item.checked == 1 ? 'checked':''}}" />{{item.radiotype}}</label>
+                        </radio-group>
+                    </view>
+                    <!-- 日期picker循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.picker == 1}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <picker mode="date" value="{{shopInput[item.id]}}" start="1199-01-01" end="2200-12-31" bindchange="bindDateChange" data-current="{{item.id}}">
+                            <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" disabled="disabled" readonly="readonly" bindfocus="focus" bindblur='blur'
+                                value="{{shopInput[item.id]}}"></input>
+                        </picker>
+                    </view>
+                    <!-- 地址picker循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.picker == 2}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <picker mode="date" value="{{shopInput[item.id]}}" start="1199-01-01" end="2200-12-31" bindchange="bindDateChange" data-current="{{item.id}}">
+                            <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" disabled="disabled" readonly="readonly" bindfocus="focus" bindblur='blur'
+                                value="{{shopInput[item.id]}}"></input>
+                        </picker>
+                    </view>
+                    <!-- 行业picker循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.picker == 3}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <picker mode="date" value="{{shopInput[item.id]}}" start="1199-01-01" end="2200-12-31" bindchange="bindDateChange" data-current="{{item.id}}">
+                            <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" disabled="disabled" readonly="readonly" bindfocus="focus" bindblur='blur'
+                                value="{{shopInput[item.id]}}"></input>
+                        </picker>
+                    </view>
+                </view>
+            </view>
+            <!-- 结算步骤 -->
+            <view class="bodyCK" wx:for="{{shopData}}" wx:key="{{stepsCon}}" wx:if="{{item.stepsNum == 2}}" data-basic="{{item.stepsNum}}">
+                <view class="bodyC" wx:for="{{item.stepsCon}}" wx:key="{{basic}}" data-basic="{{item.basic}}">
+                    <!-- radio循环 -->
+                    <view class="bodyCli activeInput" wx:if="{{item.type == 1}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <radio-group class="bodyCliradio" name="radio">
+                            <label wx:for="{{item.radiolist}}" wx:key="checked">
+                                <radio value="radio1" checked="{{item.checked == 1 ? 'checked':''}}" />{{item.radiotype}}</label>
+                        </radio-group>
+                    </view>
+                    <!-- input循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.type == 0 & item.picker == 0}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" bindfocus="focus" bindblur='blur'></input>
+                    </view>
+                    <!-- 银行picker循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.picker == 5}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" bindtap="bindBankchoose" data-current="{{item.id}}" disabled="disabled" readonly="readonly" bindfocus="focus"
+                            bindblur='blur' value="{{shopInput[item.id]}}"></input>
+                    </view>
+                    <!-- 费率picker循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.picker == 4}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <picker value="{{shopInput[item.id]}}" range="{{rateList}}" bindchange="bindPickerChange" data-current="{{item.id}}">
+                            <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" disabled="disabled" readonly="readonly" bindfocus="focus" bindblur='blur'
+                                value="{{shopInput[item.id]}}"></input>
+                        </picker>
+                    </view>
+                </view>
+            </view>
+            <!-- 图片步骤 -->
+            <view class="bodyCK" wx:for="{{shopData}}" wx:key="{{stepsCon}}" wx:if="{{item.stepsNum == 30}}" data-basic="{{item.stepsNum}}">
+                <view class="bodyC" wx:for="{{item.stepsCon}}" wx:key="{{basic}}" data-basic="{{item.basic}}">
+                    <!-- input循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.type == 0 & item.picker == 0}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" bindfocus="focus" bindblur='blur'></input>
+                    </view>
+                    <!-- radio循环 -->
+                    <view class="bodyCli activeInput" wx:if="{{item.type == 1}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <radio-group class="bodyCliradio" name="radio">
+                            <label wx:for="{{item.radiolist}}" wx:key="checked">
+                                <radio value="radio1" checked="{{item.checked == 1 ? 'checked':''}}" />{{item.radiotype}}</label>
+                        </radio-group>
+                    </view>
+                    <!-- 日期picker循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.picker == 1}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <picker mode="date" value="{{shopInput[item.id]}}" start="1199-01-01" end="2200-12-31" bindchange="bindDateChange" data-current="{{item.id}}">
+                            <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" disabled="disabled" readonly="readonly" bindfocus="focus" bindblur='blur'
+                                value="{{shopInput[item.id]}}"></input>
+                        </picker>
+                    </view>
+                    <!-- 地址picker循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.picker == 2}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <picker mode="date" value="{{shopInput[item.id]}}" start="1199-01-01" end="2200-12-31" bindchange="bindDateChange" data-current="{{item.id}}">
+                            <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" disabled="disabled" readonly="readonly" bindfocus="focus" bindblur='blur'
+                                value="{{shopInput[item.id]}}"></input>
+                        </picker>
+                    </view>
+                    <!-- 行业picker循环 -->
+                    <view class="bodyCli {{status==item.id?'active':''}} {{shopInput[item.id]?'activeInput':''}}" wx:if="{{item.picker == 3}}" wx:for="{{item.basicsetup}}" wx:key="{{basicsetup}}" data-basicsetup="{{item.id}}">
+                        <label class="bodyClitit">{{item.shoplabel}}：</label>
+                        <picker mode="date" value="{{shopInput[item.id]}}" start="1199-01-01" end="2200-12-31" bindchange="bindDateChange" data-current="{{item.id}}">
+                            <input class="bodyCliinput" type="text" id="" cursor-spacing="50" confirm-type="next" placeholder="{{item.placeholder}}" placeholder-class="placeholder" data-current="{{item.id}}" disabled="disabled" readonly="readonly" bindfocus="focus" bindblur='blur'
+                                value="{{shopInput[item.id]}}"></input>
+                        </picker>
+                    </view>
+                </view>
+            </view>
+            <!-- 图片步骤 -->
+            <view class="bodyCK picCK">
+                <view class="basicpic">
+                    <view class="basicpicTit">*请上传真实有效的营业执照照片，保证照片清晰可见，否则加将无法通过审核</view>
+                    <view class="picList" wx:for="{{imageSrc}}" wx:key="{{index}}" wx:if="{{index <= 1}}">
+                        <image src="{{imageSrc[index]}}" class="image" mode="widthFix" bindtap="chooseImage"></image>
+                    </view>
+                </view>
+                <view class="basicpic">
+                    <view class="basicpicTit">*请上传真实有效的身份证照片，保证身份证清晰可见，否则加将无法通过审核</view>
+                    <view class="picList" wx:for="{{imageSrc}}" wx:key="{{index}}" wx:if="{{index > 1 && index <= 4}}">
+                        <image src="{{imageSrc[index]}}" class="image" mode="widthFix" bindtap="chooseImage"></image>
+                    </view>
+                </view>
+                <view class="basicpic">
+                    <view class="basicpicTit">*请上传真实有效的银行卡照片，保证银行卡清晰可见，否则加将无法通过审核</view>
+                    <view class="picList" wx:for="{{imageSrc}}" wx:key="{{index}}" wx:if="{{index > 4 && index <= 5}}">
+                        <image src="{{imageSrc[index]}}" class="image" mode="widthFix" bindtap="chooseImage"></image>
+                    </view>
+                </view>
+                <view class="basicpic">
+                    <view class="basicpicTit">*请上传店铺照片，保证照片清晰可见，否则加将无法通过审核</view>
+                    <view class="picList" wx:for="{{imageSrc}}" wx:key="{{index}}" wx:if="{{index > 5 && index <= 8}}">
+                        <image src="{{imageSrc[index]}}" class="image" mode="widthFix" bindtap="chooseImage"></image>
+                    </view>
+                </view>
+                <view class="basicpic">
+                    <view class="basicpicTit">*其他资料</view>
+                    <view class="picList" wx:for="{{imageSrc}}" wx:key="{{index}}" wx:if="{{index > 8 && index <= 10}}">
+                        <image src="{{imageSrc[index]}}" class="image" mode="widthFix" bindtap="chooseImage"></image>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="bodyBottom">
+            <view class="bodyBtn">下一步</view>
+        </view>
+    </view>
+    <!--弹窗-->
+    <view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+    <view class="modal-dialog" wx:if="{{showModal}}">
+        <!-- <view class="modal-dialog"> -->
+        <view class="seach">
+            <view class="iconfont icon-xiazai5 sousuoIcon"></view>
+            <input class="seachInput" placeholder="请输入要搜索的开户行"></input>
+            <view class="closeBtn" bindtap="onCancel" data-status="cancel">取消</view>
+        </view>
+        <view class="modal-content">
+            <scroll-view class="listBody" scroll-y="true">
+                <view class="listBody_li" wx:for="{[0，1, 2, 3, 4, 5, 6, 7, 8, 9]}" wx:key="{{item}}" wx:for-index="item" wx:if="{{item < 50}}">
+                    <view class="shopName">鸿搜豆果{{item}}店</view>
+                </view>
+            </scroll-view>
+        </view>
+    </view>
+</view>

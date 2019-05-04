@@ -1,0 +1,25 @@
+{
+    "pages": [
+        "pages/shop-sh/assistant/index",
+        "pages/shop-sh/shop-list/index",
+        "pages/shop-sh/shop-payment/index",
+        "pages/shop-sh/assistant-add/index",
+        "pages/shop-sh/shop-add/index",
+        "pages/shop-sh/shop-check/index",
+        "pages/shop-sh/details/index",
+        "pages/shop-sale/shop-list/index",
+        "pages/shop-sale/shop-check/index",
+        "pages/merchants/register/index",
+        "pages/merchants/manage/index",
+        "pages/index/index",
+        "pages/salekit/index",
+        "pages/record/index",
+        "pages/logs/logs"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#FFA20A",
+        "navigationBarTitleText": "WeChat",
+        "navigationBarTextStyle": "white"
+    }
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<script type="text/javascript" src="../../public/js/data.js"></script>
+		<script type="text/javascript" src="../../public/js/qrcode.js"></script>
+		<style type="text/css">
+			#qrcode {
+				height: 100%;
+			}
+			
+			#qrimg {
+				height: 99%;
+				display: block;
+				margin: 0 auto;
+			}
+			
+			.qrtips {
+				color: red;
+				margin-left: 20px;
+			}
+			
+			@media screen and (max-width: 450px) {
+				.layui-form-item .layui-input-inline {
+					margin: 0;
+					text-align: center;
+				}
+				.qrtips {
+					margin-left: 0;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<form class="layui-form">
+				<div class="layui-form-item" id="qrBox">
+					<div class="layui-input-inline">
+						<div id="qrcode" style="width:256px;height:256px;margin:0 auto">
+							<div id="qrcode1" ></div>
+						</div>
+						<div class="qrtips" style="margin-top:15px">
+							开通后随时随地查看经营情况
+						</div>
+					</div>
+				</div>
+				<div id="tabBox"><table class="layui-hide" id="table1" lay-filter="useruv"></table></div>
+				
+			</form>
+		</div>
+		<script type="text/html" id="tool">
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="UntieWx">解绑</a>
+		</script>
+		<script src="../../common/config.js"></script>
+		<script src="../../common/utility.js"></script>
+		<script>
+			function subPageClerkpush(data,userNumber) {
+				
+				var data = data,
+					userNumber = userNumber,
+					shopNumber = data.shopNumber;
+				var clerkNumber = data.clerkNumber;
+				console.log(clerkNumber)
+				
+				layui.use(['table', 'layer'], function() {
+					$ = layui.jquery;
+					var form = layui.form,
+						layer = layui.layer;
+
+					var table = layui.table;
+					var index = layer.load(2, { shade: [1, '#fff'] })
+					new QRCode(document.getElementById("qrcode1"), "http://user.51shanhe.com/oneCode/getCode.html?clerkNumber=" + clerkNumber);
+					//方法级渲染
+					table.render({
+						elem: '#table1',
+						url: CmsConfig.ServiceUrl.ApiRootUrl + 'clerk/getClerkInfo' + '?clerkNumber='+clerkNumber,
+						page: false,
+						method: "post",
+						id: 'deviceInfo',
+						response: {
+							"statusCode": "1000", //解析接口状态
+						},
+						parseData: function(res) {
+
+							var resD = new Array()
+							resD.push(res.data)
+							if(res.data.openId == '未绑定'){
+								$('#tabBox').hide()
+								$('#qrBox').show()
+								layer.closeAll()
+								return
+							}else{
+								$('#tabBox').show()
+								$('#qrBox').hide()
+								layer.closeAll()
+							}
+
+							if(res.data == null) {
+								return
+							}
+							return {
+								"code": res.code,
+								"data": resD,
+							}
+						},
+						cols: [
+							[{
+								field: 'nickName',
+								title: '昵称',
+								align: 'center',
+								width: 150
+							}, {
+								field: 'bindTime',
+								title: '绑定时间',
+								align: 'center',
+								width: 150
+							}, {
+								title: '操作',
+								align: 'center',
+								toolbar: "#tool"
+							}]
+						]
+					})
+					table.on('tool(useruv)', function(obj) {
+						var mydata = {
+							"ClerkNumber": obj.data.ClerkNumber,
+							"PushStatus": 1
+						}
+						if(obj.event === 'UntieWx') {
+							// 禁用分类
+							layer.confirm('确定要解绑吗?', function(index) {
+								// 发送请求
+								$.ajax({
+									type: "post",
+									url: CmsConfig.ServiceUrl.ApiRootUrl + 'clerk/relievePushBind' + '?clerkNumber='+clerkNumber,
+									async: true,
+									success: function(data) {
+										console.log(data)
+										if(data.code == "1000") {
+											layer.msg("操作成功", {
+												icon: 1,
+												time: 1000
+											}, function() {
+												window.location.reload();
+											});
+											$('#tabBox').hide()
+											$('#qrBox').show()
+										} else {
+											
+										}
+									}
+								});
+							});
+						}
+					})
+				});
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/font.css">
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-row">
+				<form class="layui-form" lay-filter="secretkey">
+					<div class="layui-form-item">
+						<label class="layui-form-label" style="width: auto;">推荐人ID</label>
+						<div class="layui-input-inline" style="margin: 0 0 10px 70px;">
+							
+							<input type="text" id="recommenderId" name="secretkey" lay-verify="title" autocomplete="off" placeholder="请输入推荐人ID" class="layui-input">
+						</div>
+						<div class="layui-form-mid x-red">
+							<button class="layui-btn" lay-submit="" id="sub" 	>提交</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
+		<script>
+			function subPageClerkpass(data,data1){
+				console.log(data)
+				var userNumber = JSON.parse(sessionStorage.getItem('agentUser')).Number;
+				var agentLevel = JSON.parse(sessionStorage.getItem('agentUser')).agentLevel;
+				var jgData = data
+				layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
+					layui.$.support.cors = true; //允许ajax跨域
+					var $ = layui.jquery,
+						upload = layui.upload,
+						laydate = layui.laydate,
+						table = layui.table,
+						form = layui.form,
+						laytpl = layui.laytpl;
+					CmsUtility.postAjaxCall(
+							//系统设置
+							'MerInfo/getMerId',
+							{
+								"merchantNumber":jgData.merchantNumber
+							},
+							function(data){
+								console.log(data)
+								if(data.code == 1000){
+									 	
+									form.val('secretkey', {
+										"secretkey": data.data
+									})
+								}else{
+									
+									
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+					//表单初始赋值
+					
+					$('#sub').click(function(){
+						console.log(jgData)
+						var tjData = new Object();
+						tjData.merchantNumber = jgData.merchantNumber;
+						tjData.recommenderId = $('#recommenderId').val()
+						CmsUtility.postAjaxCall(
+							//系统设置
+							'MerInfo/setMerId',
+							tjData,
+							function(data){
+								if(data.code == 1000){
+									 
+									parent.layer.msg('更改成功')
+									parent.layui.table.reload('merchantlist')
+								}else{
+									layer.msg(data.msg)
+									
+								}
+							},
+							function(data){
+								console.log('222')
+							}
+						)
+						return false
+					})
+
+					// //监听提交
+					// form.on('submit(add)', function(data) {
+					// 	layer.alert(JSON.stringify(data.field), {
+					// 		title: '最终的提交信息'
+					// 	})
+					// 	return false;
+					// });
+
+				});
+			}
+			
+		</script>
+	</body>
+
+</html>

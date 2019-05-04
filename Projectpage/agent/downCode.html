@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../../public/css/font.css">
+    <link rel="stylesheet" href="../../public/css/xadmin.css">
+    <script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../public/js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    #codeInfo {
+        line-height: 38px;
+        font-size: 24px;
+        text-align: center;
+        letter-spacing: 5px
+    }
+
+    .layui-form-label {
+        width: 80px;
+    }
+
+    .layui-input-block {
+        margin-left: 95px;
+    }
+
+    .layui-input {
+        width: 90%;
+    }
+    </style>
+</head>
+
+<body id="iosiframe">
+    <div class="x-body">
+        <div class="layui-row">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">请输入验证码</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="code" lay-verify="number" placeholder="请输入验证码" autocomplete="off" class="layui-input" style="width:50%;display:inline-block;vertical-align:top" id="code">
+                        <div class="layui-input" style="width:30%;display:inline-block;margin-left:10%" id="codeInfo"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="number" lay-verify="email" autocomplete="off" placeholder="请输入邮箱地址" class="layui-input" id="number">
+                    </div>
+                </div>
+                <div class="layui-input-block">
+                    <input type="button" class="layui-btn" lay-submit="" lay-filter="create" value="立即提交" id="sub">
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../../common/config.js"></script>
+    <script src="../../common/utility.js"></script>
+    <script>
+    var type111 = 0
+    var code1 = ''
+    var serverUrl = 'http://192.168.1.190:5002/'
+    // var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+
+    function subPage(data, data1) {
+        console.log(data, data1)
+        var id = data
+        layui.use(['laydate', 'table', 'form', 'laytpl', 'upload'], function() {
+            layui.$.support.cors = true; //允许ajax跨域
+            var $ = layui.jquery,
+                upload = layui.upload,
+                laydate = layui.laydate,
+                table = layui.table,
+                form = layui.form,
+                laytpl = layui.laytpl;
+
+
+
+
+            // //监听提交
+            form.on('submit(create)', function(data) {
+                console.log(data.field)
+                if (data.field.code != code1) {
+                    layer.msg('验证码不正确，请输入正确的验证码')
+                    return false;
+                }
+                if(id == ''){
+                    var tjData = new Object()
+                    tjData.agentNumber =JSON.parse(sessionStorage.getItem('agentUser')).Number
+                    tjData.institutionNumber = data1
+                    tjData.mailBox = $('#number').val()
+                    console.log(tjData)
+                     var index = layer.load(2, { shade: [0.4, '#393D49'] })
+                    CmsUtility.postAjaxCall(
+                        //系统设置
+                        'QRcode/getMerchantlist',
+                        tjData,
+                        function(data) {
+                            if (data.code == 1000) {
+
+                                parent.layer.msg('下载成功')
+                                layer.closeAll()
+                                setTimeout(function() {
+                                    x_admin_close()
+                                }, 16);
+
+                            } else {
+                                layer.msg(data.msg)
+
+                            }
+                        },
+                        function(data) {
+                            console.log('222')
+                        }
+                    ) 
+                }else{
+                    var tjData = new Object()
+                    tjData.qrcodeId = id
+                    tjData.institutionNumber = data1
+                    tjData.mailBox = $('#number').val()
+                    console.log(tjData)
+                     var index = layer.load(2, { shade: [0.4, '#393D49'] })
+                    CmsUtility.postAjaxCall(
+                        //系统设置
+                        CmsConfig.addressUrl.Agent.downloadBatchSize,
+                        tjData,
+                        function(data) {
+                            if (data.code == 1000) {
+
+                                parent.layer.msg('下载成功')
+                                layer.closeAll()
+                                setTimeout(function() {
+                                    x_admin_close()
+                                }, 16);
+
+                            } else {
+                                layer.msg(data.msg)
+
+                            }
+                        },
+                        function(data) {
+                            console.log('222')
+                        }
+                    ) 
+                }
+                
+                return false;
+                console.log(data.field)
+            });
+
+        });
+    }
+
+
+    function createCode() {
+        code1 = ''
+        for (var i = 0; i < 4; i++) {
+            code1 += Math.floor(Math.random() * 10)
+        }
+        console.log($('#codeInfo'))
+        $('#codeInfo').html(code1)
+    }
+    createCode()
+    $(function() {
+        $("#codeInfo").click(function() {
+            createCode()
+        });
+    });
+    </script>
+</body>
+
+</html>

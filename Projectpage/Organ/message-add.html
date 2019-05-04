@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<script type="text/javascript" src="../../public/js/tableSelect.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<style>
+			.widthauto {
+				width: auto !important;
+			}
+			
+			.tips_red {
+				color: red;
+			}
+			
+			.layui-form-label {
+				padding-left: 0;
+				width: 100px;
+			}
+			
+			.layui-input-block {
+				margin-left: 115px;
+			}
+			
+			.layui-elem-quote {
+				font-size: 18px;
+			}
+			
+			.layui-elem-field legend {
+				font-size: 16px;
+			}
+			
+			.layui-upload-img {
+				width: 92px;
+				height: 92px;
+				margin: 0 10px 10px 0;
+			}
+			
+			.Since_inline {
+				display: inline-block;
+				width: auto !important;
+				line-height: 38px;
+			}
+			
+			.layui-elem-quote .layui-form-switch {
+				margin: 0 15px;
+				margin-top: 0;
+			}
+			.layui-upload-img {
+				width: 150px;
+				height: 150px;
+				border: 1px solid #e6e6e6;
+				border-radius: 2px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			
+			#demoText {
+				width: 150px;
+				height: auto;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+			
+			#demoText span {
+				margin-top: 10px;
+			}
+			
+			#demoText a {
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+
+	<body id="iosiframe">
+		<div class="x-body">
+			<div class="layui-row">
+				<div class="layui-form" action="" lay-filter="cardAdd">
+					<!--隐藏-->
+					
+					<!--基本信息-->
+					<div class="layui-form-item">
+						<label class="layui-form-label">标题</label>
+						<div class="layui-input-block">
+							<input type="text" name="articleTitle" lay-verify="title" autocomplete="off" placeholder="标题" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+	                    <label class="layui-form-label">内容</label>
+	                    <div class="layui-input-block">
+	                        <textarea class="layui-textarea" style="height:500px" name="messageContent" autocomplete="off" placeholder="内容" lay-verify="title" rows="3" id="content"></textarea>
+	                    </div>
+	                </div>
+					<div class="layui-form-item layui-layout-admin">
+						<div class="layui-input-block">
+							<div class="layui-footer" style="left: 0;text-align: center;">
+								<button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="quxiao">取消</button>
+							</div>
+							<!--<i class="layui-icon" lay-tips="推荐追求开发效率和缺乏前端开发经验的使用，后端开发者的最爱。">123123123</i>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../common/config.js"></script>
+        <script src="../../common/utility.js"></script>
+		<script>
+			var index = parent.layer.getFrameIndex(window.name);
+			$('#quxiao').click(function(){
+				
+				setTimeout(function(){parent.layer.close(index)},16); 
+			})
+			var serverUrl = window.parent.serverUrl
+			var userNumber = JSON.parse(sessionStorage.getItem('organUser')).institutionNumber;
+			var logoUrl = ''
+			layui.use(['laydate', 'table', 'upload', 'form','layedit'], function() {
+				var $ = layui.jquery,
+					upload = layui.upload,
+					laydate = layui.laydate,
+					table = layui.table,
+					form = layui.form,
+					admin = layui.admin,
+					element = layui.element,
+					layer = layui.layer,
+					layedit = layui.layedit;
+				// 	layedit.set({
+				// 	  uploadImage: {
+				// 	    url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Public.addPic + '?institutionNumber=' + userNumber + '&type=content', //接口url,
+				// 	    type: 'post',//默认post
+				// 	    response: { 
+				// 		//res 即为原始返回的数据
+				// 				"statusCode":"1000", //解析接口状态
+								
+				// 		},
+				// 	  }
+				// 	});
+				// var index111 = layedit.build('content', {
+				// 	 tool: [
+				// 	  'strong' //加粗
+				// 	  ,'italic' //斜体
+				// 	  ,'underline' //下划线
+				// 	  ,'del' //删除线
+					  
+				// 	  ,'|' //分割线
+					  
+				// 	  ,'left' //左对齐
+				// 	  ,'center' //居中对齐
+				// 	  ,'right' //右对齐
+				// 	  ,'link' //超链接
+				// 	  ,'unlink' //清除链接
+				// 	  ,'face' //表情
+				// 	  ,'image' //插入图片
+				// 	]
+				// })
+				// layedit.set({
+	        //     //暴露layupload参数设置接口 --详细查看layupload参数说明
+	        //     uploadImage: {
+	        //         url: 'your url',
+	        //         accept: 'image',
+	        //         acceptMime: 'image/*',
+	        //         exts: 'jpg|png|gif|bmp|jpeg',
+	        //         size: 1024 * 10,
+	        //         done: function (data) {
+	        //             console.log(data);
+	        //         }
+	        //     }
+	        //     , uploadVideo: {
+	        //         url: 'your url',
+	        //         accept: 'video',
+	        //         acceptMime: 'video/*',
+	        //         exts: 'mp4|flv|avi|rm|rmvb',
+	        //         size: 1024 * 10 * 2,
+	        //         done: function (data) {
+	        //             console.log(data);
+	        //         }
+	        //     }
+	        //     , uploadFiles: {
+	        //         url: 'your url',
+	        //         accept: 'file',
+	        //         acceptMime: 'file/*',
+	        //         size: '20480',
+	        //         done: function (data) {
+	        //             console.log(data);
+	        //         }
+	        //     }
+	        //     //右键删除图片/视频时的回调参数，post到后台删除服务器文件等操作，
+	        //     //传递参数：
+	        //     //图片： imgpath --图片路径
+	        //     //视频： filepath --视频路径 imgpath --封面路径
+	        //     , calldel: {
+	        //         url: 'your url',
+	        //         done: function (data) {
+	        //             console.log(data);
+	        //         }
+	        //     }
+	        //     //开发者模式 --默认为false
+	        //     , devmode: true
+	        //     //插入代码设置 --hide:true 等同于不配置codeConfig
+	        //     , codeConfig: {
+	        //         hide: false,  //是否显示编码语言选择框
+	        //         default: 'javascript' //hide为true时的默认语言格式
+	        //     }
+	        //     //新增iframe外置样式和js
+	        //     //, quote:{
+	        //     //    style: ['/Content/Layui-KnifeZ/css/layui.css','/others'],
+	        //     //    js: ['/Content/Layui-KnifeZ/lay/modules/jquery.js']
+	        //     //}
+	        //     //自定义样式-暂只支持video添加
+	        //     //, customTheme: {
+	        //     //    video: {
+	        //     //        title: ['原版', 'custom_1', 'custom_2']
+	        //     //        , content: ['', 'theme1', 'theme2']
+	        //     //        , preview: ['', '/images/prive.jpg', '/images/prive2.jpg']
+	        //     //    }
+	        //     //}
+	        //     //插入自定义链接
+	        //     , customlink:{
+	        //         title: '插入layui官网'
+	        //         , href: 'https://www.layui.com'
+	        //         ,onmouseup:''
+	        //     }
+	        //     , facePath: 'http://knifez.gitee.io/kz.layedit/Content/Layui-KnifeZ/'
+	        //     , devmode: true
+	        //     , videoAttr: ' preload="none" ' 
+	        //     , tool: [
+	        //         'undo', 'redo', 'code', 'strong', 'italic', 'underline', 'del', 'addhr', '|', 'fontFomatt', 'fontfamily','fontSize', 'fontBackColor', 'colorpicker', 'face'
+	        //         , '|', 'left', 'center', 'right', '|', 'link', 'unlink', 'images'
+	                
+	        //     ]
+	        //     , height: '500px'
+	        // });
+        // var ieditor = layedit.build('content');
+				var tableSelect = layui.tableSelect;
+				  
+				  //执行一个laydate实例
+				  laydate.render({
+				    elem: '#time1' //指定元素
+				  });
+				   laydate.render({
+				    elem: '#time2' //指定元素
+				  });
+				
+				
+
+				//监听指定开关
+				form.on('switch(switchTest)', function(data) {
+					layer.tips('广告状态:' + (this.checked ? '已开启' : '已关闭'), data.othis)
+				});
+
+				/*---------- 优惠设置 ----------*/
+				
+
+				/*---------- 生日 ----------*/
+				
+
+				/*---------- 普通图片上传 ----------*/
+				var uploadInst = upload.render({
+					elem: '#test1',
+					url: CmsConfig.ServiceUrl.ApiRootUrl + CmsConfig.addressUrl.Public.addPic,
+					data:{
+                    "institutionNumber": userNumber, 
+                },
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo1').attr('src', result); //图片链接（base64）
+						});
+					},
+					done: function(res) {
+						//如果上传失败
+						 console.log(res)
+						if(res.code != 1000) {
+							return layer.msg('上传失败');
+						}else{
+							logoUrl = res.data
+						}
+						//上传成功
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#demoText');
+						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+
+				/*---------- 自定义验证规则 ----------*/
+				form.verify({
+					title: function(value) {
+						if(value.length == "") {
+							return '不能为空！';
+						}
+					},
+					
+				});
+				// var body = '<p><b><i><u><strike><a target="_blank" href="http://www.baidu.com">1231321321312313213213123132132131231321321312313213213</a></strike></u></i></b></p>'
+				//   layedit.setContent(index111,body,true);
+				/*---------- 监听开关 ----------*/
+				//form.on('switch(level)', function(data) { //等级开关
+				//	layer.tips('等级开关：' + (this.checked ? '已开启' : '已关闭'), data.othis)
+				//});
+				
+				/*---------- 监听提交 ----------*/
+				form.on('submit(add)', function(data, index) {
+					var tjData = data.field
+					tjData.institutionNumber = userNumber
+					tjData.deletionFlag = 0
+					tjData.addPeople = JSON.parse(sessionStorage.getItem('organUser')).login
+					// if()
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Mechanism.operateInsMeNotice,
+						tjData,
+						function(data){
+							if(data.code == 1000){
+								setTimeout(function(){
+									$('#quxiao').click()
+								},16); 
+								parent.layer.msg('保存成功')
+								parent.layui.table.reload('vip_cardList')
+							}else{
+								layer.msg(data.msg)
+								
+							}
+						},
+						function(data){
+							console.log('222')
+						}
+					)
+					return false;
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

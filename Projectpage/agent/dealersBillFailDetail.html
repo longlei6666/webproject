@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="stylesheet" href="../../public/css/xadmin.css">
+		<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="../../public/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../../public/js/xadmin.js"></script>
+		<style type="text/css">
+			table tr td:first-child{width: 110px !important;text-align: right;}
+		</style>
+	</head>
+
+	<body>
+		<div class="x-body">
+			<table cellspacing="0" cellpadding="0" border="0" class="layui-table layui-table-xq" lay-even="">
+				<tbody>
+					<tr>
+						<td style="width 150px;text-align right;">商户编号</td>
+						<td><span id="merchantNumber"></span></td>
+					</tr>
+					<tr>
+						<td>商户名称</td>
+						<td><span id="merchantName"></span></td>
+					</tr>
+					<tr>
+						<td>退款订单号</td>
+						<td><span id="batch"></span></td>
+					</tr>
+					<tr>
+						<td>上游订单号</td>
+						<td><span id="paymentOrderNumber"></span></td>
+					</tr>
+					
+					
+					<tr>
+						<td>退单金额</td>
+						<td><span id="transactionAmount"></span></td>
+					</tr>
+					
+					<tr>
+						<td>提交时间</td>
+						<td><span id="orderTime"></span></td>
+					</tr>
+					<tr>
+						<td>成功时间</td>
+						<td><span id="transactionTime"></span></td>
+					</tr>
+					<tr>
+						<td>支付方式</td>
+						<td><span id="oneTransactionType"></span></td>
+					</tr>
+					<tr>
+						<td>提交地址</td>
+						<td><span id=""></span></td>
+					</tr>
+					<tr>
+						<td>回调地址</td>
+						<td><span id=""></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+	<script src="../../common/config.js"></script>
+    <script src="../../common/utility.js"></script>
+	<script type="text/javascript">
+		function subPagebill(data) {
+			
+			// var os;
+			// if(orderState == 0){
+			// 	os = '未处理'
+			// }
+			// if(orderState == 1){
+			// 	os = '成功-未返还'
+			// }
+			// if(orderState == 2){
+			// 	os = '成功-已返还'
+			// }
+			// if(!!data.orderTime){
+			// 	var orderTime = data.orderTime.split('.')[0].split('T')[0] + ' ' + data.orderTime.split('.')[0].split('T')[1]
+			// }else{
+			// 	var orderTime = ''
+			// }
+			// if(!!data.transactionTime){
+			// 	var transactionTime = data.transactionTime.split('.')[0].split('T')[0] + ' ' + data.transactionTime.split('.')[0].split('T')[1]
+			// }else{
+			// 	var transactionTime = ''
+			// }
+			// $('#merchantNumber').html(data.merchantNumber);
+			// $('#clerkNumber').html(data.clerkNumber);
+			// $('#merchantName').html(data.merchantName);
+			// $('#batch').html(data.batch);
+			// $('#transactionAmount').html(data.transactionAmount);
+			// $('#shopPoundage').html(data.shopPoundage);
+			// $('#settlementAmount').html(data.settlementAmount);
+			// $('#orderTime').html(orderTime)
+			// $('#transactionTime').html(transactionTime)
+			// $('#paymentChannelName').html(data.paymentChannelName)
+			// $('#oneTransactionType').html(data.oneTransactionType)
+			// $('#orderState').html(os)
+			$('#merchantNumber').html(data.merchantNumber)
+			$('#merchantName').html(data.merchantName)
+			$('#paymentOrderNumber').html(data.paymentOrderNumber)
+			$('#batch').html(data.batch)
+			$('#orderNumber').html(data.orderNumber)
+			$('#transactionAmount').html(data.transactionAmount)
+			$('#shopPoundage').html(data.shopPoundage)
+			$('#settlementAmount').html(data.settlementAmount)
+			$('#orderTime').html(data.orderTime)
+			$('#transactionTime').html(data.transactionTime)
+			$('#paymentChannelName').html(data.paymentChannelName)
+			$('#oneTransactionType').html(data.onePaymentTypeName + '/' + data.twoPaymentTypeName)
+		}
+	</script>
+
+</html>

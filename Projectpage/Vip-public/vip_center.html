@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>会员中心</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<!--<script src="js/htmlfont.js" type="text/javascript" charset="utf-8"></script>-->
+		<link rel="stylesheet" type="text/css" href="./css/reset.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="./fonts/iconfont.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="./css/style.css" media="all">
+	</head>
+
+	<body>
+		<div id="loadstart" class="loadzz">
+			<div class="loading_k">
+				<div class="loading"></div>
+			</div>
+		</div>
+		<div class="vipcenter">
+			<div class="vipbody">
+				<div class="vipmsg">
+					<div class="vip-img"><img src="./img/vip-img.jpg" id="avatar_url" /></div>
+					<div class="vip-msg">
+						<p>会员名称：<span id="name"></span></p>
+						<p>手机号：<span id="cell"></span></p>
+						<p>办理时间：<span id="insertTime"></span></p>
+					</div>
+					<div class="vip-level">
+						<i class="iconfont icon-huiyuan"></i><span id="cardName"></span>
+					</div>
+				</div>
+				<div class="vipjifenyue">
+					<div class="vip-integral">
+						<span id="integral"></span><br />积分
+					</div>
+					<div class="vip-coupons">
+						<span id="coupons"></span><br />优惠券
+					</div>
+					<div class="vip-balance">
+						¥<span id="accountBalance"></span><br />余额
+					</div>
+					<span class="vipjifenyuebg"></span>
+					<span class="vipjifenyuebg1"></span>
+				</div>
+			</div>
+			<div class="vipfunction">
+				<div class="vipfunctionDiv">
+					<a class="vipfunctionDiv-icon recharge" id="consume">
+						<i class="iconfont icon-xiaofeijilu"></i>
+					</a>
+					<p id="">消费记录</p>
+				</div>
+				<div class="vipfunctionDiv">
+					<a class="vipfunctionDiv-icon consume" id="recharge">
+						<i class="iconfont icon-chongzhijilu"></i>
+					</a>
+					<p id="">充值记录</p>
+				</div>
+			</div>
+			<div class="bottom">
+				<p class="copyright">卓/越/金/服/版/权/所/有</p>
+			</div>
+		</div>
+	</body>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="./common/config.js"></script>
+	<script src="./common/utility.js"></script>
+	<script>
+		$(document).ready(function() {
+			var code, cell, usernumber, associatorNumber;
+			if(/MicroMessenger/.test(window.navigator.userAgent)) {
+				if(window.location.href.indexOf('code=') == -1) {
+					var redirect_uri = window.location.href;
+					window.location.replace("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb011c75850fa5dea&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect" + (new Date().getTime()))
+				} else {
+					code = window.location.href.split('code=')[1].split('&')[0];
+					var ajaData = new Object()
+					ajaData.code = code
+					CmsUtility.postAjaxCall(
+						//系统设置
+						CmsConfig.addressUrl.Vip.getOpenId,
+						ajaData,
+						function(data) {
+							if(data.code == '0') {
+								$('#loadstart').hide()
+								var data = data.result
+								usernumber = data.userNumber
+								associatorNumber = data.associatorNumber
+								cell = data.cell
+								if(!data.name) {
+									$('#name').text(data.nickName)
+								} else {
+									$('#name').text(data.name)
+								}
+								$("#avatar_url").attr("src", data.avatar_url);
+								$('#cell').text(data.cell)
+								$('#insertTime').text(data.insertTime)
+								$('#integral').text(data.integral)
+								$('#coupons').text(data.coupons)
+								$('#accountBalance').text(data.accountBalance)
+								$('#cardName').text(data.cardName)
+								pushHistory();
+								window.addEventListener("popstate", function(e) {
+									// 点击返回键所触发的逻辑代码
+									alert("我点击了手机返回键");
+									wx.closeWindow();
+								}, false);
+							} else if(data.code == '1') {
+								alert('该微信未绑定会员！请点击绑定。')
+								var openid = data.openid
+								window.location.replace('login.html?openid=' + openid)
+							}
+						},
+						function(data) {
+							alert(data)
+						}
+					)
+				}
+			}
+			$('#recharge').click(function() {
+				window.location.href = 'recharge.html?usernumber=' + usernumber + '&cell=' + cell
+			})
+			$('#consume').click(function() {
+				window.location.href = 'consume.html?usernumber=' + usernumber + '&cell=' + cell
+			})
+			$('.vip-coupons').click(function() {
+				if($('#coupons').text > 0) {
+					window.location.href = 'coupons.html?usernumber=' + usernumber + '&associatorNumber=' + associatorNumber
+				} else {
+					alert('暂无优惠券!')
+				}
+			})
+			window.addEventListener("beforeunload", function(event) {
+				window.location.href = window.location.href.split("#")[0]
+			});
+
+			function pushHistory() {
+				var state = {
+					title: "title",
+					url: "#"
+				};
+				window.history.pushState(state, "title", "#");
+			}
+		})
+	</script>
+
+</html>
